@@ -53,7 +53,7 @@
 </script>
 }
 
-<div class="title">Quản lý thông tin sản phẩm</div>
+<div class="title">Quản lý thông tin sản phẩm (tổng hợp)</div>
 
 <div class="cover-div">
 @{
@@ -62,7 +62,7 @@
         .DataKeys(key => key.Add(f => f.ProductId).RouteKey("productId"))
         .ToolBar(
             toolbar =>
-            toolbar.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new {style = "margin-left:0px;"}))
+            toolbar.Insert().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new {style = "margin-left:0px;"}))
         .DataBinding(
             dataBinding => dataBinding.Ajax()
                                       .Select("SelectProduct", "Product", new {area = "", active = false, productName = ""})
@@ -72,7 +72,7 @@
         .Columns(columns =>
             {
                 columns.Command(command =>
-                                command.Edit().ButtonType(GridButtonType.ImageAndText)
+                                command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText)
                     ).Width(98).Title("Commands").HtmlAttributes(new {style = "text-align:center"});
 
                 columns.Bound(f => f.CustomerCodeName).Width(200)
@@ -117,7 +117,7 @@
                        .HtmlAttributes(new {style = "text-align:center"});
 
             })
-        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
         .ClientEvents(events => events.OnEdit("gridProduct_onEdit").OnError("gridProduct_OnError"))
         //.Pageable(page => page.PageSize(7))
         .Scrollable(f => f.Height(500))

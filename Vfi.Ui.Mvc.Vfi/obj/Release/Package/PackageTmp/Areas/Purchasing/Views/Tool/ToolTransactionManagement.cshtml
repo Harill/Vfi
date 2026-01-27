@@ -143,7 +143,7 @@
                         .DataBinding(binding => binding.Ajax().Select("SelectComboBoxTool", "Material", new { area = "" }).Delay(350))
                         .HtmlAttributes(new {style = "width: 150px"})
                         .DropDownHtmlAttributes(new {style = "width: 250px"})
-                        .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                        .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                         .HighlightFirstMatch(true)
                         .AutoFill(true)
                         .Render();
@@ -159,7 +159,7 @@
                         //.DataBinding(binding => binding.Ajax().Select("SelectStatus", "Orders"))
                         .HtmlAttributes(new {style = "width: 150px"})
                         .DropDownHtmlAttributes(new {style = "width: 250px"})
-                        .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                        .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                         .HighlightFirstMatch(true)
                         .AutoFill(true)
                         .ClientEvents(events => events.OnChange("status_onChange").OnLoad("status_onload"))

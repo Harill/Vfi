@@ -471,7 +471,7 @@
             formattingRule1.Style.Visible = false;
             this.signBox.ConditionalFormatting.AddRange(new Telerik.Reporting.Drawing.FormattingRule[] {
             formattingRule1});
-            this.signBox.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Pixel(516.11328125D), Telerik.Reporting.Drawing.Unit.Pixel(50.27685546875D));
+            this.signBox.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Pixel(204D), Telerik.Reporting.Drawing.Unit.Pixel(50.27685546875D));
             this.signBox.Name = "signBox";
             this.signBox.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Pixel(107.93853759765625D), Telerik.Reporting.Drawing.Unit.Pixel(107.98580932617188D));
             this.signBox.Sizing = Telerik.Reporting.Drawing.ImageSizeMode.Stretch;

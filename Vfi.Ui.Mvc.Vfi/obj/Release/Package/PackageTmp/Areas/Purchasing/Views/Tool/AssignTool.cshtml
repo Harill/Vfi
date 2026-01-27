@@ -146,7 +146,7 @@
                             .HtmlAttributes(new {style = "width: 130px"})
                             .DropDownHtmlAttributes(new {style = "width: 130px"})
                             .AutoFill(true)
-                            .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                            .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                             .Render();
                     }
 
@@ -211,7 +211,7 @@
             .DataKeys(keys => keys.Add(f => f.ToolInvId).RouteKey("toolInvId"))
             .DataBinding(dataBindings => dataBindings.Ajax()
                 .Select("SelectAssignToolProduction", "Tool", new {machineId = 0, productId = 0 })
-                .Update("UpdateAssignToolProduction", "Tool"))
+                .Update("UpdateAssignToolProduction", "Tool"))                  // luu them productionToolId
             .Columns(columns =>
             {
                 columns.Bound(f => f.VendorName).Width(100).Title("NCC").ReadOnly(true);
@@ -262,7 +262,7 @@
                 .OnRowDataBound("grid_OnRowDataBound")
                 .OnError("grid_OnError")
             )
-            .Editable(f => f.Mode(GridEditMode.InCell))
+            .Editable(f => f.Mode(Telerik.Web.Mvc.UI.GridEditMode.InCell))
              //.Footer(true)
             .Render();   
     }

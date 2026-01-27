@@ -578,7 +578,7 @@
         }
     </script>
 }
-<div class="title">Quản lý thông tin sản phẩm</div>
+<div class="title">Quản lý thông tin sản phẩm (sản xuất)</div>
 <div id="pnlInvPeriod">
     <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px; width: 920px;">
 
@@ -613,7 +613,7 @@
                         .DropDownHtmlAttributes(new { style = "width: 250px" })
                         //.ClientEvents(events => events.OnChange("customer_onChange"))
                         .AutoFill(true)
-                        .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                        .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                         .Render();
                 }
             </div>
@@ -627,7 +627,7 @@
                         .DataBinding(binding => binding.Ajax().Select("SelectComboBoxProductStatus", "Product"))
                         .HtmlAttributes(new { style = "width: 100%" })
                         .DropDownHtmlAttributes(new { style = "width: 250px" })
-                        .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                        .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                         .HighlightFirstMatch(true)
                         .AutoFill(true)
                         .ClientEvents(events => events.OnChange("status_onChange"))
@@ -674,7 +674,7 @@
                                           .Update("UpdateProductManagementProduction", "Product", new { area = "" }))
             .Columns(columns => {
                 columns.Command(command =>
-                                command.Edit().ButtonType(GridButtonType.Image).CancelText("Hủy").UpdateText("Cập nhật").Text("Sửa")
+                                command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image).CancelText("Hủy").UpdateText("Cập nhật").Text("Sửa")
                     ).Width(30).Title("").HtmlAttributes(new { style = "text-align:center" });
                 columns.Bound(f => f.Upload2D).Width(40).Title("Bản vẽ").ReadOnly(true)
                        .ClientTemplate("<a id='<#=ProductId#>' href='" + Url.Content("~/Content/FileUpload/Drawing/") + "<#=Upload2D#>?<#=UploadDate#>' class='highslide' onclick='return hs.expand(this)'>" +
@@ -727,7 +727,7 @@
                                                               .Update("UpdateProductionDesign", "Product", new { area = "", productId = "<#= ProductId #>" })
                                 )
                                 .Columns(columns => {
-                                    columns.Command(c => c.Edit().ButtonType(GridButtonType.Image)).Width(50).Title("")
+                                    columns.Command(c => c.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(50).Title("")
                                         .HtmlAttributes(new { style = "text-align:center" });
                                     columns.Bound(f => f.Diameter).Width(70)
                                            .HeaderTemplate("OD</br>(mm)")
@@ -774,7 +774,7 @@
                                            .Format("{0:n0}")
                                            .HtmlAttributes(new { style = "text-align:right;" });
                                 })
-                                .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                 .ClientEvents(events => events.OnError("grid_OnError")
                             .OnRowDataBound("gridInfoDesign_OnRowDataBound")
                                 )
@@ -786,7 +786,7 @@
                                 .DataKeys(key => key.Add(f => f.ImgId).RouteKey("imgId"))
                                 .ToolBar(
                                     toolbar =>
-                                    toolbar.Insert().Text("Thêm mới").ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
+                                    toolbar.Insert().Text("Thêm mới").ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
                                 .DataBinding(
                                     dataBinding => dataBinding.Ajax()
                                                               .Select("SelectProductImgById", "Product", new { area = "", productId = "<#= ProductId #>" })
@@ -796,7 +796,7 @@
                                 )
                                 .Columns(columns => {
                                     columns.Command(command =>
-                                                    command.Edit().ButtonType(GridButtonType.Image)
+                                                    command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
                                         ).Width(98).Title("").HtmlAttributes(new { style = "text-align:center" });
                                     columns.Bound(f => f.WarehouseName).Title("Công đoạn").Width(70);
                                     columns.Bound(f => f.ImgUrl).Width(40).Title("Bản vẽ")
@@ -808,9 +808,9 @@
                                     columns.Bound(f => f.ModifiedUser).Title("Người tạo").ReadOnly(true).Width(70);
                                     columns.Bound(f => f.ModifiedDate).Title("Ngày tạo").ReadOnly(true).Width(80)
                                            .Format("{0:dd/MM/yyyy HH:mm:ss}");
-                                    columns.Command(commands => commands.Delete().ButtonType(GridButtonType.Image)).Width(30).Title("Xoá");
+                                    columns.Command(commands => commands.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(30).Title("Xoá");
                                 })
-                                .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                 .ClientEvents(e => e.OnError("grid_OnError")
                                     .OnSave("gridProductImg_OnSave")
                                     .OnRowDataBound("gridProductImg_OnRowDataBound")
@@ -847,7 +847,7 @@
                                            .Format("{0:dd/MM/yyyy HH:mm:ss}");
                                     //columns.Command(commands => commands.Delete().ButtonType(GridButtonType.Image)).Width(30).Title("");
                                 })
-                                .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                 .ClientEvents(e => e.OnError("grid_OnError"))
                                 .ToHtmlString());
                         items.Add().Text("Nguyên liệu thiết kế").Content(
@@ -861,7 +861,7 @@
                                 )
                                 .Columns(columns => {
                                     columns.Command(command =>
-                                                    command.Edit().ButtonType(GridButtonType.Image)
+                                                    command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
                                         ).Width(98).Title("").HtmlAttributes(new { style = "text-align:center" });
 
                                     columns.Bound(f => f.MaterialCode).Width(170)
@@ -887,7 +887,7 @@
                                            .Format("{0:n3}")
                                            .HtmlAttributes(new { style = "text-align:right;" });
                                 })
-                                .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                 .ClientEvents(events => events.OnError("grid_OnError")
                                     .OnRowDataBound("gridMaterialDesign_OnRowDataBound")
                                     )
@@ -899,7 +899,7 @@
                                 .DataKeys(key => key.Add(f => f.RealToolId).RouteKey("realToolId"))
                                 .ToolBar(
                                     toolbar =>
-                                    toolbar.Insert().Text("Thêm mới").ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
+                                    toolbar.Insert().Text("Thêm mới").ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
                                 .DataBinding(
                                     dataBinding => dataBinding.Ajax()
                                                               .Select("SelectProductionTool", "Tool", new { area = "Purchasing", productId = "<#= ProductId #>" })
@@ -908,7 +908,7 @@
                                 )
                                 .Columns(columns => {
                                     columns.Command(command =>
-                                                    command.Edit().ButtonType(GridButtonType.Image)
+                                                    command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
                                         ).Width(50).Title("").HtmlAttributes(new { style = "text-align:center" });
 
                                     columns.Bound(f => f.ToolIndex).Width(50)
@@ -938,7 +938,7 @@
                                     columns.Bound(f => f.ModifiedUser).Width(100).Title("Người cập nhật").ReadOnly(true);
 
                                 })
-                                .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                 .ClientEvents(events => events.OnError("grid_OnError")
                                                               .OnSave("gridProductionTool_onSave"))
                                 .ToHtmlString()
@@ -950,7 +950,7 @@
                                     .HtmlAttributes(new { lockInsert = "<#= IsCalculateLock #>" })
                                     .DataKeys(key => key.Add(f => f.BaseId).RouteKey("baseId"))
                                     .ToolBar(tool => tool.Insert().Text("Thêm mới")
-                                            .ButtonType(GridButtonType.ImageAndText)
+                                            .ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText)
                                             .ImageHtmlAttributes(new { style = "margin-left:0px;" })
                                             .HtmlAttributes(new { id = "gridProductionProductivity_<#= ProductId #>_Insert" })
                                             )
@@ -962,7 +962,7 @@
                                     )
                                     .Columns(columns => {
                                         columns.Command(command =>
-                                                        command.Edit().ButtonType(GridButtonType.Image)
+                                                        command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
                                             ).Width(50).Title("").HtmlAttributes(new { style = "text-align:center" });
                                         columns.Bound(f => f.Idx).Width(120)
                                                .Title("Bước")
@@ -985,7 +985,7 @@
                                                .Format("{0:dd/MM/yyyy}");
                                         columns.Bound(f => f.ModifiedUser).Width(100).Title("Người làm").ReadOnly(true);
                                     })
-                                    .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                    .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                     .ClientEvents(events => events.OnError("grid_OnError")
                                     .OnLoad("gridProductionProductivity_OnLoad")
                                     .OnRowDataBound("gridProductionProductivity_OnRowDataBound"))
@@ -997,7 +997,7 @@
                                     .HtmlAttributes(new { lockInsert = "<#= IsCalculateLock #>" })
                                     .DataKeys(key => key.Add(f => f.ProductionSectionId).RouteKey("productionSectionId"))
                                     .ToolBar(tool => tool.Insert().Text("Thêm mới")
-                                            .ButtonType(GridButtonType.ImageAndText)
+                                            .ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText)
                                             .ImageHtmlAttributes(new { style = "margin-left:0px;" })
                                             .HtmlAttributes(new { id = "gridProduction2_<#= ProductId #>_Insert" })
                                             )
@@ -1009,7 +1009,7 @@
                                     )
                                     .Columns(columns => {
                                         columns.Command(command =>
-                                                        command.Edit().ButtonType(GridButtonType.Image)
+                                                        command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
                                             ).Width(50).Title("").HtmlAttributes(new { style = "text-align:center" });
                                         columns.Bound(f => f.SectionName).Width(120)
                                                .Title("Tên công đoạn");
@@ -1030,7 +1030,7 @@
                                                .Format("{0:dd/MM/yyyy}");
                                         columns.Bound(f => f.UpdateUser).Width(100).Title("Người cập nhật").ReadOnly(true);
                                     })
-                                    .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                    .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                     .Resizable(f => f.Columns(true))
                                     .ClientEvents(events => events.OnError("grid_OnError")
                                     .OnLoad("gridProduction2_OnLoad")
@@ -1044,7 +1044,7 @@
                                 .HtmlAttributes(new { lockInsert = "<#= IsCalculateLock #>" })
                                 .DataKeys(key => key.Add(f => f.Id).RouteKey("id"))
                                 .ToolBar(tool => tool.Insert().Text("Thêm mới")
-                                        .ButtonType(GridButtonType.ImageAndText)
+                                        .ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText)
                                         .ImageHtmlAttributes(new { style = "margin-left:0px;" })
                                         .HtmlAttributes(new { id = "gridProductionHeatTreatment_<#= ProductId #>_Insert" })
                                         )
@@ -1056,7 +1056,7 @@
                                 )
                                 .Columns(columns => {
                                     columns.Command(command =>
-                                                    command.Edit().ButtonType(GridButtonType.Image)
+                                                    command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
                                         ).Width(50).Title("").HtmlAttributes(new { style = "text-align:center" });
 
                                     columns.Bound(f => f.Section).Width(50)
@@ -1085,7 +1085,7 @@
                                            .Format("{0:dd/MM/yyyy}");
                                     columns.Bound(f => f.ModifiedUser).Width(100).Title("Người cập nhật").ReadOnly(true);
                                 })
-                                .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                 .Resizable(f => f.Columns(true))
                                 .ClientEvents(events => events.OnError("grid_OnError")
                                     .OnLoad("gridProductionHeatTreatment_OnLoad")
@@ -1098,7 +1098,7 @@
                                 .HtmlAttributes(new { lockInsert = "<#= IsCalculateLock #>" })
                                 .DataKeys(key => key.Add(f => f.Id).RouteKey("id"))
                                 .ToolBar(tool => tool.Insert().Text("Thêm mới")
-                                        .ButtonType(GridButtonType.ImageAndText)
+                                        .ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText)
                                         .ImageHtmlAttributes(new { style = "margin-left:0px;" })
                                         .HtmlAttributes(new { id = "gridProductionPolish_<#= ProductId #>_Insert" })
                                         )
@@ -1110,7 +1110,7 @@
                                 )
                                 .Columns(columns => {
                                     columns.Command(command =>
-                                                    command.Edit().ButtonType(GridButtonType.Image)
+                                                    command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
                                         ).Width(50).Title("").HtmlAttributes(new { style = "text-align:center" });
 
                                     columns.Bound(f => f.Section).Width(50)
@@ -1139,7 +1139,7 @@
                                            .Format("{0:dd/MM/yyyy}");
                                     columns.Bound(f => f.ModifiedUser).Width(100).Title("Người cập nhật").ReadOnly(true);
                                 })
-                                .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                 .Resizable(f => f.Columns(true))
                                 .ClientEvents(events => events.OnError("grid_OnError")
                                     .OnLoad("gridProductionPolish_OnLoad")
@@ -1152,7 +1152,7 @@
                                 .HtmlAttributes(new { lockInsert = "<#= IsCalculateLock #>" })
                                 .DataKeys(key => key.Add(f => f.PlatingId).RouteKey("platingId"))
                                 .ToolBar(tool => tool.Insert().Text("Thêm mới")
-                                        .ButtonType(GridButtonType.ImageAndText)
+                                        .ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText)
                                         .ImageHtmlAttributes(new { style = "margin-left:0px;" })
                                         .HtmlAttributes(new { id = "gridProductionPlating_<#= ProductId #>_Insert" })
                                         )
@@ -1191,7 +1191,7 @@
                                                .Format("{0:dd/MM/yyyy}");
                                         columns.Bound(f => f.ModifiedUser).Width(100).Title("Người cập nhật").ReadOnly(true);
                                     })
-                                    .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                    .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                     .Resizable(f => f.Columns(true))
                                     .ClientEvents(events => events.OnError("grid_OnError")
                                         .OnLoad("gridProductionPlating_OnLoad")
@@ -1204,7 +1204,7 @@
                                 .DataKeys(key => key.Add(f => f.RealId).RouteKey("realId"))
                                 .ToolBar(
                                     toolbar =>
-                                    toolbar.Insert().Text("Thêm mới").ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
+                                    toolbar.Insert().Text("Thêm mới").ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
                                 .DataBinding(
                                     dataBinding => dataBinding.Ajax()
                                                               .Select("SelectProductionFuel", "Production", new { area = "Factory", customerId = 0, productId = "<#= ProductId #>", productCode = "" })
@@ -1245,7 +1245,7 @@
                                     columns.Bound(f => f.ModifiedUser).Width(75).Title("Người cập nhật").ReadOnly(true);
 
                                 })
-                                .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                 .Resizable(f => f.Columns(true))
                                 .ClientEvents(events => events.OnError("grid_OnError")
                             //.OnSave("gridProductionFuel_onSave")
@@ -1263,7 +1263,7 @@
                                 )
                                 .Columns(columns => {
                                     columns.Command(command =>
-                                                    command.Edit().ButtonType(GridButtonType.Image)
+                                                    command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
                                         ).Width(45).Title("").HtmlAttributes(new { style = "text-align:center" });
                                     columns.Bound(f => f.Idx).Width(50).Title("Tiến trình").ReadOnly(true)
                                            .Format("{0:n0}");
@@ -1285,7 +1285,7 @@
                                                      .Name("gridProductionTestingDetail_<#= ProductId #>_<#= WarehouseId #>")
                                                      .DataKeys(key => key.Add(f => f.DetailId).RouteKey("detailId"))
                                                      .ToolBar(t => t.Insert().Text("Thêm mới")
-                                                            .ButtonType(GridButtonType.ImageAndText)
+                                                            .ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText)
                                                             .ImageHtmlAttributes(new { style = "margin-left:0px;" })
                                                             )
                                                       .DataBinding(
@@ -1296,7 +1296,7 @@
                                                       )
                                                      .Columns(columns => {
                                                          columns.Command(command =>
-                                                                         command.Edit().ButtonType(GridButtonType.Image).UpdateText("Cập nhật").CancelText("Hủy").Text("Sửa").InsertText("Thêm mới")
+                                                                         command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image).UpdateText("Cập nhật").CancelText("Hủy").Text("Sửa").InsertText("Thêm mới")
                                                              ).Width(50).Title("").HtmlAttributes(new { style = "text-align:center" });
                                                          columns.Bound(f => f.Idx).Width(50).Title("STT")
                                                                 .Format("{0:n0}");
@@ -1324,7 +1324,7 @@
                                                                                 .DataKeys(key => key.Add(f => f.TestingToolId).RouteKey("testingToolId"))
                                                                                 .ToolBar(
                                                                                     toolbar =>
-                                                                                    toolbar.Insert().Text("Thêm mới").ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
+                                                                                    toolbar.Insert().Text("Thêm mới").ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
                                                                                 .DataBinding(
                                                                                     dataBinding => dataBinding.Ajax()
                                                                                                                 .Select("SelectProductionTestingMachine", "Production", new { area = "", testingDetailId = "<#= DetailId #>" })
@@ -1333,7 +1333,7 @@
                                                                                 )
                                                                                 .Columns(columns => {
                                                                                     columns.Command(command =>
-                                                                                                    command.Edit().ButtonType(GridButtonType.Image).UpdateText("Cập nhật").CancelText("Hủy").Text("Sửa").InsertText("Thêm mới")
+                                                                                                    command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image).UpdateText("Cập nhật").CancelText("Hủy").Text("Sửa").InsertText("Thêm mới")
                                                                                         ).Width(50).Title("").HtmlAttributes(new { style = "text-align:center" });
                                                                                     columns.Bound(f => f.Idx).Width(70).Title("STT");
                                                                                     columns.Bound(f => f.MachineTypeName).Width(120).Title("Loại dụng cụ đo");
@@ -1344,12 +1344,12 @@
                                                                                         .Format("{0:dd/MM/yyyy HH:mm}");
                                                                                     columns.Bound(f => f.ModifiedUser).Width(80).Title("Người thêm").ReadOnly(true);
                                                                                 })
-                                                                                .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                                                                .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                                                                 .ClientEvents(e => e.OnError("grid_OnError"))
                                                                                 .ToHtmlString());
                                                             })
                                                             .ToHtmlString()))
-                                                     .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                                     .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                                      .ClientEvents(e => e.OnError("grid_OnError"))
                                                      .ToHtmlString());
 
@@ -1359,7 +1359,7 @@
                                                      .DataKeys(key => key.Add(f => f.NoteId).RouteKey("noteId"))
                                                      .ToolBar(
                                                          toolbar =>
-                                                         toolbar.Insert().Text("Thêm mới").ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
+                                                         toolbar.Insert().Text("Thêm mới").ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
                                                       .DataBinding(
                                                           dataBinding => dataBinding.Ajax()
                                                                                       .Select("SelectProductionTestingNote", "Production", new { area = "", productId = "<#= ProductId #>", warehouseId = "<#= WarehouseId #>" })
@@ -1368,7 +1368,7 @@
                                                       )
                                                      .Columns(columns => {
                                                          columns.Command(command =>
-                                                                         command.Edit().ButtonType(GridButtonType.Image).UpdateText("Cập nhật").CancelText("Hủy").Text("Sửa").InsertText("Thêm mới")
+                                                                         command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image).UpdateText("Cập nhật").CancelText("Hủy").Text("Sửa").InsertText("Thêm mới")
                                                              ).Width(50).Title("").HtmlAttributes(new { style = "text-align:center" });
                                                          columns.Bound(f => f.Idx).Width(100).Title("STT");
                                                          columns.Bound(f => f.Note).Title("Ghi chú");
@@ -1379,12 +1379,12 @@
                                                                 .Format("{0:dd/MM/yyyy HH:mm}");
                                                          columns.Bound(f => f.ModifiedUser).Width(80).Title("Người thêm").ReadOnly(true);
                                                      })
-                                                     .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                                     .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                                      .ClientEvents(e => e.OnError("grid_OnError"))
                                                      .ToHtmlString());
                                     })
                                     .ToHtmlString()))
-                                .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                 .ClientEvents(e => e.OnError("grid_OnError"))
                                 .ToHtmlString()
                             );
@@ -1398,7 +1398,7 @@
                                                                .Update("UpdateProductionWorkOrder", "Production", new { area = "Factory", productId = "<#= ProductId #>" })
                                  )
                                  .Columns(columns => {
-                                     columns.Command(command => command.Edit().ButtonType(GridButtonType.Image)).Width(45).Title("")
+                                     columns.Command(command => command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(45).Title("")
                                             .HtmlAttributes(new { style = "text-align:center" });
                                      columns.Bound(f => f.ProductionWeight).Width(70).Title("Trọng lượng</br>sản phẩm</br>(g/pc)").ReadOnly(true)
                                             .Format("{0:n3}")
@@ -1454,7 +1454,7 @@
                                             .Format("{0:n1}")
                                             .HtmlAttributes(new { style = "text-align:center;" });
                                  })
-                                 .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                 .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                  .ClientEvents(e => e.OnError("grid_OnError"))
                                  .ToHtmlString()
                              );
@@ -1464,7 +1464,7 @@
                                 .DataKeys(key => key.Add(f => f.ProcessId).RouteKey("processId"))
                                 .ToolBar(
                                     toolbar =>
-                                    toolbar.Insert().Text("Thêm quy trình").ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
+                                    toolbar.Insert().Text("Thêm quy trình").ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
                                 .DataBinding(
                                     dataBinding => dataBinding.Ajax()
                                                               .Select("SelectProductionProcessById", "Product", new { area = "", productId = "<#= ProductId #>" })
@@ -1473,7 +1473,7 @@
                                 )
                                 .Columns(columns => {
                                     columns.Command(command =>
-                                                    command.Edit().ButtonType(GridButtonType.Image)
+                                                    command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
                                         ).Width(45).Title("").HtmlAttributes(new { style = "text-align:center" });
                                     columns.Bound(f => f.WarehouseName).Width(150).Title("Tên kho")
                                                 .ClientTemplate("<strong><#= WarehouseName #></strong>");
@@ -1545,7 +1545,7 @@
                             //        )
                             //        .ToHtmlString()
                             //                            ))
-                                .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                 .ClientEvents(e => e.OnError("grid_OnError")
                                                     .OnEdit("gridProductionProcess_OnEdit")
                                     //.OnRowDataBound("gridProductionProcess_OnRowDataBound")
@@ -1578,14 +1578,14 @@
                                                     .Name("gridProductionProcessByMachine<#= MachineId #>")
                                                     .DataKeys(key => key.Add(f => f.DetailId).RouteKey("detailId")).ToolBar(
                                                         toolbar =>
-                                                            toolbar.Insert().ButtonType(GridButtonType.ImageAndText).Text("Thêm mới").ImageHtmlAttributes(new { style = "margin-left:0px;" }))
+                                                            toolbar.Insert().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).Text("Thêm mới").ImageHtmlAttributes(new { style = "margin-left:0px;" }))
                                                     .DataBinding(db => db.Ajax()
                                                         .Select("SelectProductionProcessByMachine", "Machine", new { area = "Factory", machineId = "<#= MachineId #>", productId = "<#= ProductId #>" })
                                                         .Insert("InsertProductionProcessByMachine", "Machine", new { area = "Factory", machineId = "<#= MachineId #>", productId = "<#= ProductId #>" })
                                                         .Update("UpdateProductionProcessByMachine", "Machine", new { area = "Factory" })
                                                     )
                                                     .Columns(columns => {
-                                                        columns.Command(command => command.Edit().ButtonType(GridButtonType.Image)).Width(40).Title("")
+                                                        columns.Command(command => command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(40).Title("")
                                                             .HtmlAttributes(new { style = "text-align:center" });
 
                                                         columns.Bound(f => f.WarehouseName).Width(200).Title("Kho")
@@ -1603,7 +1603,7 @@
                                                             .Format("{0:dd/MM/yyyy HH:mm}");
                                                         //columns.Command(commands => commands.Delete().ButtonType(GridButtonType.Image)).Width(30).Title("");
                                                     })
-                                                    .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                                    .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                                     .ClientEvents(e => e.OnError("grid_OnError")
                                                                         .OnEdit("gridProductionProcessByMachine_OnEdit"))
                                                     .ToHtmlString()
@@ -1653,7 +1653,7 @@
                                 .DataKeys(key => key.Add(f => f.RecipeId).RouteKey("recipeId"))
                                 .ToolBar(
                                     toolbar =>
-                                    toolbar.Insert().Text("Thêm mới").ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
+                                    toolbar.Insert().Text("Thêm mới").ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
                                 .DataBinding(
                                     dataBinding => dataBinding.Ajax()
                                                               .Select("SelectProductCombinationRecipe", "Product", new { productId = "<#= ProductId #>" })
@@ -1661,7 +1661,7 @@
                                                               .Update("UpdateProductCombinationRecipe", "Product", new { productId = "<#= ProductId #>" })
                                 )
                                 .Columns(columns => {
-                                    columns.Command(command => command.Edit().ButtonType(GridButtonType.Image)).Width(50).Title("")
+                                    columns.Command(command => command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(50).Title("")
                                         .HtmlAttributes(new { style = "text-align:center" });
                                     columns.Bound(f => f.RecipeCode).Width(150).Title("Mã công thức");
                                     columns.Bound(f => f.RecipeName).Width(150).Title("Tên công thức");
@@ -1682,14 +1682,14 @@
                                                     .Name("gridProductRecipeDetail_<#= RecipeId #>")
                                                     .DataKeys(key => key.Add(f => f.DetailId).RouteKey("detailId")).ToolBar(
                                                         toolbar =>
-                                                            toolbar.Insert().ButtonType(GridButtonType.ImageAndText).Text("Thêm mới").ImageHtmlAttributes(new { style = "margin-left:0px;" }))
+                                                            toolbar.Insert().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).Text("Thêm mới").ImageHtmlAttributes(new { style = "margin-left:0px;" }))
                                                     .DataBinding(db => db.Ajax()
                                                               .Select("SelectProductCombinationRecipeDetail", "Product", new { recipeId = "<#= RecipeId #>" })
                                                               .Insert("InsertProductCombinationRecipeDetail", "Product", new { recipeId = "<#= RecipeId #>" })
                                                               .Update("UpdateProductCombinationRecipeDetail", "Product", new { recipeId = "<#= RecipeId #>" })
                                                     )
                                                     .Columns(columns => {
-                                                        columns.Command(command => command.Edit().ButtonType(GridButtonType.Image)).Width(40).Title("")
+                                                        columns.Command(command => command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(40).Title("")
                                                             .HtmlAttributes(new { style = "text-align:center" });
 
                                                         columns.Bound(f => f.FromProductCode).Width(200).Title("Sản phẩm")
@@ -1698,14 +1698,14 @@
                                                             .Format("{0:n0}")
                                                             .HtmlAttributes(new { style = "text-align: right;" });
                                                     })
-                                                    .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                                    .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                                     .ClientEvents(e => e.OnError("grid_OnError"))
                                                     .ToHtmlString()
                                             )
                                         )
                                         .ToHtmlString()
                                     ))
-                                .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                 .ClientEvents(events => events.OnError("grid_OnError"))
                                 .ToHtmlString()
                             );
@@ -1715,7 +1715,7 @@
                                 .DataKeys(key => key.Add(f => f.HistoryId).RouteKey("historyId"))
                                 .ToolBar(
                                     toolbar =>
-                                    toolbar.Insert().Text("Thêm mới").ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
+                                    toolbar.Insert().Text("Thêm mới").ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
                                 .DataBinding(
                                     dataBinding => dataBinding.Ajax()
                                                               .Select("SelectProductHistory", "Production", new { area = "Factory", productId = "<#= ProductId #>", customerId = 0 })
@@ -1725,7 +1725,7 @@
                                 )
                                 .Columns(columns => {
                                     columns.Command(command =>
-                                                    command.Edit().ButtonType(GridButtonType.Image)
+                                                    command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
                                         ).Width(98).Title("").HtmlAttributes(new { style = "text-align:center" });
                                     columns.Bound(f => f.RefImage).Width(60).Title("Bản vẽ")
                                            .ClientTemplate("<a id='<#=HistoryId#>' href='" + Url.Content("~/Content/FileUpload/ProductHistory/") + "<#=RefImage#>?<#=UploadDate#>' class='highslide' onclick='return hs.expand(this)'>" +
@@ -1741,7 +1741,7 @@
                                            .Format("{0:dd/MM/yyyy HH:mm:ss}");
                                     //columns.Command(commands => commands.Delete().ButtonType(GridButtonType.Image)).Width(30).Title("Xoá");
                                 })
-                                .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                 .ClientEvents(e => e.OnError("grid_OnError")
                                     .OnSave("gridProductHistory_OnSave")
                                     //.OnRowDataBound("gridProductImg_OnRowDataBound")
@@ -1758,7 +1758,7 @@
                 .OnRowDataBound("grid_OnRowDataBound")
                                           .OnSave("grid_OnSave"))
             //.Pageable(page => page.PageSize(7))
-            .Editable(editing => editing.Mode(GridEditMode.InLine))
+            .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
             .Selectable()
             .Scrollable(f => f.Height(510))
             //.HtmlAttributes(new {style = "width: 1100px;"})
