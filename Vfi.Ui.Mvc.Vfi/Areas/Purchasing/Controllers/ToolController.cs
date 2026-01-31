@@ -3882,7 +3882,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                     // Step 1: Load all active machines
                     var machines = vfi.Machines
                         .Where(m => (m.Active || m.Production2)
-                        //&& m.MachineName.Equals("C18")
+                        && m.MachineName.Equals("C11")
                         && m.ProcessingType.ForWarehouseId == MyUtilities.Warehouse.Production1
                         && m.StateId != MyUtilities.Machine.State.Done
                         && m.StateId != MyUtilities.Machine.State.OutOfMaterial
