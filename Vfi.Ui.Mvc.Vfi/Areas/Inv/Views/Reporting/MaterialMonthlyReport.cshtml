@@ -466,7 +466,7 @@
             .Columns(columns => {
                 columns.Bound(f => f.CanEdit).Width(50).Hidden(true);
                 columns.Bound(f => f.CanUpload).Width(50).Hidden(true);
-                columns.Command(c => c.Edit().ButtonType(GridButtonType.Image)).Width(50).Title("");
+                columns.Command(c => c.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(50).Title("");
                 columns.Bound(f => f.InfoImg).Width(45).Title("Giấy</br>CN NCC").Filterable(false)
                     .ClientTemplate("<a id='<#=MaterialInvId#>' href='" + Url.Content("~/Content/FileUpload/CertificateMaterial/") + "<#=InfoImg#>?<#=UploadDate#>' class='highslide' onclick='return hs.expand(this)'>" +
                                     "<img src='" + Url.Content("~/Content/FileUpload/CertificateMaterial/") + "<#=InfoImg#>?<#=UploadDate#>' height='40' width='40' title='Mở lớn'/>" +

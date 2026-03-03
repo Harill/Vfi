@@ -7230,12 +7230,27 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                             "",
                             0));
                     }
-                    if (transaction.Status != (byte)MyUtilities.Transaction.Status.Approved) {
+                    //if (transaction.Status != (byte)MyUtilities.Transaction.Status.Approved) {
+                    //    return Json(new MyUtilities.Monitor.MyJsonResult(
+                    //        (int)MyUtilities.Monitor.ErrorCode.StatusChanged,
+                    //        "Phiếu chưa duyệt không thể trả phiếu",
+                    //        0));
+                    //}
+                    if (transaction.Status == (byte)MyUtilities.Transaction.Status.Cancel) {
+                        transaction.Status = (byte)MyUtilities.Transaction.Status.Open;
+                        var save = vfi.SaveChanges();
+                        return Json(new MyUtilities.Monitor.MyJsonResult(
+                        (int)MyUtilities.Monitor.ErrorCode.NoError,
+                         "",
+                         save));
+                    }
+                    else {
                         return Json(new MyUtilities.Monitor.MyJsonResult(
                             (int)MyUtilities.Monitor.ErrorCode.StatusChanged,
                             "Phiếu chưa duyệt không thể trả phiếu",
                             0));
                     }
+
                     if (transaction.IsInternal == true) {
                     }
                     else if (transaction.EoI == Convert.ToChar(MyUtilities.Transaction.EoIEnum.Export).ToString()) {
