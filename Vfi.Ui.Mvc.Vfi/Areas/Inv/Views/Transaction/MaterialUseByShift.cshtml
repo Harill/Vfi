@@ -189,8 +189,13 @@
 
             combobox2.dataBind(dataSource);
         }
+        var startGrid = false;
         function getMaterialUseList() {
-            RefreshGrid("gridMaterialUse");
+            if (!onLoading) {
+                OnLoadingData();
+                startGrid = true;
+                RefreshGrid("gridMaterialUse");
+            }
         }
 
         function Factory_Onload() {
@@ -203,11 +208,39 @@
 
             combobox.dataBind(dataSource);
         }
+
+        // loading button
+        var onLoading = false;
+        function OnLoadingData() {
+            if (!onLoading) {
+                onLoading = true;
+                var loadings = document.querySelectorAll('.twoToneButton');
+                for (var i = 0; i < loadings.length; i++) {
+                    var loading = loadings[i];
+                    loading.innerHTML = "<span class='t-icon t-refresh t-loading'></span> (Chờ load)";
+                    loading.classList.add('loading');
+                }
+            }
+        }
+        function OnLoadedData() {
+            if (onLoading) {
+                var loadings = document.querySelectorAll('.twoToneButton');
+                for (var i = 0; i < loadings.length; i++) {
+                    var loading = loadings[i];
+                    if (loading && loading.className.includes("loading")) {
+                        loading.classList.remove('loading');
+                        loading.innerHTML = "<span></span>";
+                    }
+                }
+                onLoading = false;
+            }
+        }
+
     </script>
 }
 
 <div class="title">Tạo phiếu sử dụng nguyên liệu</div>
-<div class="t-info-sha" style="padding-left: 15px;padding-right: 15px; width:920px;">
+<div class="t-info-sha" style="padding-left: 15px;padding-right: 15px; width:1020px;">
 
     <fieldset>
         <legend>Thông tin phiếu</legend> 
@@ -268,6 +301,7 @@
             <button id="btnGetMaterialUseList" class="t-button" onclick=" return getMaterialUseList(); ">
                 <span class='t-icon t-insert'></span>
                 Lấy danh sách nguyên liệu
+                <span class="twoToneButton"></span>
             </button>
         @*</div>*@
     </fieldset>
@@ -281,7 +315,7 @@
                 .ToolBar(bar =>
                     {
                         //bar.Insert().ButtonType(GridButtonType.ImageAndText).Text("Thêm dòng mới");
-                        bar.SubmitChanges().ButtonType(GridButtonType.ImageAndText).SaveText("Lưu tất cả").CancelText("Trở về ban đầu");
+                        bar.SubmitChanges().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).SaveText("Lưu tất cả").CancelText("Trở về ban đầu");
 
                     })
                 .DataBinding(dataBindings => dataBindings.Ajax()
@@ -337,8 +371,9 @@
                                             .OnSave("grid_onSave")
                                             .OnSubmitChanges("grid_onSubmitChanges")
                                             .OnError("grid_OnError")
+                                            .OnDataBound("OnLoadedData")
                 )
-                .Editable(editing => editing.Mode(GridEditMode.InCell))
+                .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InCell))
                 .KeyboardNavigation(keys => keys.EditOnTab(true))
                 .Resizable(resizing => resizing.Columns(true))
                 .Scrollable(f => f.Height(510))

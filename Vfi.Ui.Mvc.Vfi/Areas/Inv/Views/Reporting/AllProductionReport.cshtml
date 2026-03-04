@@ -11,7 +11,7 @@
 
         function grid_OnDataBinding(args) {
             if (startGrid && !onLoading) {
-                OnLoadingData();
+                OnLoadingData(); gridTransaction
                 var productCodeNameForMonthly = $("#ProductCodeNameForMonthly").data("tAutoComplete").value();
 
                 var customerId = $("#CustomerForMonthly").data('tComboBox').value();
@@ -183,6 +183,7 @@
         var startGrid = false;
         function RefreshGrid2(name) {
             if (!onLoading) {
+                OnLoadingData();
                 startGrid = true;
                 RefreshGrid(name);
             }
@@ -243,7 +244,7 @@
                         .DropDownHtmlAttributes(new { style = "width: 275px" })
                         //.ClientEvents(events => events.OnChange("customerForPeriod_onChange"))
                         .AutoFill(true)
-                        .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                        .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                         .Render();
                 }
             </div>

@@ -26,6 +26,9 @@
             });
         }
     }
+    function grid_Error(e) {
+        console.log(e);
+    }
     </script>
 }
 <div class="title">Quản lý phương thức</div>
@@ -36,7 +39,7 @@
         .DataKeys(keys => keys.Add(f => f.MethodId).RouteKey("methodId"))
         .ToolBar(
             toolbar =>
-            toolbar.Insert().Text("Thêm PT mới").ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new {style = "margin-left:0"}))
+            toolbar.Insert().Text("Thêm PT mới").ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new {style = "margin-left:0"}))
         .DataBinding(dataBindings => dataBindings.Ajax()
                                                  .Select("SelectAllMethod", "Method")
                                                  .Insert("InsertMethod", "Method")
@@ -57,10 +60,10 @@
                        .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=Active? checked='checked' : '' #> />")
                        .HtmlAttributes(new { style = "text-align:center" });
                 columns.Command(command =>
-                                command.Edit().ButtonType(GridButtonType.ImageAndText)
+                                command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText)
                     ).Width(98).Title("Commands").HtmlAttributes(new {style = "text-align:center"});
             })
-        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
         .ClientEvents(e => e.OnEdit("grid_OnEdit").OnError("grid_Error"))
         //.Pageable(page => page.PageSize(10))
         .Scrollable(f => f.Height(510))

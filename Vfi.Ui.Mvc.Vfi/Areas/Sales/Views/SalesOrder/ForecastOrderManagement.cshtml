@@ -46,6 +46,37 @@
             index = 0;
         }
 
+
+        function grid_OnDataBound() {
+            OnLoadedData();
+        }
+
+        var onLoading = false;
+        function OnLoadingData() {
+            if (!onLoading) {
+                onLoading = true;
+                var loadings = document.querySelectorAll('.twoToneButton');
+                for (var i = 0; i < loadings.length; i++) {
+                    var loading = loadings[i];
+                    loading.innerHTML = "<span class='t-icon t-refresh t-loading'></span> (Chờ load)";
+                    loading.classList.add('loading');
+                }
+            }
+        }
+        function OnLoadedData() {
+            if (onLoading) {
+                var loadings = document.querySelectorAll('.twoToneButton');
+                for (var i = 0; i < loadings.length; i++) {
+                    var loading = loadings[i];
+                    if (loading && loading.className.includes("loading")) {
+                        loading.classList.remove('loading');
+                        loading.innerHTML = "<span></span>";
+                    }
+                }
+                onLoading = false;
+            }
+        }
+
         var index = 0;
 
         //function month_onLoad() {
@@ -104,23 +135,37 @@
             return false;
         }
 
-        function grid_OnRowDataBound(e) {
+        //function grid_OnRowDataBound(e) {
+        //    var dataItem = e.dataItem;
+        //    if (!dataItem.SaleManagement) {
+        //        e.row.getElementsByClassName("t-button t-grid-delete t-button-icon")[0].parentNode.innerHTML = "";
+        //    }
+        //}
+
+        function grid_OnRowDataBound(e) {                   // 04/03/2026
             var dataItem = e.dataItem;
             if (!dataItem.SaleManagement) {
-                e.row.getElementsByClassName("t-button t-grid-delete t-button-icon")[0].parentNode.innerHTML = "";
+                var btn = e.row.getElementsByClassName("t-button t-grid-delete t-button-icon");
+                if (btn.length > 0) {
+                    btn[0].parentNode.innerHTML = "";
+                }
             }
         }
 
 
+
         function RefreshGrid2() {
-            startGrid = true;
-            RefreshGrid("gridForecast");
+            if (!onLoading) {
+                OnLoadingData();
+                startGrid = true;
+                RefreshGrid("gridForecast");
+            }
         }
     </script>
 }
 
 <div class="title">Quản lý dự báo đơn hàng</div>
-<div class="t-info-sha" style="padding-left: 15px; padding-right: 15px; width: 1065px;">
+<div class="t-info-sha" style="padding-left: 15px; padding-right: 15px; width: 1070px;">
     @*<div class="grid_1">
         Kho
     </div>
@@ -209,10 +254,11 @@
                             .Render();
                     }
                 </div>
-        <div class="grid_2_5">
+        <div class="grid_3">
             <button id="btnRefesh" class="t-button" onclick=" return RefreshGrid2(); ">
                 <span class='t-icon t-insert'></span>
                 Làm mới
+                <span class="twoToneButton"></span>
             </button>
         </div>
     </fieldset>
@@ -361,11 +407,12 @@
             .ClientEvents(e => e.OnError("grid_OnError")
                                 .OnDataBinding("grid_OnDataBinding")
                                 .OnRowSelect("grid_OnRowSelect")
-                //.OnSave("grid_OnSave")
+                                //.OnSave("grid_OnSave")
                                 .OnRowDataBound("grid_OnRowDataBound")
-            //.OnLoad("grid_OnLoad")
-            //.OnDelete("grid_OnDelete")
-            //.OnEdit("grid_OnEdit")
+                                .OnDataBound("OnLoadedData")
+                                //.OnLoad("grid_OnLoad")
+                                //.OnDelete("grid_OnDelete")
+                                //.OnEdit("grid_OnEdit")
                                 )
             .Render();
     }

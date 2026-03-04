@@ -9,6 +9,45 @@
     <script type="text/javascript">
 
         var startGrid = false;
+        function RefreshGrid2(name) {
+            if (!onLoading) {
+                OnLoadingData();
+                startGrid = true;
+                RefreshGrid('gridProductionMonthly');
+            }
+        }
+
+        function grid_OnDataBound() {
+            OnLoadedData();
+        }
+
+        var onLoading = false;
+        function OnLoadingData() {
+            if (!onLoading) {
+                onLoading = true;
+                var loadings = document.querySelectorAll('.twoToneButton');
+                for (var i = 0; i < loadings.length; i++) {
+                    var loading = loadings[i];
+                    loading.innerHTML = "<span class='t-icon t-refresh t-loading'></span> (Chờ load)";
+                    loading.classList.add('loading');
+                }
+            }
+        }
+        function OnLoadedData() {
+            if (onLoading) {
+                var loadings = document.querySelectorAll('.twoToneButton');
+                for (var i = 0; i < loadings.length; i++) {
+                    var loading = loadings[i];
+                    if (loading && loading.className.includes("loading")) {
+                        loading.classList.remove('loading');
+                        loading.innerHTML = "<span></span>";
+                    }
+                }
+                onLoading = false;
+            }
+        }
+
+
         function grid_OnDataBinding(args) {
             if (startGrid) {
                 var customerId = $('#cboCustomer').data('tComboBox').value();
@@ -54,32 +93,35 @@
         }
 
         function PrintDeptReport() {
+            if (!onLoading) {
+                OnLoadingData();
+                var month = $("#Month").data("tComboBox").text();
+                if (month === null)
+                    month = new Date().getMonth() + 1;
 
-            var month = $("#Month").data("tComboBox").text();
-            if (month === null)
-                month = new Date().getMonth() + 1;
-           
-            var year = $("#Year").val();
-            if (year === null || year === "")
-                month = new Date().getYear() + 1;
+                var year = $("#Year").val();
+                if (year === null || year === "")
+                    month = new Date().getYear() + 1;
 
-            $('#result').load('@Url.Action("PrintDeptReport", "Orders", new {area = "Sales"})',
-                {
-                    month: month,
-                    year: year
-                }, function() {
-                    var window = $('#windowReport').data('tWindow');
-                    window.open();
-                });
+                $('#result').load('@Url.Action("PrintDeptReport", "Orders", new {area = "Sales"})',
+                    {
+                        month: month,
+                        year: year
+                    }, function () {
+                        OnLoadedData();
+                        var window = $('#windowReport').data('tWindow');
+                        window.open();
+                    })
+            };
             return false;
         }
        
-        function RefreshGrid2() {
-            startGrid = true;
-            RefreshGrid("gridProductionMonthly");
+        //function RefreshGrid2() {
+        //    startGrid = true;
+        //    RefreshGrid("gridProductionMonthly");
             //$(".t-grid .t-refresh").trigger('click');
             // $(".t-comboBox .t-refresh").trigger('click');
-        }
+        //}
 
     </script>
 }
@@ -89,10 +131,11 @@
     <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px; width: 920px;">
             
         
-        <div class="grid_6">
+        <div class="grid_10">
             <button id="btnDeptReport" class='t-button' onclick="return PrintDeptReport();">
                 <span class='t-icon t-insert'></span>
                 Bảng theo dõi công nợ
+                <span class="twoToneButton"></span>
             </button>
         </div>
         <div class="clear"></div>
@@ -109,7 +152,7 @@
                     .HtmlAttributes(new {style = "width: 250px"})
                     .DropDownHtmlAttributes(new {style = "width: 325px;"})
                     .AutoFill(true)
-                    .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                    .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                     .Render();
             }
         </div>
@@ -139,10 +182,11 @@
                         .Render();
                 }
             </div>
-             <div class="grid_3">
+             <div class="grid_7">
             <button id="btnRefesh" class="t-button" onclick=" return RefreshGrid2(); ">
                 <span class='t-icon t-refresh'></span>
                 Làm mới
+                <span class="twoToneButton"></span>
             </button>
             </div>
         </fieldset>
@@ -497,7 +541,9 @@
                 .ClientEvents(events => events
                                             .OnDataBinding("grid_OnDataBinding")
                                             .OnRowSelect("grid_OnRowSelect")
-                                            .OnError("grid_OnError"))
+                                            .OnError("grid_OnError")
+                                            .OnDataBound("OnLoadedData")
+                                            )
                 .Selectable()
                 .Scrollable(f => f.Height(510))
                 //.HtmlAttributes(new { style = "width: 950px;" })

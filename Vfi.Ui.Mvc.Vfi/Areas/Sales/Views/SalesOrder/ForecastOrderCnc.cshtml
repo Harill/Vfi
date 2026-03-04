@@ -9,9 +9,43 @@
 <script type="text/javascript">
     var startGrid = false;
     function RefreshGrid2(name) {
-        startGrid = true;
-        RefreshGrid(name);
+        if (!onLoading) {
+            OnLoadingData();
+            startGrid = true;
+            RefreshGrid(name);
+        }
     }
+
+    function grid_OnDataBound() {
+        OnLoadedData();
+    }
+
+    var onLoading = false;
+    function OnLoadingData() {
+        if (!onLoading) {
+            onLoading = true;
+            var loadings = document.querySelectorAll('.twoToneButton');
+            for (var i = 0; i < loadings.length; i++) {
+                var loading = loadings[i];
+                loading.innerHTML = "<span class='t-icon t-refresh t-loading'></span> (Chờ load)";
+                loading.classList.add('loading');
+            }
+        }
+    }
+    function OnLoadedData() {
+        if (onLoading) {
+            var loadings = document.querySelectorAll('.twoToneButton');
+            for (var i = 0; i < loadings.length; i++) {
+                var loading = loadings[i];
+                if (loading && loading.className.includes("loading")) {
+                    loading.classList.remove('loading');
+                    loading.innerHTML = "<span></span>";
+                }
+            }
+            onLoading = false;
+        }
+    }
+
     function grid_OnDataBinding(args) {
         if (startGrid) {
 
@@ -60,7 +94,7 @@
 </script>
 
 <div class="title">PO KD (sản xuất 2)</div>
-<div class="t-info-sha" style="padding-left: 15px; padding-right: 15px; width: 1000px;">
+<div class="t-info-sha" style="padding-left: 15px; padding-right: 15px; width: 1020px;">
         <fieldset>
             <legend>Tiêu chí trích lọc</legend>
             <div class="grid_1">KH</div>
@@ -72,11 +106,11 @@
                         .HtmlAttributes(new {style = "width: 190px"})
                         .DropDownHtmlAttributes(new {style = "width: 275px;"})
                         .AutoFill(true)
-                        .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                        .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                         .Render();
                 }
             </div>
-             <div class="grid_2">
+             <div class="grid_1_5">
                 Mã SP
             </div>
             <div class="grid_4">
@@ -119,6 +153,7 @@
     <button id="btnRefresh" class='t-button' onclick=" return RefreshGrid2('gridForecast'); ">
                 <span class='t-icon t-refresh'></span>
                 Làm mới
+                <span class="twoToneButton"></span>
             </button>
         </fieldset>
     </div>
@@ -449,7 +484,7 @@
                                             .ClientTemplate("<#= ModifiedDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', ModifiedDate) #>");
                                         columns.Bound(f => f.ModifiedUser).Width(100).Title("Người cập nhật").ReadOnly(true);
                                     })
-                                    .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                    .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                     .ClientEvents(e => e.OnError("grid_OnError"))
                                     .ToHtmlString()
                                 );
@@ -490,11 +525,12 @@
                                 );
                         }).ToHtmlString()))
             .Selectable()
-            .Editable(editing => editing.Mode(GridEditMode.InLine))
+            .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
             .ClientEvents(e => e.OnError("grid_OnError")
                                 .OnRowSelect("grid_OnRowSelect")
                                 .OnDataBinding("grid_OnDataBinding")
                                 .OnRowDataBound("grid_OnRowDataBound")
+                                .OnDataBound("OnLoadedData")
                                 //.OnSave("grid_OnSave")
             )
             .Scrollable(f => f.Height(500))

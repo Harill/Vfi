@@ -157,9 +157,44 @@
                         }
                     }
                 });
-            } else {
+            } else { }
+        }
+        // Loading button
+        var startGrid = false;
+        function RefreshGrid2(name) {
+            if (!onLoading) {
+                OnLoadingData();
+                startGrid = true;
+                RefreshGrid('gridTransaction');
             }
         }
+
+        var onLoading = false;
+        function OnLoadingData() {
+            if (!onLoading) {
+                onLoading = true;
+                var loadings = document.querySelectorAll('.twoToneButton');
+                for (var i = 0; i < loadings.length; i++) {
+                    var loading = loadings[i];
+                    loading.innerHTML = "<span class='t-icon t-refresh t-loading'></span> (Chờ load)";
+                    loading.classList.add('loading');
+                }
+            }
+        }
+        function OnLoadedData() {
+            if (onLoading) {
+                var loadings = document.querySelectorAll('.twoToneButton');
+                for (var i = 0; i < loadings.length; i++) {
+                    var loading = loadings[i];
+                    if (loading && loading.className.includes("loading")) {
+                        loading.classList.remove('loading');
+                        loading.innerHTML = "<span></span>";
+                    }
+                }
+                onLoading = false;
+            }
+        }
+
     </script>
 
 }
@@ -178,7 +213,7 @@
                     .DataBinding(binding => binding.Ajax().Select("SelectComboBoxTransactionStatus", "Transaction"))
                     .HtmlAttributes(new { style = "width: 150px" })
                     .DropDownHtmlAttributes(new { style = "width: 250px" })
-                    .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                    .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                     .HighlightFirstMatch(true)
                     .AutoFill(true)
                     .ClientEvents(events => events.OnChange("transactionStatus_onChange"))
@@ -204,9 +239,10 @@
             }
         </div>
         <div class="grid_4 prefix_1">
-            <button id="btnRefesh" class="t-button" onclick=" return RefreshGrid('gridTransaction'); ">
+            <button id="btnRefesh" class="t-button" onclick=" return RefreshGrid2('gridTransaction'); ">
                 <span class='t-icon t-insert'></span>
                 Làm mới
+                <span class="twoToneButton"></span>
             </button>
         </div>
     </fieldset>
@@ -271,7 +307,7 @@
                                                                                     .Update("UpdateTransactionMaterialDetail", "Transaction")
                                                                                     )
                                    .Columns(columns => {
-                                       columns.Command(c => c.Edit().ButtonType(GridButtonType.Image)).Width(50).Title("")
+                                       columns.Command(c => c.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(50).Title("")
                                            .HtmlAttributes(new { style = "text-align:center" });
                                        columns.Bound(f => f.MaterialTypeName).Title("Loại NL").Width(80).ReadOnly(true)
                                                   .HtmlAttributes(new { style = "text-align: center;" });
@@ -312,7 +348,8 @@
             .ClientEvents(events => events.OnError("grid_OnError")
                 .OnRowSelect("grid_OnRowSelect")
                 .OnRowDataBound("grid_OnRowDataBound")
-                .OnDataBinding("gridTransaction_onDataBinding"))
+                .OnDataBinding("gridTransaction_onDataBinding")
+                .OnDataBound("OnLoadedData"))
             .Filterable()
                 .Scrollable(f => f.Height(510))
             .Render();

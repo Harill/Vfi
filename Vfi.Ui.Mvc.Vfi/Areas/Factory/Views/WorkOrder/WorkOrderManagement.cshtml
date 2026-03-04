@@ -9,7 +9,7 @@
 <script type="text/javascript">
 
     function grid_OnDataBinding(args) {
-        if (startGrid && !onLoading) {
+        if (startGrid) {
             var status = $("#Status").data("tComboBox").value();
             if (status === "")
                 status = 0;
@@ -42,15 +42,43 @@
             });
         }
     }
+
     function grid_OnDataBound() {
         OnLoadedData();
     }
-
     var startGrid = false;
     function RefreshGrid2(name) {
         if (!onLoading) {
+            OnLoadingData();
             startGrid = true;
-            RefreshGrid(name);
+            $("#" + name).data("tGrid").ajaxRequest();
+        }
+    }
+
+
+    var onLoading = false;
+    function OnLoadingData() {
+        if (!onLoading) {
+            onLoading = true;
+            var loadings = document.querySelectorAll('.twoToneButton');
+            for (var i = 0; i < loadings.length; i++) {
+                var loading = loadings[i];
+                loading.innerHTML = "<span class='t-icon t-refresh t-loading'></span> (Chờ load)";
+                loading.classList.add('loading');
+            }
+        }
+    }
+    function OnLoadedData() {
+        if (onLoading) {
+            var loadings = document.querySelectorAll('.twoToneButton');
+            for (var i = 0; i < loadings.length; i++) {
+                var loading = loadings[i];
+                if (loading && loading.className.includes("loading")) {
+                    loading.classList.remove('loading');
+                    loading.innerHTML = "<span></span>";
+                }
+            }
+            onLoading = false;
         }
     }
 
@@ -118,6 +146,7 @@
         });
         return false;
     }
+
 </script>
 
 <div class="title">Quản lý Work Order</div>
@@ -133,7 +162,7 @@
                         .HtmlAttributes(new { style = "width: 100%" })
                         .DropDownHtmlAttributes(new { style = "min-width: 375px" })
                         .AutoFill(true)
-                        .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                        .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                         .Render();
                 }
             </div>
@@ -151,7 +180,7 @@
                         .Render();
                 }
             </div>
-            <div class="grid_2">
+            <div class="grid_1">
                 Máy
             </div>
             <div class="grid_4">
@@ -162,7 +191,7 @@
                         .HtmlAttributes(new { style = "width: 100%" })
                         //.DropDownHtmlAttributes(new { style = "width: 100%" })
                         .AutoFill(true)
-                        .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                        .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                         .Render();
                 }
             </div>
@@ -176,7 +205,7 @@
                         .DataBinding(binding => binding.Ajax().Select("SelectComboBoxWorkOrderStatus", "WorkOrder"))
                         .HtmlAttributes(new { style = "width: 150px" })
                         .DropDownHtmlAttributes(new { style = "width: 250px" })
-                        .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                        .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                         .HighlightFirstMatch(true)
                         .AutoFill(true)
                         .Render();
@@ -203,7 +232,7 @@
                 <button id="btnRefesh" class="t-button" onclick=" return RefreshGrid2('grid'); ">
                     <span class='t-icon t-insert'></span>
                     Làm mới
-                <span class="loadButton"></span>
+                    <span class="twoToneButton"></span>
                 </button>
             </div>
         </fieldset>
@@ -268,7 +297,7 @@
                 columns.Bound(f => f.WorkOrderId).Title("").Width(55).ReadOnly(true).Filterable(false)
                     .ClientTemplate("<input type='button' value='In' class='t-button' onclick=Print(<#= WorkOrderId #>) />")
                     .HtmlAttributes(new { style = "text-align:center" });
-                columns.Command(c => c.Delete().ButtonType(GridButtonType.Image)).Title("Hủy</br>WO").Width(35);
+                columns.Command(c => c.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Title("Hủy</br>WO").Width(35);
             })
                         .DetailView(details2 => details2.ClientTemplate(
                             Html.Telerik().TabStrip()
@@ -279,7 +308,7 @@
                                         Html.Telerik().Grid<WorkOrderRoutingModel>()
                                             .Name("gridRoutings_<#= WorkOrderId #>")
                                             .DataKeys(key => key.Add(f => f.RoutingId).RouteKey("routingId"))
-                                            .ToolBar(toolbar => toolbar.Insert().ButtonType(GridButtonType.ImageAndText)
+                                            .ToolBar(toolbar => toolbar.Insert().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText)
                                                                         .HtmlAttributes(new { style = "<#= CanAddDisplay #>" })
                                                                        .ImageHtmlAttributes(new { style = "margin-left:0px;" }))
                                             .DataBinding(
@@ -290,7 +319,7 @@
                                                     .Delete("CancelWorkOrderRouting", "WorkOrder", new { area = "Factory", workOrderId = "<#= WorkOrderId #>", isActive = true })
                                             )
                                             .Columns(columns => {
-                                                columns.Command(x => x.Edit().ButtonType(GridButtonType.Image))
+                                                columns.Command(x => x.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image))
                                                         .Width(40).Title("")
                                                         .HtmlAttributes(new { style = "text-align:center" });
                                                 columns.Bound(f => f.RoutingIndex).Width(40).Title("STT");
@@ -340,7 +369,7 @@
                                                     .HtmlAttributes(new { style = "text-align:right;border-right:1px solid black;" });
                                                 columns.Bound(f => f.MoreInfo).Title("Mô tả").ReadOnly(true)
                                                     .ClientTemplate("<span class='wraptext'><#= MoreInfo #></span>");
-                                                columns.Command(c => c.Delete().ButtonType(GridButtonType.Image)).Title("Hủy</br>CĐ").Width(35);
+                                                columns.Command(c => c.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Title("Hủy</br>CĐ").Width(35);
                                             })
 
                                .DetailView(details3 => details3.ClientTemplate(
@@ -420,13 +449,13 @@
                                                             .HtmlAttributes(new { style = "text-align: center;" });
                                                     })
 
-                                                    .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                                    .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                                     .ClientEvents(e => e.OnError("grid_OnError"))
                                                     //.Pageable(page => page.PageSize(10))
                                                     .ToHtmlString()
                                                 )).ToHtmlString()))
                                                           
-                                            .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                            .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                             .ClientEvents(e => e.OnError("grid_OnError")
                                                 .OnEdit("gridRouting_OnEdit")
                                                 .OnRowDataBound("gridRouting_OnRowDataBound")
@@ -436,9 +465,10 @@
                                         )).ToHtmlString()))
             .ClientEvents(events => events.OnError("grid_OnError")
                                           .OnRowSelect("grid_OnRowSelect")
-                                          .OnDataBound("grid_OnDataBound")
-                                          .OnDataBinding("grid_OnDataBinding"))
-            .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                          .OnDataBinding("grid_OnDataBinding")
+                                          .OnDataBound("OnLoadedData")
+                                          )
+            .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
             .Selectable()
             .Scrollable(f => f.Height(510))
             .Resizable(f => f.Columns(true))

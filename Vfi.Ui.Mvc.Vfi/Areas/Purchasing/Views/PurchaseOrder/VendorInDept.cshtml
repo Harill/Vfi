@@ -48,6 +48,45 @@
                 }
             });
         }
+        // loading button
+
+        function grid_OnDataBound() {
+            OnLoadedData();
+        }
+
+        var onLoading = false;
+        function OnLoadingData() {
+            if (!onLoading) {
+                onLoading = true;
+                var loadings = document.querySelectorAll('.twoToneButton');
+                for (var i = 0; i < loadings.length; i++) {
+                    var loading = loadings[i];
+                    loading.innerHTML = "<span class='t-icon t-refresh t-loading'></span> (Chờ load)";
+                    loading.classList.add('loading');
+                }
+            }
+        }
+        function OnLoadedData() {
+            if (onLoading) {
+                var loadings = document.querySelectorAll('.twoToneButton');
+                for (var i = 0; i < loadings.length; i++) {
+                    var loading = loadings[i];
+                    if (loading && loading.className.includes("loading")) {
+                        loading.classList.remove('loading');
+                        loading.innerHTML = "<span></span>";
+                    }
+                }
+                onLoading = false;
+            }
+        }
+        var startGrid = false;
+        function RefreshGrid2(name) {
+            if (!onLoading) {
+                OnLoadingData();
+                startGrid = true;
+                RefreshGrid('gridPO');
+            }
+        }
     </script>
 }
 
@@ -101,9 +140,10 @@
         </div>
 
         <div class="grid_3 prefix_1">
-            <button id="btnRefesh" class="t-button" onclick=" return RefreshGrid('gridPO'); ">
+            <button id="btnRefesh" class="t-button" onclick=" return RefreshGrid2('gridPO'); ">
                 <span class='t-icon t-insert'></span>
                 Làm mới
+                <span class="twoToneButton"></span>
             </button>
         </div>
     </fieldset>
@@ -316,7 +356,9 @@
             .Sortable()
             .Filterable()
             .ClientEvents(events => events.OnDataBinding("grid_OnDataBinding")
-                                          .OnError("grid_OnError"))
+                                          .OnError("grid_OnError")
+                                          .OnDataBound("OnLoadedData")
+                                          )
             .Render();
     }
 </div>

@@ -7,7 +7,7 @@
 }
 @section Scripts{
     <script type="text/javascript">
-       
+        starGrid = false;
         function GridInventory_OnDataBinding(e) {
             var toolId = $("#ToolCode").data('tComboBox').value();
             if (toolId == "")
@@ -25,8 +25,40 @@
             });
         }
         function RefreshGrids() {
-            RefreshGrid("gridInventory");
-            //RefreshGrid("");
+            if (!onload) {
+                OnLoadingData();
+                starGrid = true;
+                RefreshGrid("gridInventory");
+                //RefreshGrid("");
+            }
+        }
+        function grid_OnDataBound() {
+            OnLoadedData();
+        }
+        var onLoading = false;
+        function OnLoadingData() {
+            if (!onLoading) {
+                onLoading = true;
+                var loadings = document.querySelectorAll('.twoToneButton');
+                for (var i = 0; i < loadings.length; i++) {
+                    var loading = loadings[i];
+                    loading.innerHTML = "<span class='t-icon t-refresh t-loading'></span> (Chờ load)";
+                    loading.classList.add('loading');
+                }
+            }
+        }
+        function OnLoadedData() {
+            if (onLoading) {
+                var loadings = document.querySelectorAll('.twoToneButton');
+                for (var i = 0; i < loadings.length; i++) {
+                    var loading = loadings[i];
+                    if (loading && loading.className.includes("loading")) {
+                        loading.classList.remove('loading');
+                        loading.innerHTML = "<span></span>";
+                    }
+                }
+                onLoading = false;
+            }
         }
     </script>
 }
@@ -48,7 +80,7 @@
                     .DataBinding(binding => binding.Ajax().Select("SelectComboBoxTool", "Material", new { area = "" }).Delay(350))
                     .HtmlAttributes(new { style = "width: 230px" })
                     .DropDownHtmlAttributes(new { style = "width: 300px" })
-                    .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                    .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                     .HighlightFirstMatch(true)
                     .AutoFill(true)
                     .Render();
@@ -59,6 +91,7 @@
         <button id="btnRefesh" class="t-button" onclick=" return RefreshGrids(); ">
             <span class='t-icon t-insert'></span>
             Tìm
+             <span class="twoToneButton"></span>
         </button>
     </div>
 
@@ -83,7 +116,8 @@
                                 .HtmlAttributes(new { style = "text-align:right" });
                         })
                     .ClientEvents(events => events.OnDataBinding("GridInventory_OnDataBinding")
-                                                  .OnError("grid_OnError"))
+                                                  .OnError("grid_OnError")
+                                                  .OnDataBound("grid_OnDataBound"))
                     //.HtmlAttributes(new {style = "width: 950px;"})
                     //.Resizable(resizing => resizing.Columns(true))
                     .Footer(false)
