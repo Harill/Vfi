@@ -91,33 +91,36 @@
             return false;
         }
         function printPlatingPriceReport() {
+            if (!onLoading) {
+                OnLoadingData();
+                var vendorCodeName = $('#VendorCodeName').data('tDropDownList').value();
+                if (vendorCodeName === "") vendorCodeName = 0;
+                if (vendorCodeName == 0) return false;
 
-            var vendorCodeName = $('#VendorCodeName').data('tDropDownList').value();
-            if (vendorCodeName === "") vendorCodeName = 0;
-            if (vendorCodeName == 0) return false;
+                //var month = $('#Month').val();
+                //var year = $('#Year').data('tAutoComplete').text();
 
-            //var month = $('#Month').val();
-            //var year = $('#Year').data('tAutoComplete').text();
-
-            var fromDate = $("#fromDate").data("tDatePicker").value();
-            if (fromDate === null)
-                fromDate = "";
-            else
-                fromDate = $.telerik.formatString('{0:dd/MM/yyyy}', fromDate);
-            var toDate = $("#toDate").data("tDatePicker").value();
-            if (toDate === null)
-                toDate = "";
-            else
-                toDate = $.telerik.formatString('{0:dd/MM/yyyy}', toDate);
-            $('#result').load('@Url.Action("PrintPlatingPriceReport", "PurchaseOrder", new { area = "Purchasing" })',
-               {
-                   vendorId: vendorCodeName,
-                   fromDate: fromDate,
-                   toDate: toDate
-               }, function () {
-                   var window = $('#windowReport').data('tWindow');
-                   window.open();
-               });
+                var fromDate = $("#fromDate").data("tDatePicker").value();
+                if (fromDate === null)
+                    fromDate = "";
+                else
+                    fromDate = $.telerik.formatString('{0:dd/MM/yyyy}', fromDate);
+                var toDate = $("#toDate").data("tDatePicker").value();
+                if (toDate === null)
+                    toDate = "";
+                else
+                    toDate = $.telerik.formatString('{0:dd/MM/yyyy}', toDate);
+                $('#result').load('@Url.Action("PrintPlatingPriceReport", "PurchaseOrder", new { area = "Purchasing" })',
+                   {
+                       vendorId: vendorCodeName,
+                       fromDate: fromDate,
+                       toDate: toDate
+                   }, function () {
+                       OnLoadedData();
+                       var window = $('#windowReport').data('tWindow');
+                       window.open();
+                   });
+            }
             return false;
         }
         function gridDetail_OnRowDataBound(e) {
@@ -140,6 +143,44 @@
             e.data = $.extend(e.data, {
                 productId: productId
             });
+        }
+        // loading button
+        function grid_OnDataBound() {
+            OnLoadedData();
+        }
+
+        var onLoading = false;
+        function OnLoadingData() {
+            if (!onLoading) {
+                onLoading = true;
+                var loadings = document.querySelectorAll('.twoToneButton');
+                for (var i = 0; i < loadings.length; i++) {
+                    var loading = loadings[i];
+                    loading.innerHTML = "<span class='t-icon t-refresh t-loading'></span> (Chờ load)";
+                    loading.classList.add('loading');
+                }
+            }
+        }
+        function OnLoadedData() {
+            if (onLoading) {
+                var loadings = document.querySelectorAll('.twoToneButton');
+                for (var i = 0; i < loadings.length; i++) {
+                    var loading = loadings[i];
+                    if (loading && loading.className.includes("loading")) {
+                        loading.classList.remove('loading');
+                        loading.innerHTML = "<span></span>";
+                    }
+                }
+                onLoading = false;
+            }
+        }
+        var startGrid = false;
+        function RefreshGrid2(name) {
+            if (!onLoading) {
+                OnLoadingData();
+                startGrid = true;
+                RefreshGrid('gridPlating');
+            }
         }
     </script>
 }
@@ -164,7 +205,7 @@
                         //.DataBinding(binding => binding.Ajax().Select("SelectStatus", "Orders"))
                         .HtmlAttributes(new { style = "width: 150px" })
                         .DropDownHtmlAttributes(new { style = "width: 250px" })
-                        .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                        .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                         .HighlightFirstMatch(true)
                         .AutoFill(true)
                         .ClientEvents(events => events.OnChange("status_onChange").OnLoad("status_onload"))
@@ -193,9 +234,10 @@
           
 
             <div class="grid_3">
-                <button id="btnRefesh" class="t-button" onclick=" return RefreshGrid('gridPlating'); ">
+                <button id="btnRefesh" class="t-button" onclick=" return RefreshGrid2('gridPlating'); ">
                     <span class='t-icon t-insert'></span>
                     Làm mới
+                    <span class="twoToneButton"></span>
                 </button>
             </div>
             
@@ -213,6 +255,7 @@
                 <button id="btnPlatingPriceReport" class="t-button" onclick=" return printPlatingPriceReport(); ">
                     <span class='t-icon t-insert'></span>
                     Xuất báo cáo
+                    <span class="twoToneButton"></span>
                 </button>
             </div>
         </fieldset>
@@ -434,7 +477,7 @@
                                     )
                                     .Columns(columns =>
                                     {
-                                        columns.Command(command => command.Edit().ButtonType(GridButtonType.Image))
+                                        columns.Command(command => command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image))
                                             .Width(50)
                                             .Title("");
                                         columns.Bound(f => f.ProductCode).Width(120).Title("Mã SP").ReadOnly(true);
@@ -464,9 +507,10 @@
                 .Filterable()
                 .Selectable()
                 .ClientEvents(events => events.OnError("grid_OnError")
-                    .OnDataBinding("grid_onDataBinding")
-                    .OnRowDataBound("grid_OnRowDataBound")
-                    .OnRowSelect("grid_OnRowSelect"))
+                                              .OnDataBinding("grid_onDataBinding")
+                                              .OnRowDataBound("grid_OnRowDataBound")
+                                              .OnRowSelect("grid_OnRowSelect")
+                                              .OnDataBound("OnLoadedData"))
                 .Scrollable(f => f.Height(510))
                 .Render();
         }

@@ -4976,6 +4976,12 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                                                x.ImportDate.Month == reportDate.Month &&
                                                x.ImportDate.Year == reportDate.Year
                                          select x.MaterialUseDate).FirstOrDefault();
+
+
+
+
+
+
                     //var productionSections = (from ps in vfi.ProductionSections
                     //                          where ps.Active &&
                     //                         productIds.Contains(ps.ProductId)

@@ -8,8 +8,41 @@
 <script type="text/javascript">
     var startGrid = false;
     function RefreshGrid2(name) {
-        startGrid = true;
-        RefreshGrid(name);
+        if (!onLoading) {
+            OnLoadingData();
+            startGrid = true;
+            RefreshGrid(name);
+        }
+    }
+
+    function grid_OnDataBound() {
+        OnLoadedData();
+    }
+
+    var onLoading = false;
+    function OnLoadingData() {
+        if (!onLoading) {
+            onLoading = true;
+            var loadings = document.querySelectorAll('.twoToneButton');
+            for (var i = 0; i < loadings.length; i++) {
+                var loading = loadings[i];
+                loading.innerHTML = "<span class='t-icon t-refresh t-loading'></span> (Chờ load)";
+                loading.classList.add('loading');
+            }
+        }
+    }
+    function OnLoadedData() {
+        if (onLoading) {
+            var loadings = document.querySelectorAll('.twoToneButton');
+            for (var i = 0; i < loadings.length; i++) {
+                var loading = loadings[i];
+                if (loading && loading.className.includes("loading")) {
+                    loading.classList.remove('loading');
+                    loading.innerHTML = "<span></span>";
+                }
+            }
+            onLoading = false;
+        }
     }
     function grid_OnDataBinding(args) {
         if (startGrid) {
@@ -71,7 +104,7 @@
                     .HtmlAttributes(new { style = "width: 190px" })
                     .DropDownHtmlAttributes(new { style = "width: 275px;" })
                     .AutoFill(true)
-                    .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                    .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                     .Render();
             }
         </div>
@@ -123,6 +156,7 @@
         <button id="btnRefresh" class='t-button' onclick=" return RefreshGrid2('gridForecast'); ">
             <span class='t-icon t-refresh'></span>
             Làm mới
+            <span class="twoToneButton"></span>
         </button>
     </fieldset>
 </div>
@@ -470,11 +504,12 @@
 
                     }).ToHtmlString()))
             .Selectable()
-            .Editable(editing => editing.Mode(GridEditMode.InLine))
+            .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
             .ClientEvents(e => e.OnError("grid_OnError")
-                .OnRowSelect("grid_OnRowSelect")
-                .OnRowDataBound("grid_OnRowDataBound")
-                .OnDataBinding("grid_OnDataBinding")
+                                .OnRowSelect("grid_OnRowSelect")
+                                .OnRowDataBound("grid_OnRowDataBound")
+                                .OnDataBinding("grid_OnDataBinding")
+                                .OnDataBound("OnLoadedData")
             //.OnSave("grid_OnSave")
             )
             .Scrollable(f => f.Height(500))

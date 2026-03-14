@@ -218,6 +218,7 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers.Production {
 
                 using (var vfi = new tammaContext()) {
                     vfi.Configuration.LazyLoadingEnabled = false;
+
                     var products = (from p in vfi.Products
                                     where (!active || p.Active == active)
                                         //&& (status == 0 || p.Status == status)

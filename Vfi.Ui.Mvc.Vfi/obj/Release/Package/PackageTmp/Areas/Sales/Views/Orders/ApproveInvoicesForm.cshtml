@@ -61,6 +61,46 @@
 
         }
 
+        var startGrid = false;
+        function RefreshGrid2(name) {
+            if (!onLoading) {
+                OnLoadingData();
+                startGrid = true;
+                RefreshGrid(name);
+            }
+        }
+
+        function grid_OnDataBound() {
+            OnLoadedData();
+        }
+
+        var onLoading = false;
+        function OnLoadingData() {
+            if (!onLoading) {
+                onLoading = true;
+                var loadings = document.querySelectorAll('.twoToneButton');
+                for (var i = 0; i < loadings.length; i++) {
+                    var loading = loadings[i];
+                    loading.innerHTML = "<span class='t-icon t-refresh t-loading'></span> (Chờ load)";
+                    loading.classList.add('loading');
+                }
+            }
+        }
+        function OnLoadedData() {
+            if (onLoading) {
+                var loadings = document.querySelectorAll('.twoToneButton');
+                for (var i = 0; i < loadings.length; i++) {
+                    var loading = loadings[i];
+                    if (loading && loading.className.includes("loading")) {
+                        loading.classList.remove('loading');
+                        loading.innerHTML = "<span></span>";
+                    }
+                }
+                onLoading = false;
+            }
+        }
+
+
         function Grid_OnSave(e) {
             var value = e.values;
             var taxInvoice = value.TaxInvoice;
@@ -182,9 +222,10 @@
                 .Render();
         }
     </div>
-    <button id="btnRefresh" class='t-button' onclick=" return RefreshGrid('gridInvoice'); ">
+    <button id="btnRefresh" class='t-button' onclick=" return RefreshGrid2('gridInvoice'); ">
         <span class='t-icon t-insert'></span>
         Làm mới
+        <span class="twoToneButton"></span>
     </button>
 </div>
 <div class="cover-div">
@@ -204,7 +245,7 @@
             .Columns(columns =>
                 {
                     columns.Command(command =>
-                                    command.Edit().ButtonType(GridButtonType.Image)
+                                    command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
                         ).Width(40).Title("").HtmlAttributes(new {style = "text-align:center"});
 
                     //columns.Bound(f => f.OrderNumber).Width(85).ReadOnly(true)
@@ -242,7 +283,7 @@
                     columns.Bound(f => f.ExportId).Title("Packing List").Width(45).ReadOnly(true)
                            .ClientTemplate("<input type='button' id='id_<#= InvoiceId #>' value='In' class='t-button' min-width='20px' onclick=PrintInvoiceExportForm(<#= InvoiceId #>) />")
                            .HtmlAttributes(new { style = "text-align:left" });
-                    columns.Command(command => command.Delete().ButtonType(GridButtonType.Image))
+                    columns.Command(command => command.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image))
                            .Width(50).Title("Hủy").HtmlAttributes(new {style = "text-align:center;color:red"});
                     columns.Bound(f => f.EmployeeSale).Title("NV Bán").Width(50).ReadOnly(true);
 
@@ -294,7 +335,7 @@
                                    .ClientGroupFooterTemplate("<div style='text-align: right; width: 100%;'><#= $.telerik.formatString('{0:n}', Sum) #></div>")
                                    .ClientFooterTemplate("<div style='text-align: right; width: 100%;'><#= $.telerik.formatString('{0:n}', Sum) #></div>");
                             columns.Bound(f => f.Note).Width(100).Title("Ghi chú");
-                            columns.Command(command => command.Delete().ButtonType(GridButtonType.Image))
+                            columns.Command(command => command.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image))
                                    .Width(50).Title("Hủy phân ĐH").HtmlAttributes(new {style = "text-align:center;color:red"});
                         })
                     .DetailView(details2 => details2.ClientTemplate(
@@ -339,13 +380,15 @@
             //.ToHtmlString())
             )
             .Selectable()
-            .Editable(editing => editing.Mode(GridEditMode.InLine))
+            .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
             .ClientEvents(events => events.OnEdit("gridProduct_onEdit")
                                           .OnRowSelect("grid_OnRowSelect")
                                           .OnSave("Grid_OnSave")
                                           .OnDataBinding("Grid_OnDataBinding")
                                           .OnDelete("Grid_OnDelete")
-                                          .OnError("grid_OnError"))
+                                          .OnError("grid_OnError")
+                                          .OnDataBound("OnLoadedData")
+                                          )
             .Scrollable(f => f.Height(710))
             //.HtmlAttributes(new {style = "width: 950px;"})
             .Sortable()

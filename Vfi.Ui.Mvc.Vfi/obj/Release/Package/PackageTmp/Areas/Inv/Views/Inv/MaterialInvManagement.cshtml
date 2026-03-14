@@ -53,7 +53,31 @@
                         runEffectShow("#pnlMaterialPeriod", "drop");
                     }, 1200);
                 }
-            });
+            });        var onLoading = false;
+            function OnLoadingData() {
+                if (!onLoading) {
+                    onLoading = true;
+                    var loadings = document.querySelectorAll('.twoToneButton');
+                    for (var i = 0; i < loadings.length; i++) {
+                        var loading = loadings[i];
+                        loading.innerHTML = "<span class='t-icon t-refresh t-loading'></span> (Chờ load)";
+                        loading.classList.add('loading');
+                    }
+                }
+            }
+            function OnLoadedData() {
+                if (onLoading) {
+                    var loadings = document.querySelectorAll('.twoToneButton');
+                    for (var i = 0; i < loadings.length; i++) {
+                        var loading = loadings[i];
+                        if (loading && loading.className.includes("loading")) {
+                            loading.classList.remove('loading');
+                            loading.innerHTML = "<span></span>";
+                        }
+                    }
+                    onLoading = false;
+                }
+            };
 
 
             // warehouse checked
@@ -69,6 +93,31 @@
                 RefreshGrid("gridMaterialInventoryForPeriod");
             });
         });
+        var onLoading = false;
+        function OnLoadingData() {
+            if (!onLoading) {
+                onLoading = true;
+                var loadings = document.querySelectorAll('.twoToneButton');
+                for (var i = 0; i < loadings.length; i++) {
+                    var loading = loadings[i];
+                    loading.innerHTML = "<span class='t-icon t-refresh t-loading'></span> (Chờ load)";
+                    loading.classList.add('loading');
+                }
+            }
+        }
+        function OnLoadedData() {
+            if (onLoading) {
+                var loadings = document.querySelectorAll('.twoToneButton');
+                for (var i = 0; i < loadings.length; i++) {
+                    var loading = loadings[i];
+                    if (loading && loading.className.includes("loading")) {
+                        loading.classList.remove('loading');
+                        loading.innerHTML = "<span></span>";
+                    }
+                }
+                onLoading = false;
+            }
+        };
     </script>
 
     <!-- binding -->
@@ -240,70 +289,74 @@
     <!-- report -->
     <script type="text/javascript">
         function printMaterialInvManagementForPeriod() {
-            var materialTypeForPeriodId = $("#MaterialTypeNameForPeriod").data('tDropDownList').value();
-            var materialNameForPeriod = $("#MaterialCodeNameForPeriod").data("tAutoComplete").value();
+            if (!onLoading) {
+                OnLoadingData();
+                var materialTypeForPeriodId = $("#MaterialTypeNameForPeriod").data('tDropDownList').value();
+                var materialNameForPeriod = $("#MaterialCodeNameForPeriod").data("tAutoComplete").value();
 
-            //var warehouseIssue = $("#WarehouseIssueName").data('tDropDownList').value();
-            var warehouseReceiptForPeriod = $("#WarehouseReceiptNameForPeriod").data('tDropDownList').value();
+                //var warehouseIssue = $("#WarehouseIssueName").data('tDropDownList').value();
+                var warehouseReceiptForPeriod = $("#WarehouseReceiptNameForPeriod").data('tDropDownList').value();
 
-            var chkAllWarehouseForPeriod = $("input[name='chkAllWarehouseForPeriod']").is(":checked");
-            if (chkAllWarehouseForPeriod == true)
-                warehouseReceiptForPeriod = 0;
+                var chkAllWarehouseForPeriod = $("input[name='chkAllWarehouseForPeriod']").is(":checked");
+                if (chkAllWarehouseForPeriod == true)
+                    warehouseReceiptForPeriod = 0;
 
-            var fromDate = $("#fromDateReported").data("tDatePicker").value();
-            if (fromDate === null)
-                fromDate = "";
-            else {
-                fromDate = $.telerik.formatString('{0:dd/MM/yyyy}', fromDate);
-            }
-            var toDate = $("#toDateReported").data("tDatePicker").value();
-            if (toDate === null)
-                toDate = "";
-            else {
-                toDate = $.telerik.formatString('{0:dd/MM/yyyy}', toDate);
-            }
+                var fromDate = $("#fromDateReported").data("tDatePicker").value();
+                if (fromDate === null)
+                    fromDate = "";
+                else {
+                    fromDate = $.telerik.formatString('{0:dd/MM/yyyy}', fromDate);
+                }
+                var toDate = $("#toDateReported").data("tDatePicker").value();
+                if (toDate === null)
+                    toDate = "";
+                else {
+                    toDate = $.telerik.formatString('{0:dd/MM/yyyy}', toDate);
+                }
 
-            //        if (materialTypeForPeriodId == 0)
-            //            args.preventDefault();
-            //        else {
-            //            args.data = $.extend(args.data, {
-            //                materialTypeId: materialTypeForPeriodId,
-            //                //warehouseIssue: warehouseIssue,
-            //                //warehouseReceipt: warehouseReceipt,
-            //                warehouseId: warehouseReceiptForPeriod,
-            //                eoi: "@Convert.ToChar(MyUtilities.Transaction.EoIEnum.Import)",
-            //                materialName: materialNameForPeriod,
-            //                fromDate: fromDate, //$.telerik.formatString('{0:dd/MM/yyyy}', fromDate),
-            //                toDate: toDate//$.telerik.formatString('{0:dd/MM/yyyy}', toDate )
-            //            });
-
-
-            //        }
-
-            if (materialTypeForPeriodId.length == 0) {
-                alert("Vui Lòng Loại Nguyên Liệu");
-                return false;
-            }
-            //        if (materialNameForPeriod.length == 0) {
-            //            alert("Vui Lòng Chọn Nguyên Liệu");
-            //            return false;
-            //        }
+                //        if (materialTypeForPeriodId == 0)
+                //            args.preventDefault();
+                //        else {
+                //            args.data = $.extend(args.data, {
+                //                materialTypeId: materialTypeForPeriodId,
+                //                //warehouseIssue: warehouseIssue,
+                //                //warehouseReceipt: warehouseReceipt,
+                //                warehouseId: warehouseReceiptForPeriod,
+                //                eoi: "@Convert.ToChar(MyUtilities.Transaction.EoIEnum.Import)",
+                //                materialName: materialNameForPeriod,
+                //                fromDate: fromDate, //$.telerik.formatString('{0:dd/MM/yyyy}', fromDate),
+                //                toDate: toDate//$.telerik.formatString('{0:dd/MM/yyyy}', toDate )
+                //            });
 
 
-            $('#result').load('@Url.Action("PrintMaterialInvManagementForPeriod", "Inv")',
-                {
-                    materialTypeId: materialTypeForPeriodId,
-                    warehouseId: warehouseReceiptForPeriod,
-                    eoi: "@Convert.ToChar(MyUtilities.Transaction.EoIEnum.Import)",
-                    materialName: materialNameForPeriod,
-                    fromDate: fromDate, //$.telerik.formatString('{0:dd/MM/yyyy}', fromDate),
-                    toDate: toDate//$.telerik.formatString('{0:dd/MM/yyyy}', toDate )
-                }, function(data) {
-                    var window = $('#windowReportMaterialInvManagementForPeriod').data('tWindow');
-                    window.open();
+                //        }
 
-                    //$("t-window-content t-content").css("height","100%;");
-                });
+                if (materialTypeForPeriodId.length == 0) {
+                    alert("Vui Lòng Loại Nguyên Liệu");
+                    return false;
+                }
+                //        if (materialNameForPeriod.length == 0) {
+                //            alert("Vui Lòng Chọn Nguyên Liệu");
+                //            return false;
+                //        }
+
+
+                $('#result').load('@Url.Action("PrintMaterialInvManagementForPeriod", "Inv")',
+                    {
+                        materialTypeId: materialTypeForPeriodId,
+                        warehouseId: warehouseReceiptForPeriod,
+                        eoi: "@Convert.ToChar(MyUtilities.Transaction.EoIEnum.Import)",
+                        materialName: materialNameForPeriod,
+                        fromDate: fromDate, //$.telerik.formatString('{0:dd/MM/yyyy}', fromDate),
+                        toDate: toDate//$.telerik.formatString('{0:dd/MM/yyyy}', toDate )
+                    }, function (data) {
+                        OnLoadedData();
+                        var window = $('#windowReportMaterialInvManagementForPeriod').data('tWindow');
+                        window.open();
+
+                        //$("t-window-content t-content").css("height","100%;");
+                    })
+            };
 
             return false;
         }
@@ -327,41 +380,51 @@
         }
 
         function printMaterialDailyPeriod() {
-            var materialType = $("#MaterialType").data("tComboBox").value();
-            if (materialType === "")
-                materialType = 0;
-            var materialCode = $("#MaterialCodeNameForPeriod").data("tAutoComplete").value();
-            var toDate = $("#toDateReported").data("tDatePicker").value();
-            if (toDate === null)
-                toDate = "";
-            else {
-                toDate = $.telerik.formatString('{0:dd/MM/yyyy}', toDate);
-                $('#result').load('@Url.Action("PrintMaterialDailyPeriod", "Inv")',
-                    {
-                        materialType: materialType,
-                        materialCode: materialCode,
-                        monthly: toDate
-                    }, function() {
-                        var window = $('#windowReportMaterialInvManagementForPeriod').data('tWindow');
-                        window.open();
+            if (!onLoading) {
+                OnLoadingData();
+                var materialType = $("#MaterialType").data("tComboBox").value();
+                if (materialType === "")
+                    materialType = 0;
+                var materialCode = $("#MaterialCodeNameForPeriod").data("tAutoComplete").value();
+                var toDate = $("#toDateReported").data("tDatePicker").value();
+                if (toDate === null)
+                    toDate = "";
+                else {
+                    toDate = $.telerik.formatString('{0:dd/MM/yyyy}', toDate);
+                    $('#result').load('@Url.Action("PrintMaterialDailyPeriod", "Inv")',
+                        {
+                            materialType: materialType,
+                            materialCode: materialCode,
+                            monthly: toDate
+                        }, function () {
+                            OnLoadedData();
+                            var window = $('#windowReportMaterialInvManagementForPeriod').data('tWindow');
+                            window.open();
 
-                        //$("t-window-content t-content").css("height","100%;");
-                    });
+                            //$("t-window-content t-content").css("height","100%;");
+                        });
+                }
             }
+            return false;
         }
 
         function printMaterialInvTotalInMonth() {
-            var month = $('#Month').data('tComboBox').value();
-            var year = $('#Year').data('tAutoComplete').text();
-            $('#result').load('@Url.Action("PrintMaterialInvTotalInMonth", "Reporting")',
-                {
-                    month: month,
-                    year: year
-                }, function() {
-                    var window = $('#windowReportMaterialInvTotal').data('tWindow');
-                    window.open();
-                });
+            if (!onLoading) {
+                OnLoadingData();
+                var month = $('#Month').data('tComboBox').value();
+                var year = $('#Year').data('tAutoComplete').text();
+                $('#result').load('@Url.Action("PrintMaterialInvTotalInMonth", "Reporting")',
+                    {
+                        month: month,
+                        year: year
+                    }, function () {
+                        OnLoadedData();
+                        var window = $('#windowReportMaterialInvTotal').data('tWindow');
+                        window.open();
+                    });
 
+            }
+            return false;
         }
 
 
@@ -460,6 +523,7 @@
                     <button id="btnMaterialInv" class="t-button" onclick=" return printMaterialInvTotalInMonth(); ">
                         <span class='t-icon t-insert'></span>
                         Xuất báo cáo tồn kho nguyên liệu
+                        <span class="twoToneButton"></span>
                     </button>
                 </div>
                 
@@ -694,7 +758,7 @@
                             .Encode(false)
                             .AutoFill(true)
                             .HighlightFirstMatch(true)
-                            .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                            .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                             //.ClientEvents(events => events.OnDataBinding("autoCompleteForPeriod_onDataBinding")
                             //                              .OnChange("autoCompleteForPeriod_onChange2")
                             //)
@@ -716,6 +780,7 @@
                     <button id="btnMaterialPeriod" class="t-button" onclick=" return printMaterialDailyPeriod(); ">
                         <span class='t-icon t-insert'></span>
                         Xuất báo cáo
+                        <span class="twoToneButton"></span>
                     </button>
                 </div>
 
@@ -870,7 +935,7 @@
                             .Encode(false)
                             .AutoFill(true)
                             .HighlightFirstMatch(true)
-                            .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                            .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                             .Render();
                     }
                 </div>
@@ -898,6 +963,7 @@
                     <button id="btnMaterialInvManagementForPeriod" class="t-button" onclick=" return printMaterialInvManagementForPeriod(); ">
                         <span class='t-icon t-insert'></span>
                         Xuất báo cáo
+                        <span class="twoToneButton"></span>
                     </button>
                 </div>
             </fieldset>

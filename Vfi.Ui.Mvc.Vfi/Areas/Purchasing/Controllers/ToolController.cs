@@ -3549,8 +3549,6 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                         )
                         .ToList();
                     var machineIds = machines.Select(m => m.MachineId).ToList();
-
-
                     // Step 2: Get latest approved TrackUpMachine per machine
                     var lastTracks = vfi.TrackUpMachines        //phieu len may
                         .Where(t => machineIds.Contains(t.MachineId)

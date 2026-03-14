@@ -11,7 +11,6 @@ namespace Vfi.Ui.Mvc.Vfi.Models
             this.RealProductions = new List<RealProduction>();
             this.TrackUpMaterials = new List<TrackUpMaterial>();
         }
-
         public int TrackId { get; set; }
         public Nullable<System.DateTime> DeliveryDate { get; set; }
         public int MachineId { get; set; }

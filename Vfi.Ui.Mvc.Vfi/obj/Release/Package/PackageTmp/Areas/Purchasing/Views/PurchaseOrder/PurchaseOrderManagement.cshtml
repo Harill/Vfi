@@ -267,7 +267,7 @@
 
     <fieldset>
         <legend>Tiêu chí trích lọc</legend>
-        <div class="grid_3">
+        <div class="grid_2">
                 Số yêu cầu 
         </div>
         <div class="grid_4">
@@ -290,7 +290,7 @@
                     //.DataBinding(binding => binding.Ajax().Select("SelectStatus", "Orders"))
                     .HtmlAttributes(new { style = "width: 150px" })
                     .DropDownHtmlAttributes(new { style = "width: 250px" })
-                    .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                    .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                     .HighlightFirstMatch(true)
                     .AutoFill(true)
                     .ClientEvents(events => events.OnChange("active_onChange").OnLoad("active_onload"))
@@ -298,7 +298,7 @@
             }
         </div>
 
-        <div class="grid_2">
+        <div class="grid_3">
             Tình trạng phiếu
         </div>
         <div class="grid_4">
@@ -308,7 +308,7 @@
                     //.DataBinding(binding => binding.Ajax().Select("SelectStatus", "Orders"))
                     .HtmlAttributes(new { style = "width: 150px" })
                     .DropDownHtmlAttributes(new { style = "width: 250px" })
-                    .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                    .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                     .HighlightFirstMatch(true)
                     .AutoFill(true)
                     .ClientEvents(events => events.OnChange("status_onChange").OnLoad("status_onload"))

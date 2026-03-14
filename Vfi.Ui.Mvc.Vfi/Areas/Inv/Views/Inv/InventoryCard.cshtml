@@ -258,7 +258,7 @@
                     .HtmlAttributes(new {style = "width: 200px"})
                     .DropDownHtmlAttributes(new {style = "width: 275px"})
                     .AutoFill(true)
-                    .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                    .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                     .Render();
             }
         </div>
@@ -379,7 +379,7 @@
                                                     .Width(80)
                                                     .Format("{0:dd/MM/yyyy HH:mm:ss}");
                                              })
-                                         .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                         .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                          .ClientEvents(e => e.OnError("grid_OnError"))
                                          .ToHtmlString());
                                     items.Add().Text("Bản vẽ kỹ thuật").Content(
@@ -402,7 +402,7 @@
                                         columns.Bound(f => f.ModifiedDate).Title("Ngày tạo").ReadOnly(true).Width(80)
                                                .Format("{0:dd/MM/yyyy HH:mm:ss}");
                                     })
-                                    .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                    .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                     .ClientEvents(e => e.OnError("grid_OnError"))
                                     .ToHtmlString());
                                     items.Add().Text("Công cụ thiết kế").Content(
@@ -457,7 +457,7 @@
                                                            .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=Active? checked='checked' : '' #> />")
                                                            .HtmlAttributes(new { style = "text-align:center" });
                                                 })
-                                            .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                            .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                             .ClientEvents(e => e.OnError("grid_OnError"))
                                             .ToHtmlString()
                                         );
@@ -495,7 +495,7 @@
                                                    .Format("{0:dd/MM/yyyy}");
                                             columns.Bound(f => f.ModifiedUser).Width(100).Title("Người cập nhật").ReadOnly(true);
                                         })
-                                        .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                        .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                         .ClientEvents(events => events.OnError("grid_OnError"))
                                         .ToHtmlString()
                                     );
@@ -533,7 +533,7 @@
                                                        .Format("{0:dd/MM/yyyy}");
                                                 columns.Bound(f => f.ModifiedUser).Width(100).Title("Người cập nhật").ReadOnly(true);
                                             })
-                                            .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                            .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                             .ClientEvents(events => events.OnError("grid_OnError"))
                                             .ToHtmlString()
                                         );
@@ -560,7 +560,7 @@
                                                            .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=Active? checked='checked' : '' #> />")
                                                            .HtmlAttributes(new { style = "text-align:center" });
                                                 })
-                                            .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                            .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                             .ClientEvents(e => e.OnError("grid_OnError"))
                                             .ToHtmlString()
                                         );
@@ -589,7 +589,7 @@
                                                     columns.Bound(f => f.ModifiedUser).Width(100).Title("Người cập nhật").ReadOnly(true);
 
                                                 })
-                                            .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                            .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                             .ClientEvents(events => events.OnError("grid_OnError"))
                                             .ToHtmlString()
                                         );
@@ -616,7 +616,7 @@
                                                            .ClientTemplate("<#= ModifiedDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', ModifiedDate) #>");
                                                     columns.Bound(f => f.ModifiedUser).Width(100).Title("Người cập nhật").ReadOnly(true);
                                                 })
-                                            .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                            .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                             .ClientEvents(e => e.OnError("grid_OnError"))
                                             .ToHtmlString()
                                         );
@@ -699,7 +699,7 @@
                                            .Format("{0:dd/MM/yyyy HH:mm:ss}");
                                     //columns.Command(commands => commands.Delete().ButtonType(GridButtonType.Image)).Width(30).Title("Xoá");
                                 })
-                                .Editable(editing => editing.Mode(GridEditMode.InLine))
+                                .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                 .ClientEvents(e => e.OnError("grid_OnError")
                                         //.OnRowDataBound("gridProductImg_OnRowDataBound")
                                     )

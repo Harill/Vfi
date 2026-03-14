@@ -210,7 +210,7 @@
                                                           .Update("UpdateTransactions", "Transaction")
             )
             .Columns(columns => {
-                columns.Command(c => c.Edit().ButtonType(GridButtonType.Image)).Width(50).Title("")
+                columns.Command(c => c.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(50).Title("")
                     .HtmlAttributes(new { style = "text-align:center" });
                 //columns.Bound(f => f.TransactionId).Title("Chọn").Width(50)
                 //          .ClientTemplate("<input type='radio' name='chkTransactionIds' value='<#= TransactionId #>' />")
