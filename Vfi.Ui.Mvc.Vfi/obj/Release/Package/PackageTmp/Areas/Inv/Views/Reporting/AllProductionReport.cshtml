@@ -7,11 +7,12 @@
 
 @section Scripts{
     <!-- grid Monthly -->
+
     <script type="text/javascript">
 
         function grid_OnDataBinding(args) {
-            if (startGrid && !onLoading) {
-                OnLoadingData(); gridTransaction
+            if (startGrid) {
+                OnLoadingData();
                 var productCodeNameForMonthly = $("#ProductCodeNameForMonthly").data("tAutoComplete").value();
 
                 var customerId = $("#CustomerForMonthly").data('tComboBox').value();
@@ -182,12 +183,37 @@
 
         var startGrid = false;
         function RefreshGrid2(name) {
-            if (!onLoading) {
                 OnLoadingData();
                 startGrid = true;
                 RefreshGrid(name);
+        }
+
+        var onLoading = false;
+        function OnLoadingData() {
+            if (!onLoading) {
+                onLoading = true;
+                var loadings = document.querySelectorAll('.loadButton');
+                for (var i = 0; i < loadings.length; i++) {
+                    var loading = loadings[i];
+                    loading.innerHTML = "<span class='t-icon t-refresh t-loading'></span> (Chờ load)";
+                    loading.classList.add('loading');
+                }
             }
         }
+        function OnLoadedData() {
+            if (onLoading) {
+                var loadings = document.querySelectorAll('.loadButton');
+                for (var i = 0; i < loadings.length; i++) {
+                    var loading = loadings[i];
+                    if (loading && loading.className.includes("loading")) {
+                        loading.classList.remove('loading');
+                        loading.innerHTML = "<span></span>";
+                    }
+                }
+                onLoading = false;
+            }
+        }
+        
     </script>
 }
 
@@ -546,8 +572,7 @@
                                .HtmlAttributes(new { style = "text-align: right;" });
 
                     })
-                .ClientEvents(events => events
-                                            .OnDataBound("grid_OnDataBound")
+                .ClientEvents(events => events.OnDataBound("grid_OnDataBound")
                                             .OnDataBinding("grid_OnDataBinding")
                                             .OnError("grid_OnError"))
                 .Scrollable(f => f.Height(510))

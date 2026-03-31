@@ -2224,21 +2224,19 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                                       (productId == 0 ||
                                           (sxd.ProductId == productId &&
                                           sxd.ImportFormSX1.ImportDate.Day == day &&
-                                        sxd.ImportFormSX1.ImportDate.Month == month &&
-                                        sxd.ImportFormSX1.ImportDate.Year == year)) &&
+                                          sxd.ImportFormSX1.ImportDate.Month == month &&
+                                          sxd.ImportFormSX1.ImportDate.Year == year)) &&
                                       (materialInvId == 0 ||
                                           (sxd.MaterialInvId == materialInvId &&
-                                          sxd.ImportFormSX1.MaterialUseDate.Day == day &&
+                                            sxd.ImportFormSX1.MaterialUseDate.Day == day &&
                                             sxd.ImportFormSX1.MaterialUseDate.Month == month &&
                                             sxd.ImportFormSX1.MaterialUseDate.Year == year)) &&
 
                                             sxd.ImportFormSX1.ImportWorkpieceMaterials.Any() &&
                                             sxd.ImportFormSX1.ImportWorkpieceMaterials.FirstOrDefault() != null &&
                                           //sxd.MachineId == 26 &&
-                                            sxd.ImportFormSX1.ImportWorkpieceMaterials.FirstOrDefault()
-                                               .Transaction.Status ==
-                                            (byte)MyUtilities.Transaction.Status.Approved
-                                      select sxd).ToList();
+                                            sxd.ImportFormSX1.ImportWorkpieceMaterials.FirstOrDefault().Transaction.Status == (byte)MyUtilities.Transaction.Status.Approved 
+                                        select sxd).ToList();
                     //var machines = vfi.Machines.Where(m => m.Active).OrderBy(m => m.MachineName);
                     if (!string.IsNullOrWhiteSpace(lotNumber) && !lotNumber.ToLower().Equals("all")) {
                         importSx1s = importSx1s.Where(id => id.LotNumber.Contains(lotNumber)).ToList();

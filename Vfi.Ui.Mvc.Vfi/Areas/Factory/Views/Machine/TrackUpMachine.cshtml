@@ -459,20 +459,18 @@
                 )
                 .Columns(columns => {
                     columns.Bound(f => f.TrackId).Title("CBCC").Width(45).ReadOnly(true)
-                       .ClientTemplate("<input type='button' id='id_<#= TrackId #>' value='In' class='t-button' onclick=PrintPreparationTools(<#= TrackId #>) />")
-                       .HtmlAttributes(new { style = "text-align:center" });
+                           .ClientTemplate("<input type='button' id='id_<#= TrackId #>' value='In' class='t-button' onclick=PrintPreparationTools(<#= TrackId #>) />")
+                           .HtmlAttributes(new { style = "text-align:center" });
                     columns.Command(command => command.Edit().ButtonType(GridButtonType.Image)).Width(45).Title("")
-                        .HtmlAttributes(new { style = "text-align:center" });
-
+                           .HtmlAttributes(new { style = "text-align:center" });
                     columns.Bound(f => f.StartDate).Width(90).Title("Ngày làm")
-                        .ClientTemplate("<#= StartDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', StartDate) #>");
+                           .ClientTemplate("<#= StartDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', StartDate) #>");
                     columns.Bound(f => f.ForecastDay).Width(65).HeaderTemplate("Dự kiến<br/>ngày")
-                        .ClientTemplate("<#= ForecastDay == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', ForecastDay) #>");
+                           .ClientTemplate("<#= ForecastDay == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', ForecastDay) #>");
                     columns.Bound(f => f.DeliveryDate).Width(90).Title("Ngày giao")
-                        .ClientTemplate("<#= DeliveryDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', DeliveryDate) #>");
+                           .ClientTemplate("<#= DeliveryDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', DeliveryDate) #>");
                     columns.Bound(f => f.MachineName).Width(100).Title("Máy")
-                        .HtmlAttributes(new {style = "font-weight:bold"});
-
+                           .HtmlAttributes(new { style = "font-weight:bold" });
                     //columns.Bound(f => f.DrawingImg).Width(50).Title("").ReadOnly(true)
                     //       .ClientTemplate("<a id='<#=TrackId#>' href='" + Url.Content("~/Content/FileUpload/Drawing/") + "<#=DrawingImg#>?<#=UploadDate#>' class='highslide' onclick='return hs.expand(this)'>" +
                     //                       "<img src='" + Url.Content("~/Content/FileUpload/Drawing/") + "<#=DrawingImg#>?<#=UploadDate#>' height='40' width='40' title='Mở lớn'/>" +
@@ -482,52 +480,50 @@
                     //                       "<img src='" + Url.Content("~/Content/FileUpload/Drawing/") + "<#=ProductImg#>?<#=UploadDate#>' height='40' width='40' title='Mở lớn'/>" +
                     //                       "</a><div class='highslide-caption'><#= ProductCode #></div>");
                     columns.Bound(f => f.ProductCode).Width(110).Title("Mã SP")
-                        .HtmlAttributes(new {style = "font-weight:bold"})
+                           .HtmlAttributes(new { style = "font-weight:bold" })
                         //.ClientTemplate("<strong><#= ProductCode #></strong>")
-                        ;
+                           ;
                     columns.Bound(f => f.MaterialCode).Width(150).Title("Nguyên liệu")
-                        .HtmlAttributes(new {style = "font-weight:bold"});
+                           .HtmlAttributes(new { style = "font-weight:bold" });
                     columns.Bound(f => f.Phase).Width(50)
-                        .HeaderTemplate("Công</br>đoạn")
-                        .HtmlAttributes(new {style = "text-align:center;"});
-
+                           .HeaderTemplate("Công</br>đoạn")
+                           .HtmlAttributes(new { style = "text-align:center;" });
                     columns.Bound(f => f.Quantity).Width(70)
-                        .HeaderTemplate("SL</br>chạy")
-                        .HtmlAttributes(new {style = "text-align:right;"})
-                        .Format("{0:n0}");
+                           .HeaderTemplate("SL</br>chạy")
+                           .HtmlAttributes(new { style = "text-align:right;" })
+                           .Format("{0:n0}");
                     columns.Bound(f => f.RoundPerMinute).Width(50).Title("RPM")
-                        .HtmlAttributes(new {style = "text-align:right;"})
-                        .Format("{0:n0}");
+                           .HtmlAttributes(new { style = "text-align:right;" })
+                           .Format("{0:n0}");
                     columns.Bound(f => f.RealProductivity).Width(50)
-                        .HeaderTemplate("Năng</br>Suất")
-                        .Format("{0:n1}")
-                        .HtmlAttributes(new {style = "text-align:right;"});
+                           .HeaderTemplate("Năng</br>Suất")
+                           .Format("{0:n1}")
+                           .HtmlAttributes(new { style = "text-align:right;" });
                     //columns.Bound(f => f.RealRate).Width(50)
                     //    .HeaderTemplate("Định</br>Mức")
                     //    .Format("{0:n0}")
                     //    .HtmlAttributes(new {style = "text-align:right;"});
                     columns.Bound(f => f.WorkPiece).Width(60).Title("Phoi dư")
-                        .HtmlAttributes(new {style = "text-align:right;"})
-                        .Format("{0:n0}");
+                           .HtmlAttributes(new { style = "text-align:right;" })
+                           .Format("{0:n0}");
                     columns.Bound(f => f.KnifeCut).Width(45)
-                        .HeaderTemplate("Dao</br>Cắt")
-                        .Format("{0:n2}");
+                           .HeaderTemplate("Dao</br>Cắt")
+                           .Format("{0:n2}");
                     columns.Bound(f => f.DeliveryEmployee).Width(65).Title("NV Giao")
-                        .HtmlAttributes(new {style = "text-align:center;"});
+                           .HtmlAttributes(new { style = "text-align:center;" });
                     columns.Bound(f => f.ReceiveEmployee).Width(65).Title("NV Nhận")
-                        .HtmlAttributes(new {style = "text-align:center;"});
+                           .HtmlAttributes(new { style = "text-align:center;" });
                     columns.Bound(f => f.Note).Width(100).Title("Ghi chú");
                     //columns.Bound(f => f.TrackId).Width(55).Title("In")
                     //   .ClientTemplate("<input type='button' id='<#= TrackId #>' value='In' class='t-button' style='min-width:50px' />")
                     //   .HtmlAttributes(new { style = "text-align:center" });
                     columns.Bound(f => f.ForecastDate).Width(90).Title("Ngày dự kiến").ReadOnly(true)
-                        .Format("{0:dd/MM/yyyy}");
+                           .Format("{0:dd/MM/yyyy}");
                     columns.Bound(f => f.EndDate).Width(90).Title("Ngày hoàn thành").ReadOnly(true)
-                        .Format("{0:dd/MM/yyyy}");
-
+                           .Format("{0:dd/MM/yyyy}");
                     columns.Bound(f => f.ModifiedUser).Width(100).Title("Người làm").ReadOnly(true);
                     columns.Bound(f => f.ModifiedDate).Width(100).Title("Ngày làm").ReadOnly(true)
-                        .Format("{0:dd/MM/yyyy HH:mm}");
+                           .Format("{0:dd/MM/yyyy HH:mm}");
                     columns.Command(c => c.Delete().ButtonType(GridButtonType.Image)).Width(35);
                 })
 
@@ -537,7 +533,6 @@
                     .Name("TabStrip_<#= TrackId #>")
                     .SelectedIndex(0)
                     .Items(items =>
-
                     {
                         items.Add().Text("Quy trình kho").Content(
                          Html.Telerik().Grid<ProductionProcessByMachineModel>()
@@ -554,21 +549,20 @@
                         .Columns(columns =>
                         {
                             columns.Command(command => command.Edit().ButtonType(GridButtonType.Image)).Width(40).Title("")
-                                .HtmlAttributes(new {style = "text-align:center"});
-
+                                   .HtmlAttributes(new { style = "text-align:center" });
                             columns.Bound(f => f.WarehouseName).Width(200).Title("Kho")
                                     .ClientTemplate("<strong><#= WarehouseName #></strong>");
                             columns.Bound(f => f.UnitWeight).Width(100).Title("Trọng lượng")
-                                .Format("{0:n3}")
-                                .HtmlAttributes(new { style = "text-align: right;" });
+                                   .Format("{0:n3}")
+                                   .HtmlAttributes(new { style = "text-align: right;" });
                             columns.Bound(f => f.ProcessIndex).Width(65).Title("Vị trí");
                             columns.Bound(f => f.Note).Title("Ghi Chú");
                             columns.Bound(f => f.Active).Width(75).Title("SX1")
-                                .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=Active? checked='checked' : '' #> />")
-                                .HtmlAttributes(new { style = "text-align:center" });
+                                   .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=Active? checked='checked' : '' #> />")
+                                   .HtmlAttributes(new { style = "text-align:center" });
                             columns.Bound(f => f.ModifiedUser).Width(100).Title("Người làm").ReadOnly(true);
                             columns.Bound(f => f.ModifiedDate).Width(100).Title("Ngày làm").ReadOnly(true)
-                                .Format("{0:dd/MM/yyyy HH:mm}");
+                                   .Format("{0:dd/MM/yyyy HH:mm}");
                         })
                                 .ClientEvents(events => events.OnError("grid_OnError")
                                                               .OnEdit("gridProductionProcessByMachine_OnEdit"))
@@ -585,21 +579,21 @@
                         {
                             columns.Bound(f => f.MaterialInvCode).Width(200).Title("Lô nguyên liệu");
                             columns.Bound(f => f.MaterialInv).Width(65).Title("Tồn Kho").ReadOnly(true)
-                                .Format("{0:n2}")
-                                .HtmlAttributes(new {style = "text-align: right;"});
+                                   .Format("{0:n2}")
+                                   .HtmlAttributes(new { style = "text-align: right;" });
                             columns.Bound(f => f.MaterialInvOnMachine).Width(65).Title("Tồn Máy").ReadOnly(true)
-                                .Format("{0:n2}")
-                                .HtmlAttributes(new {style = "text-align: right;"});
+                                   .Format("{0:n2}")
+                                   .HtmlAttributes(new { style = "text-align: right;" });
                             columns.Bound(f => f.ProductRate).Width(65).Title("Định mức theo NL").ReadOnly(true)
-                                .Format("{0:n0}")
-                                .HtmlAttributes(new {style = "text-align: right;"});
+                                   .Format("{0:n0}")
+                                   .HtmlAttributes(new { style = "text-align: right;" });
                             columns.Bound(f => f.MaxAssign).Width(75).Title("Phát tối đa").ReadOnly(true)
-                                .Format("{0:n0}")
-                                .HtmlAttributes(new {style = "text-align: right;"});
+                                   .Format("{0:n0}")
+                                   .HtmlAttributes(new { style = "text-align: right;" });
                             columns.Bound(f => f.Note).Width(65).Title("Ghi Chú");
                             columns.Bound(f => f.ModifiedUser).Width(65).Title("Người làm").ReadOnly(true);
                             columns.Bound(f => f.ModifiedDate).Width(65).Title("Ngày làm").ReadOnly(true)
-                                .Format("{0:dd/MM/yyyy HH:mm}");
+                                   .Format("{0:dd/MM/yyyy HH:mm}");
                         })
                                 .ClientEvents(events => events.OnError("grid_OnError"))
                                 .ToHtmlString());
@@ -679,9 +673,9 @@
                                                .HeaderTemplate("Công cụ thiết kế");
 
                                         columns.Bound(f => f.ReplaceImg).Width(50).Title("Hình").ReadOnly(true)
-                                            .ClientTemplate("<a id='<#=ReplaceId#>' href='" + Url.Content("~/Content/FileUpload/ToolImg/") + "<#=ReplaceImg#>?<#=UploadDate#>' class='highslide' onclick='return hs.expand(this)'>" +
-                                                            "<img src='" + Url.Content("~/Content/FileUpload/ToolImg/") + "<#=ReplaceImg#>?<#=UploadDate#>' height='40' width='40' title='Mở lớn'/>" +
-                                                            "</a><div class='highslide-caption'><#= ReplaceToolFullCode #></div>");
+                                               .ClientTemplate("<a id='<#=ReplaceId#>' href='" + Url.Content("~/Content/FileUpload/ToolImg/") + "<#=ReplaceImg#>?<#=UploadDate#>' class='highslide' onclick='return hs.expand(this)'>" +
+                                                               "<img src='" + Url.Content("~/Content/FileUpload/ToolImg/") + "<#=ReplaceImg#>?<#=UploadDate#>' height='40' width='40' title='Mở lớn'/>" +
+                                                               "</a><div class='highslide-caption'><#= ReplaceToolFullCode #></div>");
                                         columns.Bound(f => f.ReplaceToolFullCode).Width(250)
                                                .HeaderTemplate("Công cụ thay thế");
                                         columns.Bound(f => f.TotalInv).Width(100).ReadOnly(true)
@@ -714,13 +708,14 @@
                 .Filterable()
                 .Resizable(resizing => resizing.Columns(true))
                 .ClientEvents(e => e.OnDataBinding("grid_OnDataBinding")
-                    .OnSave("grid_OnSave")
-                    .OnDataBound("grid_OnDataBound")
-                    .OnRowDataBound("Grid_OnRowDataBound")
-                    .OnEdit("grid_OnEdit")
-                    .OnDelete("grid_OnDelete")
-                    .OnRowSelect("grid_OnRowSelect")
-                    .OnError("grid_OnError"))
+                                    .OnSave("grid_OnSave")
+                                    .OnDataBound("grid_OnDataBound")
+                                    .OnRowDataBound("Grid_OnRowDataBound")
+                                    .OnEdit("grid_OnEdit")
+                                    .OnDelete("grid_OnDelete")
+                                    //.OnRowSelect("grid_OnRowSelect")
+                                    //.OnError("grid_OnError")
+                                    )
                 .Render();
         }
     </div>

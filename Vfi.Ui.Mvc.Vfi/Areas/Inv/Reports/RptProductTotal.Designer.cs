@@ -146,6 +146,7 @@
             this.textBox104 = new Telerik.Reporting.TextBox();
             this.textBox107 = new Telerik.Reporting.TextBox();
             this.textBox109 = new Telerik.Reporting.TextBox();
+            this.textBox229 = new Telerik.Reporting.TextBox();
             this.panel43 = new Telerik.Reporting.Panel();
             this.textBox231 = new Telerik.Reporting.TextBox();
             this.textBox232 = new Telerik.Reporting.TextBox();
@@ -338,7 +339,6 @@
             this.textBox35 = new Telerik.Reporting.TextBox();
             this.textBox222 = new Telerik.Reporting.TextBox();
             this.textBox223 = new Telerik.Reporting.TextBox();
-            this.textBox229 = new Telerik.Reporting.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this)).BeginInit();
             // 
             // objectDataSource1
@@ -2163,6 +2163,26 @@
             this.textBox109.Style.TextAlign = Telerik.Reporting.Drawing.HorizontalAlign.Right;
             this.textBox109.StyleName = "Data";
             this.textBox109.Value = "=sum(ExportWeeklyPoint)";
+            // 
+            // textBox229
+            // 
+            this.textBox229.CanGrow = true;
+            this.textBox229.Docking = Telerik.Reporting.DockingStyle.Top;
+            this.textBox229.Format = "{0:N0}";
+            this.textBox229.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Cm(0D), Telerik.Reporting.Drawing.Unit.Cm(3.0481994152069092D));
+            this.textBox229.Name = "textBox229";
+            this.textBox229.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Pixel(55D), Telerik.Reporting.Drawing.Unit.Inch(0.20000000298023224D));
+            this.textBox229.Style.BorderStyle.Bottom = Telerik.Reporting.Drawing.BorderType.Solid;
+            this.textBox229.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
+            this.textBox229.Style.BorderStyle.Left = Telerik.Reporting.Drawing.BorderType.Solid;
+            this.textBox229.Style.BorderStyle.Right = Telerik.Reporting.Drawing.BorderType.Solid;
+            this.textBox229.Style.BorderStyle.Top = Telerik.Reporting.Drawing.BorderType.Solid;
+            this.textBox229.Style.Font.Name = "Times New Roman";
+            this.textBox229.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Pixel(10D);
+            this.textBox229.Style.Padding.Right = Telerik.Reporting.Drawing.Unit.Pixel(2D);
+            this.textBox229.Style.TextAlign = Telerik.Reporting.Drawing.HorizontalAlign.Right;
+            this.textBox229.StyleName = "Data";
+            this.textBox229.Value = "=sum(DefectPriceInWeek)";
             // 
             // panel43
             // 
@@ -5837,26 +5857,6 @@
             this.textBox223.Style.TextAlign = Telerik.Reporting.Drawing.HorizontalAlign.Right;
             this.textBox223.StyleName = "Data";
             this.textBox223.Value = "=ExportInternal";
-            // 
-            // textBox229
-            // 
-            this.textBox229.CanGrow = true;
-            this.textBox229.Docking = Telerik.Reporting.DockingStyle.Top;
-            this.textBox229.Format = "{0:N0}";
-            this.textBox229.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Cm(0D), Telerik.Reporting.Drawing.Unit.Cm(3.0481994152069092D));
-            this.textBox229.Name = "textBox229";
-            this.textBox229.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Pixel(55D), Telerik.Reporting.Drawing.Unit.Inch(0.20000000298023224D));
-            this.textBox229.Style.BorderStyle.Bottom = Telerik.Reporting.Drawing.BorderType.Solid;
-            this.textBox229.Style.BorderStyle.Default = Telerik.Reporting.Drawing.BorderType.Solid;
-            this.textBox229.Style.BorderStyle.Left = Telerik.Reporting.Drawing.BorderType.Solid;
-            this.textBox229.Style.BorderStyle.Right = Telerik.Reporting.Drawing.BorderType.Solid;
-            this.textBox229.Style.BorderStyle.Top = Telerik.Reporting.Drawing.BorderType.Solid;
-            this.textBox229.Style.Font.Name = "Times New Roman";
-            this.textBox229.Style.Font.Size = Telerik.Reporting.Drawing.Unit.Pixel(10D);
-            this.textBox229.Style.Padding.Right = Telerik.Reporting.Drawing.Unit.Pixel(2D);
-            this.textBox229.Style.TextAlign = Telerik.Reporting.Drawing.HorizontalAlign.Right;
-            this.textBox229.StyleName = "Data";
-            this.textBox229.Value = "=sum(DefectPriceInWeek)";
             // 
             // RptProductTotal
             // 

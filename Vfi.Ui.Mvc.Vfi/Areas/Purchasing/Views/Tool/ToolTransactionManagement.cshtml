@@ -227,6 +227,9 @@
                             .HtmlAttributes(new { style = "text-align:right;" })
                                .ClientTemplate("<#= TotalPrice == null ? 0 : $.telerik.formatString('{0:n0}', TotalPrice) #>");
                         columns.Bound(f => f.Department).Width(80).Title("BP đề xuất");
+
+                        columns.Bound(f => f.MachineName).Width(80).Title("Máy");
+                        
                         columns.Bound(f => f.ModifiedUser).Width(75).Title("Người lập");
                         columns.Bound(f => f.ModifiedDate).Width(80).Title("Ngày lập")
                                .ClientTemplate("<#= ModifiedDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy HH:mm:ss}', ModifiedDate) #>");

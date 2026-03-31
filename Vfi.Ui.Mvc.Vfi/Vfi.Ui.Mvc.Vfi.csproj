@@ -416,6 +416,7 @@
     <Compile Include="Areas\Factory\Controllers\WorkOrderController.cs" />
     <Compile Include="Areas\Factory\FactoryAreaRegistration.cs" />
     <Compile Include="Areas\Factory\Models\ActivateWorkOrderModel.cs" />
+    <Compile Include="Areas\Factory\Models\MachineHistoryModel.cs" />
     <Compile Include="Areas\Factory\Models\DefectReportModel.cs" />
     <Compile Include="Areas\Factory\Models\EditWorkOrderModel.cs" />
     <Compile Include="Areas\Factory\Models\MachineStateStatisticModel.cs" />
@@ -3094,6 +3095,7 @@
     <Content Include="ClassDiagram2.cd" />
     <Content Include="Areas\Sales\Views\Customer\EditorTemplates\Int.cshtml" />
     <Content Include="Areas\Sales\Views\Customer\EditorTemplates\Number2.cshtml" />
+    <Content Include="Areas\Factory\Views\Machine\MachineHistory.cshtml" />
     <None Include="Utilities\weighingvalue.json" />
     <Content Include="Logs\read.txt" />
     <Content Include="Resources\lock.png" />

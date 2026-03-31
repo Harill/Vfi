@@ -1,0 +1,529 @@
+﻿
+@using Vfi.Ui.Mvc.Vfi.Areas.Factory.Models
+@using Vfi.Ui.Mvc.Vfi.Areas.Inv.Models
+@using Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
+@using Vfi.Ui.Mvc.Vfi.Models.Production
+@{
+    ViewBag.Title = "Thẻ kho (máy)";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .highslide-container div {
+        font-family: Verdana, Helvetica;
+        font-size: 10pt;
+    }
+
+    .highslide-container table {
+        background: none;
+    }
+
+    .highslide {
+        outline: none;
+        text-decoration: none;
+    }
+
+    .highslide img {
+        border: 2px solid silver;
+    }
+
+    .highslide:hover img {
+        border-color: gray;
+    }
+
+    .highslide-active-anchor img {
+        visibility: hidden;
+    }
+
+    .highslide-gallery .highslide-active-anchor img {
+        border-color: black;
+        visibility: visible;
+        cursor: default;
+    }
+
+    .highslide-image {
+        border-width: 2px;
+        border-style: solid;
+        border-color: white;
+    }
+
+    .highslide-wrapper, .highslide-outline {
+        background: white;
+    }
+
+    .glossy-dark {
+        background: #111;
+    }
+
+    .highslide-number {
+        display: none;
+        font-weight: bold;
+        color: gray;
+        font-size: .9em;
+    }
+
+    .highslide-caption {
+        display: none;
+        font-size: 1em;
+        padding: 5px;
+        width: 100%;
+        text-align: center;
+        font-weight: bold;
+        /*background: white;*/
+    }
+
+    .highslide-heading {
+        display: none;
+        font-weight: bold;
+        margin: 0.4em;
+    }
+
+    .highslide-dimming {
+        /*position: absolute;*/
+        background: black;
+    }
+
+    a.highslide-full-expand {
+        display: block;
+        margin: 0 10px 10px 0;
+        width: 34px;
+        height: 34px;
+    }
+
+    .highslide-loading {
+        display: block;
+        color: black;
+        font-size: 9px;
+        font-weight: bold;
+        text-transform: uppercase;
+        text-decoration: none;
+        padding: 3px;
+        border: 1px solid white;
+        background-color: white;
+        padding-left: 22px;
+        background-repeat: no-repeat;
+        background-position: 3px 1px;
+    }
+
+    a.highslide-credits,
+    a.highslide-credits i {
+        padding: 2px;
+        color: silver;
+        text-decoration: none;
+        font-size: 10px;
+        display: none;
+    }
+
+    a.highslide-credits:hover,
+    a.highslide-credits:hover i {
+        color: white;
+        background-color: gray;
+    }
+
+    .highslide-move, .highslide-move * {
+        cursor: move;
+    }
+
+    .highslide-viewport {
+        display: none;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        background: none;
+        left: 0;
+        top: 0;
+    }
+
+    .highslide-overlay {
+        display: none;
+    }
+
+    .hidden-container {
+        display: none;
+    }
+    /* Example of a semitransparent, offset closebutton */
+    .closebutton {
+        position: relative;
+        top: -15px;
+        left: 15px;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        /* NOTE! For IE6, you also need to update the highslide-ie6.css file. */
+    }
+
+    .highslide-controls {
+        display: none;
+    }
+</style>
+
+@section Scripts{
+    
+
+
+
+    <script type="text/javascript">
+        function gridTrackUpMachine_OnDataBinding(e) {
+            var MachineId = $("#MachineCbo").data('tComboBox').value();
+            if (MachineId === "")
+                MachineId = 0;
+
+            var fromDate = $("#fromDate").data("tDatePicker").value();
+            var toDate = $("#toDate").data("tDatePicker").value();
+
+            e.data = $.extend(e.data, {
+                machineId: MachineId,
+                fromDate: formatDate(fromDate),
+                toDate: formatDate(toDate)
+            });
+        }
+
+
+        function formatDate(d) {
+            if (!d) return "";
+            var day = ("0" + d.getDate()).slice(-2);
+            var month = ("0" + (d.getMonth() + 1)).slice(-2);
+            var year = d.getFullYear();
+            return day + "/" + month + "/" + year;
+        }
+        //function gridInventory_OnDataBinding(e) {
+        //    var ProductId = $("#ProductCode").data("tAutoComplete").value();
+        //    var MachineId = $("#MachineCbo").data('tComboBox').value();
+        //    if (MachineId === "")
+        //        MachineId = 0;
+        //    e.data = $.extend(e.data, {
+        //        machineId: MachineId,
+        //        productId: ProductId
+        //    });
+        //}
+
+        function gridDetail_OnDataBinding(e) {
+            var masterRow = $(e.target).closest(".t-detail-row").prev();
+            var grid = $("#gridTrackUpMachine").data("tGrid");
+            var dataItem = grid.dataItem(masterRow);
+
+            var fromDate = $("#fromDate").data("tDatePicker").value();
+            var toDate = $("#toDate").data("tDatePicker").value();
+
+            e.data = $.extend(e.data, {
+                machineId: dataItem.MachineId,
+                fromDate: formatDate(fromDate),
+                toDate: formatDate(toDate)
+            });
+        }
+
+        // to mau
+        function grid_OnRowDataBound(e) {
+            //var dataItem = e.dataItem;
+            //if (dataItem.StatusName == "Bình thường") {
+            //    e.row.childNodes[4].style.backgroundColor = "#66FF00";
+            //}
+            //else if (dataItem.StatusName == "Lên máy") {
+            //    e.row.childNodes[4].style.backgroundColor = "#00BFFF";
+            //}
+            //else if (dataItem.StatusName == "Đủ hàng") {
+            //    e.row.childNodes[4].style.backgroundColor = "#FFFF00";
+            //}
+            //else if (dataItem.StatusName == "Thiếu NL/NS") {
+            //    e.row.childNodes[4].style.backgroundColor = "#FFA07A";
+            //}
+            //else if (dataItem.StatusName == "Hư nặng") {
+            //    e.row.childNodes[4].style.backgroundColor = "#B6B6B4";
+            //}
+            //else if (dataItem.StatusName == "Máy nhẹ") {
+            //    e.row.childNodes[4].style.backgroundColor = "#FF2626";
+            //}
+            //else if (dataItem.StatusName == "Đăng khắc phục") {
+            //    e.row.childNodes[4].style.backgroundColor = "#FFBF48";
+            //}
+            //else if (dataItem.StatusName == "Máy trống") {
+            //    e.row.childNodes[4].style.backgroundColor = "#FDFDF9";
+            //}
+            //else {
+            //    e.row.childNodes[4].style.backgroundColor = "#FF00FF";
+            //}
+        }
+
+        function RefreshGrid(gridName) {
+            var grid = $("#" + gridName).data("tGrid");
+            if (grid) grid.ajaxRequest();
+        }
+
+        function RefreshGrids2(name) {
+            RefreshGrid(name);
+            //RefreshGrid("gridInventoryCard"); 
+            //RefreshGrid("gridProduct");
+            //DisplayPicture();
+        }
+
+
+        //function gridProductionProcessByMachine_OnEdit(e) {
+        //    var mode = e.mode;
+        //    var form = e.form;
+        //    if (mode === 'insert') {
+        //    } else if (mode === 'edit') {
+        //        var dataItem = e.dataItem;
+        //        var nodes = $(form).find('#WarehouseName');
+        //        nodes[0].parentNode.parentNode.innerHTML = "<b>" + e.dataItem.WarehouseName + "</b>";
+        //    }
+        //}
+
+        function grid_OnError(e) { }
+    </script>
+}
+
+<div class="title">Thẻ kho (Máy)</div>
+<div class="clear"></div>
+<br/>
+<div class="t-info-sha" style="padding-left: 15px; padding-right: 15px; width: 920px;">
+    <fieldset>
+        <legend>Tiêu chí trích lọc</legend>
+        <div class="grid_1">
+            Máy
+        </div>
+        <div class="grid_4">
+             @{
+                Html.Telerik().ComboBox()
+                    .Name("MachineCbo")
+                    .DataBinding(binding => binding.Ajax().Select("SelectComboBoxMachineAllProduction", "Machine", new { area = "Factory" }))
+                    .HtmlAttributes(new {style = "width: 140px"})
+                    .DropDownHtmlAttributes(new {style = "width: 138px"})
+                    .AutoFill(true)
+                    .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
+                    .Render();
+            }
+        </div>
+
+@*        <div class="grid_2">Sản phẩm</div>
+
+        <div class="grid_5 prefix_0_5">
+            @{
+                Html.Telerik().AutoComplete()
+                    .Name("ProductCode")
+                    .Value("")
+                    .AutoFill(true)
+                    .HtmlAttributes(new { style = "width: 200px" })
+                    .Render(); 
+            }
+        </div> *@
+             <div class="grid_3">
+                @{
+                    Html.Telerik().DatePicker()
+                        .Name("fromDate")
+                        .Format("dd/MM/yyyy")
+                        .Value(new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1))
+                        .Render();
+                }
+            <div class="clear"></div>
+                @{
+                    Html.Telerik().DatePicker()
+                        .Name("toDate")
+                        .Format("dd/MM/yyyy")
+                        .Value(DateTime.Today)
+                        .Render();
+                }
+            </div>
+        
+        <div class="grid_4 prefix_1">        
+            <button id="btnRefesh" class="t-button" onclick=" return RefreshGrids2('gridTrackUpMachine'); ">
+                <span class='t-icon t-insert'></span>
+                Tìm
+            </button>
+        </div>
+        <div class="grid_4" id="result"></div>
+    </fieldset>
+</div>
+<div class="clear">
+</div>
+
+@*<div class="t-info-sha" style="padding-left: 15px; padding-right: 15px;">
+    <fieldset>
+        <legend>Thông tin tổng quát</legend>*@
+        <div class="cover-div">
+          @{
+            Html.Telerik().Grid<MachineHistoryModel>()
+                .Name("gridTrackUpMachine")
+                .DataKeys(keys => keys.Add(x => x.MachineId))
+                .DataBinding(dataBinding => dataBinding.Ajax()
+                    .Select("TrackUpMachineList", "Machine", new { area = "Factory", fromDate = "", toDate = "" }))
+                .Columns(columns =>
+                {
+                    columns.Bound(f => f.MachineName).Width(60).Title("Máy")
+                        .HtmlAttributes(new { style = "font-weight:bold" });
+                    columns.Bound(f => f.CountProductId).Width(80).Title("Mã sản phẩm")
+                        .HtmlAttributes(new { style = "text-align:right;" })
+                        .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                        .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                        .FooterHtmlAttributes(new { style = "text-align: right;border-right:1px black solid;" })
+                        .Aggregate(agg => agg.Sum())
+                        .Format("{0:n0}");
+                    columns.Bound(f => f.TotalProduction).Width(80)
+                        .HeaderTemplate("Tổng sản phẩm (pcs)")
+                        .HtmlAttributes(new { style = "text-align:right;" })
+                        .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                        .FooterHtmlAttributes(new { style = "text-align: right;border-right:1px black solid;" })
+                        .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                        .Format("{0:n0}")
+                        .Aggregate(agg => agg.Sum());
+                    columns.Bound(f => f.TotalProductPrice).Width(80).Title("Tổng GT sản phẩm (vnd)")
+                        .HtmlAttributes(new { style = "text-align:right;" })
+                        .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                        .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                        .FooterHtmlAttributes(new { style = "text-align: right;border-right:1px black solid;" })
+                        .Aggregate(agg => agg.Sum())
+                        .Format("{0:n0}");
+                    columns.Bound(f => f.CountMaterialId).Width(80).Title("Mã nguyên liệu")
+                        .HtmlAttributes(new { style = "text-align:right;" })
+                        .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                        .FooterHtmlAttributes(new { style = "text-align: right;border-right:1px black solid;" })
+                        .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                        .Aggregate(agg => agg.Sum())
+                        .Format("{0:n0}");
+                    columns.Bound(f => f.TotalMaterialUsed).Width(70)
+                        .HeaderTemplate("Tổng nguyên liệu SD (cây)")
+                        .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                        .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                        .FooterHtmlAttributes(new { style = "text-align: right;border-right:1px black solid;" })
+                        .Aggregate(agg => agg.Sum())
+                        .HtmlAttributes(new { style = "text-align:right;" })
+                        .Format("{0:n0}");
+                    columns.Bound(f => f.TotalMaterialCost).Width(70)
+                        .HeaderTemplate("Tổng GT nguyên liệu (vnd)")
+                        .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                        .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                        .FooterHtmlAttributes(new { style = "text-align: right;border-right:1px black solid;" })
+                        .Aggregate(agg => agg.Sum())
+                        .HtmlAttributes(new { style = "text-align:right;" })
+                        .Format("{0:n0}");
+                    columns.Bound(f => f.CountToolId).Width(80).Title("Mã công cụ")
+                        .HtmlAttributes(new { style = "text-align:right;" })
+                        .FooterHtmlAttributes(new { style = "text-align: right;border-right:1px black solid;" })
+                        .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                        .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                        .Aggregate(agg => agg.Sum())
+                        .Format("{0:n0}");
+                    columns.Bound(f => f.TotalToolUsed).Width(80).Title("Tổng công cụ SD")
+                        .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                        .HtmlAttributes(new { style = "text-align:right;" })
+                        .FooterHtmlAttributes(new { style = "text-align: right;border-right:1px black solid;" })
+                        .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                        .Aggregate(agg => agg.Sum())
+                        .Format("{0:n0}");
+                    columns.Bound(f => f.TotalToolPrice).Width(80).Title("Tổng GT công cụ (vnd)")
+                        .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                        .FooterHtmlAttributes(new { style = "text-align: right;border-right:1px black solid;" })
+                        .HtmlAttributes(new { style = "text-align:right;" })
+                        .Aggregate(agg => agg.Sum())
+                        .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                        .Format("{0:n0}");
+                })
+                .DetailView(details => details.ClientTemplate(
+                    Html.Telerik().TabStrip()
+                        .Name("TabStrip_<#= MachineId #>")
+                        .SelectedIndex(0)
+                        .Items(items =>
+                        {
+                            // TAB 1: Sản phẩm
+                            items.Add().Text("Sản phẩm").Content(
+                                Html.Telerik().Grid<ProductDetailModel>()
+                                    .Name("gridProduct_<#= MachineId #>")
+                                    .DataBinding(dataBinding => dataBinding.Ajax()
+                                        .Select("GetProductDetail", "Machine", new { area = "Factory" }))
+                                    .Columns(columns =>
+                                    {
+                                        columns.Bound(f => f.ProductCode).Title("Mã SP");
+                                        columns.Bound(f => f.TotalProduct)
+                                            .Title("Số lượng sản phẩm (pcs)")
+                                            .HtmlAttributes(new { style = "text-align:right;" })
+                                            .Format("{0:n0}");
+                                        columns.Bound(f => f.ProductUnitPrice)
+                                            .Title("Đơn giá sản phẩm (vnd)")
+                                            .HtmlAttributes(new { style = "text-align:right;" })
+                                            .Format("{0:n3}");
+                                        columns.Bound(f => f.Currency).Title("Tiền tệ");
+                                        columns.Bound(f => f.ProductPrice)
+                                            .Title("GT sản phẩm (vnd)")
+                                            .HtmlAttributes(new { style = "text-align:right;" })
+                                            .Format("{0:n0}");
+                                    })
+                                    .ClientEvents(events => events.OnDataBinding("gridDetail_OnDataBinding"))
+                                    .ToHtmlString()
+                            );
+
+                            // TAB 2: Nguyên liệu
+                            items.Add().Text("Nguyên liệu").Content(
+                                Html.Telerik().Grid<MaterialDetailModel>()
+                                    .Name("gridMaterial_<#= MachineId #>")
+                                    .DataBinding(dataBinding => dataBinding.Ajax()
+                                        .Select("GetMaterialDetail", "Machine", new { area = "Factory" }))
+                                    .Columns(columns =>
+                                    {
+                                        columns.Bound(f => f.MaterialCode).Title("Mã NL");
+                                        columns.Bound(f => f.TotalMaterial)
+                                            .Title("Nguyên liệu SD(cây)")
+                                            .HtmlAttributes(new { style = "text-align:right;" })
+                                            .Format("{0:n0}");
+                                        columns.Bound(f => f.MaterialUnitPrice)
+                                            .Title("Đơn giá nguyên liệu (vnd)")
+                                            .HtmlAttributes(new { style = "text-align:right;" })
+                                            .Format("{0:n0}");
+                                        columns.Bound(f => f.MaterialUnitWeight)
+                                            .Title("Trọng lượng (kg)")
+                                            .HtmlAttributes(new { style = "text-align:right;" })
+                                            .Format("{0:n3}");
+                                        columns.Bound(f => f.MaterialPrice)
+                                            .Title("GT nguyên liệu (vnd)")
+                                            .HtmlAttributes(new { style = "text-align:right;" })
+                                            .Format("{0:n0}");
+                                    })
+                                    .ClientEvents(events => events.OnDataBinding("gridDetail_OnDataBinding"))
+                                    .ToHtmlString()
+                            );
+
+                            // TAB 3: Công cụ
+                            items.Add().Text("Công cụ").Content(
+                                Html.Telerik().Grid<ToolDetailModel>()
+                                    .Name("gridTool_<#= MachineId #>")
+                                    .DataBinding(dataBinding => dataBinding.Ajax()
+                                        .Select("GetToolDetail", "Machine", new { area = "Factory" }))
+                                    .Columns(columns => {
+                                        columns.Bound(f => f.ToolName).Title("Tên công cụ");
+                                        columns.Bound(f => f.ToolCode).Title("Mã công cụ");
+                                        columns.Bound(f => f.TotalToolUsed)
+                                            .Title("Công cụ SD")
+                                            .HtmlAttributes(new { style = "text-align:right;" })
+                                            .Format("{0:n0}");
+                                        columns.Bound(f => f.ToolUnitPrice)
+                                            .Title("Đơn giá công cụ (vnd)")
+                                            .HtmlAttributes(new { style = "text-align:right;" })
+                                            .Format("{0:n0}");
+                                        columns.Bound(f => f.ToolPrice)
+                                            .Title("GT công cụ (vnd)")
+                                            .HtmlAttributes(new { style = "text-align:right;" })
+                                            .Format("{0:n0}");
+                                    })
+                                    .ClientEvents(events => events.OnDataBinding("gridDetail_OnDataBinding"))
+                                    .ToHtmlString()
+                            );
+                        })
+                        .ToHtmlString()
+                ))
+                .Scrollable(f => f.Height(700))
+                .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
+                .ClientEvents(events => events
+                    .OnDataBinding("gridTrackUpMachine_OnDataBinding")
+                    .OnError("grid_OnError")
+                    .OnRowDataBound("grid_OnRowDataBound"))
+                .Selectable()
+                .Sortable()
+                .Resizable(f => f.Columns(true))
+                .Reorderable(f => f.Columns(true))
+                //.Footer(false)
+                .Render();
+        }
+        </div>
+    
+@*    </fieldset>
+
+</div>*@

@@ -70,6 +70,11 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Models
         public string UploadDate { get; set; }
         public double ProductionWeight { get; set; }
 
+
+
+
+
+
         public List<TrackUpMaterial> TrackUpMaterials { get; set; }
     }
 

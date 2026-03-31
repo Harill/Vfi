@@ -50,6 +50,13 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
             }
             ViewData = GetPageConfigData();
             return View();
+        }  
+        public ActionResult MachineHistory() {
+            if (!Request.IsAuthenticated) {
+                return RedirectToAction("Index", "Home", new { area = "" });
+            }
+            ViewData = GetPageConfigData();
+            return View();
         }
         public ActionResult MachineErrorManagement() {
             if (!Request.IsAuthenticated) {
@@ -994,6 +1001,417 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
             }
             return View(new GridModel(model.OrderByDescending(m => m.ModifiedDate).ThenByDescending(m => m.DateLog).ThenBy(m => m.TypeName)));
         }
+
+
+
+
+
+        //16/03/2026
+        [GridAction]
+        public ActionResult TrackUpMachineList(int machineId, string fromDate, string toDate) {
+            var model = GetTrackUpMachine(machineId, fromDate, toDate);
+            return View(new GridModel(model));
+            }
+
+        // 30/03/2026
+        [GridAction]
+        public ActionResult GetProductDetail(int machineId, string fromDate, string toDate) {
+            var data = GetTrackUpMachine(machineId, fromDate, toDate)
+                        .Where(x => x.MachineId == machineId)
+                        .SelectMany(x => x.ProductDetails)
+                        .ToList();
+
+            return View(new GridModel(data));
+        }
+
+        // 30/03/2026
+        [GridAction]
+        public ActionResult GetMaterialDetail(int machineId, string fromDate, string toDate) {
+            var data = GetTrackUpMachine(machineId, fromDate, toDate)
+                        .Where(x => x.MachineId == machineId)
+                        .SelectMany(x => x.MaterialDetails)
+                        .ToList();
+
+            return View(new GridModel(data)); 
+        }        
+               
+        // 30/03/2026
+        [GridAction]
+        public ActionResult GetToolDetail(int machineId, string fromDate, string toDate) {
+            var data = GetTrackUpMachine(machineId, fromDate, toDate)
+                        .Where(x => x.MachineId == machineId)
+                        .SelectMany(x => x.ToolDetails)
+                        .ToList();
+
+            return View(new GridModel(data));
+        }
+
+        //16/03/2026
+        public List<MachineHistoryModel> GetTrackUpMachine(int machineId, string fromDate, string toDate) {
+            var model = new List<MachineHistoryModel>();
+            try {
+                using (var vfi = new tammaContext()) {
+                      vfi.Configuration.LazyLoadingEnabled = false;
+                      var fDate = MyUtilities.Function.ParseDate(fromDate);
+                      var tDate = MyUtilities.Function.ParseLastDateTime(toDate);
+                      var results = (from d in vfi.ImportFormSX1Detail
+                                    join h in vfi.ImportFormSX1
+                                        on d.ImportId equals h.ImportId
+                                    where ((machineId == 0 || d.MachineId == machineId) &&
+                                          h.ImportDate >= fDate&&
+                                          h.ImportDate <= tDate
+                                          )
+                                    select new{
+                                        d.Machine,
+                                        d.MachineId, 
+                                  
+                                        d.ProductId,
+                                        ProductCode = d.Product.ProductCode,
+                                        ProductionNumber = d.Number1 + d.Number2,
+                                        ProductUnitPrice = d.Product.UnitPrice,
+                                        Currency = d.Product.Currency,
+
+                                        d.MaterialInvId,
+                                        MaterialUsed = d.MaterialUse1 + d.MaterialUse2,
+                                        MaterialId = d.MaterialInventory.MaterialId,
+                                        MaterialUnitPrice = d.MaterialInventory.UnitPrice,
+                                        MaterialUnitWeight = d.MaterialInventory.UnitWeight,
+                                        //LotMaterial = d.LotNumber,
+                                        
+                                    }).OrderBy(m =>m.Machine).ToList();
+                      var machineIds = results.Select(t => t.MachineId).Distinct().ToList();
+                      var exchangeRate = MyUtilities.Monitor.GetParameterValue(MyUtilities.Monitor.ExchangeToVndRate);
+
+                      //var salePrice = (double)0.7;
+
+                    // Products
+                      //var productIds = results.Select(t => t.ProductId).Distinct();
+                      //var productPrice = vfi.Products.Where(t => productIds.Contains(t.ProductId))
+                      //                               .Select(p => new{
+                      //                                 p.ProductId,
+                      //                                 p.UnitPrice,
+                      //                                 p.Currency,
+                      //                                 p.ProductCode,
+                      //                               }).ToList();
+                      //var productDict = productPrice.ToDictionary(p => p.ProductId,
+                      //                        p => new { p.UnitPrice, p.Currency });
+
+
+
+               // Materials
+                      //var materialIds = results.Select(m => m.MaterialId).Distinct().ToList();
+                      //var materialPrice = vfi.Materials.Where(m => materialIds.Contains(m.MaterialId))
+                      //                                           .Select(t => new {
+                      //                                             t.Weight,
+                      //                                             t.UnitPrice,
+                      //                                             t.MaterialId,
+                      //                                         }).ToList();
+                      //var materialDict = materialPrice.ToDictionary(m => m.MaterialId,
+                      //                                              m => new { m.Weight, m.UnitPrice }
+                      //                                             );
+                      var materialIds = results.Select(t => t.MaterialId).Distinct().ToList();
+                      var materialDict = vfi.Materials
+                          .Where(t => materialIds.Contains(t.MaterialId))
+                          .ToDictionary(t => t.MaterialId, t => t.MaterialCode);
+
+
+
+               // Tool RCM
+
+                      var exp = (from ed in vfi.ExportToolDetails
+                                 where ed.ExportTool.TransactionFpt.Status == 2
+                                    && ed.ExportTool.TransactionFpt.TransactionDate >= fDate
+                                    && ed.ExportTool.TransactionFpt.TransactionDate <= tDate
+                                    && machineIds.Contains(ed.MachineId)
+                                 select new {
+                                     ed.MachineId,
+                                     ed.ToolInventory.ToolId,
+                                     ed.ToolInventory.UnitPrice,
+                                     ed.Quantity,
+                                     ed.ToolInventory.Tool.ToolFullCode,
+                                     ed.ToolInventory.Tool.ToolName,
+                                 }).ToList();
+
+                    
+            // Tool tu lam
+                      //var toolTransaction = vfi.TransactionFpts.Where(t => t.TransactionDate >= fDate &&
+                      //                                                     t.TransactionDate <= tDate &&
+                      //                                                     t.Status == 2)                    // 2 = Approve; 1 = Waiting
+                      //                                         .Select(p => p.TransactionId)
+                      //                                         .ToList();
+                      //var toolTransactionDetails = vfi.TransactionFptDetails.Where(t => toolTransaction.Contains(t.TransactionId)
+                      //                                                                  && t.MachineId == machineId)
+                      //                                                      .Select(p => new {
+                      //                                                          p.DetailId,
+                      //                                                          p.MachineId,
+                      //                                                          toolPrice = p.Quantity *p.UnitPrice,
+                      //                                                      }).ToList();
+
+                      //var detaiIdList = toolTransactionDetails.Select(t => t.DetailId).ToList();
+                      //var exportTool = vfi.ExportToolDetails.Where(t => t.TransactionDetailId.HasValue && 
+                      //                                                  detaiIdList.Contains(t.TransactionDetailId.Value))
+                      //                                      .Select(p => new{
+                      //                                          p.ToolInvId,
+                      //                                          p.Quantity,
+                      //                                      }).ToList();
+                      //var exporToolList = exportTool.Select(t => t.ToolInvId).ToList();
+
+                      //var toolInventort = vfi.ToolInventories.Where(t => exporToolList.Contains(t.ToolInvId))
+                      //                                     .Select(p => new {
+                      //                                         p.UnitPrice,
+                      //                                         p.ToolInvId,
+                      //                                         p.ToolId,
+                      //                                     }).ToList();
+
+
+              // recommend
+                      //foreach (var result in results) {
+                      //    var entity = model.FirstOrDefault(x => x.MachineId == result.MachineId);
+                      //    if (entity == null) {
+                      //        entity = new MachineHistoryModel {
+                      //            TotalMaterialUsed = 0,
+                      //        };
+                      //        model.Add(entity);
+                      //    }
+
+                      //    var productDetail = entity.ProductDetails.FirstOrDefault(x => x.ProductId == result.ProductId);
+
+                      //    if (productDetail == null) {
+                      //        productDetail = new ProductDetailModel {
+                      //        };
+                      //        entity.ProductDetails.Add(productDetail);
+                      //    }
+
+                      //    var toolDetail = entity.ToolDetails.FirstOrDefault(x => x.ProductId == result.ProductId);
+
+                      //    if (toolDetail == null) {
+                      //        toolDetail = new ToolDetailModel{
+                      //        };
+                      //        entity.ToolDetails.Add(toolDetail);
+                      //    }
+                      //    entity.TotalMaterialUsed += result.MaterialUsed;
+
+                      //}
+
+
+             // model
+
+                      model = results.GroupBy(m => m.Machine)
+                                    .Select(x => new MachineHistoryModel {
+                                        MachineName = x.Key,
+                                        MachineId = x.FirstOrDefault().MachineId ?? 0,
+                                        // products
+                                        CountProductId = x.Select(t => t.ProductId).Distinct().Count(),
+                                        TotalProduction = x.Sum(t => t.ProductionNumber),
+                                        TotalProductPrice = x.Sum(t => t.Currency == "USD"
+                                                   ? t.ProductionNumber * (double)t.ProductUnitPrice * exchangeRate 
+                                                   : t.ProductionNumber * (double)t.ProductUnitPrice
+                                                   ),
+                                        ProductDetails = x.GroupBy(p => new { p.ProductId, p.ProductCode, p.ProductUnitPrice,p.Currency })
+                                                          .Select(g => new ProductDetailModel {
+                                                                ProductId = g.Key.ProductId,
+                                                                ProductCode = g.Key.ProductCode,
+                                                                ProductUnitPrice = (double)g.Key.ProductUnitPrice,
+                                                                TotalProduct = g.Sum(t => t.ProductionNumber),
+                                                                Currency = g.Key.Currency,
+                                                                ProductPrice = g.Sum(t => t.Currency == "USD"
+                                                                    ? t.ProductionNumber * (double)t.ProductUnitPrice * exchangeRate
+                                                                    : t.ProductionNumber * (double)t.ProductUnitPrice
+                                                                   ),
+                                                           })
+                                                           .ToList(),
+
+
+
+                                        // materials
+                                        TotalMaterialUsed = x.Sum(t => t.MaterialUsed),
+                                        CountMaterialId = x.Select(t => t.MaterialInvId).Distinct().Count(),
+                                        TotalMaterialCost = x.Sum(t => t.MaterialUnitPrice * t.MaterialUsed * t.MaterialUnitWeight),
+
+                                        MaterialDetails = x.GroupBy(p => new { p.MaterialId, p.MaterialUnitPrice, p.MaterialUnitWeight})
+                                                        .Select(g => new MaterialDetailModel {
+                                                            MaterialId = g.Key.MaterialId,
+                                                            MaterialCode = materialDict.ContainsKey(g.Key.MaterialId)
+                                                                            ? materialDict[g.Key.MaterialId]
+                                                                            : "",
+                                                            MaterialUnitPrice = (double)g.Key.MaterialUnitPrice,
+                                                            TotalMaterial = g.Sum(t => t.MaterialUsed),
+                                                            MaterialUnitWeight = g.Key.MaterialUnitWeight,
+                                                            //MaterialLot = g.Key.LotMaterial,
+                                                            MaterialPrice = g.Sum(t => t.MaterialUsed * (double)t.MaterialUnitWeight * t.MaterialUnitPrice),
+                                                        }).ToList(),
+
+
+
+                                        // tools
+                                        //CountToolId = exp.Select(t => t.ToolId).Count(),
+                                        //TotalToolUsed = exp.Sum(t => t.Quantity),
+                                        //TotalToolPrice = exp.Sum(t => t.Quantity * t.UnitPrice),
+                                        //ToolDetails = exp.GroupBy(p => new { p.ToolId, p.ToolFullCode, p.UnitPrice, p.ToolName })
+                                        //                 .Select(g => new ToolDetailModel {
+                                        //                     ToolId = g.Key.ToolId,
+                                        //                     ToolCode = g.Key.ToolFullCode,
+                                        //                     ToolName = g.Key.ToolName,
+                                        //                     ToolUnitPrice = g.Key.UnitPrice,
+                                        //                     TotalToolUsed = g.Sum(t => t.Quantity),
+                                        //                     ToolPrice = g.Sum(t => t.Quantity * t.UnitPrice),
+                                        //                 }).ToList(),
+
+                                    }).ToList();
+
+
+                }
+            }
+            catch (Exception) {
+                throw;
+            }
+            return model;
+        }
+
+
+
+ public List<MachineHistoryModel> GetTrackUpMachine2(int machineId, string fromDate, string toDate) {
+            var model = new List<MachineHistoryModel>();
+            try {       
+               using (var vfi = new tammaContext()) {
+                      vfi.Configuration.LazyLoadingEnabled = false;
+                      var fDate = MyUtilities.Function.ParseDate(fromDate);
+                      var tDate = MyUtilities.Function.ParseLastDateTime(toDate);
+                      var results = (from d in vfi.ImportFormSX1Detail
+                                     join h in vfi.ImportFormSX1
+                                           on d.ImportId equals h.ImportId
+                                     where ((machineId == 0 || d.MachineId == machineId) &&
+                                              h.ImportDate >= fDate &&
+                                              h.ImportDate <= tDate)
+                                     select new{
+                                           d.Machine,
+                                           d.MachineId,
+
+                                           d.ProductId,
+                                           ProductCode = d.Product.ProductCode,
+                                           ProductionNumber = d.Number1 + d.Number2,
+                                           ProductUnitPrice = d.Product.UnitPrice,
+                                           Currency = d.Product.Currency,
+
+                                           d.MaterialInvId,
+                                           MaterialUsed = d.MaterialUse1 + d.MaterialUse2,
+                                           MaterialId = d.MaterialInventory.MaterialId,
+                                           MaterialUnitPrice = d.MaterialInventory.UnitPrice,
+                                           MaterialUnitWeight = d.MaterialInventory.UnitWeight,
+                                           LotMaterial = d.LotNumber,
+                                       }).OrderBy(m => m.Machine)
+                                       .GroupBy(p => new { p.MachineId })
+                                       .ToList();
+                   var exchangeRate = 26000;
+                      //Tools
+                   var machine_ids = results.Select(x => x.Key.MachineId).Distinct().ToList();
+                   var exp = (from ed in vfi.ExportToolDetails
+                              where ed.ExportTool.TransactionFpt.Status == 2
+                                 && ed.ExportTool.TransactionFpt.TransactionDate >= fDate
+                                 && ed.ExportTool.TransactionFpt.TransactionDate <= tDate
+                                 && machine_ids.Contains(ed.MachineId)
+                              select new {
+                                     ed.MachineId,
+                                     ed.ToolInventory.ToolId,
+                                     ed.ToolInventory.UnitPrice,
+                                     ed.Quantity,
+                                     ed.ToolInventory.Tool.ToolName,
+                                 }).ToList();
+                   var toolIdList = exp.Select(t => t.ToolId).Distinct().ToList();
+                      
+                   
+                   // tu lam dua vao recomment
+                   foreach ( var result in results){
+                       var entity = model.FirstOrDefault(x => x.MachineId == result.Key.MachineId);
+                       if (entity == null) {
+                           entity = new MachineHistoryModel {
+                               CountMaterialId = 0,
+                               CountProductId = 0,
+                               CountToolId = 0,
+
+                               TotalMaterialUsed =0,
+                               TotalProduction = 0,
+                               TotalToolUsed = 0,
+
+                               ProductProduction = 0,
+
+                               MaterialUnitPrice = 0,
+                               ProductUnitPrice = 0,
+                               ToolUnitPrice = 0,
+
+                               ProductCurrency = "",
+
+                               MaterialUnitWeight = 0,
+
+                               TotalProductPrice = 0,
+                               TotalToolPrice = 0,
+                               TotalMaterialCost = 0,
+
+                               
+                           };
+                           model.Add(entity);
+                       }
+                       entity.MachineName = result.FirstOrDefault().Machine;
+                       entity.ProductProduction = result.FirstOrDefault().ProductionNumber;
+                       entity.TotalProduction += entity.ProductProduction;
+                       entity.ProductCurrency = result.FirstOrDefault().Currency;
+                       entity.ProductUnitPrice = (double)result.FirstOrDefault().ProductUnitPrice;
+                       var productprice = 0.00;
+                       if (entity.ProductCurrency == "USD"){
+                           productprice = entity.ProductProduction * entity.ProductUnitPrice * exchangeRate;
+                       }
+                       else{
+                           productprice = entity.ProductProduction * entity.ProductUnitPrice;
+                       }
+                       entity.TotalProductPrice += productprice;
+
+                       entity.CountProductId += 1;
+
+                       }
+
+
+
+
+
+
+                   // recommend
+                      //foreach (var result in results) {
+                      //    var entity = model.FirstOrDefault(x => x.MachineId == result.Key.MachineId);
+                      //    if (entity == null) {
+                      //        entity = new MachineHistoryModel {
+                      //            TotalMaterialUsed = 0,
+                      //        };
+                      //        model.Add(entity);
+                      //    }
+
+                      //    var productDetail = entity.ProductDetails.FirstOrDefault(x => x.ProductId == result.Key.MachineId);
+
+                      //    if (productDetail == null) {
+                      //        productDetail = new ProductDetailModel {
+                      //        };
+                      //        entity.ProductDetails.Add(productDetail);
+                      //    }
+
+                      //    var toolDetail = entity.ToolDetails.FirstOrDefault(x => x.ProductId == result.Key.ProductId);
+
+                      //    if (toolDetail == null) {
+                      //        toolDetail = new ToolDetailModel {
+                      //        };
+                      //        entity.ToolDetails.Add(toolDetail);
+                      //    }
+                      //    entity.TotalMaterialUsed = result.Sum(x => x.MaterialUsed);
+
+                      //}
+               }
+            }
+            catch (Exception) {
+                throw;
+            }
+            return model;
+        }
+
+
+
 
         [GridAction]
         public ActionResult SelectMachine() {

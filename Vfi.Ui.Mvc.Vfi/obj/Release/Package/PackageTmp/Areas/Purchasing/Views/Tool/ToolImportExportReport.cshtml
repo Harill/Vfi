@@ -21,7 +21,7 @@
 
         function gridInventory_OnDataBinding(args) {
 
-            if (startGrid && !onLoading) {
+            if (startGrid) {
                 OnLoadingData();
                 var vendor = $("#Vendor").data("tComboBox").value();
                 if (vendor === "") {
@@ -110,12 +110,10 @@
         }
 
         function RefreshGrid2(name) {
-            if (!onLoading) {
                 OnLoadingData();
                 startGrid = true;
                 RefreshGrid(name);
             }
-        }
 
     </script>
 
@@ -433,7 +431,7 @@
             )
 
             .Columns(columns => {
-                columns.Command(c => c.Edit().ButtonType(GridButtonType.Image)).Width(50).Title("");
+                columns.Command(c => c.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(50).Title("");
                 columns.Bound(f => f.MaterialTypeName).Width(75).ReadOnly(true)
                     .HeaderTemplate("Loại");
                 columns.Bound(f => f.ToolName).Width(120).Title("Tên công cụ").ReadOnly(true)

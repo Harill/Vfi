@@ -515,6 +515,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
 
                     var transactions = (from i in vfi.TransactionFpts
                                         where
+                                        //i.TransactionCode == "VFMT-269753" &&
                                         i.Status == status && i.TransactionDate >= fdate &&
                                         i.TransactionDate <= tdate && i.Fpt == (byte)MyUtilities.PurchaseOrder.FptLot.Tool
                                         select i).ToList();
@@ -524,6 +525,8 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                             transactions = transactions.Where(t => t.TransactionFptDetails.Any(td => toolIds.Contains(td.FptId))).ToList();
                         }
                     }
+
+
                     foreach (var transaction in transactions) {
                         var entity = new TransactionFptModel {
                             TransactionId = transaction.TransactionId,
@@ -542,6 +545,22 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                             PurchasingSignature = transaction.PurchasingSignature,
                             CanUpdate = false,
                         };
+                       
+                // get machineName
+                        var transactionList = entity.TransactionId;
+                        var machineMap = vfi.TransactionFptDetails
+                                            .Where(t => transactionList== t.TransactionId)
+                                            .Select(t => t.MachineId)
+                                            .ToList();
+                        var machineName = string.Join(", ",
+                            vfi.Machines
+                               .Where(t => machineMap.Contains(t.MachineId))
+                               .Select(t => t.MachineName)
+                               .ToList());
+                        entity.MachineName = machineName;
+
+
+
                         if (entity.PoId != 0)
                             entity.PoCode = transaction.PurchaseOrder.RevisionNumber;
                         entity.StatusName = MyUtilities.Transaction.CastText.GetTextStatus(entity.Status);
@@ -3555,17 +3574,16 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                             && t.Status == approvedStatus
                             && t.Product.Active
                             && t.DeliveryDate <= ReportDate)     //ngay ban giao
-                            .GroupBy(t => t.MachineId)
-                            .Select(g => g.OrderByDescending(t => t.DeliveryDate).FirstOrDefault())
-                            .Select(t => new {
-                                t.MachineId,
-                                MachineName = t.Machine.MachineName,
-                                t.ProductId,
-                                ProductCode = t.Product.ProductCode,
-                                Date = t.DeliveryDate.Value,
-                                TrackId = t.TrackId,
-                            })
-                            .ToList();
+                         .GroupBy(t => t.MachineId)
+                         .Select(g => g.OrderByDescending(t => t.DeliveryDate).FirstOrDefault())
+                         .Select(t => new {
+                                 t.MachineId,
+                                 MachineName = t.Machine.MachineName,
+                                 t.ProductId,
+                                 ProductCode = t.Product.ProductCode,
+                                 Date = t.DeliveryDate.Value,
+                                 TrackId = t.TrackId,
+                            }).ToList();
 
                     // Step 3: Get all relevant product IDs
                     var productIds = lastTracks.Select(t => t.ProductId).Distinct().ToList();

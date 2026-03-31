@@ -690,7 +690,7 @@
                                                            "<img src='" + Url.Content("~/Content/FileUpload/ProductHistory/") + "<#=RefImage#>?<#=UploadDate#>' height='40' width='40' title='Mở lớn'/>" +
                                                            "</a><div class='highslide-caption'><#= CodeNumber #></div>");
                                     columns.Bound(f => f.HistoryDate).Title("Ngày").Width(110)
-                                            .ClientTemplate("<#= HistoryDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', HistoryDate) #>");
+                                           .ClientTemplate("<#= HistoryDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', HistoryDate) #>");
                                     columns.Bound(f => f.CodeNumber).Title("Mã").Width(100);
                                     columns.Bound(f => f.Before).Title("Trước");
                                     columns.Bound(f => f.After).Title("Sau");
@@ -708,7 +708,7 @@
                             )
                             .ToHtmlString()
                                                ))
-                    .Editable(editing => editing.Mode(GridEditMode.InLine))
+                    .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                     .ClientEvents(events => events.OnDataBinding("gridProduct_OnDataBinding")
                                                   .OnError("grid_OnError")
                                                   .OnRowSelect("grid_OnRowSelect"))
@@ -1347,7 +1347,7 @@
             //.ToHtmlString())
             )
             .Selectable()
-            .Editable(editing => editing.Mode(GridEditMode.InLine))
+            .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
             .ClientEvents(events => events.OnRowSelect("grid_OnRowSelect")
                                           .OnDataBinding("gridYear_OnDataBinding")
                                           .OnError("grid_OnError"))
