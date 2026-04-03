@@ -223,7 +223,7 @@
                     .HtmlAttributes(new { style = "width: 150px" })
                     .DropDownHtmlAttributes(new { style = "width: 250px" })
                     .ClientEvents(e => e.OnChange("status_OnChange"))
-                    .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                    .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                     .HighlightFirstMatch(true)
                     .AutoFill(true)
                     .Render();
@@ -291,7 +291,7 @@
                 columns.Bound(f => f.InquiryId).Title("Chọn").Width(50).ReadOnly(true)
                     .ClientTemplate("<input type='checkbox' name='chkIds' value='<#= InquiryId #>' />")
                     .HtmlAttributes(new { style = "text-align:center" });
-                columns.Command(command => command.Edit().ButtonType(GridButtonType.Image))
+                columns.Command(command => command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image))
                     .Width(50).Title("Sửa")
                     .HtmlAttributes(new { style = "text-align:center" });
                 columns.Bound(f => f.InquiryNumber).Width(100).Title("Số yêu cầu");

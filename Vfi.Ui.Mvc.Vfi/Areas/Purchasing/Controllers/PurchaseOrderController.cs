@@ -143,6 +143,16 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
             ViewData = GetPageConfigData();
             return View();
         }
+
+        public ActionResult PurchasingProgress() {
+            if (!Request.IsAuthenticated) {
+                return RedirectToAction("Index", "Home", new { area = "" });
+            }
+            ViewData = GetPageConfigData();
+            return View();
+        }
+
+
         public ActionResult AddPoTaxInvoiceReference() {
             if (!Request.IsAuthenticated) {
                 return RedirectToAction("Index", "Home", new { area = "" });
@@ -150,6 +160,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
             ViewData = GetPageConfigData();
             return View();
         }
+
         public ActionResult CreatePoTaxInvoice() {
             if (!Request.IsAuthenticated) {
                 return RedirectToAction("Index", "Home", new { area = "" });
@@ -6226,6 +6237,23 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
         }
 
 
+        // Purchasing Progress
+        //[GridAction]
+        //public ActionResult GetPurchaseOrderProgress(int classifiedId, int vendorId, string inquiryNumber) {
+        //    var model = new List<PurchaseProgressModel>();
+        //        //model = PurchaseOrderProgress(classifiedId, vendorId, inquiryNumber);
+        //    return View(new GridModel(model));
+        //}
+
+
+        //List<PoTaxInvoiceMoneyModel> PurchaseOrderProgress(int classifiedId, int vendorId, string inquiryNumber) {
+        //    var model = new List<PurchaseProgressModel>();
+        //    using (var vfi = new tammaContext()) {
+
+        //    }
+        //    return model;
+
+        //}
 
         #endregion
     }

@@ -130,18 +130,18 @@
 
 <div class="title">Quản lý thông tin phiếu xuất nhập công cụ</div>
 <div id="pnlInvPeriod">
-    <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px; width: 920px;">
+    <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px; width: auto;">
         <br />
         <fieldset>
             <legend>Tiêu chí trích lọc</legend>
             
-            <div class="grid_2">Mã Công cụ:</div>
-            <div class="grid_4">
+            <div class="grid_2_5">Mã Công cụ:</div>
+            <div class="grid_7">
                 @{
                     Html.Telerik().AutoComplete()
                         .Name("ToolCode")
                         .DataBinding(binding => binding.Ajax().Select("SelectComboBoxTool", "Material", new { area = "" }).Delay(350))
-                        .HtmlAttributes(new {style = "width: 150px"})
+                        .HtmlAttributes(new {style = "width: 248px"})
                         .DropDownHtmlAttributes(new {style = "width: 250px"})
                         .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                         .HighlightFirstMatch(true)
@@ -149,16 +149,16 @@
                         .Render();
                 }
             </div>
-            <div class="grid_2">
-                Tình trạng phiếu
+            <div class="grid_3">
+                Tình trạng phiếu:
             </div>
-            <div class="grid_4">
+            <div class="grid_6">
                 @{
                     Html.Telerik().ComboBox()
                         .Name("Status")
                         //.DataBinding(binding => binding.Ajax().Select("SelectStatus", "Orders"))
-                        .HtmlAttributes(new {style = "width: 150px"})
-                        .DropDownHtmlAttributes(new {style = "width: 250px"})
+                        .HtmlAttributes(new {style = "width: 200px"})
+                        .DropDownHtmlAttributes(new {style = "width: 198px"})
                         .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                         .HighlightFirstMatch(true)
                         .AutoFill(true)
@@ -227,6 +227,9 @@
                             .HtmlAttributes(new { style = "text-align:right;" })
                                .ClientTemplate("<#= TotalPrice == null ? 0 : $.telerik.formatString('{0:n0}', TotalPrice) #>");
                         columns.Bound(f => f.Department).Width(80).Title("BP đề xuất");
+
+                        columns.Bound(f => f.MachineName).Width(80).Title("Máy");
+                        
                         columns.Bound(f => f.ModifiedUser).Width(75).Title("Người lập");
                         columns.Bound(f => f.ModifiedDate).Width(80).Title("Ngày lập")
                                .ClientTemplate("<#= ModifiedDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy HH:mm:ss}', ModifiedDate) #>");

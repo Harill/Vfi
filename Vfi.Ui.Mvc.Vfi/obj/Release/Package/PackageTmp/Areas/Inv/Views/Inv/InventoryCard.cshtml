@@ -365,7 +365,7 @@
                                              columns.Bound(f => f.UnitWeightByMaterial).Width(50).ReadOnly(true)
                                                     .HeaderTemplate("Trọng lượng theo NL (g)")
                                                     .ClientTemplate("<#= UnitWeightByMaterial == null ? 0 : $.telerik.formatString('{0:n3}', UnitWeightByMaterial) #>");
-                                            columns.Bound(f => f.Priority).Width(50).Title("Độ ưu tiên");
+                                             columns.Bound(f => f.Priority).Width(50).Title("Độ ưu tiên");
                                              columns.Bound(f => f.Note).Width(100).Title("Ghi chú");
                                              columns.Bound(f => f.Active).Width(55)
                                                     .HeaderTemplate("Kích hoạt")

@@ -94,7 +94,7 @@
             .DataKeys(key => key.Add(f => f.MachineId).RouteKey("machineId"))
             .DataBinding(
                 dataBinding => dataBinding.Ajax()
-                                          .Select("SelectMachineStateStatistic", "Machine", new { shift = 0, printDate = "" }))
+                                          .Select("SelectMachineStateStatistic", "Machine", new { shift = 0, printDate = "" }))         //MachineStateStatisticModel
             .Columns(columns =>
                 {
 

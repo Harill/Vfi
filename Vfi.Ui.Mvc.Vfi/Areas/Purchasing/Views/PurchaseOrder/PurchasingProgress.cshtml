@@ -1,0 +1,157 @@
+﻿@{
+    ViewBag.Title = "Tiến độ mua hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+<style>
+
+    .t-animation-container,
+    .t-popup {
+        z-index: 9999 !important;
+    }
+
+    /* doi mau */
+    .t-info-sha2 {
+        background-color: #7b7f8c;
+    }
+</style>
+
+<script type="text/javascript">
+    function DisplayPurchaseOrderProgress() {
+        if (!onLoading) {
+            OnLoadingData();
+            var vendorId = $('#cboVendor').data('tComboBox').value();
+            if (vendorId == "")
+                vendorId = 0;
+            $('#result').load('@Url.Action("GetPurchaseOrderProgress", "PurchaseOrder")',
+                {
+                    vendorId: vendorId
+                }, function () {
+                    OnLoadedData();
+                });
+
+        }
+    }
+
+
+
+    // loading button
+    var onLoading = false;
+    function OnLoadingData() {
+        if (!onLoading) {
+            onLoading = true;
+            var loadings = document.querySelectorAll('.twoToneButton');
+            for (var i = 0; i < loadings.length; i++) {
+                var loading = loadings[i];
+                loading.innerHTML = "<span class='t-icon t-refresh t-loading'></span> (Chờ load)";
+                loading.classList.add('loading');
+            }
+        }
+    }
+    function OnLoadedData() {
+        if (onLoading) {
+            var loadings = document.querySelectorAll('.twoToneButton');
+            for (var i = 0; i < loadings.length; i++) {
+                var loading = loadings[i];
+                if (loading && loading.className.includes("loading")) {
+                    loading.classList.remove('loading');
+                    loading.innerHTML = "<span></span>";
+                }
+            }
+            onLoading = false;
+        }
+    };
+
+
+
+
+
+    function materialGrid_OnDataBinding(e) {
+        var classified = $('#ClassifiedName').data('tDropDownList').value();
+        if (classifiedId == "") classifiedId = 0;
+        var type = $('#TypeName').data('tComboBox').value();
+        if (type == "") type = 0;
+
+        e.data = $.extend(e.data, {
+            classified: classified,
+            typeId: type,
+        });
+    }
+
+    function vendorGrid_OnDataBinding(e) {
+        var classified = $('#ClassifiedName').data('tDropDownList').value();
+        if (classifiedId == "") classifiedId = 0;
+        e.data = $.extend(e.data, {
+            classified: classified,
+        });
+    }
+
+
+
+
+ 
+
+</script>
+<div class="title">Theo dõi tiến độ mua hàng</div>
+<div class="t-info-sha" style="padding-left: 15px; padding-right: 15px; width: auto;">
+    <fieldset>
+        <legend>Tiêu chí trích lọc</legend>
+        <div class="grid_2">Phân loại:</div>
+        <div class="grid_5">
+            @{
+                Html.Telerik().DropDownList()
+                    .Name("cboClassifiedName")
+                    .DataBinding(binding => binding.Ajax().Select("SelectComboBoxMaterialClassified", "Material", new { area = "" }))
+                    .HtmlAttributes(new { style = "width: 175px" })
+                    .DropDownHtmlAttributes(new { style = "width: 250px" })
+                    .Render();                                              
+            }
+        </div>
+
+        <div class="grid_1">NCC:</div>
+        <div class="grid_5">
+            @{
+                Html.Telerik().ComboBox()
+                    .Name("cboVendor")
+                    .DataBinding(binding => binding.Ajax().Select("SelectComboBoxMaterialVendor", "Vendor", new { area = "" }))
+                    .HtmlAttributes(new { style = "width: 175px" })
+                    .DropDownHtmlAttributes(new { style = "width: 250px" })
+                    .Render();                                              
+            }
+        </div>
+
+        <div class="grid_1_5">Số đơn:</div>
+        <div class="grid_5">
+            @{
+                Html.Telerik().AutoComplete()
+                    .Name("InquiryNumber")
+                    .Encode(false)
+                    .HtmlAttributes(new { style = "width: 155px" })
+                    .AutoFill(true)
+                    .HighlightFirstMatch(true)
+                    .Render();
+            }
+        </div>
+
+         <div class="grid_3">
+                <button id="btnRefesh2" class="t-button" onclick=" DisplayPurchaseOrderProgress()">
+                    <span class='t-icon t-refresh'></span>
+                    Làm mới
+                    <span class="twoToneButton"></span>
+                </button>
+         </div>
+     </fieldset>
+</div>
+
+
+<div class="clear"></div>
+<div class="t-info-sha2" style="padding-left: 15px; padding-right: 15px; width: auto;">
+
+<div class="cover-div">
+
+        <div id="result"></div>
+
+</div>
+</div>
+
+ 

@@ -12,11 +12,15 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Models
             ProductDetails = new List<ProductDetailModel>();
             MaterialDetails = new List<MaterialDetailModel>();
             ToolDetails = new List<ToolDetailModel>();
+            RepairDetails = new List<RepairDetailModel>();
         }
         public double CountProductId { get; set; }                                 //25/03/2026
         public double TotalProduction { get; set; }
-        public double ProductProduction { get; set; }                                                       
+        public double TotalDefect { get; set; }
+        public double ProductProduction { get; set; }
         public double TotalProductPrice { get; set; }
+        public double TotalDefectPrice { get; set; }
+        public double TotalAll { get; set; }
         public string ProductName { get; set; }
         public string ProductCode { get; set; }
         public double ProductUnitPrice { get; set; }
@@ -46,29 +50,36 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Models
         public string MachineName { get; set; }
 
 
+        public double MaxProductionTime { get; set; }
+        public int CountRepairTimes { get; set; }
+        public double TotalRepairTime { get; set; }
+
+
+
+
+
         public List<ProductDetailModel> ProductDetails { get; set; }
         public List<MaterialDetailModel> MaterialDetails { get; set; }
         public List<ToolDetailModel> ToolDetails { get; set; }
+        public List<RepairDetailModel> RepairDetails { get; set; }
 
-        //public int ProductId { get; set; }
-        //public string ProductCode { get; set; }
-        //public int Quantity { get; set; }
-        //public int? MaterialId { get; set; }
 
 
     }
 
     public class ProductDetailModel {
         public int ProductId { get; set; }
+        public int Index { get; set; }
         public string ProductCode { get; set; }
         public double ProductUnitPrice { get; set; }
         public double TotalProduct { get; set; }
+        public double TotalDefect { get; set; }
         public string Currency { get; set; }
         public double ProductPrice { get; set; }
+        public double DefectPrice { get; set; }
+        public double TotalPrice { get; set; }
 
-        //public double SumProductPrice { get; set; }
-        //public double SumProductId{ get; set; }
-        //public double SumTotalProduct { get; set; }
+
 
     }
 
@@ -81,6 +92,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Models
         public double MaterialPrice { get; set; }
         public double MaterialUnitWeight { get; set; }
         public string MaterialLot { get; set; }
+        public int Index { get; set; }
 
 
     }
@@ -95,6 +107,24 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Models
         public double ToolPrice { get; set; }
 
         public int ProductId { get; set; }
+        public int Index { get; set; }
+
+    }
+
+
+
+    public class RepairDetailModel {
+        public string ProductCode { get; set; }
+        public string ErrorCause { get; set; }
+        public string HowToFix { get; set; }
+        public double FixTime { get; set; }
+
+        public DateTime CauseDate { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime FinishDate { get; set; }
+
+        public string StatusMachine { get; set; }
+        public int Index { get; set; }
 
     }
 }

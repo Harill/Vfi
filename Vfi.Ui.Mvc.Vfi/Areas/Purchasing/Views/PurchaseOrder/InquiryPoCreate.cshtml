@@ -162,8 +162,8 @@
             .Name("grid")
             .DataKeys(keys => keys.Add(f => f.InquiryId).RouteKey("inquiryId"))
             .ToolBar(bar => {
-                bar.Insert().ButtonType(GridButtonType.ImageAndText).Text("Thêm mới");
-                bar.SubmitChanges().ButtonType(GridButtonType.ImageAndText).SaveText("Lưu lại").CancelText("Hủy");
+                bar.Insert().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).Text("Thêm mới");
+                bar.SubmitChanges().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).SaveText("Lưu lại").CancelText("Hủy");
             })
             .DataBinding(dataBindings => dataBindings.Ajax()
                 .Select("SelectPurchaseOrderDetail", "PurchaseOrder")
@@ -191,14 +191,14 @@
                     .HeaderHtmlAttributes(new { @class = "edit-column" })
                     .ClientTemplate("<#= DueDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', DueDate) #>");
                 columns.Bound(f => f.Note).Title("Ghi chú");
-                columns.Command(commands => commands.Delete().ButtonType(GridButtonType.Image)).Width(70).Title("");
+                columns.Command(commands => commands.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(70).Title("");
             })
             .ClientEvents(events => events
                 .OnSave("grid_OnSave")
                 .OnSubmitChanges("grid_OnSubmitChanges")
                 .OnError("grid_OnError")
             )
-            .Editable(editing => editing.Mode(GridEditMode.InCell))
+            .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InCell))
             .KeyboardNavigation()
             .Footer(true)
             .Render();

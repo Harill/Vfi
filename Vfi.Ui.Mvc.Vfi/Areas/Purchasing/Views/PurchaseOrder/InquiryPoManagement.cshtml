@@ -127,7 +127,7 @@
                     .DataBinding(binding => binding.Ajax().Select("SelectComboBoxAllInquiryStatus", "PurchaseOrder", new { area = "Purchasing" }))
                     .HtmlAttributes(new { style = "width: 150px" })
                     .DropDownHtmlAttributes(new { style = "width: 250px" })
-                    .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                    .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                     .HighlightFirstMatch(true)
                     .AutoFill(true)
                     .Render();

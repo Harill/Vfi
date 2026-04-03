@@ -84,7 +84,7 @@
         .Columns(columns =>
             {
                 columns.Command(command =>
-                                command.Edit().ButtonType(GridButtonType.Image)
+                                command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
                     ).Width(50).Title("Duyệt").HtmlAttributes(new {style = "text-align:center"});
 
                 //columns.Bound(f => f.PurchaseOrderId).Title("Chọn").Width(40).ReadOnly(true)
@@ -104,7 +104,7 @@
                 columns.Bound(f => f.StatusName).Width(75).ReadOnly(true);
                 columns.Bound(f => f.EmployeeName).Width(75).ReadOnly(true);
                 columns.Bound(f => f.Note).ReadOnly(true);
-                columns.Command(c => c.Delete().ButtonType(GridButtonType.Image)).Width(40);
+                columns.Command(c => c.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(40);
                 columns.Bound(f => f.ModifiedUser).Width(70).ReadOnly(true);
                 columns.Bound(f => f.ModifiedDate).Title("Ngày tạo").Width(90).Format("{0:dd/MM/yyyy HH:mm:ss}").ReadOnly(true);
             })

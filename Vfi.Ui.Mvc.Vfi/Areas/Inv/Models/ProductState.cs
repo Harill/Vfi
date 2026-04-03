@@ -396,7 +396,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Models {
             }
         }
         public string RedAltert {
-            get { return (OrderDueDate <= DateTime.Now && WarehouseInv <= 0) ? "background-color:#ff1000;" : ""; }
+            get { return (OrderDueDate <= DateTime.Now && WarehouseInv <= 0) ? "background-color:#db4242;" : ""; }          //#ff1000
         }
         public List<LateOrder> LateOrders { get; set; }
     }

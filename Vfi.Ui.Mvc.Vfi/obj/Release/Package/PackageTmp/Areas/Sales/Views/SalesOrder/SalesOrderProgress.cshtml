@@ -2,36 +2,116 @@
     ViewBag.Title = "Đơn hàng";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<style>
+    /*      co the bo?
+        fieldset {
+        overflow: visible;
+    }*/
+
+    /*.t-info-sha,
+    .cover-div {
+        overflow: visible !important;
+    }*/
+
+
+    /* doan phia duoi quan trong de combobox khong bi. che boi? layer */
+    .t-animation-container,
+    .t-popup {
+        z-index: 9999 !important;
+    }
+
+    /* doi mau */
+    .t-info-sha2 {
+    background-color: #7b7f8c;
+    }
+
+
+
+</style>
+
 <script type="text/javascript">
     function DisplaySalesOrderProgress() {
-        var customerId = $('#cboCustomer').data('tComboBox').value();
-        if (customerId == "")
-            customerId = 0;
-        $('#result').load('@Url.Action("GetSalesOrderProgressDiv", "SalesOrder")',
-            {
-                customerId: customerId
-            }, function() {
-                alert("Hoàn thành làm mới");
-            });
-    }
-</script>
+        if (!onLoading) {
+            OnLoadingData();
+            var customerId = $('#cboCustomer').data('tComboBox').value();
+            if (customerId == "")
+                customerId = 0;
+            $('#result').load('@Url.Action("GetSalesOrderProgressDiv", "SalesOrder")',
+                {
+                    customerId: customerId
+                }, function () {
+                    OnLoadedData();
+                    //alert("Hoàn thành làm mới");
+                });
 
-<div class="title">Tiến độ đơn hàng</div>
-<div class="grid_1">KH</div>
-            <div class="grid_8">
-                @{
-                    Html.Telerik().ComboBox()
-                        .Name("cboCustomer")
-                        .DataBinding(binding => binding.Ajax().Select("SelectComboBoxCustomer", "Customer", new {area = "Sales"}))
-                        .HtmlAttributes(new {style = "width: 250px"})
-                        .DropDownHtmlAttributes(new {style = "width: 325px;"})
-                        .AutoFill(true)
-                        .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
-                        .Render();
+        }
+    }
+
+
+    // loading button
+    var onLoading = false;
+    function OnLoadingData() {
+        if (!onLoading) {
+            onLoading = true;
+            var loadings = document.querySelectorAll('.twoToneButton');
+            for (var i = 0; i < loadings.length; i++) {
+                var loading = loadings[i];
+                loading.innerHTML = "<span class='t-icon t-refresh t-loading'></span> (Chờ load)";
+                loading.classList.add('loading');
+            }
+        }
+    }
+    function OnLoadedData() {
+        if (onLoading) {
+            var loadings = document.querySelectorAll('.twoToneButton');
+            for (var i = 0; i < loadings.length; i++) {
+                var loading = loadings[i];
+                if (loading && loading.className.includes("loading")) {
+                    loading.classList.remove('loading');
+                    loading.innerHTML = "<span></span>";
                 }
-            </div>
-    <button id="btnRefesh2" class="t-button" onclick=" DisplaySalesOrderProgress()">
-        <span class='t-icon t-refresh'></span>
-        Làm mới
-    </button>
-<div id="result"></div>
+            }
+            onLoading = false;
+        }
+    };
+
+</script>
+<div class="title">Tiến độ đơn hàng</div>
+<div class="t-info-sha" style="padding-left: 15px; padding-right: 15px; width: auto;">
+    <fieldset>
+        <legend>Tiêu chí trích lọc</legend>
+            <div class="grid_1">KH</div>
+                        <div class="grid_9">
+                            @{
+                                Html.Telerik().ComboBox()
+                                    .Name("cboCustomer")
+                                    .DataBinding(binding => binding.Ajax().Select("SelectComboBoxCustomer", "Customer", new {area = "Sales"}))
+                                    .HtmlAttributes(new {style = "width: 332px"})
+                                    .DropDownHtmlAttributes(new {style = "width: 330px;"})
+                                    .AutoFill(true)
+
+                                    .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
+                                    .Render();
+                            }
+                        </div>
+                <button id="btnRefesh2" class="t-button" onclick=" DisplaySalesOrderProgress()">
+                    <span class='t-icon t-refresh'></span>
+                    Làm mới
+                    <span class="twoToneButton"></span>
+                </button>
+     </fieldset>
+</div>
+
+
+<div class="clear"></div>
+<div class="t-info-sha2" style="padding-left: 15px; padding-right: 15px; width: auto;">
+
+    <div class="cover-div">
+        @{
+        <div id="result"></div>
+        }
+    </div>
+</div>
+
+ 

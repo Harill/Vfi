@@ -73,7 +73,7 @@
             .Columns(columns =>
                 {
                     columns.Command(command =>
-                                    command.Edit().ButtonType(GridButtonType.ImageAndText).UpdateText("Duyệt").CancelText("Trở lại")
+                                    command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).UpdateText("Duyệt").CancelText("Trở lại")
                         ).Width(98).Title("Duyệt").HtmlAttributes(new {style = "text-align:center"});
                     columns.Bound(f => f.RevisionNumber).Width(100).ReadOnly(true);
                     columns.Bound(f => f.ShipDate).Width(100).ReadOnly(true)

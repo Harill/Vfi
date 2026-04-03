@@ -23,5 +23,6 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public virtual MachineRepairForm MachineRepairForm { get; set; }
         public virtual MachineStateDetail MachineStateDetail { get; set; }
         public virtual Employee Employee { get; set; }
+
     }
 }

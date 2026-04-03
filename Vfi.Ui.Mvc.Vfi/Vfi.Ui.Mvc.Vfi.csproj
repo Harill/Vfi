@@ -1213,6 +1213,7 @@
     <Compile Include="Areas\Purchasing\Controllers\VendorController.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Areas\Purchasing\Models\PurchaseProgressModel.cs" />
     <Compile Include="Areas\Purchasing\Models\DepartmentModel.cs" />
     <Compile Include="Areas\Purchasing\Models\FuelInventoryModel.cs" />
     <Compile Include="Areas\Purchasing\Models\GroupPoTracking.cs" />
@@ -3096,6 +3097,8 @@
     <Content Include="Areas\Sales\Views\Customer\EditorTemplates\Int.cshtml" />
     <Content Include="Areas\Sales\Views\Customer\EditorTemplates\Number2.cshtml" />
     <Content Include="Areas\Factory\Views\Machine\MachineHistory.cshtml" />
+    <Content Include="Areas\Purchasing\Views\PurchaseOrder\Copy of ApprovePlatingForm.cshtml" />
+    <Content Include="Areas\Purchasing\Views\PurchaseOrder\PurchasingProgress.cshtml" />
     <None Include="Utilities\weighingvalue.json" />
     <Content Include="Logs\read.txt" />
     <Content Include="Resources\lock.png" />

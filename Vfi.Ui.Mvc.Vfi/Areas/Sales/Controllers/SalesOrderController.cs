@@ -275,11 +275,19 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Sales.Controllers {
                     }
                 }
                 return PartialView("SalesOrderProgressDiv",
-                    model.OrderByDescending(m => m.Type)
-                        .ThenBy(m => m.ToDate)
+                    //model.OrderByDescending(m => m.Type)
+                    //    .ThenBy(m => m.ToDate)
+                    //    .ThenBy(m => m.CustomerCode)
+                    //    .ThenBy(m => m.ProductCode)
+                    //    .ToList());  
+
+                    model.OrderByDescending(m => m.ToDate)
+                        .ThenByDescending(m => m.Type)
                         .ThenBy(m => m.CustomerCode)
                         .ThenBy(m => m.ProductCode)
-                        .ToList());
+                        .ToList()); 
+
+
             }
             catch (Exception) {
                 return null;
