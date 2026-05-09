@@ -3,10 +3,8 @@ using System.Collections.Generic;
 
 namespace Vfi.Ui.Mvc.Vfi.Models
 {
-    public partial class Invoice
-    {
-        public Invoice()
-        {
+    public partial class Invoice {
+        public Invoice() {
             this.InvoiceDetails = new List<InvoiceDetail>();
             this.OrderNotes = new List<OrderNote>();
         }
@@ -26,9 +24,13 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public Nullable<byte> Status { get; set; }
         public string Note { get; set; }
         public int ExchangeRate { get; set; }
+        public bool FinishDesign { get; set; }
+
+
         public virtual ExportFormTP_KD ExportFormTP_KD { get; set; }
         public virtual Customer Customer { get; set; }
         public virtual ICollection<InvoiceDetail> InvoiceDetails { get; set; }
         public virtual ICollection<OrderNote> OrderNotes { get; set; }
+
     }
 }

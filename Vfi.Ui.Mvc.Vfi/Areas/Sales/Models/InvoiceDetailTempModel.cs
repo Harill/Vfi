@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace Vfi.Ui.Mvc.Vfi.Areas.Sales.Models
 {
@@ -12,7 +13,6 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Sales.Models
             CurrencyCode="VND";
             ExchangeRate = 1;
             TaxPercent = 0;
-            //ExportedDate = DateTime.Now;
         }
         public int ExportId { get; set; }
         public long DetailId { get; set; }
@@ -85,5 +85,48 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Sales.Models
         public long OrderDetailId { get; set; }
         public int ExportDetailId { get; set; }
         public bool IsAdd { get; set; }
+
+
+        public string TransactionCode { get; set; }
+        public string ProductCodeDetail { get; set; }
+        public int ProductIdDetail { get; set; }
+        public string LotNumber { get; set; }
+        public double Number { get; set; }
+        public string NoteDetail { get; set; }
+
+        public int Index { get; set; }
+        public int MaterialId { get; set; }
+        public string InfoImg { get; set; }
+        public string InfoImg2 { get; set; }
+        public string MaterialCode { get; set; }
+
+        public string ImportDate { get; set; }
+        public string LastUsedDate { get; set; }
+        public string SerialNumber { get; set; }
+        public string MachineCode { get; set; }
+
+        public DateTime StartDate { get; set; }
+        public string StartDateStr {
+            get {
+                return StartDate == DateTime.MinValue
+                                 ? ""
+                                 : string.Format("{0:HH:mm dd/MM/yyyy}", StartDate);
+            }
+        }
+
+
+        public DateTime? EndDate { get; set; }
+        public string EndDateStr {
+            get {
+                return EndDate != null
+                                 ? string.Format("{0:HH:mm dd/MM/yyyy}", EndDate)
+                                 : "";
+            }
+        }
+
+
+
     }
+
+
 }

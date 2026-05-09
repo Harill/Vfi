@@ -63,14 +63,67 @@
             });
         }
 
+
         function grid_OnRowDataBound(e) {
-            if (e.dataItem.State == 1) {
-                e.row.childNodes[8].bgColor = "#FA5858";
+            var dataItem = e.dataItem;
+            var $row = $(e.row);
+
+            // màu trạng thái
+            if (dataItem.State == 1) {
+                $row.children().eq(7).css("background-color", "#FA5858");
+            } else if (dataItem.State == 2) {
+                $row.children().eq(7).css("background-color", "yellow");
             }
-            else if (e.dataItem.State == 2) {
-                e.row.childNodes[8].bgColor = "yellow";
+
+            // xử lý nút ký
+            var $btn = $row.find(".t-button.purchasing");
+            var $chk = $row.find(".chkCheck");
+
+            if (dataItem.PurchasingSignatureType == 0) {
+                $btn.parent().html("<span class='t-icon t-cancel'></span>");
+                $chk.remove();
+            }
+            else if (dataItem.PurchasingSignatureType == 1) {
+                $btn.parent().html("<span class='t-icon t-insert'></span>");
+            }
+            else if (dataItem.PurchasingSignatureType == 2) {
+                $chk.remove();
+            }
+            else {
+                $btn.parent().html("");
             }
         }
+
+
+
+
+        //function grid_OnRowDataBound(e) {
+        //    if (e.dataItem.State == 1) {
+        //        e.row.childNodes[7].bgColor = "#FA5858";
+        //    }
+        //    else if (e.dataItem.State == 2) {
+        //        e.row.childNodes[7].bgColor = "yellow";
+        //    }
+        //    var dataItem = e.dataItem;
+        //    if (dataItem.PurchasingSignatureType == 0) {
+        //        document.getElementsByClassName("t-button purchasing")[indexSignature1 - countSignature1].parentNode.innerHTML = "<span class='t-icon t-cancel'></span>";
+        //        document.getElementsByClassName("chkCheck")[index1 - count1].parentNode.innerHTML = "";
+        //        countSignature1++;
+        //        count1++;
+        //    } else if (dataItem.PurchasingSignatureType == 1) {
+        //        document.getElementsByClassName("t-button purchasing")[indexSignature1 - countSignature1].parentNode.innerHTML = "<span class='t-icon t-insert'></span>";
+        //        countSignature1++;
+        //    } else if (dataItem.PurchasingSignatureType == 2) {
+        //        document.getElementsByClassName("chkCheck")[index1 - count1].parentNode.innerHTML = "";
+        //        count1++;
+        //    } else {
+        //        document.getElementsByClassName("t-button purchasing")[indexSignature1 - countSignature1].parentNode.innerHTML = "";
+        //        countSignature1++;
+
+        //    }
+        //    indexSignature1++;
+        //    index1++;
+        //}
 
         function vendor_OnChange() {
             RefreshGrid("grid");
@@ -95,7 +148,7 @@
                 var $checkedRecords = $("input[name='chkIds']:checked")
 
                 if ($checkedRecords.length < 1) {
-                    alert("Vui lọn chọn ít nhất 1 sản phẩm");
+                    alert("Vui lòng chọn ít nhất 1 sản phẩm");
                     return;
                 }
 
@@ -129,7 +182,7 @@
                 var $checkedRecords = $("input[name='chkIds']:checked")
 
                 if ($checkedRecords.length < 1) {
-                    alert("Vui lọn chọn ít nhất 1 sản phẩm");
+                    alert("Vui lòng chọn ít nhất 1 sản phẩm");
                     return;
                 }
 
@@ -157,6 +210,30 @@
                     }
                 });
             }
+        }
+
+
+        function Signature(inquiryId) {
+            $.ajax({
+                type: 'post',
+                data: { inquiryId: inquiryId },
+                dataType: 'json',
+                url: '@Url.Action("ImportSignature", "Transaction", new { area = "Inv" })',
+                timeout: 20000,
+                success: function (data) {
+                    if (data == 9)
+                        alert("Lỗi không tìm thấy phiếu !");
+                    else {
+                        alert("Xác nhận thành công !");
+                        RefreshGrid("grid");
+                        indexSignature1 = 0;
+                        countSignature1 = 0;
+                        index1 = 0;
+                        count1 = 0;
+                    }
+                }
+            });
+            return false;
         }
     </script>
 
@@ -195,7 +272,7 @@
             @{
                 Html.Telerik().ComboBox()
                     .Name("VendorCodeName")
-                    //.DataBinding(binding => binding.Ajax().Select("SelectComboBoxMaterialVendor", "Vendor"))
+                    //.DataBinding(binding => binding.Ajax().Select("SelectComboBoxVendorByClassified", "PurchaseOrder"))
                     .HtmlAttributes(new { style = "width: 175px" })
                     .DropDownHtmlAttributes(new { style = "width: 250px" })
                     .ClientEvents(e => e.OnChange("vendor_OnChange"))
@@ -288,51 +365,87 @@
                 })
             )
             .Columns(columns => {
-                columns.Bound(f => f.InquiryId).Title("Chọn").Width(50).ReadOnly(true)
-                    .ClientTemplate("<input type='checkbox' name='chkIds' value='<#= InquiryId #>' />")
-                    .HtmlAttributes(new { style = "text-align:center" });
+                columns.Bound(f => f.InquiryId).Title("Chọn").Width(30).ReadOnly(true)
+                    .ClientTemplate("<# if (PurchasingSignatureType == 1) { #>" + "<input type='checkbox' name='chkIds' class='chkCheck' value='<#= InquiryId #>' />" + "<# } #>")
+                    .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid; " });
                 columns.Command(command => command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image))
-                    .Width(50).Title("Sửa")
-                    .HtmlAttributes(new { style = "text-align:center" });
-                columns.Bound(f => f.InquiryNumber).Width(100).Title("Số yêu cầu");
-                columns.Bound(f => f.ClassifiedName).Width(100).Title("Phân loại").ReadOnly(true);
-                columns.Bound(f => f.TypeName).Width(100).Title("Loại").ReadOnly(true);
-                columns.Bound(f => f.VendorCode).Width(120).Title("NCC");
-                columns.Bound(f => f.ReferenceName).Width(100).Title("Tên").ReadOnly(true);
-                columns.Bound(f => f.ReferenceCode).Width(170).Title("Mã").ReadOnly(true);
-                columns.Bound(f => f.Unit).Width(50).Title("ĐVT");
+                    .Width(40).Title("Sửa")
 
-                columns.Bound(f => f.Currency).Width(70).Title("Tiền tệ");
-                columns.Bound(f => f.OrderQty).Width(70).Title("SL")
-                    .HtmlAttributes(new { style = "text-align: right;" })
+                    .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid; " });
+
+                //columns.Bound(f => f.ReferenceId).Width(90).Title("Số ID").ReadOnly(true);
+
+                columns.Bound(f => f.InquiryNumber).Width(80).Title("Số yêu cầu").ReadOnly(true)
+                    .HtmlAttributes(new { style = "border-bottom:1px black solid; " })
+                    .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>")
+                    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>")
+                    .FooterHtmlAttributes(new { style = "text-align: center; font-weight:bold; " })
+                    .Aggregate(agg => agg.Count());
+                columns.Bound(f => f.ClassifiedName).Width(100).Title("Phân loại").ReadOnly(true)
+                    .HtmlAttributes(new { style = "border-bottom:1px black solid; " });
+                columns.Bound(f => f.TypeName).Width(90).Title("Loại").ReadOnly(true)
+                    .HtmlAttributes(new { style = "border-bottom:1px black solid; " });
+                columns.Bound(f => f.ReferenceName).Width(140).Title("Tên").ReadOnly(true)
+                    .HtmlAttributes(new { style = "border-bottom:1px black solid; " });
+                columns.Bound(f => f.ReferenceCode).Width(190).Title("Mã").ReadOnly(true)
+                    .HtmlAttributes(new { style = "border-bottom:1px black solid; font-weight:bold;" });
+                columns.Bound(f => f.TotalInv).Width(60).Title("Tồn kho").ReadOnly(true)
+                    .HtmlAttributes(new { style = "text-align: right; border-bottom:1px black solid; font-weight:bold;" })
+                    .Format("{0:n2}")
+                    .Aggregate(agg => agg.Sum())
+                    .FooterHtmlAttributes(new { style = "text-align: right; font-weight:bold;" })
+                    .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
+                    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>"); ;
+                columns.Bound(f => f.Total3MonthsUsed).Width(60).Title("SL SD</br> 3T").ReadOnly(true)
+                    .HtmlAttributes(new { style = "text-align: right; border-bottom:1px black solid; border-right:2px black solid; font-weight:bold;" })
+                    .Format("{0:n2}")
+                    .Aggregate(agg => agg.Sum())
+                    .FooterHtmlAttributes(new { style = "text-align: right; font-weight:bold;" })
+                    .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
+                    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>"); ;
+
+                
+                //
+                columns.Bound(f => f.Unit).Width(50).Title("ĐVT")
+                    .HtmlAttributes(new { style = "border-bottom:1px black solid; border-left:2px black solid;" });
+                columns.Bound(f => f.VendorCode).Width(120).Title("NCC")
+                    .HtmlAttributes(new { style = "border-bottom:1px black solid; " });
+                columns.Bound(f => f.Currency).Width(40).Title("Tiền </br>tệ")
+                    .HtmlAttributes(new { style = "border-bottom:1px black solid; " });
+                columns.Bound(f => f.OrderQty).Width(50).Title("SL").ReadOnly(true)
+                    .HtmlAttributes(new { style = "text-align: right; border-bottom:1px black solid; font-weight:bold;" })
                     .Format("{0:n0}")
                     .Aggregate(agg => agg.Sum())
-                    .FooterHtmlAttributes(new { style = "text-align: right;" })
+                    .FooterHtmlAttributes(new { style = "text-align: right; font-weight:bold;" })
                     .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                     .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>");
                 columns.Bound(f => f.UnitPrice).Width(100).Title("ĐG")
-                    .HtmlAttributes(new { style = "text-align: right;" })
+                    .HtmlAttributes(new { style = "text-align: right; border-bottom:1px black solid;" })
                     .ClientTemplate("<#= UnitPriceStr #>");
-
-
                 columns.Bound(f => f.Price).Width(100).Title("TT").ReadOnly(true)
-                    .HtmlAttributes(new { style = "text-align: right;" })
+                    .HtmlAttributes(new { style = "text-align: right; border-bottom:1px black solid; " })
                     .Format("{0:n0}")
                     .Aggregate(agg => agg.Sum())
-                    .FooterHtmlAttributes(new { style = "text-align: right;" })
+                    .FooterHtmlAttributes(new { style = "text-align: right; " })
                     .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                     .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>");
-
                 columns.Bound(f => f.DueDate).Width(100).Title("Ngày YC")
-                       .ClientTemplate("<#= DueDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', DueDate) #>");
-                columns.Bound(f => f.TotalInv).Width(70).Title("Tồn kho").ReadOnly(true)
-                    .HtmlAttributes(new { style = "text-align: right;" })
-                    .Format("{0:n2}");
-                columns.Bound(f => f.Note).Width(150);
-                columns.Command(commands => commands.Delete().ButtonType(GridButtonType.Image)).Width(50).Title("");
-                columns.Bound(f => f.ModifiedDate).Width(90).Title("Ngày làm").ReadOnly(true)
-                       .ClientTemplate("<#= ModifiedDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy HH:mm}', ModifiedDate) #>");
-                columns.Bound(f => f.ModifiedUser).Width(90).Title("Người làm").ReadOnly(true);
+                    .HtmlAttributes(new { style = "border-bottom:1px black solid; " })
+                    .ClientTemplate("<#= DueDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', DueDate) #>");
+                columns.Bound(f => f.Note).Width(150)
+                    .HtmlAttributes(new { style = "border-bottom:1px black solid; border-right:2px black solid; " });
+                
+                //
+                columns.Bound(f => f.InquiryId).Title("Quản lý</br>xác nhận").Width(65)
+                    .ClientTemplate("<button class='t-button purchasing' id='QLM_<#= InquiryId #>' onclick=Signature(<#= InquiryId #>) ><span class='t-icon t-insert'></span></button>")
+                    .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid; border-left:2px black solid;" });
+                columns.Command(commands => commands.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(50).Title("")
+                    .HtmlAttributes(new { style = "border-bottom:1px black solid; " });
+                columns.Bound(f => f.ModifiedDate).Width(80).Title("Ngày làm").ReadOnly(true)
+                    .HtmlAttributes(new { style = "border-bottom:1px black solid" })
+                    .ClientTemplate("<#= ModifiedDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy HH:mm}', ModifiedDate) #>");
+                columns.Bound(f => f.ModifiedUser).Width(80).Title("Người làm").ReadOnly(true)
+                    .HtmlAttributes(new { style = "border-bottom:1px black solid" });
             })
             .ClientEvents(events => events
                 .OnDataBinding("grid_OnDataBinding")

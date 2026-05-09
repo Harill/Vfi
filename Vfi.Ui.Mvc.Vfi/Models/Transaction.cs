@@ -36,6 +36,8 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public bool Active { get; set; }
         public string ModifiedUser { get; set; }
         public System.DateTime ModifiedDate { get; set; }
+        public bool FinishDesign { get; set; }
+
         public Nullable<long> PoId { get; set; }
         public Nullable<long> ReferenceId { get; set; }
         public Nullable<bool> IsInternal { get; set; }
@@ -55,5 +57,6 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public virtual ICollection<TransactionDetail> TransactionDetails { get; set; }
         public virtual ICollection<TransactionProduct> TransactionProducts { get; set; }
         public virtual ICollection<TransactionWeighing> TransactionWeighings { get; set; }
+        public virtual ICollection<TransactionImg> TransactionImg { get; set; }
     }
 }

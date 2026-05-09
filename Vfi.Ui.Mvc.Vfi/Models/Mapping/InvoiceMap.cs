@@ -37,6 +37,7 @@ namespace Vfi.Ui.Mvc.Vfi.Models.Mapping
             this.Property(t => t.Status).HasColumnName("Status");
             this.Property(t => t.Note).HasColumnName("Note");
             this.Property(t => t.ExchangeRate).HasColumnName("ExchangeRate");
+            this.Property(t => t.FinishDesign).HasColumnName("FinishDesign");
 
             // Relationships
             this.HasOptional(t => t.ExportFormTP_KD)

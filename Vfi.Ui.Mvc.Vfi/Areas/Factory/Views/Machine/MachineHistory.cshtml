@@ -4,19 +4,281 @@
 @using Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
 @using Vfi.Ui.Mvc.Vfi.Models.Production
 @{
-    ViewBag.Title = "Thẻ kho (máy)";
+    ViewBag.Title = "Báo cáo sản xuất tổng hợp";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <style>
-    .grid_3_5 {
-        background-color: white;
+     /*TOng GT SP*/
+      
+    .TongSP{
+        background-color: #e9ebf0;
         border: 1px solid black;
         display: flexbox;
-        justify-content: center; /* căn giữa theo chiều ngang */
-        align-items: center;     /* căn giữa theo chiều dọc */
-        text-align: center;      /* căn giữa nội dung chữ */
+        /*justify-content: center;*/ /* căn giữa theo chiều ngang */
+        /*align-items: center;*/     /* căn giữa theo chiều dọc */
+        text-align: left;      /* căn giữa nội dung chữ */
+        font-weight: bold;          /* tô đậm chữ */
+        /*color: white;*/    
+        font-size: 12px;             /* chỉnh kích cỡ chữ */
     }    
+
+    .SP13{
+        background-color: #2dc43c;
+        border: 1px solid black;
+        /*display: flexbox;*/
+        justify-content: center;  /*căn giữa theo chiều ngang*/ 
+        /*align-items: center;*/     /* căn giữa theo chiều dọc */
+        border-bottom: 0px solid black;
+        text-align: center;      /* căn giữa nội dung chữ */
+    }      
+    .SP113{
+        background-color: white;
+        border: 1px solid black;
+        /*display: flexbox;*/
+        /*justify-content: center;*/ /* căn giữa theo chiều ngang */
+        /*align-items: center;*/     /* căn giữa theo chiều dọc */
+        text-align: center;      /* căn giữa nội dung chữ */
+        border-bottom: 0px solid black;
+    }      
+    .SP1{
+        background-color: yellow;
+        border: 1px solid black;
+        /*display: flexbox;*/
+        /*justify-content: center;*/ /* căn giữa theo chiều ngang */
+        /*align-items: center;*/     /* căn giữa theo chiều dọc */
+        text-align: center;      /* căn giữa nội dung chữ */
+        border-bottom: 0px solid black;
+
+    }      
+    .SP09{
+        background-color: #f29327;
+        border: 1px solid black;
+        /*display: flexbox;*/
+        /*justify-content: center;*/ /* căn giữa theo chiều ngang */
+        /*align-items: center;*/     /* căn giữa theo chiều dọc */
+        border-bottom: 0px solid black;
+        text-align: center;      /* căn giữa nội dung chữ */
+    }      
+    .notclear{
+        /*background-color: #f29327;*/
+        /*border: 1px solid black;*/
+        /*display: flexbox;*/
+        /*justify-content: center;*/ /* căn giữa theo chiều ngang */
+        /*align-items: center;*/     /* căn giữa theo chiều dọc */
+        /*text-align: center;      /* căn giữa nội dung chữ */
+        height: 10px;
+    }  
+       
+    
+   
+
+
+     /* TL NG*/
+
+     .TLNG{
+        background-color: #e9ebf0;
+        border: 2px solid black;
+        /*display: flexbox;*/
+        justify-content: center; 
+        align-items: center;     
+        text-align: center;   
+        font-weight: bold;          /* tô đậm chữ */    
+        font-size: 12px;             /* chỉnh kích cỡ chữ */
+
+    } 
+
+
+     .NG50{
+        background-color: #f29327;
+        /*border: 1px solid black;*/
+        display: flexbox;
+        /*justify-content: center;*/ /* căn giữa theo chiều ngang */
+        /*align-items: center;*/     /* căn giữa theo chiều dọc */
+        text-align: center;      /* căn giữa nội dung chữ */
+        width: auto;
+        border-top: 1px solid black;
+
+    }       
+     .NG30{
+        background-color: yellow;
+        /*border: 1px solid black;*/
+        display: flexbox;
+        /*justify-content: center;*/ /* căn giữa theo chiều ngang */
+        /*align-items: center;*/     /* căn giữa theo chiều dọc */
+        text-align: center;      /* căn giữa nội dung chữ */
+        width: auto;
+        border-top: 1px solid black;
+
+    }       
+     .NG01{
+        background-color: white;
+        /*border: 1px solid black;*/
+        display: flexbox;
+        /*justify-content: center;*/ /* căn giữa theo chiều ngang */
+        /*align-items: center;*/     /* căn giữa theo chiều dọc */
+        text-align: center;      /* căn giữa nội dung chữ */
+        width: auto;
+        border-top: 1px solid black;
+    }  
+
+          
+     /* HSSD may*/
+
+      
+     .HSSDMay{
+        background-color: #e9ebf0;
+        border: 2px solid black;
+        /*display: flexbox;*/
+        justify-content: center; 
+        align-items: center;     
+        text-align: center;   
+        font-weight: bold;          /* tô đậm chữ */    
+        font-size: 12px;             /* chỉnh kích cỡ chữ */
+
+    } 
+
+
+     .HS50{
+        background-color: #f29327;
+        /*border: 1px solid black;*/
+        display: flexbox;
+        /*justify-content: center;*/ /* căn giữa theo chiều ngang */
+        /*align-items: center;*/     /* căn giữa theo chiều dọc */
+        text-align: center;      /* căn giữa nội dung chữ */
+        width: auto;
+        border-top: 1px solid black;
+
+    }       
+     .HS70{
+        background-color: yellow;
+        /*border: 1px solid black;*/
+        display: flexbox;
+        /*justify-content: center;*/ /* căn giữa theo chiều ngang */
+        /*align-items: center;*/     /* căn giữa theo chiều dọc */
+        text-align: center;      /* căn giữa nội dung chữ */
+        width: auto;
+        border-top: 1px solid black;
+
+    }       
+     .HS100{
+        background-color: white;
+        /*border: 1px solid black;*/
+        display: flexbox;
+        /*justify-content: center;*/ /* căn giữa theo chiều ngang */
+        /*align-items: center;*/     /* căn giữa theo chiều dọc */
+        text-align: center;      /* căn giữa nội dung chữ */
+        border-top: 1px solid black;
+        width: auto;
+    }  
+
+
+
+
+
+
+     /* Ti le Hao hut*/
+
+     .TLHH{
+        background-color: #e9ebf0;
+        border: 2px solid black;
+        /*display: flexbox;*/
+        justify-content: center; 
+        align-items: center;     
+        text-align: center;   
+        font-weight: bold;          /* tô đậm chữ */    
+        font-size: 12px;             /* chỉnh kích cỡ chữ */
+
+    } 
+
+
+     .HH03{
+        background-color:white;
+        /*border: 1px solid black;*/
+        display: flexbox;
+        /*justify-content: center;*/ /* căn giữa theo chiều ngang */
+        /*align-items: center;*/     /* căn giữa theo chiều dọc */
+        text-align: center;      /* căn giữa nội dung chữ */
+        width: auto;
+        border-top: 1px solid black;
+
+    }       
+     .HH35{
+        background-color: yellow;
+        /*border: 1px solid black;*/
+        display: flexbox;
+        /*justify-content: center;*/ /* căn giữa theo chiều ngang */
+        /*align-items: center;*/     /* căn giữa theo chiều dọc */
+        text-align: center;      /* căn giữa nội dung chữ */
+        width: auto;
+        border-top: 1px solid black;
+
+    }       
+     .HH50{
+        background-color: #f29327;
+        /*border: 1px solid black;*/
+        display: flexbox;
+        /*justify-content: center;*/ /* căn giữa theo chiều ngang */
+        /*align-items: center;*/     /* căn giữa theo chiều dọc */
+        text-align: center;      /* căn giữa nội dung chữ */
+        border-top: 1px solid black;
+        width: auto;
+    }  
+
+
+
+
+      .TGSX{
+        background-color: #e9ebf0;
+        border: 2px solid black;
+        /*display: flexbox;*/
+        justify-content: center; 
+        align-items: center;     
+        text-align: center;   
+        font-weight: bold;          /* tô đậm chữ */    
+        font-size: 12px;             /* chỉnh kích cỡ chữ */
+        width: 300px;
+
+    } 
+
+
+     .TG00{
+        background-color:white;
+        /*border: 1px solid black;*/
+        display: flexbox;
+        justify-content: center;  /*căn giữa theo chiều ngang*/ 
+        /*align-items: center;*/     /* căn giữa theo chiều dọc */
+        text-align: center;      /* căn giữa nội dung chữ */
+        width: auto;
+        border: 1px solid black;
+        border-bottom: 0px solid black;
+
+    }       
+
+     .TG10{
+        background-color: yellow;
+        /*border: 1px solid black;*/
+        display: flexbox;
+        justify-content: center;  /*căn giữa theo chiều ngang*/ 
+        /*align-items: center;*/     /* căn giữa theo chiều dọc */
+        text-align: center;      /* căn giữa nội dung chữ */
+        width: auto;
+        border: 1px solid black;
+        border-bottom: 0px solid black;
+
+    }       
+     .TG20{
+        background-color: #f29327;
+        /*border: 1px solid black;*/
+        display: flexbox;
+        justify-content: center;  /*căn giữa theo chiều ngang*/ 
+        /*align-items: center;*/     /* căn giữa theo chiều dọc */
+        text-align: center;      /* căn giữa nội dung chữ */
+        border: 1px solid black;
+        width: auto;
+        border-bottom: 0px solid black;
+    }  
+
 </style>
 
 @section Scripts{
@@ -72,37 +334,39 @@
 
         // to mau
         function grid_OnRowDataBound(e) {
-            //var TotalProductPrice = e.TotalProductPrice;
-            //var TotalMaterialCost = e.TotalMaterialCost;
-            //var percent = (TotalProductPrice * 0.7) / TotalMaterialCost;
-            //if (percent <= 0.9) {
-            //    e.row.childNodes[5].style.backgroundColor = "#66FF00";
-            //}
-            //else if (percent <= 0.8) {
-            //    e.row.childNodes[5].style.backgroundColor = "#00BFFF";
-            //}
-            //else if (dataItem.StatusName == "Đủ hàng") {
-            //    e.row.childNodes[4].style.backgroundColor = "#FFFF00";
-            //}
-            //else if (dataItem.StatusName == "Thiếu NL/NS") {
-            //    e.row.childNodes[4].style.backgroundColor = "#FFA07A";
-            //}
-            //else if (dataItem.StatusName == "Hư nặng") {
-            //    e.row.childNodes[4].style.backgroundColor = "#B6B6B4";
-            //}
-            //else if (dataItem.StatusName == "Máy nhẹ") {
-            //    e.row.childNodes[4].style.backgroundColor = "#FF2626";
-            //}
-            //else if (dataItem.StatusName == "Đăng khắc phục") {
-            //    e.row.childNodes[4].style.backgroundColor = "#FFBF48";
-            //}
-            //else if (dataItem.StatusName == "Máy trống") {
-            //    e.row.childNodes[4].style.backgroundColor = "#FDFDF9";
-            //}
-            //else {
-            //    e.row.childNodes[4].style.backgroundColor = "#FF00FF";
-            //}
+            var dataItem = e.dataItem;
+            var cell = e.row.cells[1]; // cột [2]
+
+            if (!dataItem || !cell) return;
+
+            if (dataItem.MachineState === "Bình thường") {
+                cell.style.backgroundColor = "#1bc44e";
+            }
+            else if (dataItem.MachineState === "Lên máy") {
+                cell.style.backgroundColor = "#03dffc";
+            }
+            else if (dataItem.MachineState === "Hư nặng") {
+                cell.style.backgroundColor = "#546466";
+            }
+            else if (dataItem.MachineState === "Đủ hàng") {
+                cell.style.backgroundColor = "#f1f522";
+            }
+            else if (dataItem.MachineState === "Thiếu NL/NS") {
+                cell.style.backgroundColor = "#f2d3e7";
+            }
+            else if (dataItem.MachineState === "Máy trống") {
+                cell.style.backgroundColor = "#f2edee";
+            }
+            else if (dataItem.MachineState === "Đang khắc phục") {
+                cell.style.backgroundColor = "#f29327";
+            }
+            else {
+                cell.style.backgroundColor = "#d9504c";
+            }
         }
+
+
+
 
         function RefreshGrid(gridName) {
             var grid = $("#" + gridName).data("tGrid");
@@ -116,33 +380,44 @@
 
         function grid_OnError(e) { }
 
+        // dem ma SP khong trung`
+        function getDistinctCount(data, field) {
+            var values = {};
+            for (var i = 0; i < data.length; i++) {
+                values[data[i][field]] = true;
+            }
+            return Object.keys(values).length;
+        }
+
+
 
     </script>
 }
 
-<div class="title">Thẻ kho (Máy)</div>
+<div class="title">Báo cáo sản xuất tổng hợp</div>
 <div class="clear"></div>
 <br/>
 <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px; width: auto;">
     <fieldset>
         <legend>Tiêu chí trích lọc</legend>
+
         <div class="grid_1">
             Máy
         </div>
         <div class="grid_4">
              @{
-                Html.Telerik().ComboBox()
-                    .Name("MachineCbo")
-                    .DataBinding(binding => binding.Ajax().Select("SelectComboBoxMachineAllProduction", "Machine", new { area = "Factory" }))
-                    .HtmlAttributes(new {style = "width: 140px"})
-                    .DropDownHtmlAttributes(new {style = "width: 138px"})
-                    .AutoFill(true)
-                    .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
-                    .Render();
+                 Html.Telerik().ComboBox()
+                     .Name("MachineCbo")
+                     .DataBinding(binding => binding.Ajax().Select("SelectComboBoxMachineAllProduction", "Machine", new { area = "Factory" }))
+                     .HtmlAttributes(new { style = "width: 140px" })
+                     .DropDownHtmlAttributes(new { style = "width: 138px" })
+                     .AutoFill(true)
+                     .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
+                     .Render();
             }
         </div>
 
-             <div class="grid_3">
+         <div class="grid_2">
                 @{
                     Html.Telerik().DatePicker()
                         .Name("fromDate")
@@ -155,17 +430,65 @@
                     Html.Telerik().DatePicker()
                         .Name("toDate")
                         .Format("dd/MM/yyyy")
-                        .Value(DateTime.Today)
+                        .Value(DateTime.Today.AddDays(-1))
                         .Render();
                 }
-            </div>
+         </div>
         
-        <div class="grid_5 prefix_1">        
+        <div class="grid_2 prefix_1">        
             <button id="btnRefesh" class="t-button" onclick=" return RefreshGrids2('gridTrackUpMachine'); ">
                 <span class='t-icon t-insert'></span>
                 Tìm
             </button>
         </div>
+
+
+        <div class ="TongSP grid_9 prefix_1">
+            Tổng GT SP = (Tổng GT (OK + CPL)) / Tổng chi phí
+            <div class ="notclear clear"></div>
+                <div class ="SP13 grid_2 "> >= 1.3</div>
+                <div class ="SP113 grid_2 "> < 1.3</div>
+                <div class ="SP1 grid_2"> <= 1 </div>
+                <div class ="SP09 grid_2"> <= 0.9 </div>
+        </div>
+
+        <div class ="TLNG grid_4">
+            TL NG (%)
+            <div class ="clear"></div>
+            <div class ="NG01"> >= 0% </div>
+            <div class ="NG30"> >= 3% </div>
+            <div class ="NG50"> >= 5% </div>
+        </div>
+                
+
+        <div class ="HSSDMay grid_4">
+             HSSD máy  (%)
+            <div class ="clear"></div>
+            <div class ="HS100"> > 70% </div>
+            <div class ="HS70"> <= 70% </div>
+            <div class ="HS50"> <= 50% </div>
+        </div>
+
+
+        <div class ="TLHH grid_4">
+             TL hao hụt (%)
+            <div class ="clear"></div> 
+            <div class ="HH03"> -3%<=  X <=3% </div>
+            <div class ="HH35"> -5%<=  X <=5%   </div>
+            <div class ="HH50"> X< -5% và X >5%  </div>
+        </div>
+       
+        
+         <div class ="TGSX grid_13">
+             Chênh lệch TGSX (h)  = (TGSX TT - TGSX) / TGSX TT
+            <div class ="notclear clear"></div> 
+            <div class ="grid_3">    </div>
+            <div class ="TG00 grid_4"> -10% < X < 10%  </div>
+            <div class ="TG10 grid_4"> -20% <= X <= 20% </div>
+            <div class ="TG20 grid_4"> X < -20% và X > 20%  </div>
+        </div>
+
+
 
     </fieldset>
 </div>
@@ -181,42 +504,74 @@
                       .Select("TrackUpMachineList", "Machine", new { area = "Factory", fromDate = "", toDate = "" }))
                   .Columns(columns => {
                       columns.Bound(f => f.MachineName).Width(40).Title("Máy")
-                          .HtmlAttributes(new { style = "font-weight:bold; border-bottom:1px black solid;" });
+                          .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>")
+                          .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>")
+                          .FooterHtmlAttributes(new { style = "text-align: left; font-weight:bold; border-right:2px black solid;  border-left:2px black solid;  " })
+                          .Aggregate(agg => agg.Count())
+                          .ClientTemplate("<a href='http://vf1.vfdecolletage.vn:81/vfi/Factory/Machine/ProductionMachineDiagram'target='_blank'  style='color:black;' ><#= MachineName #></a>")
+                          .HtmlAttributes(new { style = "font-weight:bold; border-bottom:1px black solid; border-right:2px black solid; border-left:2px black solid; " });
 
                       // San pham
-                      columns.Bound(f => f.ProductName).Width(75).Title("DS sản phẩm")
-                          .HtmlAttributes(new { style = "font-weight:normal; border-bottom:1px black solid;" });
-                      columns.Bound(f => f.TotalAll).Width(60)
-                          .HeaderTemplate("Tổng sản phẩm </br>(pcs)")
+                      columns.Bound(f => f.ProductName).Width(75).Title("Mã SP")
+                          .HtmlAttributes(new { style = "font-weight:normal; border-bottom:1px black solid;" })
+                          //.ClientTemplate("<a href='...'"
+                          //    + "target='_blank' style='color:black;'>"
+                          //    + "<#= ProductName #></a>")
+                              ;
+                      columns.Bound(f => f.TotalAll).Width(40).Title("Tổng SP</br>(pcs)")
                           .HtmlAttributes(new { style = "text-align:right; border-bottom:1px black solid;" })
                           .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                           .FooterHtmlAttributes(new { style = "text-align: right; font-weight:bold;" })
                           .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                          .Format("{0:n0}")
-                          .Aggregate(agg => agg.Sum());
-                      columns.Bound(f => f.TotalProductPrice).Width(70).Title("Tổng GT </br>sản phẩm (vnd)")
-                          .HtmlAttributes(new { style = "text-align:right; font-weight:bold; border-right:2px black solid; border-bottom:1px black solid;" })
+                          .Aggregate(agg => agg.Sum())
+                          .Format("{0:n0}");
+                      columns.Bound(f => f.TotalProductPrice).Width(60).Title("Tổng GT </br>SP (vnd)")
+                          .HtmlAttributes(new { style = "text-align:right; font-weight:bold; border-right:2px black solid; border-bottom:1px black solid; font-weight:bold;" })
                           .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                           .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                           .FooterHtmlAttributes(new { style = "text-align: right;border-right:2px black solid; font-weight:bold;" })
                           .Aggregate(agg => agg.Sum())
                           .Format("{0:n0}")
-                          .ClientTemplate("<div style='background-color:<#= ((TotalProductPrice)/TotalMaterialCost) <= 0.9 ? \"#f26361\" : (((TotalProductPrice)/TotalMaterialCost) <= 1 ? \"#fcba03\" : ((TotalProductPrice)/TotalMaterialCost) >= 1.3 ? \"#2dc43c\" : \"transparent\") #>; text-align:right;'>" +
+                          .ClientTemplate("<div style='background-color:<#= ((NoNGPrice)/TotalCost) <= 0.9 ? \"#f29327\" : (((NoNGPrice)/TotalCost) <= 1 ? \"yellow\" : ((NoNGPrice)/TotalCost) >= 1.3 ? \"#2dc43c\" : \"transparent\") #>; text-align:right;'>" +
                                            "<#= $.telerik.formatString('{0:n0}', TotalProductPrice) #></div>");
 
+                      columns.Bound(f => f.NoNGPrice).Width(0).Title("GT OK</br> (vnd)")
+                          .HtmlAttributes(new { style = "text-align:right; font-weight:bold; border-right:2px black solid; border-bottom:1px black solid; font-weight:bold;" })
+                          .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                          .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                          .FooterHtmlAttributes(new { style = "text-align: right;border-right:2px black solid; font-weight:bold;" })
+                          .Aggregate(agg => agg.Sum())
+                          .Format("{0:n0}")
+                          .Hidden(true);
+
+                      columns.Bound(f => f.TotalCost).Width(60)
+                          .Title("Tổng chi phí</br> (vnd)")
+                          .HtmlAttributes(new { style = "text-align:right; border-bottom:1px black solid; font-weight:bold; border-right:2px black solid;" })
+                          .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                          .FooterHtmlAttributes(new { style = "text-align: right; font-weight:bold; border-right:2px black solid;" })
+                          .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                          .Format("{0:n0}")
+                          .Aggregate(agg => agg.Sum())
+                          .Sortable(true);
+
+
                       // Nguyen lieu
-                      columns.Bound(f => f.MaterialName).Width(80).Title("DS nguyên liệu")
-                          .HtmlAttributes(new { style = "font-weight:normal; border-bottom:1px black solid;" });
-                      columns.Bound(f => f.TotalMaterialUsed).Width(60)
-                          .HeaderTemplate("Tổng nguyên </br>liệu SD (cây)")
+                      columns.Bound(f => f.MaterialName).Width(70).Title("Mã NL")
+                          .HtmlAttributes(new { style = "font-weight:normal; border-bottom:1px black solid;" })
+                          //.ClientTemplate("<a href='...'"
+                          //    + "target='_blank' style='color:black;'>"
+                          //    + "<#= MaterialName #></a>")
+                          ;                       
+                      columns.Bound(f => f.TotalMaterialUsed).Width(40)
+                          .Title("NL SD</br> (cây)")
                           .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                           .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                           .FooterHtmlAttributes(new { style = "text-align: right; font-weight:bold;" })
                           .Aggregate(agg => agg.Sum())
                           .HtmlAttributes(new { style = "text-align:right; border-bottom:1px black solid;" })
                           .Format("{0:n0}");
-                      columns.Bound(f => f.TotalMaterialCost).Width(80)
-                          .HeaderTemplate("Tổng GT </br>nguyên liệu (vnd)")
+                      columns.Bound(f => f.TotalMaterialCost).Width(60)
+                          .Title("GT NL</br> (vnd)")
                           .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                           .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                           .FooterHtmlAttributes(new { style = "text-align: right;border-right:2px black solid; font-weight:bold;" })
@@ -224,55 +579,143 @@
                           .HtmlAttributes(new { style = "text-align:right; font-weight:bold; border-right:2px black solid; border-bottom:1px black solid;" })
                           .Format("{0:n0}");
 
-                      
+
+                      //columns.Bound(f => f.ProductionRate).Width(50)
+                      //    .Title("SL định</br>mức (pcs)")
+                      //    .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                      //    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                      //    .FooterHtmlAttributes(new { style = "text-align: right; font-weight:bold;" })
+                      //    .Aggregate(agg => agg.Sum())
+                      //    .HtmlAttributes(new { style = "text-align:right; border-bottom:1px black solid;" })
+                      //    .Format("{0:n0}");
+
+                      //columns.Bound(f => f.MaxDiffNumber).Width(0)
+                      //       .Hidden(true);
+
+                      //columns.Bound(f => f.MinDiffNumber).Width(0)
+                      //       .Hidden(true);
+
+
+
                       // Cong cu
-                      columns.Bound(f => f.CountToolId).Width(50).Title("Mã </br>công cụ")
-                          .HtmlAttributes(new { style = "text-align:right; border-bottom:1px black solid;"})
+                      columns.Bound(f => f.CountToolId).Width(30).Title("Mã </br>công cụ")
+                          .HtmlAttributes(new { style = "text-align:right; border-bottom:1px black solid;" })
                           .FooterHtmlAttributes(new { style = "text-align: right; font-weight:bold;" })
                           .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                           .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                           .Aggregate(agg => agg.Sum())
                           .Format("{0:n0}");
-                      columns.Bound(f => f.TotalToolUsed).Width(70).Title("Tổng công </br>cụ SD ")
+                      columns.Bound(f => f.TotalToolUsed).Width(30).Title("Công cụ </br>SD ")
                           .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                          .HtmlAttributes(new { style = "text-align:right; border-bottom:1px black solid;"})
+                          .HtmlAttributes(new { style = "text-align:right; border-bottom:1px black solid;" })
                           .FooterHtmlAttributes(new { style = "text-align: right; font-weight:bold;" })
                           .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                           .Aggregate(agg => agg.Sum())
                           .Format("{0:n0}");
-                      columns.Bound(f => f.TotalToolPrice).Width(70).Title("Tổng GT </br>công cụ (vnd)")
+                      columns.Bound(f => f.TotalToolPrice).Width(50).Title("GT công cụ</br> (vnd)")
                           .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                           .FooterHtmlAttributes(new { style = "text-align: right;border-right:2px black solid; font-weight:bold;" })
                           .HtmlAttributes(new { style = "text-align:right; font-weight:bold; border-right:2px black solid; border-bottom:1px black solid;" })
                           .Aggregate(agg => agg.Sum())
                           .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                           .Format("{0:n0}");
+
+                      // ti le NG
+                      columns.Bound(f => f.NGPersent).Title("TL NG</br>(%)").Width(35)
+                          .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid; font-weight:bold" })
+                          .ClientTemplate("<div style='background-color:<#= (NGPersent > 5) ? \"#f29327\" : (NGPersent >= 3 && NGPersent <= 5) ? \"yellow\" : \"transparent\" #>; text-align:center;'>" + "<#= $.telerik.formatString('{0:n1}', NGPersent) #>%</div>")
+                          .Aggregate(agg => agg.Average())
+                          .ClientFooterTemplate("<#= $.telerik.formatString('{0:n1}', Average) #>%")
+                          .FooterHtmlAttributes(new { style = "text-align: center; font-weight:bold;" })
+                          .Format("{0:n1}%");
+                      
+                      // Hieu suat
+                      columns.Bound(f => f.Efficiency).Title("Hiệu suất SD</br>máy (%)").Width(35)
+                          .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid; font-weight:bold;" })
+                          .ClientTemplate("<div style='background-color:<#= (Efficiency < 50) ? \"#f29327\" : (Efficiency >= 50 && Efficiency <= 70) ? \"yellow\" : \"transparent\" #>; text-align:center;'>" + "<#= $.telerik.formatString('{0:n1}', Efficiency) #>%</div>")
+                          .Aggregate(agg => agg.Average())
+                          .ClientFooterTemplate("<#= $.telerik.formatString('{0:n1}', Average) #>%")
+                          .FooterHtmlAttributes(new { style = "text-align: center; font-weight:bold;" })
+                          .Format("{0:n1}%");
+                      
+                      
+                      // định mức
+                      columns.Bound(f => f.PercentProductionRate).Width(35) .Title("TL hao</br>hụt (%)")
+                          .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n1}', Average) #>%")
+                          .ClientFooterTemplate("<#= $.telerik.formatString('{0:n1}', Average) #>%")
+                          .FooterHtmlAttributes(new { style = "text-align: center;border-right:2px black solid; font-weight:bold;" })
+                          .Aggregate(agg => agg.Average())
+                          .HtmlAttributes(new { style = "text-align:center; border-right:2px black solid; border-bottom:1px black solid; font-weight:bold;" })
+                          .Format("{0:n1}%")
+                          .ClientTemplate(
+                                       "<div style='background-color:<#= (PercentProductionRate > 3 && PercentProductionRate <= 5) || (PercentProductionRate < -3 && PercentProductionRate >= -5) ? \"yellow\" : ((PercentProductionRate > 5 || PercentProductionRate < -5) ? \"#f29327\" : \"transparent\") #>;'>" +
+                                       "<#= $.telerik.formatString('{0:n1}', PercentProductionRate) #>%" +
+                                       "</div>");
 
 
                       // Sua may
-                      columns.Bound(f => f.MaxProductionTime).Width(50).Title("Máy chạy (h)")
-                          .HtmlAttributes(new { style = "text-align:right; border-bottom:1px black solid;"})
+                      //columns.Bound(f => f.MaxProductionTime).Width(40).Title("TG LT</br>SX (h)")
+                      //    .HtmlAttributes(new { style = "text-align:right; border-bottom:1px black solid;" })
+                      //    .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                      //    .FooterHtmlAttributes(new { style = "text-align: right; font-weight:bold;" })
+                      //    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                      //    .Aggregate(agg => agg.Sum())
+                      //    .Format("{0:n1}"); 
+
+                      columns.Bound(f => f.Productivity).Width(30).Title("TG SX</br>TT(h)")
+                          .HtmlAttributes(new { style = "text-align:right; border-bottom:1px black solid;" })
                           .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                           .FooterHtmlAttributes(new { style = "text-align: right; font-weight:bold;" })
-                          .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                          .ClientFooterTemplate("<#= $.telerik.formatString('{0:n1}', Sum) #>")
                           .Aggregate(agg => agg.Sum())
-                          .Format("{0:n2}");
-                      columns.Bound(f => f.CountRepairTimes).Width(50).Title("Số lần </br>sửa máy")
+                          .Format("{0:n1}");
+                      columns.Bound(f => f.CountRepairTimes).Width(25).Title("Số lần </br>sửa")
                           .HtmlAttributes(new { style = "text-align:right; border-bottom:1px black solid;" })
                           .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                           .FooterHtmlAttributes(new { style = "text-align: right; font-weight:bold;" })
                           .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                           .Aggregate(agg => agg.Sum())
                           .Format("{0:n0}");
-                      columns.Bound(f => f.TotalRepairTime).Width(50).Title("Sửa máy (h)")
-                          .HtmlAttributes(new { style = "text-align:right;font-weight:bold; border-bottom:1px black solid;" })
+                      columns.Bound(f => f.MachineStopTime).Width(35).Title("TG máy </br>ngưng  (h)")
+                          .HtmlAttributes(new { style = "text-align:right; border-bottom:1px black solid;" })
                           .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                           .FooterHtmlAttributes(new { style = "text-align: right; font-weight:bold;" })
-                          .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                          .ClientFooterTemplate("<#= $.telerik.formatString('{0:n1}', Sum) #>")
                           .Aggregate(agg => agg.Sum())
-                          .Format("{0:n2}");
+                          .Format("{0:n1}");
+                      //columns.Bound(f => f.MachineStopTime).Width(40).Title("TG ngưng</br> máy (h)")
+                      //    .HtmlAttributes(new { style = "text-align:right;font-weight:bold; border-bottom:1px black solid;" })
+                      //    .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                      //    .FooterHtmlAttributes(new { style = "text-align: right; font-weight:bold;" })
+                      //    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
+                      //    .Aggregate(agg => agg.Sum())
+                      //    .Format("{0:n2}");
 
-
+                      columns.Bound(f => f.MaxProductionTime2).Width(30).Title("TG </br>SX (h)")
+                          .HtmlAttributes(new { style = "text-align:right; border-bottom:1px black solid;" })
+                          .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n1}', Sum) #>")
+                          .FooterHtmlAttributes(new { style = "text-align: right; font-weight:bold;" })
+                          .ClientFooterTemplate("<#= $.telerik.formatString('{0:n1}', Sum) #>")
+                          .Aggregate(agg => agg.Sum())
+                          .Format("{0:n1}");
+                       
+                      columns.Bound(f => f.ProductionTimeDiffNumber).Width(35).Title("Chênh lệch</br>TG SX (h)")
+                          .HtmlAttributes(new { style = "text-align:right; border-bottom:1px black solid; font-weight:bold;" })
+                          .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                          .FooterHtmlAttributes(new { style = "text-align: right; font-weight:bold; " })
+                          .ClientFooterTemplate("<#= $.telerik.formatString('{0:n1}', Sum) #>")
+                          .Aggregate(agg => agg.Sum())
+                          .ClientTemplate(
+                                  "<div style='background-color:<#= ((ProductionTimeDiffNumber/Productivity > 0.2 || ProductionTimeDiffNumber/Productivity < -0.2)  ? \"#f29327\" : ((ProductionTimeDiffNumber/Productivity >= 0.1 || ProductionTimeDiffNumber/Productivity <= -0.1)  ? \"yellow\"  : \"transparent\")) #>;'>" + 
+                                  "<#= $.telerik.formatString('{0:n1}', ProductionTimeDiffNumber) #>" +
+                                  "</div>");
+                          
+                          
+                          
+                      //columns.Bound(f => f.MachineStateTime).Title("TG bị lỗi").Width(60)
+                      //    .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid; font-weight:bold;" })
+                      //    .Format("{0:(HH:mm) dd/MM/yyyy}")
+                      //    .ClientTemplate("<#= MachineStateTime == null ? '' : $.telerik.formatString('{0:(HH:mm) dd/MM/yyyy}', MachineStateTime) #>");
                   }
                   )
                   .DetailView(details => details.ClientTemplate(
@@ -288,57 +731,130 @@
                                           .Select("GetProductDetail", "Machine", new { area = "Factory" }))
                                       .Columns(columns => {
                                           columns.Bound(f => f.Index).Width(40).Title("STT").ReadOnly(true)
-                                              .HtmlAttributes(new { style = "text-align:center;border-bottom:1px black solid;" });
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center; " })
+                                              .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid;" })
+                                              //.HeaderTemplate("<a href='http://vf1.vfdecolletage.vn:81/vfi/Inv/Inv/InventoryCard'"
+                                              //                 + "target='_blank' style='color:black;'>"
+                                              //                 + "STT</a>")
+                                                               ;
+                                          
                                           columns.Bound(f => f.ProductCode).Title("Mã SP")
-                                              .HtmlAttributes(new { style = "text-align:center; font-weight:bold; border-bottom:1px black solid;" });
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
+                                              .HtmlAttributes(new { style = "text-align:center; font-weight:bold; border-bottom:1px black solid; " })
+                                              //.HeaderTemplate("<a href='http://vf1.vfdecolletage.vn:81/vfi/Inv/Reporting/ProductionTotalReport'"
+                                              //                 + "target='_blank' style='color:black; text-decoration:underline;'>"
+                                              //                 + "Mã SP</a>")
+                                                               ;
+                                          
+                                          columns.Bound(f => f.ProductProductivitySetting).Title("NS TK</br> (s/pcs)")
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
+                                              .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid;" })
+                                              .Format("{0:n0}");
+                                          
+                                          columns.Bound(f => f.ProductProductivityActual).Title("NS TT</br> (s/pcs)")
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
+                                              .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid;" })
+                                              .Format("{0:n0}");
+                                          
                                           columns.Bound(f => f.Currency).Title("Tiền tệ")
-                                              .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid;" });
-                                          columns.Bound(f => f.ProductUnitPrice)
-                                              .Title("Đơn giá (vnd)")
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
+                                              .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid; border-left:2px black solid;" }); 
+                                          
+                                          columns.Bound(f => f.ProductUnitPrice).Title("Đơn giá")
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
                                               .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid;" })
                                               .Format("{0:n3}");
-                                          columns.Bound(f => f.TotalProduct)
-                                              .Title("SL sản phẩm (pcs)")
-                                              .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid;" })
+                                          
+                                          columns.Bound(f => f.TotalProduct).Title("OK </br>(pcs)")
+                                              .HeaderHtmlAttributes(new { @class = "good-column", style = "font-weight:bold; text-align:center;" })
+                                              .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid; border-left:2px black solid; " })
                                               .Format("{0:n0}")
                                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                                              .FooterHtmlAttributes(new { style = "text-align: center; font-weight:bold; " })
+                                              .FooterHtmlAttributes(new { style = "text-align: center; font-weight:bold; border-left:2px black solid; " })
                                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                                               .Aggregate(agg => agg.Sum());
-                                          columns.Bound(f => f.ProductPrice)
-                                              .Title("GT sản phẩm (vnd)")
+
+                                          columns.Bound(f => f.ProductPrice).Title("GT OK</br> (vnd)")
+                                              .HeaderHtmlAttributes(new { @class = "good-column", style = "font-weight:bold; text-align:center;" })
                                               .HtmlAttributes(new { style = "text-align:center;  border-bottom:1px black solid;" })
                                               .Format("{0:n0}")
                                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                                               .FooterHtmlAttributes(new { style = "text-align: center; font-weight:bold; " })
                                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                                               .Aggregate(agg => agg.Sum());
-                                          columns.Bound(f => f.TotalDefect)
-                                              .Title("SL phế phẩm (pcs)")
+
+                                          columns.Bound(f => f.TotalProcessing).Title("CPL </br>(pcs)")
+                                              .HeaderHtmlAttributes(new { @class = "ng-column", style = "font-weight:bold; text-align:center;" })
                                               .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid; border-left:2px black solid;" })
                                               .Format("{0:n0}")
                                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                                               .FooterHtmlAttributes(new { style = "text-align: center; font-weight:bold;  border-left:2px black solid;" })
                                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                                               .Aggregate(agg => agg.Sum());
-                                          columns.Bound(f => f.DefectPrice)
-                                              .Title("GT phế phẩm (vnd)")
+
+                                          columns.Bound(f => f.ProcessingPrice).Title("GT CPL </br>(vnd)")
+                                              .HeaderHtmlAttributes(new { @class = "ng-column", style = "font-weight:bold; text-align:center;" })
                                               .HtmlAttributes(new { style = "text-align:center;  border-bottom:1px black solid;" })
                                               .Format("{0:n0}")
                                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                                               .FooterHtmlAttributes(new { style = "text-align: center; font-weight:bold; " })
                                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                                               .Aggregate(agg => agg.Sum());
-                                          columns.Bound(f => f.TotalPrice)
-                                              .Title("GT tổng (vnd)")
+
+                                          columns.Bound(f => f.TotalDefect).Title("PP </br>(pcs)")
+                                              .HeaderHtmlAttributes(new { @class = "defect-column", style = "font-weight:bold; text-align:center;" })
                                               .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid; border-left:2px black solid;" })
                                               .Format("{0:n0}")
                                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                                               .FooterHtmlAttributes(new { style = "text-align: center; font-weight:bold;  border-left:2px black solid;" })
                                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                                               .Aggregate(agg => agg.Sum());
-                                          
-                                          
+
+                                          columns.Bound(f => f.DefectPrice).Title("GT PP</br> (vnd)")
+                                              .HeaderHtmlAttributes(new { @class = "defect-column", style = "font-weight:bold; text-align:center;" })
+                                              .HtmlAttributes(new { style = "text-align:center;  border-bottom:1px black solid; border-right:2px black solid" })
+                                              .Format("{0:n0}")
+                                              .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                                              .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                                              .FooterHtmlAttributes(new { style = "text-align: center; font-weight:bold; ; border-right:2px black solid;" })
+                                              .Aggregate(agg => agg.Sum());
+
+                                          columns.Bound(f => f.NGPersent).Title("TL NG </br>(h)")
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
+                                              .ClientTemplate("<div style='background-color:<#= (NGPersent > 5) ? \"#f29327\" : (NGPersent >= 3 && NGPersent <= 5) ? \"yellow\" : \"transparent\" #>; text-align:center;'>" +
+                                                              "<#= $.telerik.formatString('{0:n1}', NGPersent) #>%</div>")
+                                              .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid; border-right:1px black solid" })
+                                              .FooterHtmlAttributes(new { style = "text-align: center; font-weight:bold; ; border-right:1px black solid;" })
+                                              .Format("{0:n1}%");
+
+                                          columns.Bound(f => f.TotalAllProduction).Title("SL tổng </br>(pcs)")
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
+                                              .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid; border-left:1px black solid;" })
+                                              .Format("{0:n0}")
+                                              .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                                              .FooterHtmlAttributes(new { style = "text-align: center; font-weight:bold;  border-left:1px black solid;" })
+                                              .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                                              .Aggregate(agg => agg.Sum());
+
+                                          columns.Bound(f => f.TotalPrice).Title("GT tổng </br>(vnd)")
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
+                                              .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid; border-right:1px black solid;" })
+                                              .Format("{0:n0}")
+                                              .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                                              .FooterHtmlAttributes(new { style = "text-align: center; font-weight:bold; border-right:1px black solid;" })
+                                              .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                                              .Aggregate(agg => agg.Sum());
+
+                                          columns.Bound(f => f.ProductProductionTime).Title("Tổng TG </br>SX (h)")
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
+                                              .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid; border-left:1px black solid;" })
+                                              .Format("{0:n1}")
+                                              .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n1}', Sum) #>")
+                                              .FooterHtmlAttributes(new { style = "text-align: center; font-weight:bold;  border-left:1px black solid;" })
+                                              .ClientFooterTemplate("<#= $.telerik.formatString('{0:n1}', Sum) #>")
+                                              .Aggregate(agg => agg.Sum());
+
+
                                       })
                                       .ClientEvents(events => events.OnDataBinding("gridDetail_OnDataBinding"))
                                       .ToHtmlString()
@@ -351,32 +867,108 @@
                                       .DataBinding(dataBinding => dataBinding.Ajax()
                                           .Select("GetMaterialDetail", "Machine", new { area = "Factory" }))
                                       .Columns(columns => {
-                                          columns.Bound(f => f.Index).Width(40).Title("STT").ReadOnly(true)
-                                              .HtmlAttributes(new { style = "text-align:center;border-bottom:1px black solid;" });                                         
-                                          columns.Bound(f => f.MaterialCode).Title("Mã NL").Width(100)
+                                          columns.Bound(f => f.Index).Width(30).Title("STT").ReadOnly(true)
+                                              .HtmlAttributes(new { style = "text-align:center;border-bottom:1px black solid; " })
+                                               .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
+                                              //.HeaderTemplate("<a href='http://vf1.vfdecolletage.vn:81/vfi/Inv/Reporting/MaterialMonthlyReport'"
+                                              //                 + "target='_blank' style='color:black;font-weight:bold; text-align:center; text-decoration:underline;'>"
+                                              //                 + "STT</a>")
+                                                               ;
+                                          
+                                          columns.Bound(f => f.Productcode).Title("Mã SP").Width(100)
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
                                               .HtmlAttributes(new { style = "text-align:center;font-weight:bold; border-bottom:1px black solid;" });
-                                          columns.Bound(f => f.MaterialLot).Title("Lô").Width(90)
+                                          
+                                          columns.Bound(f => f.MaterialCode).Title("Mã NL").Width(100)
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
+                                              .HtmlAttributes(new { style = "text-align:center;font-weight:bold; border-bottom:1px black solid;" });
+                                          
+                                          columns.Bound(f => f.MaterialLot).Title("Lô").Width(40)
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
                                               .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid;" });
-                                          columns.Bound(f => f.TotalMaterial).Title("Nguyên liệu SD(cây)").Width(50)
+                                          
+                                          columns.Bound(f => f.MaterialLenght).Title("Dài </br>(mm)").Width(50)
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
+                                              .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid; " })
+                                              .Format("{0:n0}");
+
+                                          //columns.Bound(f => f.ProductionRate).Title("Định mức </br>(pcs/cây)").Width(80)
+                                          //    .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
+                                          //    .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid;" })
+                                          //    .Format("{0:n0}");
+
+                                          columns.Bound(f => f.ProductionRateActual).Title("Định mức TT</br>(pcs/cây)").Width(80)
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
+                                              .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid; border-left:2px black solid;" })
+                                              .Format("{0:n0}")
+                                              .FooterHtmlAttributes(new { style = "text-align: center; font-weight:bold; border-left:2px black solid;" });
+                                          
+                                          columns.Bound(f => f.TotalMaterial).Title("NL SD</br>(cây)").Width(50)
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
                                               .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid; " })
                                               .Format("{0:n0}")
                                               .FooterHtmlAttributes(new { style = "text-align: center; font-weight:bold; " })
                                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                                               .Aggregate(agg => agg.Sum());
-                                          columns.Bound(f => f.MaterialUnitWeight).Title("Trọng lượng (cây/kg)").Width(90)
+
+
+
+                                          columns.Bound(f => f.MaxDiffNumber).Width(0)
+                                                 .Hidden(true);
+                                          columns.Bound(f => f.MinDiffNumber).Width(0)
+                                                 .Hidden(true);
+
+                                          columns.Bound(f => f.ProductionRateNumber).Title("SL định</br> mức (pcs)").Width(60)
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
+                                              .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid; border-right:2px black solid;" })
+                                              .Format("{0:n0}")
+                                              .FooterHtmlAttributes(new { style = "text-align: center; font-weight:bold; border-right:2px black solid;" })
+                                              .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                                              .Aggregate(agg => agg.Sum());
+                                          
+                                          
+                                          columns.Bound(f => f.MaterialUnitWeight).Title("Trọng lượng </br>(cây/kg)").Width(50)
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
                                               .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid;" })
                                               .Format("{0:n3}")
                                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>");
-                                          columns.Bound(f => f.MaterialUnitPrice).Title("Đơn giá (kg/vnd)").Width(80)
+                                          
+                                          columns.Bound(f => f.MaterialUnitPrice).Title("Đơn giá </br>(kg/vnd)").Width(50)
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
                                               .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid;" })
                                               .Format("{0:n0}");
-                                          columns.Bound(f => f.MaterialPrice).Title("GT nguyên liệu (vnd)").Width(100)
-                                              .HtmlAttributes(new { style = "text-align:center;  border-bottom:1px black solid;" })
+                                          
+                                          columns.Bound(f => f.MaterialPrice).Title("GT NL </br>(vnd)").Width(90)
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
+                                              .HtmlAttributes(new { style = "text-align:center;  border-bottom:1px black solid;border-left:2px black solid;" })
                                               .Format("{0:n0}")
                                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                                              .FooterHtmlAttributes(new { style = "text-align: center; font-weight:bold; " })
+                                              .FooterHtmlAttributes(new { style = "text-align: center; font-weight:bold; border-left:2px black solid; " })
                                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                                               .Aggregate(agg => agg.Sum());
+
+                                          columns.Bound(f => f.ProductionRateDiffNumber).Width(40).Title("SL hao</br>hụt (pcs)")
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
+                                              .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                                              .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                                              .FooterHtmlAttributes(new { style = "text-align: center; font-weight:bold; border-left:2px black solid;" })
+                                              .Aggregate(agg => agg.Sum())
+                                              .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid; border-left:2px black solid;" })
+                                              .Format("{0:n0}")
+                                              .ClientTemplate(
+                                                          "<div style='background-color:<#= (ProductionRateDiffNumber > MinDiffNumber && ProductionRateDiffNumber <= MaxDiffNumber) || (ProductionRateDiffNumber < -MinDiffNumber && ProductionRateDiffNumber >= -MaxDiffNumber) ? \"yellow\" : ((ProductionRateDiffNumber > MaxDiffNumber || ProductionRateDiffNumber < -MaxDiffNumber) ? \"#f29327\" : \"transparent\") #>;'>" +
+                                                          "<#= $.telerik.formatString('{0:n0}', ProductionRateDiffNumber) #>" +
+                                                          "</div>");
+
+                                          columns.Bound(f => f.PercentProductionRate).Width(40)
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
+                                              .Title("TL hao</br>hụt (%)")
+                                              .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid; font-weight:bold;" })
+                                              .Format("{0:n1}%")
+                                              .ClientTemplate(
+                                                         "<div style='background-color:<#= (PercentProductionRate > 3 && PercentProductionRate <= 5) || (PercentProductionRate < -3 && PercentProductionRate >= -5) ? \"yellow\" : ((PercentProductionRate > 5 || PercentProductionRate < -5) ? \"#f29327\" : \"transparent\") #>;'>" +
+                                                         "<#= $.telerik.formatString('{0:n1}', PercentProductionRate) #>%" +
+                                                         "</div>");
                                       })
                                       .ClientEvents(events => events.OnDataBinding("gridDetail_OnDataBinding"))
                                       .ToHtmlString()
@@ -389,13 +981,25 @@
                                       .DataBinding(dataBinding => dataBinding.Ajax()
                                           .Select("GetToolDetail", "Machine", new { area = "Factory" }))
                                       .Columns(columns => {
-                                          columns.Bound(f => f.Index).Width(40).Title("STT").ReadOnly(true)
+                                          columns.Bound(f => f.Index).Width(30).Title("STT").ReadOnly(true)
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
+                                              .HtmlAttributes(new { style = "text-align:center;border-bottom:1px black solid;" })
+                                              .HeaderTemplate("<a href='http://vf1.vfdecolletage.vn:81/vfi/Purchasing/Tool/ToolTransactionManagement'"
+                                                               + "target='_blank' style='color:black; text-decoration:underline; '>"
+                                                               + "STT</a>")
+                                                               ;
+                                          columns.Bound(f => f.ToolName).Title("Tên công cụ").Width(80)
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center; " })
+                                              .HtmlAttributes(new { style = "text-align:center;border-bottom:1px black solid;" })
+                                              //.HeaderTemplate("<a href='http://vf1.vfdecolletage.vn:81/vfi/Purchasing/Tool/ApproveTransactionTool'"
+                                              //                 + "target='_blank' style='color:black; text-decoration:underline; '>"
+                                              //                 + "Tên công cụ</a>") text-decoration:underline;
+                                                               ;
+                                          columns.Bound(f => f.ToolCode).Title("Mã công cụ").Width(120)
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
                                               .HtmlAttributes(new { style = "text-align:center;border-bottom:1px black solid;" });
-                                          columns.Bound(f => f.ToolName).Title("Tên công cụ").Width(90)
-                                              .HtmlAttributes(new { style = "text-align:center;border-bottom:1px black solid;" });
-                                          columns.Bound(f => f.ToolCode).Title("Mã công cụ").Width(100)
-                                              .HtmlAttributes(new { style = "text-align:center;border-bottom:1px black solid;" });
-                                          columns.Bound(f => f.TotalToolUsed).Title("Công cụ SD").Width(50)
+                                          columns.Bound(f => f.TotalToolUsed).Title("Công cụ SD").Width(40)
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
                                               .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid;" })
                                               .Format("{0:n0}")
                                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
@@ -403,9 +1007,11 @@
                                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                                               .Aggregate(agg => agg.Sum());
                                           columns.Bound(f => f.ToolUnitPrice).Title("Đơn giá (vnd)").Width(50)
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
                                               .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid;" })
                                               .Format("{0:n0}");
                                           columns.Bound(f => f.ToolPrice).Title("GT công cụ (vnd)").Width(70)
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
                                               .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid;" })
                                               .Format("{0:n0}")
                                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
@@ -417,38 +1023,65 @@
                                       .ToHtmlString()
                               );
 
-                              // TAB 4: Công cụ
+                              // TAB 4: Sửa máy
                               items.Add().Text("Sửa máy").Content(
                                   Html.Telerik().Grid<RepairDetailModel>()
                                       .Name("gridRepair_<#= MachineId #>")
                                       .DataBinding(dataBinding => dataBinding.Ajax()
                                           .Select("GetRepairDetail", "Machine", new { area = "Factory" }))
                                       .Columns(columns => {
-                                          columns.Bound(f => f.Index).Width(40).Title("STT").ReadOnly(true)
-                                              .HtmlAttributes(new { style = "text-align:center;border-bottom:1px black solid;" });
+                                          columns.Bound(f => f.Index).Width(30).Title("STT").ReadOnly(true)
+                                             .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
+                                             .HtmlAttributes(new { style = "text-align:center;border-bottom:1px black solid;" })
+                                             .HeaderTemplate("<a href='http://vf1.vfdecolletage.vn:81/vfi/Factory/Machine/MachineRepairManagement'"
+                                                               + "target='_blank' style='color:black; text-decoration:underline; '>"
+                                                               + "STT</a>");
                                           columns.Bound(f => f.ProductCode).Title("Mã SP").Width(60)
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
                                               .HtmlAttributes(new { style = "text-align:center;border-bottom:1px black solid;" });
-                                          columns.Bound(f => f.CauseDate).Title("TG xảy ra lỗi").Width(70)
-                                              .HtmlAttributes(new { style = "text-align:center;border-bottom:1px black solid; font-weight:bold;" })
-                                              .Format("{0:(HH:mm) dd/MM/yyyy }");
                                           columns.Bound(f => f.StatusMachine).Title("Tình trạng").Width(130)
-                                              .HtmlAttributes(new { style = "text-align:center;border-bottom:1px black solid;" });
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
+                                              .HtmlAttributes(new { style = "text-align:center;border-bottom:1px black solid;" })
+                                              //.HeaderTemplate("<a href='http://vf1.vfdecolletage.vn:81/vfi/Factory/Machine/MachineStateStatistic'"
+                                              //                 + "target='_blank' style='color:black; text-decoration:underline;'>"
+                                              //                 + "Tình trạng</a>")
+                                                               ;
                                           columns.Bound(f => f.ErrorCause).Title("Lỗi").Width(80)
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
                                               .HtmlAttributes(new { style = "text-align:center;border-bottom:1px black solid;" });
                                           columns.Bound(f => f.HowToFix).Title("Cách sửa lỗi").Width(80)
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
                                               .HtmlAttributes(new { style = "text-align:center;border-bottom:1px black solid;" });
-                                          columns.Bound(f => f.StartDate).Title("Bắt đầu sửa ").Width(70)
-                                              .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid; font-weight:bold;" })
+                                          //columns.Bound(f => f.StartDate).Title("Bắt đầu sửa ").Width(70)
+                                          //    .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
+                                          //    .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid; font-weight:bold;" })
+                                          //    .Format("{0:(HH:mm) dd/MM/yyyy}");
+                                          columns.Bound(f => f.CauseDate).Title("TG xảy ra lỗi").Width(70)
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
+                                              .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid; font-weight:bold; border-left:2px black solid;" })
+                                              .Format("{0:(HH:mm) dd/MM/yyyy }")
+                                              .FooterHtmlAttributes(new { style = "text-align:center; font-weight:bold; border-left:2px black solid;" });
+                                          columns.Bound(f => f.FinishDate).Title("TG sửa xong").Width(70)
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
+                                              .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid; font-weight:bold; " })
                                               .Format("{0:(HH:mm) dd/MM/yyyy}");
-                                          columns.Bound(f => f.FinishDate).Title("Sửa xong").Width(70)
+                                          //columns.Bound(f => f.FixTime).Title("Thời gian sửa (h)").Width(55)
+                                          //    .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
+                                          //    .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid;" })
+                                          //    .Format("{0:n2}")
+                                          //    .FooterHtmlAttributes(new { style = "text-align:center; font-weight:bold; " })
+                                          //    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
+                                          //    .Aggregate(agg => agg.Sum());
+                                          columns.Bound(f => f.CheckTime).Title("TG ngưng máy (h)").Width(55)
+                                              .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
                                               .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid; font-weight:bold;" })
-                                              .Format("{0:(HH:mm) dd/MM/yyyy}");
-                                          columns.Bound(f => f.FixTime).Title("Thời gian sửa (h)").Width(50)
-                                              .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid;" })
-                                              .Format("{0:n2}")
+                                              .Format("{0:n1}")
                                               .FooterHtmlAttributes(new { style = "text-align:center; font-weight:bold; " })
-                                              .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                                              .ClientFooterTemplate("<#= $.telerik.formatString('{0:n1}', Sum) #>")
                                               .Aggregate(agg => agg.Sum());
+
+
+
                                       })
                                       .ClientEvents(events => events.OnDataBinding("gridDetail_OnDataBinding"))
                                       .ToHtmlString()

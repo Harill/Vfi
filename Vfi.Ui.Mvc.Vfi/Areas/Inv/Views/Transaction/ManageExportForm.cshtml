@@ -8,6 +8,32 @@
 
 
 @section Scripts{
+    <script type="text/javascript">
+        hs.graphicsDir = '';
+        hs.align = 'center';
+        hs.transitions = ['expand', 'crossfade'];
+        hs.outlineType = '';
+        hs.fadeInOut = true;
+        hs.numberPosition = 'caption';
+        hs.dimmingOpacity = 0.75;
+
+        // Add the controlbar
+        if (hs.addSlideshow)
+            hs.addSlideshow({
+                //slideshowGroup: 'group1',
+                interval: 5000,
+                repeat: false,
+                useControls: true,
+                fixedControls: 'fit',
+                overlayOptions: {
+                    opacity: .75,
+                    position: 'bottom center',
+                    hideOnMouseOut: true
+                }
+            });
+    </script>
+
+
     <!-- approve stockorder -->
     <script type="text/javascript">
         function PrintForm(val) {
@@ -61,6 +87,34 @@
                     toDate: toDate,
                     warehouseId: warehouse
                 });
+            }
+        }
+
+        function gridTransactionImg_OnSave(e) {
+            //var i = 0;
+            //var drawing2D = "";
+            var editRow = e.target.getElementsByClassName("t-grid-edit-row")[0];
+            var ul2D = editRow.childNodes[2].childNodes[1].childNodes[1];
+            //if (ul2D == null && e.Upload === "" || typeof ul2D == 'undefined') {
+            //    //drawing2D = e.dataItem.ImgUrl;
+            //} else
+            if (ul2D != null) {
+                var child2D = ul2D.childNodes;
+                for (var i = child2D.length - 1; i >= 0; i--) {
+                    if (child2D[i].childNodes[0].textContent === "uploaded") {
+                        e.values.ImgUrl = child2D[0].childNodes[1].title;
+                        //drawing2D = child2D[0].childNodes[1].title;
+                        break;
+                    }
+                }
+            }
+            return true;
+        }
+
+        function gridTransactionImg_OnRowDataBound(e) {
+            if (!e.dataItem.CanModify) {
+                e.row.getElementsByClassName("t-button t-grid-edit t-button-icon")[0].parentNode.innerHTML = "";
+                e.row.getElementsByClassName("t-button t-grid-delete t-button-icon")[0].parentNode.innerHTML = "";
             }
         }
 
@@ -192,7 +246,7 @@
                             .Title("Tình trạng");
                     columns.Bound(f => f.Note)
                            .Title("Ghi Chú");
-                    columns.Bound(f => f.TransactionId).Title("In").Width(50)
+                    columns.Bound(f => f.TransactionId).Title("In").Width(70)
                            .ClientTemplate("<input type='button' id='id_<#= TransactionId #>' value='In' ftype='<#= FormType #>' class='t-button' onclick=PrintForm(<#= TransactionId #>) />")
                            .HtmlAttributes(new { style = "text-align:center" });
                     columns.Bound(f => f.ModifiedUser).Title("Người làm").Width(85);
@@ -256,15 +310,32 @@
                                   )
                                       .Columns(columns => {
                                           //columns.Command(c => c.Edit().Text("").ButtonType(GridButtonType.Image)).Width(50);
-                                          columns.Bound(f => f.LotNumber).Width(200).Title("Lô").ReadOnly(true);
-                                          columns.Bound(f => f.ProductCode).Width(100).Title("Sản phẩm").ReadOnly(true);
-                                          columns.Bound(f => f.Number).Width(98).Title("Số lượng (PCS)")
+                                          columns.Bound(f => f.Index).Width(50).Title("STT").ReadOnly(true)
+                                              .HtmlAttributes(new { style = "text-align: center;" });
+                                          columns.Bound(f => f.LotNumber).Width(200).Title("Lô").ReadOnly(true)
+                                              .Aggregate(agg => agg.Count())
+                                              .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>")
+                                              .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>")
+                                              .FooterHtmlAttributes(new { style = "text-align: center; font-weight:bold; " });
+
+                                          columns.Bound(f => f.MachineName).Width(80).Title("Máy").ReadOnly(true);
+                                          columns.Bound(f => f.ProductCode).Width(110).Title("Sản phẩm").ReadOnly(true);
+                                          
+                                          columns.Bound(f => f.Number).Width(105).Title("Số lượng (PCS)")
                                               .HtmlAttributes(new { style = "text-align: right;" })
                                               .ClientTemplate("<#= Number == null ? 0 : $.telerik.formatString('{0:n0}', Number) #>")
                                               .Aggregate(agg => agg.Sum())
-                                              .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
-                                              .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
+                                              .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                                              .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                                               .FooterHtmlAttributes(new { style = "text-align: right;" });
+
+                                          columns.Bound(f => f.StartDateStr).Width(175).ReadOnly(true).Title("Ngày bắt đầu")
+                                                 .HtmlAttributes(new { style = "text-align: center;" });
+
+                                          columns.Bound(f => f.EndDateStr).Width(175).ReadOnly(true).Title("Ngày kết thúc")
+                                                 .HtmlAttributes(new { style = "text-align: center;" });
+                                          
+                                          
                                           //columns.Bound(f => f.Weight).Width(98).Title("Trọng lượng(kg)")
                                           //    .HtmlAttributes(new { style = "text-align: right;" })
                                           //    .ClientTemplate("<#= Weight == null ? 0 : $.telerik.formatString('{0:n2}', Weight) #>")
@@ -284,6 +355,47 @@
                                    )
                                       .ToHtmlString()
                                   );
+                               items.Add().Text("Chứng nhận đính kèm").Content(
+                                Html.Telerik().Grid<TransactionImgModel>()
+                                    .Name("gridTransactionImg_<#= TransactionId #>")
+                                    .DataKeys(key => key.Add(f => f.ImgId).RouteKey("imgId"))
+                                    .ToolBar(
+                                        toolbar =>
+                                        toolbar.Insert().Text("Thêm mới").ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
+                                    .DataBinding(
+                                        dataBinding => dataBinding.Ajax()
+                                                                  .Select("SelectTransactionImgById", "Transaction", new { area = "Inv", transactionid = "<#= TransactionId #>" })
+                                                                  .Insert("InsertTransactionImg", "Transaction", new { area = "Inv", transactionid = "<#= TransactionId #>" })
+                                                                  .Update("UpdateTransactionImg", "Transaction", new { area = "Inv", transactionid = "<#= TransactionId #>"})
+                                                                  .Delete("DeleteTransactionImg", "Transaction", new { area = "Inv", transactionid = "<#= TransactionId #>" })
+                                    )
+                                    .Columns(columns => {
+                                        columns.Command(command =>
+                                                        command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
+                                            ).Width(40).Title("").HtmlAttributes(new { style = "text-align:center" });
+                                        //columns.Bound(f => f.Index).Title("STT").Width(35).ReadOnly(true);
+                                        columns.Bound(f => f.Name).Title("Tên ảnh").Width(70);
+                                        columns.Bound(f => f.ImgUrl).Width(40).Title("Bản vẽ")
+                                               .ClientTemplate("<a id='<#=ImgId#>' href='" + Url.Content("~/Content/FileUpload/TransactionImg/") + "<#=ImgUrl#>?<#=UploadDate#>' class='highslide' onclick='return hs.expand(this)'>" +
+                                                               "<img src='" + Url.Content("~/Content/FileUpload/TransactionImg/") + "<#=ImgUrl#>?<#=UploadDate#>' height='40' width='40' title='Mở lớn'/>"
+                                            //+ "</a><div class='highslide-caption'><#= Name #>-<#= Description #></div>"
+                                                               )
+                                               .HtmlAttributes(new { style = "text-align:center" });
+                                        columns.Bound(f => f.Description).Title("Mô tả").Width(140);
+                                        columns.Bound(f => f.ModifiedUser).Title("Người tạo").ReadOnly(true).Width(60);
+                                        columns.Bound(f => f.ModifiedDate).Title("Ngày tạo").ReadOnly(true).Width(80)
+                                               .Format("{0:HH:mm - dd/MM/yyyy }")
+                                               .HtmlAttributes(new { style = "text-align:center" });
+                                        columns.Command(commands => commands.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(30).Title("Xoá")
+                                               .HtmlAttributes(new { style = "text-align:center" });
+                                    })
+                                    .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
+                                    .ClientEvents(e => e.OnError("grid_OnError")
+                                        .OnSave("gridTransactionImg_OnSave")
+                                        .OnRowDataBound("gridTransactionImg_OnRowDataBound")
+                                        )
+                                    .ToHtmlString());
+                        
                            }
                     )
                     .ToHtmlString()
@@ -302,7 +414,7 @@
             //.Groupable()
             .Filterable()
             .Resizable(resizing => resizing.Columns(true))
-                .Scrollable(f => f.Height(510))
+                .Scrollable(f => f.Height(610))
             .Render();
     }
 </div>

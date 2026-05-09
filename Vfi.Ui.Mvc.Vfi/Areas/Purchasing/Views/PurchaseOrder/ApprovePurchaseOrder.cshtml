@@ -93,14 +93,15 @@
                 columns.Bound(f => f.RevisionNumber).Width(100).ReadOnly(true);
                 columns.Bound(f => f.OrderDate).Width(100).ReadOnly(true)
                     .Format("{0:dd/MM/yyyy}");
-                columns.Bound(f => f.MaterialClasstifiedName).Width(100).Title("Phân loại").ReadOnly(true);
-                columns.Bound(f => f.VendorCodeName).Width(100).ReadOnly(true);
+                columns.Bound(f => f.MaterialClasstifiedName).Width(200).Title("Phân loại").ReadOnly(true);
+                columns.Bound(f => f.VendorCodeName).Width(250).ReadOnly(true);
                 columns.Bound(f => f.ContractNumber).Width(100).ReadOnly(true);
                 columns.Bound(f => f.ShipDate).Width(100)
                        .ClientTemplate("<strong><#= ShipDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', ShipDate) #></strong>");
                 columns.Bound(f => f.TotalQuality).Title("Tổng SL").Width(75)
                        .HtmlAttributes(new {style = "text-align: right;"})
                        .ClientTemplate("<#= TotalQuality == null ? 0 : $.telerik.formatString('{0:n}', TotalQuality) #>").ReadOnly(true);
+                columns.Bound(f => f.CurrencyCode).Width(75).ReadOnly(true);                
                 columns.Bound(f => f.StatusName).Width(75).ReadOnly(true);
                 columns.Bound(f => f.EmployeeName).Width(75).ReadOnly(true);
                 columns.Bound(f => f.Note).ReadOnly(true);
@@ -135,20 +136,24 @@
                                )
                                .Columns(columns =>
                                    {
-                                       columns.Bound(f => f.PurchaseOrderId).Title("Tách").Width(50)
+                                       columns.Bound(f => f.PurchaseOrderId).Title("Tách").Width(40)
                                               .ClientTemplate("<input type='checkbox' name='chkDetailIds' value='<#= PurchaseOrderDetailId #>' />")
                                               .HtmlAttributes(new {style = "text-align:center"}).ReadOnly(true);
-                                       columns.Bound(f => f.Name).Width(120);
-                                       columns.Bound(f => f.Code).Width(200);
+                                       columns.Bound(f => f.Name).Width(200);
+                                       columns.Bound(f => f.Code).Width(300);
                                        columns.Bound(f => f.OrderQty).Width(80).Title("SL đặt")
                                               .HtmlAttributes(new { style = "text-align: right;" })
-                                              .ClientTemplate("<#= OrderQty == null ? 0 : $.telerik.formatString('{0:n}', OrderQty) #>");
+                                              .ClientTemplate("<#= OrderQty == null ? 0 : $.telerik.formatString('{0:n}', OrderQty) #>")
+                                              .FooterHtmlAttributes(new { style = "text-align: right;" })
+                                              .Aggregate(agg => agg.Sum())
+                                              .ClientFooterTemplate("<div style='text-align: right; width: 100%;'><#= $.telerik.formatString('{0:n2}', Sum) #></div>");
 
                                        columns.Bound(f => f.Unit).Width(50).Title("ĐVT"); 
-                                       columns.Bound(f => f.UnitPrice).Width(80)
+                                       columns.Bound(f => f.UnitPrice).Width(110)
                                               .HtmlAttributes(new {style = "text-align: right;"})
                                               .ClientTemplate("<#= UnitPrice == null ? 0 : $.telerik.formatString('{0:n}', UnitPrice) #>");
-                                       columns.Bound(f => f.LineTotal).Width(120)
+                                       columns.Bound(f => f.CurrencyCode).Width(50).Title("Tiền tệ").ReadOnly(true);
+                                       columns.Bound(f => f.LineTotal).Width(130)
                                               .HtmlAttributes(new {style = "text-align: right;"})
                                               .ClientTemplate("<#= LineTotal == null ? 0 : $.telerik.formatString('{0:n}', LineTotal) #>")
                                               .FooterHtmlAttributes(new { style = "text-align: right;" })
@@ -156,7 +161,7 @@
                                               .ClientFooterTemplate("<div style='text-align: right; width: 100%;'><#= $.telerik.formatString('{0:n2}', Sum) #></div>");
                                        columns.Bound(f => f.DueDate).Title("Ngày giao").Width(90).Format("{0:dd/MM/yyyy}");
 
-                                       columns.Bound(f => f.InquiryNote).Title("Ghi chú YC");
+                                       columns.Bound(f => f.InquiryNote).Title("Ghi chú YC").Width(300);
                                        columns.Bound(f => f.SpecificNote).Title("");
                                    })
         .ClientEvents(events => events.OnError("grid_OnError"))

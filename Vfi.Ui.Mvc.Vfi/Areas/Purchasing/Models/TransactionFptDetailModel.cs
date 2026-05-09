@@ -42,6 +42,17 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
 
         [UIHint("Number2")]
         public double Quantity { get; set; }
+        //public string QuantityStr                     khong dung` vi` o footer tinh tong
+        //{
+        //    get 
+        //    {
+        //        var stringq = (UnitMeasure ?? string.Empty).Replace(" ", string.Empty).Trim();
+        //        return stringq.Equals("Pcs", StringComparison.OrdinalIgnoreCase)
+        //                   ? string.Format("{0:n0}", Quantity)
+        //                   : string.Format("{0:n2}", Quantity);
+        //    }
+        //}
+
 
         public double TotalInv { get; set; }
         public double AvailInv { get; set; }
@@ -54,7 +65,8 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
         {
             get
             {
-                return !CurrencyCode.Equals("VND")
+                var code = (CurrencyCode ?? string.Empty).Replace(" ", string.Empty).Trim(); 
+                return !code.Equals("VND", StringComparison.OrdinalIgnoreCase)                           
                            ? string.Format("{0:n3}", UnitPrice)
                            : string.Format("{0:n0}", UnitPrice);
             }
@@ -169,5 +181,20 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
 
 
         public Nullable<int> ProductionToolId { get; set; }                 //20/01/2026
+
+        public DateTime? DeliveryDate { get; set; }
+
+        public bool VendorDeliveryOnDate { get; set; }
+
+        public int VendorDeliveryOnDateValue {
+            get {
+                return VendorDeliveryOnDate ? 1 : 0;
+            } 
+        }
+
+        public string PoCode { get; set; }
+        public int  PlatingId { get; set; }
+
+
     }
 }

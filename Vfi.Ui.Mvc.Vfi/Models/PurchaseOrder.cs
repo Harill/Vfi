@@ -27,6 +27,7 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public string CurrencyCode { get; set; }
         public int MaterialClassifiedId { get; set; }
         public string ContractNumber { get; set; }
+
         public virtual MaterialClassified MaterialClassified { get; set; }
         public virtual ICollection<ImportPurchaseOrder> ImportPurchaseOrders { get; set; }
         public virtual Vendor Vendor { get; set; }

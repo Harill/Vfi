@@ -13,6 +13,7 @@ namespace Vfi.Ui.Mvc.Vfi.Models {
         public string ProductCode { get; set; }
         public string ProductName { get; set; }
         public string ProductDesignNo { get; set; }
+        public string ProductCurrency { get; set; }
 
         public double OutDiameterDesign { get; set; }
         public double Length { get; set; }

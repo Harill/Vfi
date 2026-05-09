@@ -6290,11 +6290,12 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                     var invoices = (from x in vfi.Invoices
                                     where
                                          (customerById == 0 || x.CustomerId == customerById) &&
+                                         //x.CustomerId == 13 || x.CustomerId == 117 &&
                                          x.ShipmentDate > fromMonthly
                                          && x.ShipmentDate < toMonthly
                                          && x.Active
                                          //&& x.InvoiceId == 1647
-                                         //&& x.InvoiceNumber == "VFI-251999"
+                                         //&& x.InvoiceNumber == "VFI-251789"
                                          && x.Status != (byte)MyUtilities.Sales.Status.Cancel
                                     select new {
                                         x.InvoiceDetails,
@@ -6324,11 +6325,12 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                             CustomerCodeName = customer.CustomerCode + "-" + customer.CustomerName,
                             ReportDateString = toMonthly.ToString("MM/yyyy"),
                         };
-                        var invoicesByCustomer = invoices.Where(i => i.CustomerId == customer.CustomerId);
+                        var invoicesByCustomer = invoices.Where(i => i.CustomerId == customer.CustomerId).ToList();
                         foreach (var invoice in invoicesByCustomer) {
                             var export = invoice.ExportFormTP_KD;
                             foreach (var exportDetail in export.ExportFormTP_KDDetail) {
                                 var product = vfi.Products.FirstOrDefault(p => p.ProductId == exportDetail.ProductId);
+                                var producName = vfi.Products.Where(t => t.ProductId == exportDetail.ProductId).Select(p => p.ProductCode).ToList();
                                 var invoiceDetails = exportDetail.InvoiceDetails.Where(id => id.Active).ToList();
                                 if (invoiceDetails.Any()) {
                                     var invoiceDetail = invoiceDetails.FirstOrDefault(x => x.OrderDetailId != null);
@@ -6340,8 +6342,8 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                                         DueDateString = export.DateTransporter != null
                                                             ? export.DateTransporter.Value.ToString("dd/MM/yyyy")
                                                             : "",
-                                        //CurrencyCode = invoiceDetail != null ? invoiceDetail.OrderDetail.Order.CurrencyCode : "",
-                                        CurrencyCode = invoiceDetail.OrderDetail.Order.CurrencyCode,
+                                        CurrencyCode = invoiceDetail != null ? invoiceDetail.OrderDetail.Order.CurrencyCode : "",
+                                        //CurrencyCode = invoiceDetail.OrderDetail.Order.CurrencyCode,
                                         TaxInvoiceNumber = "",
                                         InvoiceNumber = invoice.InvoiceNumber,
                                         ExchangeRate = invoice.ExchangeRate,

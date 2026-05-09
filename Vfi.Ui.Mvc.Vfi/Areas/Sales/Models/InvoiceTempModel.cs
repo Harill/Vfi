@@ -78,5 +78,8 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Sales.Models
         public double TotalAmountAfterTaxVND { get; set; }
 
         public string EmployeeSale { get; set; }
+        public string TransactionCode { get; set; }
+
+
     }
 }

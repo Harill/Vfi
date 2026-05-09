@@ -114,14 +114,14 @@
 
     <fieldset>
         <legend>Thông tin phiếu xuất</legend>
-        <div class="grid_3">Số phiếu</div>
+        <div class="grid_2">Số phiếu</div>
         <div class="grid_6">
             @{
                 Html.Telerik().ComboBox()
                     .Name("Transaction")
                     .DataBinding(binding => binding.Ajax().Select("SelectComboboxTransactionProcessing", "Transaction", new { area = "Inv" }))
-                    .HtmlAttributes(new { style = "width: 100%" })
-                    .DropDownHtmlAttributes(new { style = "width: 200%" })
+                    .HtmlAttributes(new { style = "width: 215px" })
+                    .DropDownHtmlAttributes(new { style = "width: 213px" })
                     .ClientEvents(events => events.OnChange("transaction_OnChange"))
                     .Render();
             }
@@ -139,9 +139,9 @@
             .Name("grid")
             .ToolBar(bar =>
                 {
-                    bar.Custom().ButtonType(GridButtonType.Text).Text("Lưu mặc định").Name("A")
+                    bar.Custom().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Text).Text("Lưu mặc định").Name("A")
                        .HtmlAttributes(new { onclick = "AddDefault()", href = "#" });
-                    bar.SubmitChanges().ButtonType(GridButtonType.ImageAndText).SaveText("Lưu thay đổi").CancelText("Huỷ tất cả");
+                    bar.SubmitChanges().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).SaveText("Lưu thay đổi").CancelText("Huỷ tất cả");
                 })
             .DataKeys(keys => keys.Add(f => f.ProductInvId).RouteKey("productInvId"))
             .DataBinding(dataBindings => dataBindings.Ajax()
@@ -149,23 +149,24 @@
      .Update("UpdateAddTransactionDetail", "Transaction", new { area = "Inv" }))
             .Columns(columns =>
             {
-                columns.Bound(f => f.ProductId).Width(30)
+                columns.Bound(f => f.ProductId).Width(40)
                     .ClientTemplate("<#= ++index #>")
-                    .HeaderTemplate("<strong>STT</strong>");
-                columns.Bound(f => f.ProductCode).Width(120).ReadOnly(true)
+                    .HeaderTemplate("<strong>STT</strong>")
+                    .HtmlAttributes(new { style = "text-align: center;" });
+                columns.Bound(f => f.ProductCode).Width(120).ReadOnly(true).HeaderTemplate("<strong>Mã SP</strong>")
                     .Aggregate(agg => agg.Count())
                     .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>")
                     .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>");
-                columns.Bound(f => f.ProductInvLot).Width(100).Title("Lô").ReadOnly(true);
-                columns.Bound(f => f.ProductWeight).Width(70).ReadOnly(true)
-                    .HeaderTemplate("TL sản phẩm</br>(g/pc)")
+                columns.Bound(f => f.ProductInvLot).Width(150).Title("Lô").ReadOnly(true);
+                columns.Bound(f => f.ProductWeight).Width(90).ReadOnly(true)
+                    .HeaderTemplate("TL SP</br>(g/pc)")
                     .Format("{0:n3}")
                     .HtmlAttributes(new {style = "text-align: right;"});
-                columns.Bound(f => f.ProductInvQuantity).ReadOnly(true).Width(70)
+                columns.Bound(f => f.ProductInvQuantity).ReadOnly(true).Width(90)
                     .HeaderTemplate("Tồn kho</br>(pcs)")
                     .Format("{0:n0}")
                     .HtmlAttributes(new {style = "text-align: right;"});
-                columns.Bound(f => f.TransactionProductQuantity).ReadOnly(true).Width(70)
+                columns.Bound(f => f.TransactionProductQuantity).ReadOnly(true).Width(90)
                     .HeaderTemplate("SL cần</br>(pcs)")
                     .ClientTemplate("<#= TransactionProductQuantity == 0 ? '' : $.telerik.formatString('{0:n0}', TransactionProductQuantity) #>")
                     .Aggregate(agg => agg.Sum())
@@ -173,11 +174,11 @@
                     .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                     .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                     .FooterHtmlAttributes(new {style = "text-align: right;"});
-                columns.Bound(f => f.ProductInvAvailable).ReadOnly(true).Width(70)
-                    .HeaderTemplate("Có thể</br>chuyển (pcs)")
+                columns.Bound(f => f.ProductInvAvailable).ReadOnly(true).Width(95)
+                    .HeaderTemplate("Có thể</br>chuyển(pcs)")
                     .Format("{0:n0}")
                     .HtmlAttributes(new {style = "text-align: right;"});
-                columns.Bound(f => f.Quantity).Width(70).HeaderTemplate("SL xuất</br>(pcs)")
+                columns.Bound(f => f.Quantity).Width(90).HeaderTemplate("SL xuất</br>(pcs)")
                     //.Format("{0:n0}")
                     .HtmlAttributes(new {style = "text-align: right;"})
                     .ClientTemplate("<span name='Quantity' class='Quantity'><#= $.telerik.formatString('{0:n0}', Quantity) #></span>")
@@ -197,7 +198,8 @@
                 .OnSave("grid_OnSave")
                 .OnError("grid_OnError"))
             .Groupable(group => group.Groups(g => g.Add(model => model.ProductCode)).Visible(false))
-            .Editable(f => f.Mode(GridEditMode.InCell))
+            .Editable(f => f.Mode(Telerik.Web.Mvc.UI.GridEditMode.InCell))
+            .Scrollable(f => f.Height(700))
             .Render();
     }
 </div>

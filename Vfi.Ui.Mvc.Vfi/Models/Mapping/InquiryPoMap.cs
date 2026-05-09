@@ -42,6 +42,7 @@ namespace Vfi.Ui.Mvc.Vfi.Models.Mapping
             this.Property(t => t.Note).HasColumnName("Note");
             this.Property(t => t.Currency).HasColumnName("Currency");
             this.Property(t => t.InquiryNumber).HasColumnName("InquiryNumber");
+            this.Property(t => t.ManagementSignature).HasColumnName("ManagementSignature");
 
             // Relationships
             this.HasRequired(t => t.MaterialClassified)

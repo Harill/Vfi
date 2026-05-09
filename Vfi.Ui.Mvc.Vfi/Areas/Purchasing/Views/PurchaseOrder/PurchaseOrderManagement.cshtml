@@ -363,7 +363,7 @@
             )
             .Columns(columns => {
                 columns.Command(command =>
-                                command.Edit().ButtonType(GridButtonType.Image)
+                                command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
                     ).Width(50).Title("").HtmlAttributes(new { style = "text-align:center" });
                 columns.Bound(f => f.RevisionNumber).Width(100).ReadOnly(true);
                 columns.Bound(f => f.OrderDate).Width(90).ReadOnly(true)
@@ -405,7 +405,7 @@
                                 )
                                 .Columns(columns => {
                                     columns.Command(command =>
-                                        command.Edit().ButtonType(GridButtonType.Image)
+                                        command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
                                         ).Width(50).Title("").HtmlAttributes(new { style = "text-align:center" });
                                     columns.Bound(f => f.Code).Width(150).Title("Mã").ReadOnly(true);
                                     columns.Bound(f => f.OrderQty).Width(100).ReadOnly(true)

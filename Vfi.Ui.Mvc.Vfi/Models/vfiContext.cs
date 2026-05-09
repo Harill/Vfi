@@ -221,6 +221,7 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public DbSet<SelectMaterialInvOnMachineAndPeriod> SelectMaterialInvOnMachineAndPeriods { get; set; }
         public DbSet<SelectProductInventoryAndPeriod> SelectProductInventoryAndPeriods { get; set; }
         public DbSet<SelectToolInvAndPeriod> SelectToolInvAndPeriods { get; set; }
+        public DbSet<TransactionImg> TransactionImgs { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -364,6 +365,7 @@ namespace Vfi.Ui.Mvc.Vfi.Models
             modelBuilder.Configurations.Add(new ImportPurchaseOrderMap());
             modelBuilder.Configurations.Add(new ImportPurchaseOrderDetailMap());
             modelBuilder.Configurations.Add(new InquiryPoMap());
+            modelBuilder.Configurations.Add(new TransactionImgMap());
             modelBuilder.Configurations.Add(new MethodMap());
             modelBuilder.Configurations.Add(new MethodTypeMap());
             modelBuilder.Configurations.Add(new PlatingFormMap());

@@ -9,7 +9,7 @@ using Vfi.Ui.Mvc.Vfi.Models.Production;
 namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
 {
     public class PurchaseProgressModel { 
-    
+        
     }
 
 }

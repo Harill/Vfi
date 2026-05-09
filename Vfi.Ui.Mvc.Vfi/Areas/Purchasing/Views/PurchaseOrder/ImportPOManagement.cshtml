@@ -1,6 +1,6 @@
 ﻿@using Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
 @{
-    ViewBag.Title = "Phiếu nhập kho";
+    ViewBag.Title = "Theo dõi NCC";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -34,7 +34,46 @@
                 toDate: toDate
             });
 
-        }        
+        }
+        // start
+
+        var vendorOnTime = 0, vendorLate = 0;
+        //var groupOnTime = 0, groupLate = 0;           Lam hoai ko ra/ group r loc = tay
+
+        // Đếm cho từng dòng
+        function grid_OnRowDataBound(e) {
+            var dataItem = e.dataItem;
+
+            if (dataItem.VendorDeliveryOnDate) {
+                vendorLate++;
+                //groupLate++;
+            }
+            else {
+                vendorOnTime++;
+                //groupOnTime++;
+            }
+        }
+
+        // Sau khi grid bind xong
+        function grid_OnDataBound(e) {
+            // Gán số liệu tổng vào footer
+            $("#VendorOnTimeFooter").text(vendorOnTime);
+            $("#VendorLateFooter").text(vendorLate);
+
+            //$("#VendorOnTimeGroup").text(groupOnTime);
+            //$("#VendorLateGroup").text(groupLate);
+
+            // Reset biến tổng
+            vendorOnTime = 0;
+            vendorLate = 0;
+            //groupOnTime = 0;
+            //groupLate = 0;
+
+        }
+
+
+
+        //end
 
         function materialClassified_OnChange() {
             var classified = $('#MaterialClassifiedName').data('tComboBox').value();
@@ -55,7 +94,7 @@
     </script>
 }
 
-<div class="title">Quản lý thông tin mua hàng</div>
+<div class="title">Theo dõi Nhà Cung Cấp</div>
 <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px; width: 920px;">
     
     <fieldset>
@@ -122,60 +161,113 @@
                                                      .Select("SelectImportPoManagement2", "PurchaseOrder"))
             .Columns(columns =>
                 {
-                    columns.Bound(f => f.Index).Title("STT").Width(35);
-                    columns.Bound(f => f.TransactionCode).Title("Số phiếu").Width(100);
-                    columns.Bound(f => f.TransactionDate).Title("Ngày nhập").Width(85)
-                        .Format("{0:dd/MM/yyyy}");
+                    columns.Bound(f => f.Index).Title("STT").Width(35)
+                           .HtmlAttributes(new { style = "text-align: center; " })
+                           .Aggregate(agg => agg.Count())
+                           .ClientGroupFooterTemplate("<div style='text-align: center; font-weight:bold; '> <#= Count #> </div>")
+                           .ClientFooterTemplate("<#= Count #>")
+                           .FooterHtmlAttributes(new { style = "text-align: center; font-weight:bold;" });
+                     
+                    columns.Bound(f => f.TransactionCode).Title("Phiếu nhập kho").Width(100);
+                    columns.Bound(f => f.PoCode).Title("Phiếu mua").Width(90);
+
+                    columns.Bound(f => f.TransactionDate).Title("Ngày nhập").Width(80)
+                           .Format("{0:dd/MM/yyyy}")
+                           .HtmlAttributes(new { style = "text-align: center;" });
+
+                    columns.Bound(f => f.DeliveryDate).Title("Ngày yêu cầu").Width(80)
+                           .Format("{0:dd/MM/yyyy}")
+                           .HtmlAttributes(new { style = "text-align: center;" });
                     columns.Bound(f => f.FptName).Title("Tên chi tiết").Width(140);
                     columns.Bound(f => f.FptCode).Title("Mã chi tiết").Width(200);
-                    columns.Bound(f => f.LotNumber).Title("Lô").Width(70)
+                    columns.Bound(f => f.LotNumber).Title("Lô").Width(110)
                            .HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(f => f.UnitMeasure).Title("ĐVT").Width(40)
-                           .HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(f => f.Quantity).Title("Số lượng").Width(100)
+                           .HtmlAttributes(new { style = "text-align: center;" });
+                    columns.Bound(f => f.Quantity).Title("Số lượng").Width(70)
                            .Format("{0:n2}")
+                           //.ClientTemplate("<#= QuantityStr #>")
                            .HtmlAttributes(new { style = "text-align: right;" })
-                               .Aggregate(agg => agg.Sum())
-                               .FooterHtmlAttributes(new { style = "text-align: right;" })
-                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
-                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>");
+                           .Aggregate(agg => agg.Sum())
+                           .FooterHtmlAttributes(new { style = "text-align: right;" })
+                           .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
+                           .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>");
                     columns.Bound(f => f.CurrencyCode).Title("Tiền tệ").Width(40)
                            .HtmlAttributes(new { style = "text-align: center;" });
+                    //
                     columns.Bound(f => f.UnitPriceString).Title("Đơn giá").Width(75)
                            .ClientTemplate("<#= UnitPriceString #>")
                            .HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(f => f.ExchangeRate).Title("Tỉ giá").Width(65)
+                    columns.Bound(f => f.ExchangeRate).Title("Tỉ giá").Width(40)
                            .Format("{0:n0}")
                            .HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(f => f.Price).Title("Thành tiền").Width(105)
                            .Format("{0:n0}")
                            .HtmlAttributes(new { style = "text-align: right;" })
-                               .Aggregate(agg => agg.Sum())
-                               .FooterHtmlAttributes(new { style = "text-align: right;" })
-                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>");
-                    columns.Bound(f => f.Tax).Title("VAT").Width(85)
-                           .Format("{0:n0}")
-                           .HtmlAttributes(new { style = "text-align: right;" })
-                               .Aggregate(agg => agg.Sum())
-                               .FooterHtmlAttributes(new { style = "text-align: right;" })
-                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>");
-                    columns.Bound(f => f.VendorName).Title("Nhà cung cấp").Width(120);
-                    columns.Bound(f => f.TaxInvoiceNumber).Title("Hóa đơn").Width(120);
-                    columns.Bound(f => f.TaxInvoiceDateString).Title("Ngày lập").Width(90);
+                           .Aggregate(agg => agg.Sum())
+                           .FooterHtmlAttributes(new { style = "text-align: right;" })
+                           .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                           .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>");
+
+                    columns.Bound(f => f.VendorName)
+                           .Title("Nhà cung cấp")
+                           .Width(120)
+                           .FooterTemplate("<span style='color:green'>Đúng hạn: <span id='VendorOnTimeFooter'></span></span>")
+                           //.ClientGroupFooterTemplate("<span style='color:green'>Đúng hạn: <span id='VendorOnTimeGroup'></span></span>")
+                           .FooterHtmlAttributes(new { style = "text-align: right;" });
+
+                    columns.Bound(f => f.VendorDeliveryOnDate)
+                           .Title("OTD")
+                           .Width(90)
+                           .ReadOnly(true)
+                           .ClientTemplate(
+                               "<# if (VendorDeliveryOnDate) { #>" +
+                               "<span style='color:red'>Trễ hạn</span>" +
+                               "<# } else { #>" +
+                               "<span style='color:green'>Đúng hạn</span>" +
+                               "<# } #>")
+                           .HtmlAttributes(new { style = "text-align:center;" })
+                           .FooterTemplate("<span style='color:red'>Trễ hạn: <span id='VendorLateFooter'></span></span>")
+                           //.ClientGroupFooterTemplate("<span style='color:red'>Trễ hạn: <span id='VendorLateGroup'></span></span>")
+                           .FooterHtmlAttributes(new { style = "text-align: right;" });
+
+
+
+                    //columns.Bound(f => f.VendorDeliveryOnDateValue).Title("OTD Value")
+                    //       .Width(85)
+                    //       .ReadOnly(true)
+                    //       .Hidden(true)
+                    //       .Aggregate(agg => agg.Count())
+                    //       .ClientGroupFooterTemplate("<div style='text-align: right; width: 100%;'><#= $.telerik.formatString('{0:n0}', Count) #></div>")
+
+                    //       ;
+                                        
+                    //columns.Bound(f => f.Tax).Title("VAT").Width(85)
+                    //       .Format("{0:n0}")
+                    //       .HtmlAttributes(new { style = "text-align: right;" })
+                    //       .Aggregate(agg => agg.Sum())
+                    //       .FooterHtmlAttributes(new { style = "text-align: right;" })
+                    //       .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                    //       .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>");
+
+                    //columns.Bound(f => f.TaxInvoiceNumber).Title("Hóa đơn").Width(120);
+                    //columns.Bound(f => f.TaxInvoiceDateString).Title("Ngày lập").Width(90);
                     columns.Bound(f => f.Qc).Title("Chất lượng").Width(35);
                     columns.Bound(f => f.Note).Title("Ghi chú").Width(150);
                 })
                 .Groupable()
             .Reorderable(f => f.Columns(true))
                 .Scrollable(f => f.Height("auto"))
-            .Scrollable(f => f.Height(510))
+            .Scrollable(f => f.Height(650))
             .Resizable(f => f.Columns(true))
             .Sortable()
             .Filterable()
             .ClientEvents(events => events.OnDataBinding("grid_OnDataBinding")
-                                          .OnError("grid_OnError"))
+                                          .OnError("grid_OnError")
+                                          .OnRowDataBound("grid_OnRowDataBound")
+                                          .OnDataBound("grid_OnDataBound")
+                                          )
+                                          
             .Render();
     }
 </div>

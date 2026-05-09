@@ -77,7 +77,7 @@
                         .HtmlAttributes(new { style = "width: 150px" })
                         .DropDownHtmlAttributes(new { style = "width: 250px" })
                         .AutoFill(true)
-                        .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                        .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                         .Render();
                 }
             </div>
@@ -135,21 +135,26 @@
                        .HeaderHtmlAttributes(new { style = "text-align:center" })
                        .ClientTemplate("<strong><#= ProductCode #></strong>");
 
+
+                columns.Bound(f => f.ProductCurrency).Width(50).ReadOnly(true)
+                       .HeaderTemplate("<strong>Tiền tệ</strong>")
+                       .HeaderHtmlAttributes(new { style = "text-align:center" });
+
                 columns.Bound(f => f.OutDiameterDesign).Width(50)
-                        .HeaderTemplate("<strong>OD</strong>")
-                        .Format("{0:n2}")
+                       .HeaderTemplate("<strong>OD</strong>")
+                       .Format("{0:n2}")
                        .HtmlAttributes(new { style = "text-align:right" });
                 columns.Bound(f => f.Length).Width(50)
-                        .HeaderTemplate("<strong>CD</strong>")
-                        .Format("{0:n2}")
+                       .HeaderTemplate("<strong>CD</strong>")
+                       .Format("{0:n2}")
                        .HtmlAttributes(new { style = "text-align:right" });
                 columns.Bound(f => f.MaterialWeight).Width(70)
-                        .HeaderTemplate("<strong>TL NL SP</strong>")
-                        .Format("{0:n3}")
+                       .HeaderTemplate("<strong>TL NL SP</strong>")
+                       .Format("{0:n3}")
                        .HtmlAttributes(new { style = "text-align:right" });
                 columns.Bound(f => f.ProductWeight).Width(50)
-                        .HeaderTemplate("<strong>TL SP</strong>")
-                        .Format("{0:n3}")
+                       .HeaderTemplate("<strong>TL SP</strong>")
+                       .Format("{0:n3}")
                        .HtmlAttributes(new { style = "text-align:right" });
 
                 columns.Bound(f => f.MaterialCode).Width(120).ReadOnly(true)
@@ -157,35 +162,35 @@
                        .HeaderHtmlAttributes(new { style = "text-align:center" })
                        .ClientTemplate("<strong><#= MaterialCode #></strong>");
                 columns.Bound(f => f.MaterialPrice).Width(60)
-                        .HeaderTemplate("<strong>Giá</br>NL</strong>")
-                        .Format("{0:n0}")
+                       .HeaderTemplate("<strong>Giá</br>NL</strong>")
+                       .Format("{0:n0}")
                        .HtmlAttributes(new { style = "text-align:right" });
                 columns.Bound(f => f.ProductMaterialPrice).Width(60)
-                        .HeaderTemplate("<strong>Giá</br>NL SP</strong>")
-                        .Format("{0:n0}")
+                       .HeaderTemplate("<strong>Giá</br>NL SP</strong>")
+                       .Format("{0:n0}")
                        .HtmlAttributes(new { style = "text-align:right" });
 
                 columns.Bound(f => f.ProductPrice).Width(60)
-                        .HeaderTemplate("<strong>Giá bán</strong>")
-                        .Format("{0:n0}")
+                       .HeaderTemplate("<strong>Giá bán</strong>")
+                       .Format("{0:n0}")
                        .HtmlAttributes(new { style = "text-align:right" });
 
                 columns.Bound(f => f.DiffPrice).Width(60)
-                        .HeaderTemplate("<strong>Chênh lệch</br>giá bán</strong>")
-                        .Format("{0:n0}")
+                       .HeaderTemplate("<strong>Chênh lệch</br>giá bán</strong>")
+                       .Format("{0:n0}")
                        .HtmlAttributes(new { style = "text-align:right" });
                 columns.Bound(f => f.DiffPriceRate).Width(60)
-                        .HeaderTemplate("<strong>Tỉ lệ</br>giá bán</strong>")
-                        .Format("{0:n0}")
+                       .HeaderTemplate("<strong>Tỉ lệ</br>giá bán</strong>")
+                       .Format("{0:n0}")
                        .HtmlAttributes(new { style = "text-align:right" });
 
                 columns.Bound(f => f.WorkpiecePrice).Width(60)
-                        .HeaderTemplate("<strong>Giá</br>phế liệu</strong>")
-                        .Format("{0:n0}")
+                       .HeaderTemplate("<strong>Giá</br>phế liệu</strong>")
+                       .Format("{0:n0}")
                        .HtmlAttributes(new { style = "text-align:right" });
                 columns.Bound(f => f.WorkpiecePriceRate).Width(60)
-                        .HeaderTemplate("<strong>Tỉ lệ</br>phế liệu</strong>")
-                        .Format("{0:n0}")
+                       .HeaderTemplate("<strong>Tỉ lệ</br>phế liệu</strong>")
+                       .Format("{0:n0}")
                        .HtmlAttributes(new { style = "text-align:right" });
                 
             })

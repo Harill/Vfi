@@ -16,7 +16,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Models
         {
             DefectDetails = new List<DefectTransactionDetailModel>();
         }
-        public new string Note { get; set; }
+        public string Note2 { get; set; }
         [DisplayName(@"Số lô")]
         public string LotNumber { get; set; }
         public double Length { get; set; }

@@ -19,6 +19,8 @@ using Vfi.Ui.Mvc.Vfi.Models;
 using Vfi.Ui.Mvc.Vfi.Utilities;
 using System.IO.Ports;
 using System.Threading;
+using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
     public class TransactionController : Controller {
@@ -3885,6 +3887,36 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
             return null;
         }
 
+        public ActionResult ImportSignature(long inquiryId) {
+            using (var vfi = new tammaContext()) {
+                var import = vfi.InquiryPoes.FirstOrDefault(i => i.InquiryId == inquiryId);
+                vfi.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
+                
+                if (import != null) {
+                    import.ManagementSignature = 1;
+
+                    if (string.IsNullOrWhiteSpace(import.InquiryNumber)) {
+                        var vendorCode = import.Vendor != null ? import.Vendor.VendorCode : "";
+                        var now = DateTime.Now;
+                        var year = now.ToString("yy");   // 2 số năm
+                        var month = now.ToString("MM");  // tháng
+                        var day = now.ToString("dd");    // ngày
+                        import.InquiryNumber = vendorCode + year + month + day;
+                    }
+                    else if (import.InquiryNumber != null){
+                        var vendorCode = import.Vendor != null ? import.Vendor.VendorCode : "";
+                        var dateTime = import.InquiryNumber.Substring(import.InquiryNumber.Length - 6, 6); 
+                        import.InquiryNumber = vendorCode + dateTime;
+                    }
+                }
+                else return Json(9);
+                import.Status = 3;
+
+                vfi.SaveChanges();
+            }
+            return null;
+        }
+
         public ActionResult SelectComboBoxTransactionStatus() {
             var val = from MyUtilities.Transaction.Status stt in Enum.GetValues(typeof(MyUtilities.Transaction.Status))
                       select new {
@@ -3958,7 +3990,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                             MaterialTypeName = material.MaterialType.MaterialTypeName,
                             VendorName = importDetail.Vendor.VendorName,
                             Quantity = importDetail.Quantity,
-                            Note = transactionDetail == null ? "" : transactionDetail.Note,
+                            Note = transactionDetail == null ? "" : importDetail.Note,
                             LotNumber = importDetail.LotNumber,
                             AvailableQuantity = materialInv == null ? 0 : materialInv.TotalQty,
                             UnitWeight = importDetail.UnitWeight,
@@ -4434,6 +4466,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                         transactionDetail.ModifiedUser = HttpContext.User.Identity.Name;
                         importDetail.Quantity = transactionDetail.Quantity;
                         importDetail.QuantityKg = transactionDetail.QuantityKg.Value;
+                        importDetail.Note = update.Note;
                         //importDetail.PoReferenceDetailId;
                         vfi.SaveChanges();
                     }
@@ -5943,6 +5976,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
             //return View(new GridModel(models));
             using (var vfi = new tammaContext()) {
                 var isInvManager = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name, MyUtilities.UserRole.InvManagement);
+                var index = 1;
 
                 switch (formType) {
                     case (byte)MyUtilities.Transaction.FormTypeEnum.ImportSX1: {
@@ -5961,9 +5995,11 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                                     TransactionId = transactionId,
                                     FormType = formType,
                                     LotNumber = detail.LotNumber,
+                                    Index = index,
                                 };
                                 entity.Weight = entity.Number * detail.ProductWeight;
                                 if (entity.Number > 0) models.Add(entity);
+                                index++;
                             }
                         }
                         break;
@@ -5982,6 +6018,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                                     CanEdit = false,
                                     TransactionId = transactionId,
                                     FormType = formType,
+                                    Index = index,
                                     
                                 };
                                 if (detail.ProductInventory != null) {
@@ -5989,6 +6026,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                                 }
                                 entity.Weight = entity.Number * detail.ProductWeight;
                                 if (entity.Number > 0) models.Add(entity);
+                                index++;
                             }
                         }
                         break;
@@ -6010,8 +6048,16 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                                         CanEdit = false,
                                         TransactionId = transactionId,
                                         FormType = formType,
-                                        PlatingDetailId = detail.PlatingDetailId
+                                        PlatingDetailId = detail.PlatingDetailId,
+                                        Index = index,
+                                        
+                                        
                                     };
+                                    entity.Eol = vfi.Transactions.Where(t => t.TransactionId == entity.TransactionId).Select(t => t.EoI).FirstOrDefault();
+                                    if (entity.Eol == "2" || entity.Eol == "1") {
+                                        entity.StartDate = detail.ExportGCN_NCU.ExportDate.Value;
+                                    }
+
                                     if (detail.ProductInventory != null) {
                                         entity.LotNumber = detail.ProductInventory.LotNumber;
                                     }
@@ -6022,6 +6068,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                                     entity.Weight += (detail.Weight) ?? 0;
                                     entity.Note += (detail.Note + " ");
                                 }
+                                index++;
                             }
                         }
                         break;
@@ -6043,8 +6090,13 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                                         CanEdit = false,
                                         TransactionId = transactionId,
                                         FormType = formType,
-                                        PlatingDetailId = detail.ExportGCN_NCUDetail.PlatingDetailId
+                                        PlatingDetailId = detail.ExportGCN_NCUDetail.PlatingDetailId,
+                                        Index = index,
                                     };
+                                    entity.Eol = vfi.Transactions.Where(t => t.TransactionId == entity.TransactionId).Select(t => t.EoI).FirstOrDefault();
+                                    if (entity.Eol == "0") {
+                                        entity.EndDate = vfi.ImportNCU_QCB.Where(t => t.TransactionId == entity.TransactionId).Select(t => t.ImportDate).FirstOrDefault();
+                                    }
                                     if (detail.ProductInventory != null) {
                                         entity.LotNumber = detail.ProductInventory.LotNumber;
                                     }
@@ -6055,6 +6107,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                                     entity.Weight += (detail.Weight);
                                     entity.Note += (detail.Note + " ");
                                 }
+                                index++;
                             }
                         }
                         break;
@@ -6064,7 +6117,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                                 vfi.ExportFormTP_KD.FirstOrDefault(
                                     e => e.TransactionCode.Equals(transaction10.TransactionCode));
                             var exportDetails = vfi.TransactionProducts.Where(x => x.TransactionId == transactionId);
-                            foreach (var detail in transaction10.TransactionDetails) {
+                            foreach (var detail in transaction10.TransactionDetails.OrderBy(t => t.Product.ProductCode)) {
                                 var model = new ManageImportExportDetailModel {
                                     DetailId = detail.TransactionDetailId,
                                     ProductId = detail.ReferenceId ?? 0,
@@ -6075,9 +6128,28 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                                     CanEdit = isInvManager,
                                     TransactionId = transactionId,
                                     FormType = formType,
-                                    LotNumber = detail.LotNumber
+                                    LotNumber = detail.LotNumber,
+                                    Index = index,
                                 };
+                                var serialNumber = model.LotNumber.Split('-').Length > 0
+                                         ? model.LotNumber.Split('-')[0]
+                                         : model.LotNumber;
+                                var workOrderId = vfi.WorkOrders.Where(t => t.SerialNumber == serialNumber).Select(t => t.WorkOrderId).FirstOrDefault();
+                                var checkProductId = vfi.WorkOrders.Where(t => t.SerialNumber == serialNumber).Select(t => t.ProductId).FirstOrDefault();
+                                if (workOrderId != 0 && checkProductId == model.ProductId) {
+                                    var machineId = vfi.WorkOrderRoutings.Where(t => t.WorkOrderId == workOrderId && t.RoutingIndex == 1).Select(t => t.MachineId).FirstOrDefault();
+                                    if (machineId != null) {
+                                        model.MachineName = vfi.Machines.Where(t => t.MachineId == machineId).Select(t => t.MachineName).FirstOrDefault();
+                                    }
+                                    else {
+                                        model.MachineName = ""; 
+                                    }
+                                    var serialDate = vfi.WorkOrders.Where(t => t.SerialNumber == serialNumber).Select(t => new { StartDate = t.StartDate, EndDate = t.EndDate, }).ToList();
+                                    model.StartDate = serialDate.Select(t => t.StartDate).FirstOrDefault();
+                                    model.EndDate = serialDate.Select(t => t.EndDate).FirstOrDefault();
+                                }
                                 if (model.Number > 0) models.Add(model);
+                                index++;
                             }
                         }
                         break;
@@ -6097,16 +6169,236 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                                     CanEdit = isInvManager,
                                     TransactionId = transactionId,
                                     FormType = formType,
-                                    LotNumber = detail.LotNumber
+                                    LotNumber = detail.LotNumber,
+                                    Index = index,
                                 };
                                 if (model.Number > 0) models.Add(model);
+                                index++;
                             }
                         }
                         break;
                 }
             }
-            return models.OrderBy(m => m.ProductCode).ToList();
+            return models;
         }
+
+        // 08/05/2026 TransactionImg
+        [GridAction]
+        public ActionResult SelectTransactionImgById(long transactionid) {
+            var model = new List<TransactionImgModel>();
+            try {
+                model = GetTransactionImgById(transactionid);
+            }
+            catch (Exception ex) {
+                {
+                      Console.WriteLine(ex.InnerException.Message);
+                }
+            }   
+            return View(new GridModel(model));
+        }
+
+
+        List<TransactionImgModel> GetTransactionImgById(long transactionid) {
+            var model = new List<TransactionImgModel>();
+            var technicalManager = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name, MyUtilities.UserRole.TechicalManagerLv2);
+
+            using (var vfi = new tammaContext()) {
+                var transactionImgs = vfi.TransactionImgs.Where(t => t.TransactionId == transactionid).OrderBy(t => t.ModifiedDate);
+                foreach (var transactionImg in transactionImgs) {
+                    var entity = new TransactionImgModel {
+                        ImgId = transactionImg.ImgId,
+                        TransactionId = transactionid,
+                        ImgUrl = transactionImg.ImgUrl,
+                        TransactionNumber = transactionImg.TransactionNumber,
+                        ModifiedDate = transactionImg.ModifiedDate,
+                        ModifiedUser = transactionImg.ModifiedUser,
+                        CanModify = technicalManager,
+                        Description = transactionImg.Description,
+                        Name = transactionImg.Name,
+                    };
+                    model.Add(entity);
+                }
+            }
+            return model;
+        }
+
+        [GridAction]
+        public ActionResult InsertTransactionImg(TransactionImgModel insert, long transactionid) {
+            try {
+                if (!Request.IsAuthenticated) {
+                    throw new AggregateException("Bạn đã bị mất quyền đăng nhập. \r\n " +
+                                             "1 trong các nguyên nhân như mất thời gian chờ. \r\n " +
+                                             "Xin vui lòng đăng nhập lại hệ thống.");
+                }
+                var techicalManager = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name, MyUtilities.UserRole.TechicalManagerLv2);
+                if (!techicalManager) {
+                    throw new AggregateException("Lỗi! Không có quyền thêm - sửa hình.");
+                }
+                if (string.IsNullOrWhiteSpace(insert.ImgUrl)) {
+                    throw new AggregateException("Lỗi! Không tìm thấy giấy chứng nhận được upload!");
+                }
+                var transactionImg = new TransactionImg() {
+                    
+                    TransactionId = transactionid,
+                    ImgUrl = insert.ImgUrl,
+                    Name = insert.Name,
+                    Description = insert.Description,
+                    ModifiedUser = HttpContext.User.Identity.Name,
+                    ModifiedDate = DateTime.Now,
+
+                };
+                using (var vfi = new tammaContext()) {
+                    vfi.TransactionImgs.Add(transactionImg);
+                    vfi.SaveChanges();
+                }
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("InsertTransactionImg", ex.Message);
+            }
+            return View(new GridModel(GetTransactionImgById(transactionid)));
+        }
+
+
+        void DeleteTransactionImg(string imgUrl) {
+            var destinationPath = Path.Combine(Server.MapPath("~/Content/FileUpload/TransactionImg"),
+                imgUrl);
+            if (System.IO.File.Exists(@destinationPath)) {
+                System.IO.File.Delete(@destinationPath);
+            }
+        }
+
+        [GridAction]
+        public ActionResult UpdateTransactionImg(TransactionImgModel update, long transactionId) {
+            try {
+                if (!Request.IsAuthenticated) {
+                    throw new AggregateException("Bạn đã bị mất quyền đăng nhập. \r\n " +
+                                             "1 trong các nguyên nhân như mất thời gian chờ. \r\n " +
+                                             "Xin vui lòng đăng nhập lại hệ thống.");
+                }
+                var technicalManager = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name, MyUtilities.UserRole.TechicalManagerLv2);
+                if (!technicalManager)
+                    throw new AggregateException("Bạn không có quyền thêm, sửa hình.");
+                using (var vfi = new tammaContext()) {
+                    var transactionImg = vfi.TransactionImgs.FirstOrDefault(t => t.TransactionId == update.TransactionId);
+                    if (transactionImg == null)
+                        throw new AggregateException("Lỗi! Không tìm thấy giấy chứng nhận!");
+
+                    if (!string.IsNullOrWhiteSpace(update.ImgUrl)) {
+                        var transactionImgs = vfi.TransactionImgs.Where(t => t.ImgUrl.Equals(transactionImg.ImgUrl));
+                        if (!transactionImgs.Any()) {
+                            DeleteTransactionImg(transactionImg.ImgUrl);
+                        }
+                        transactionImg.ImgUrl = update.ImgUrl;
+                    }
+                    transactionImg.Description = update.Description;
+                    transactionImg.Name = update.Name;
+                    transactionImg.ModifiedUser = HttpContext.User.Identity.Name;
+                    transactionImg.ModifiedDate = DateTime.Now;
+                    vfi.SaveChanges();
+
+                }
+                MyUtilities.Transaction.UpdateTransactionDesign(transactionId);
+
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("UploadTransactionImg", ex.Message);
+            }
+            return View(new GridModel(GetTransactionImgById(transactionId)));
+        }
+
+        [GridAction]
+        public ActionResult DeleteTransactionImg(TransactionImgModel delete, long transactionId) {
+            try {
+                if (!Request.IsAuthenticated) {
+                    throw new AggregateException("Bạn đã bị mất quyền đăng nhập. \r\n " +
+                                             "1 trong các nguyên nhân như mất thời gian chờ. \r\n " +
+                                             "Xin vui lòng đăng nhập lại hệ thống.");
+                }
+                var techicalManager = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name,
+                    MyUtilities.UserRole.TechicalManagerLv2);
+                if (!techicalManager)
+                    throw new AggregateException("Lỗi! Không có quyền thêm - sửa hình.");
+                using (var vfi = new tammaContext()) {
+                    var transactionImg = vfi.TransactionImgs.FirstOrDefault(pi => pi.ImgId == delete.ImgId);
+                    if (transactionImg == null)
+                        throw new AggregateException("Lỗi! Không tìm thấy giấy chứng nhận!");
+                    var transactionImgs =
+                        vfi.TransactionImgs.Where(pi => pi.ImgUrl.Equals(transactionImg.ImgUrl) && pi.TransactionId != transactionId);
+                    if (!transactionImgs.Any())
+                        DeleteTransactionImg(transactionImg.ImgUrl);
+                    vfi.TransactionImgs.Remove(transactionImg);
+                    vfi.SaveChanges();
+
+                }
+                MyUtilities.Transaction.UpdateTransactionDesign(transactionId);
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("DeleteTransactionImg", ex.Message);
+            }
+            return View(new GridModel(GetTransactionImgById(transactionId)));
+        }
+
+
+
+        public ActionResult CheckTransactionImage(string upload) {
+            try {
+
+                using (var vfi = new tammaContext()) {
+                    var transactionCode = "";
+                    var TransactionImgs = vfi.TransactionImgs.Where(p => p.ImgUrl.Equals(upload));
+                    if (TransactionImgs.Any()) {
+                        foreach (var transactionImg in TransactionImgs) {
+                            transactionCode += transactionImg.Transaction.TransactionCode + " | ";
+                        }
+                        return Json("9! " + transactionCode);
+                    }
+                }
+            }
+            catch (Exception ex) {
+                return Json("0! " + ex.Message);
+            }
+            return Json("");
+        }
+
+        // check again
+        [HttpPost]
+        public ActionResult SaveTransactionImg(IEnumerable<HttpPostedFileBase> TransactionImg) {
+            // The Name of the Upload component is "attachments"       
+            try {
+                //var attachments = new List<HttpPostedFileBase>();
+                if (TransactionImg.Any()) {
+                    foreach (var file in TransactionImg) {
+                        // Some browsers send file names with full path. We only care about the file name.
+                        var fileName = Path.GetFileName(file.FileName);
+                        if (fileName == null) continue;
+                        var destinationPath = Path.Combine(Server.MapPath("~/Content/FileUpload/TransactionImg"), fileName);
+                        // giam kich thuoc
+                        Image bm = Image.FromStream(file.InputStream);
+                        var designWidth = 3000.0;
+                        var designHeight = 1500.0;
+                        var ratioW = designWidth / (double)bm.Width;
+                        var ratioH = designHeight / (double)bm.Height;
+                        var ratio = ratioH < ratioW ? ratioH : ratioW;
+                        var newWidth = Convert.ToInt32(bm.Width * ratio);
+                        var newHeight = Convert.ToInt32(bm.Height * ratio);
+                        bm = MyUtilities.Function.ResizeBitmap((Bitmap)bm, newWidth, newHeight);
+                        bm.Save(destinationPath, bm.RawFormat);
+                    }
+                    return Json("Upload thành công !");
+                }
+                else {
+                    throw new AggregateException("attachments null");
+                }
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("UploadSave", ex.Message);
+                return Json(ex.Message);
+            }
+            // Redirect to a view showing the result of the form submissSaveion.    
+            //return Json("False");
+        }
+        // end.
+
 
         [GridAction]
         public ActionResult UpdateFormDetailByTransactionId(ManageImportExportDetailModel update) {

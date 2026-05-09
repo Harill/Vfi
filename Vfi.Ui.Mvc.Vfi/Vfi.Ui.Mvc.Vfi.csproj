@@ -504,6 +504,7 @@
     <Compile Include="Areas\Inv\Models\CncFormModel.cs" />
     <Compile Include="Areas\Inv\Models\CncFormDetailModel.cs" />
     <Compile Include="Areas\Inv\Models\CncInvModel.cs" />
+    <Compile Include="Areas\Inv\Models\TransactionImgModel.cs" />
     <Compile Include="Areas\Inv\Models\DeliverySalesReportModel.cs" />
     <Compile Include="Areas\Inv\Models\FactoryProductionProcessModel.cs" />
     <Compile Include="Areas\Inv\Models\InventoryDrawerModel.cs" />
@@ -1213,6 +1214,7 @@
     <Compile Include="Areas\Purchasing\Controllers\VendorController.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Areas\Purchasing\Models\PoProgressModel.cs" />
     <Compile Include="Areas\Purchasing\Models\PurchaseProgressModel.cs" />
     <Compile Include="Areas\Purchasing\Models\DepartmentModel.cs" />
     <Compile Include="Areas\Purchasing\Models\FuelInventoryModel.cs" />
@@ -1283,6 +1285,7 @@
     <Compile Include="Areas\Sales\Models\OrderNoteModel.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Areas\Sales\Models\InvoiceImgModel.cs" />
     <Compile Include="Areas\Sales\Models\ProductQuotationModel.cs" />
     <Compile Include="Areas\Sales\Models\QuoteDetailModel.cs" />
     <Compile Include="Areas\Sales\Models\QuoteFormModel.cs" />
@@ -1300,6 +1303,8 @@
     </Compile>
     <Compile Include="Areas\Sales\Models\WaitingOrderBalancingPlanModel.cs" />
     <Compile Include="Areas\Sales\SalesAreaRegistration.cs" />
+    <Compile Include="Models\Mapping\TransactionImgMap.cs" />
+    <Compile Include="Models\TransactionImg.cs" />
     <Compile Include="Models\Mapping\MaterialQuoteBaseDetailMap.cs" />
     <Compile Include="Models\Mapping\MaterialQuoteBaseMap.cs" />
     <Compile Include="Models\Mapping\MOQTemplateMap.cs" />
@@ -3099,6 +3104,7 @@
     <Content Include="Areas\Factory\Views\Machine\MachineHistory.cshtml" />
     <Content Include="Areas\Purchasing\Views\PurchaseOrder\Copy of ApprovePlatingForm.cshtml" />
     <Content Include="Areas\Purchasing\Views\PurchaseOrder\PurchasingProgress.cshtml" />
+    <Content Include="Areas\Factory\Views\Machine\MachineReport.cshtml" />
     <None Include="Utilities\weighingvalue.json" />
     <Content Include="Logs\read.txt" />
     <Content Include="Resources\lock.png" />
@@ -3175,6 +3181,7 @@
     <Content Include="Views\Shared\EditorTemplates\Number5Digit.cshtml" />
     <Content Include="Views\Product\EditorTemplates\_UploadProductHistoryImage.cshtml" />
     <Content Include="Views\Product\EditorTemplates\_DateTemplateNullable.cshtml" />
+    <Content Include="Areas\Inv\Views\Transaction\EditorTemplates\_UploadTransactionImgTemplate.cshtml" />
     <None Include="Web-server.Release.config">
       <DependentUpon>Web-server.config</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

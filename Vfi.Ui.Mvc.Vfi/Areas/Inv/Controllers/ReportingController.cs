@@ -2896,7 +2896,8 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                     //                   ed.Quantity,
                     //                   IsInternal = ed.TransactionFptDetail.IsInternal ?? false
                     //               }).ToList();
-
+                    var todayMonth = DateTime.Now.Month;
+                    var threeMonthBefore = DateTime.Now.AddMonths(-3).Month;
                     foreach (var tool in tools) {
                         var entity = new MaterialYearlyReportModel {
                             MaterialId = tool.ToolId,
@@ -2920,7 +2921,8 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                                 Import = 0,
                                 ImportMore = 0,
                                 ExportUse = 0,
-                                ExportDestroy = 0
+                                ExportDestroy = 0,
+                                Export3MonthUsed = 0,
                             };
                             months.Add(byMonth);
 
@@ -2940,16 +2942,25 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                                 exportsParam = exportsInMonth.Where(p => p.Type == (int)MyUtilities.Tool.ExportType.Destroy).ToList();
                                 byMonth.ExportDestroy = Math.Round(exportsParam.Sum(e => e.Quantity), 1);
                             }
+
+                            if (month < todayMonth && month >= threeMonthBefore) {
+                                if (exportsInMonth.Any()) {
+                                    var exportsParam = exportsInMonth.Where(p => p.Type != (int)MyUtilities.Tool.ExportType.Destroy).ToList();
+                                    byMonth.Export3MonthUsed = Math.Round(exportsParam.Sum(e => e.Quantity), 1);
+                                }
+                            }
                         }
                         var total = new MaterialMonthlyReportModel {
                             Import = months.Sum(m => m.Import),
                             ImportMore = months.Sum(m => m.ImportMore),
                             ExportUse = months.Sum(m => m.ExportUse),
-                            ExportDestroy = months.Sum(m => m.ExportDestroy)
+                            ExportDestroy = months.Sum(m => m.ExportDestroy),
+                            Export3MonthUsed = months.Sum(t => t.Export3MonthUsed),
                         };
                         if (total.Import + total.ImportMore + total.ExportUse + total.ExportDestroy > 0) {
                             entity.Months.Add(total);
                             entity.Months.AddRange(months);
+                            entity.TotalExport3MonthUsed = total.Export3MonthUsed;
                             model.Add(entity);
                         }
                     }

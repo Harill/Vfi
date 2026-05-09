@@ -192,7 +192,7 @@
                             .Title("Tình trạng");
                     columns.Bound(f => f.Note)
                            .Title("Ghi Chú");
-                    columns.Bound(f => f.TransactionId).Title("In").Width(50)
+                    columns.Bound(f => f.TransactionId).Title("In").Width(70)
                            .ClientTemplate("<input type='button' id='id_<#= TransactionId #>' value='In' ftype='<#= FormType #>' class='t-button' onclick=PrintForm(<#= TransactionId #>) />")
                            .HtmlAttributes(new { style = "text-align:center" });
                     columns.Bound(f => f.ModifiedUser).Title("Người làm").Width(85);
@@ -256,8 +256,16 @@
                                   )
                                       .Columns(columns => {
                                           //columns.Command(c => c.Edit().Text("").ButtonType(GridButtonType.Image)).Width(50);
-                                          columns.Bound(f => f.LotNumber).Width(200).Title("Lô").ReadOnly(true);
+                                          columns.Bound(f => f.Index).Width(50).Title("STT").ReadOnly(true)
+                                              .HtmlAttributes(new { style = "text-align: center;" });
+                                          columns.Bound(f => f.LotNumber).Width(200).Title("Lô").ReadOnly(true)
+                                              .Aggregate(agg => agg.Count())
+                                              .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>")
+                                              .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>")
+                                              .FooterHtmlAttributes(new { style = "text-align: center; font-weight:bold; " });
+                                          
                                           columns.Bound(f => f.ProductCode).Width(100).Title("Sản phẩm").ReadOnly(true);
+                                          
                                           columns.Bound(f => f.Number).Width(98).Title("Số lượng (PCS)")
                                               .HtmlAttributes(new { style = "text-align: right;" })
                                               .ClientTemplate("<#= Number == null ? 0 : $.telerik.formatString('{0:n0}', Number) #>")
@@ -284,6 +292,8 @@
                                    )
                                       .ToHtmlString()
                                   );
+                        
+                        
                            }
                     )
                     .ToHtmlString()
@@ -302,7 +312,7 @@
             //.Groupable()
             .Filterable()
             .Resizable(resizing => resizing.Columns(true))
-                .Scrollable(f => f.Height(510))
+                .Scrollable(f => f.Height(610))
             .Render();
     }
 </div>

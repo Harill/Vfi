@@ -89,5 +89,12 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
         public DateTime ModifiedDate { get; set; }
 
         public WorkGroupInfo Info { get; set; }
+
+        public int PurchasingSignatureType { get; set; }
+
+        public double Total3MonthsUsed { get; set; }
+
+        
+
     }
 }

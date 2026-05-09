@@ -347,7 +347,7 @@
 }
 <div class="title">Quản lý thông tin sản phẩm</div>
 <div id="pnlInvPeriod">
-    <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px; width: 920px;">
+    <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px; width: auto;">
 
         <fieldset>
             <legend>Tiêu chí trích lọc</legend>
@@ -511,8 +511,8 @@
                                           )
             .Editable(editing => editing.Mode(GridEditMode.InLine))
             .Selectable()
-            .Scrollable(f => f.Height(510))
-            .HtmlAttributes(new {style = "width: 1100px;"})
+            .Scrollable(f => f.Height(610))
+            .HtmlAttributes(new {style = "width: auto;"})
             .Resizable(f => f.Columns(true))
             .Reorderable(f => f.Columns(true))
             .Filterable()

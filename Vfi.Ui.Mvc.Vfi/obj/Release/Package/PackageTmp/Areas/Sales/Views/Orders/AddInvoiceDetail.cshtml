@@ -199,10 +199,10 @@
             .Name("gridExportOrderDetail")
             .ToolBar(bar =>
                 {
-                    bar.Custom().ButtonType(GridButtonType.Text).Text("Lưu mặc định").Name("A")
+                    bar.Custom().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Text).Text("Lưu mặc định").Name("A")
                         //.Action("ExportOrderDetailSaveDefault", "Orders", new { area = "Sales" });
                        .HtmlAttributes(new { onclick = "AddInvoiceDetailDefault()" ,href="#"});
-                    bar.SubmitChanges().ButtonType(GridButtonType.ImageAndText).SaveText("Lưu thay đổi").CancelText("Huỷ tất cả");
+                    bar.SubmitChanges().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).SaveText("Lưu thay đổi").CancelText("Huỷ tất cả");
                 }) 
             .DataKeys(keys => keys.Add(f => f.OrderDetailId).RouteKey("orderDetailId"))
             .DataBinding(dataBindings => dataBindings.Ajax()
@@ -252,7 +252,7 @@
                                         .OnSubmitChanges("gridProductInventoryDetail_onSubmitChanges")
                                         .OnError("grid_OnError")
             )
-            .Editable(f => f.Mode(GridEditMode.InCell))
+            .Editable(f => f.Mode(Telerik.Web.Mvc.UI.GridEditMode.InCell))
             // .Footer(false)
             .Resizable(f => f.Columns(true))
             .Render()

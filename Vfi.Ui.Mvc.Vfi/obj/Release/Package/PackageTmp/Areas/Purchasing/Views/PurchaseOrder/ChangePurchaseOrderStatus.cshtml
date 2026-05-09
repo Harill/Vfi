@@ -74,21 +74,22 @@
                 {
                     columns.Command(command =>
                                     command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).UpdateText("Duyệt").CancelText("Trở lại")
-                        ).Width(98).Title("Duyệt").HtmlAttributes(new {style = "text-align:center"});
+                        ).Width(80).Title("Duyệt").HtmlAttributes(new {style = "text-align:center"});
                     columns.Bound(f => f.RevisionNumber).Width(100).ReadOnly(true);
                     columns.Bound(f => f.ShipDate).Width(100).ReadOnly(true)
                            .ClientTemplate("<strong><#= ShipDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', ShipDate) #></strong>");
                     columns.Bound(f => f.StatusName).Width(75);
-                    columns.Bound(f => f.VendorCodeName).Width(150).ReadOnly(true);
-                    columns.Bound(f => f.CurrencyCode).Width(150).ReadOnly(true);
-                    columns.Bound(f => f.TotalQuality).Title("Tổng SL").Width(75).ReadOnly(true)
+                    columns.Bound(f => f.VendorCodeName).Width(275).ReadOnly(true);
+                    columns.Bound(f => f.CurrencyCode).Width(60).ReadOnly(true);
+                    columns.Bound(f => f.TotalQuality).Title("Tổng SL").Width(90).ReadOnly(true)
                            .HtmlAttributes(new {style = "text-align: right;"})
                            .ClientTemplate("<#= TotalQuality == null ? 0 : $.telerik.formatString('{0:n}', TotalQuality) #>");
-                    columns.Bound(f => f.Tolerance).Width(100).ReadOnly(true)
+                    columns.Bound(f => f.Tolerance).Width(70).ReadOnly(true)
+                           .HtmlAttributes(new { style = "text-align: right;" })
                            .ClientTemplate("<#= Tolerance == null ? 0 : $.telerik.formatString('{0:n}', Tolerance) #>");
                     columns.Bound(f => f.ShipMethodName).Width(150).ReadOnly(true);
                     columns.Bound(f => f.PaymentMethodName).Width(150).ReadOnly(true);
-                    columns.Bound(f => f.PackagedMethodName).Width(160).ReadOnly(true);
+                    columns.Bound(f => f.PackagedMethodName).Width(150).ReadOnly(true);
                     columns.Bound(f => f.DeliveryMethodName).Width(150).ReadOnly(true);
                     columns.Bound(f => f.EmployeeName).Width(100).ReadOnly(true);
                     columns.Bound(f => f.ModifiedUser).Width(70).ReadOnly(true);
@@ -110,19 +111,28 @@
                                            columns.Bound(f => f.Code).Width(100);
                                            columns.Bound(f => f.OrderQty).Width(50) //.Title("Số lượng tồn")
                                                   .HtmlAttributes(new {style = "text-align: right;"})
-                                                  .ClientTemplate("<#= OrderQty == null ? 0 : $.telerik.formatString('{0:n}', OrderQty) #>");
-                                           columns.Bound(f => f.ReceivedQty).Width(50) //.Title("Số lượng tồn")
+                                                  .ClientTemplate("<#= OrderQty == null ? 0 : $.telerik.formatString('{0:n}', OrderQty) #>")
+                                                  .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
+                                                  .FooterHtmlAttributes(new { style = "text-align: right; font-weight:bold;" })
+                                                  .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
+                                                  .Aggregate(agg => agg.Sum());
+                                           columns.Bound(f => f.ReceivedQty).Width(50) 
                                                   .HtmlAttributes(new {style = "text-align: right;"})
                                                   .ClientTemplate("<#= ReceivedQty == null ? 0 : $.telerik.formatString('{0:n}', ReceivedQty) #>");
-                                           columns.Bound(f => f.RejectedQty).Width(50) //.Title("Số lượng tồn")
+                                           columns.Bound(f => f.RejectedQty).Width(50) 
                                                   .HtmlAttributes(new {style = "text-align: right;"})
                                                   .ClientTemplate("<#= RejectedQty == null ? 0 : $.telerik.formatString('{0:n}', RejectedQty) #>");
-                                           columns.Bound(f => f.UnitPrice).Width(50)
+                                           columns.Bound(f => f.CurrencyCode).Width(40).Title("Tiền tệ");
+                                           columns.Bound(f => f.UnitPrice).Width(50)                                        
                                                   .HtmlAttributes(new {style = "text-align: right;"})
                                                   .ClientTemplate("<#= UnitPrice == null ? 0 : $.telerik.formatString('{0:n}', UnitPrice) #>");
                                            columns.Bound(f => f.LineTotal).Width(100)
                                                   .HtmlAttributes(new {style = "text-align: right;"})
-                                                  .ClientTemplate("<#= LineTotal == null ? 0 : $.telerik.formatString('{0:n}', LineTotal) #>");
+                                                  .ClientTemplate("<#= LineTotal == null ? 0 : $.telerik.formatString('{0:n}', LineTotal) #>")
+                                                  .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
+                                                  .FooterHtmlAttributes(new { style = "text-align: right; font-weight:bold;" })
+                                                  .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
+                                                  .Aggregate(agg => agg.Sum());
                                            columns.Bound(f => f.DueDate).Title("Ngày giao").Width(100).Format("{0:dd/MM/yyyy HH:mm:ss}");
                                        })
             .ClientEvents(events => events.OnError("grid_OnError"))
@@ -132,7 +142,7 @@
                     .ToHtmlString()
                                        ))
             .Selectable()
-            .Editable(editing => editing.Mode(GridEditMode.InLine))
+            .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
             .ClientEvents(events => events.OnEdit("gridProduct_onEdit")
                                           .OnRowSelect("grid_OnRowSelect")
                                           .OnSave("Grid_OnSave")

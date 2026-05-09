@@ -15,6 +15,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Models
         public string MaterialTypeName { get; set; }
         public double TotalInv { get; set; }
         public double Avg { get; set; }
+        public double TotalExport3MonthUsed { get; set; }
 
         public List<MaterialMonthlyReportModel> Months { get; set; }
     }
@@ -26,6 +27,8 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Models
         public double ImportMore { get; set; }
         public double ExportUse { get; set; }
         public double ExportDestroy { get; set; }
+        public double Export3MonthUsed { get; set; }
+
     }
 
     public class MaterialYearlyDetailReportModel {

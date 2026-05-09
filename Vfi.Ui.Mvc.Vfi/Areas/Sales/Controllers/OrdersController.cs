@@ -6,7 +6,12 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using Microsoft.Practices.Unity;
+using System.Web;
 using System.Web.Mvc;
+using Telerik.Web.Mvc.Extensions;
+using System.Drawing;
+using System.Drawing.Imaging;
+
 using Telerik.Web.Mvc;
 using Vfi.Server.Core.CrossCutting.UnitOfWork;
 using Vfi.Server.Core.DataModel.Models.Inv;
@@ -16,6 +21,8 @@ using Vfi.Ui.Mvc.Vfi.Models;
 using Vfi.Ui.Mvc.Vfi.Utilities;
 using Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers;
 using Vfi.Ui.Mvc.Vfi.Areas.Factory.Models;
+using Vfi.Ui.Mvc.Vfi.Areas.Sales.Models;
+
 
 namespace Vfi.Ui.Mvc.Vfi.Areas.Sales.Controllers {
     public class OrdersController : Controller {
@@ -1328,6 +1335,230 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Sales.Controllers {
             return model;
         }
 
+
+        List<InvoiceDetailTempModel> GetDetailByExportId(int exportId) {
+            var model = new List<InvoiceDetailTempModel>();
+            using (var vfi = new tammaContext()) {
+                var export = vfi.ExportFormTP_KD.FirstOrDefault(t => t.ExportId == exportId);
+                if (export == null) {
+                    throw new AggregateException("Loi chi tiet");
+                }
+                var transactionList = vfi.Transactions.Where(t => t.TransactionCode == export.TransactionCode).Select(t => t.TransactionId).FirstOrDefault();
+                //var transactionList2 = vfi.Transactions.FirstOrDefault(t => t.TransactionCode == export.TransactionCode);
+
+                var transactionDetailList = vfi.TransactionDetails.Where(t => t.TransactionId == transactionList)
+                                                                  .Select(t => new {
+                                                                      LotNumber = t.LotNumber,
+                                                                      Quantity = t.Quantity,
+                                                                      ProductCode = t.Product.ProductCode,
+                                                                      Note = t.Note,
+                                                                  }).OrderBy(t => t.ProductCode)
+                                                                  .ThenBy(t => t.LotNumber).ToList();
+                var index = 1;
+
+                foreach (var transaction in transactionDetailList) {
+                    var entity = new InvoiceDetailTempModel {
+                        LotNumber = transaction.LotNumber,
+                        Number = transaction.Quantity,
+                        ProductCodeDetail = transaction.ProductCode,
+                        NoteDetail = transaction.Note,
+                        Index = index,
+                    };
+                    var serialNumber = entity.LotNumber.Split('-').Length > 0
+                           ? entity.LotNumber.Split('-')[0]
+                           //? entity.LotNumber.Substring(0, entity.LotNumber.LastIndexOf("-"))
+                           : entity.LotNumber;
+                    var workOrderId = vfi.WorkOrders.Where(t => t.SerialNumber == serialNumber).Select(t => t.WorkOrderId).FirstOrDefault();
+                    var ProductId  = vfi.WorkOrders.Where(t => t.SerialNumber == serialNumber).Select(t => t.ProductId).FirstOrDefault();
+                    var entityProductId = vfi.Products.Where(t => t.ProductCode == entity.ProductCodeDetail).Select(t => t.ProductId).FirstOrDefault();
+                    if (workOrderId != 0 && ProductId == entityProductId) {
+                        var machineId = vfi.WorkOrderRoutings.Where(t => t.WorkOrderId == workOrderId && t.RoutingIndex == 1).Select(t => t.MachineId).FirstOrDefault();
+                        if (machineId != null) {
+                            entity.MachineCode = vfi.Machines.Where(t => t.MachineId == machineId).Select(t => t.MachineName).FirstOrDefault();
+                        }
+                        else {
+                            entity.MachineCode = ""; 
+                        }
+                        var serialDate = vfi.WorkOrders.Where(t => t.SerialNumber == serialNumber).Select(t => new { StartDate = t.StartDate, EndDate = t.EndDate, }).ToList();
+                        entity.StartDate = serialDate.Select(t => t.StartDate).FirstOrDefault();
+                        entity.EndDate = serialDate.Select(t => t.EndDate).FirstOrDefault();
+                    }
+                    model.Add(entity);
+                    index ++;
+                }
+            }
+            return model.OrderBy(t => t.Index).ToList();
+        }
+
+
+        List<InvoiceDetailTempModel> GetMaterialCertificateByExportId(int exportId) {
+            var model = new List<InvoiceDetailTempModel>();
+            using (var vfi = new tammaContext()) {
+                var export = vfi.ExportFormTP_KD.FirstOrDefault(t => t.ExportId == exportId);
+                if (export == null) {
+                    throw new AggregateException("Loi chi tiet");
+                }
+                var transactionList = vfi.Transactions.Where(t => t.TransactionCode == export.TransactionCode).Select(t => t.TransactionId).FirstOrDefault();
+                //var transactionList2 = vfi.Transactions.FirstOrDefault(t => t.TransactionCode == export.TransactionCode);
+
+                var transactionDetailList = vfi.TransactionDetails.Where(t => t.TransactionId == transactionList)
+                                                                  .Select(t => new {
+                                                                      LotNumber = t.LotNumber,
+                                                                      Quantity = t.Quantity,
+                                                                      ProductCode = t.Product.ProductCode,
+                                                                  }).ToList();
+                var bigIndex = 1;
+
+                var results = (
+                    from td in transactionDetailList
+                    let lotNumber = td.LotNumber.Split('-').Length > 0
+                        ? td.LotNumber.Split('-').Last()
+                        : td.LotNumber
+                    let serialNumber = td.LotNumber.Split('-').Length > 0           
+                        ? td.LotNumber.Split('-')[0]
+                        //? td.LotNumber.Substring(0, td.LotNumber.LastIndexOf("-"))
+                        : td.LotNumber
+                    let workOrderId = vfi.WorkOrders
+                        .Where(w => w.SerialNumber == serialNumber)
+                        .Select(w => w.WorkOrderId)
+                        .FirstOrDefault()
+                    let materialInvId = vfi.WorkOrderRoutings
+                        .Where(r => r.WorkOrderId == workOrderId)
+                        .Select(r => r.MaterialInvId)
+                        .FirstOrDefault()
+                    let materialId = vfi.MaterialInventories
+                        .Where(mi => mi.MaterialInventoryId == materialInvId)
+                        .Select(mi => mi.MaterialId)
+                        .FirstOrDefault()
+                    select new {
+                        td.ProductCode,
+                        materialId,
+                        LotNumber = lotNumber,
+                        td.Quantity
+                    }
+                )
+                .GroupBy(x => new { x.ProductCode, x.materialId, x.LotNumber })
+                .Select(g => new InvoiceDetailTempModel {
+                    ProductCode = g.Key.ProductCode,
+                    MaterialId = g.Key.materialId,
+                    LotNumber = g.Key.LotNumber,
+                    // cộng dồn Quantity
+                    Quantity = g.Sum(x => x.Quantity)
+                }).OrderBy(t => t.ProductCode)
+                .ThenBy(t => t.LotNumber)
+                .ToList();
+
+                foreach (var result in results) {
+                    var entity = new InvoiceDetailTempModel() {
+                        ProductCodeDetail = result.ProductCode,
+                        Number = result.Quantity,
+                        MaterialId = result.MaterialId,
+                        LotNumber = result.LotNumber,
+                        Index = bigIndex,
+                    };
+                    entity.MaterialCode = vfi.Materials.Where(t => t.MaterialId == entity.MaterialId).Select(t => t.MaterialCode).FirstOrDefault();
+                    entity.InfoImg = vfi.MaterialInventories.Where(t => t.MaterialId == entity.MaterialId && t.LotNumber == entity.LotNumber).Select(t => t.InfoImg).FirstOrDefault();
+                    entity.InfoImg2 = vfi.MaterialInventories.Where(t => t.MaterialId == entity.MaterialId && t.LotNumber == entity.LotNumber).Select(t => t.InfoImg2).FirstOrDefault();
+                    if (string.IsNullOrWhiteSpace(entity.InfoImg))
+                        entity.InfoImg = "askquestion.jpg";
+                    if (string.IsNullOrWhiteSpace(entity.InfoImg2))
+                        entity.InfoImg2 = "askquestion.jpg";
+                    if (!string.IsNullOrWhiteSpace(entity.MaterialCode)){
+                    entity.ImportDate = vfi.MaterialInventories.Where(t => t.LotNumber == entity.LotNumber
+                                                                      && t.MaterialId == entity.MaterialId).Select(t => t.ImportDate).FirstOrDefault().ToString("dd/MM/yyyy") == "01/01/0001"
+                                            ? ""
+                                            : vfi.MaterialInventories.Where(t => t.LotNumber == entity.LotNumber
+                                                                            && t.MaterialId == entity.MaterialId).Select(t => t.ImportDate).FirstOrDefault().ToString("dd/MM/yyyy");
+
+                    entity.LastUsedDate = vfi.MaterialInventories.Where(t => t.LotNumber == entity.LotNumber
+                                                                        && t.MaterialId == entity.MaterialId).Select(t => t.EndDate).FirstOrDefault() == null
+                                          ? ""
+                                          : vfi.MaterialInventories.Where(t => t.LotNumber == entity.LotNumber
+                                                                          && t.MaterialId == entity.MaterialId).Select(t => t.EndDate).FirstOrDefault().Value.ToString("dd/MM/yyyy");
+                    }
+                    model.Add(entity);
+                    bigIndex++;
+                }
+
+
+                // 1) Lấy phần trước dấu “-” đầu tiên
+                //var serialNumberList = transactionDetailList
+                //    .Select(t => {
+                //        var index = t.LotNumber.LastIndexOf("-");
+                //        return index > 0 ? t.LotNumber.Substring(0, index) : t.LotNumber;
+                //    })
+                //    .Distinct()
+                //    .ToList();
+
+
+                // 2) Lấy phần trước dấu “-” cuối cùng
+                //var serialNumberList = transactionDetailList
+                //    .Select(t => {
+                //        var index = t.LotNumber.LastIndexOf("-");
+                //        return index > 0 ? t.LotNumber.Substring(0, index) : t.LotNumber;
+                //    })
+                //    .Distinct()
+                //    .ToList();
+
+
+                //// 3) Dùng Split: lay phan sau "-" -------- có thể chọn parts[0], parts[1], hoặc parts.Last().
+                //var trueLotNumber = transactionDetailList
+                //    .Select(t => {
+                //        var parts = t.LotNumber.Split('-');
+                //        return parts.Length > 0 ? parts.Last() : t.LotNumber;
+                //    })
+                //    .Distinct()
+                //    .ToList();
+
+            }
+            return model;
+        }
+
+         [GridAction]
+        public ActionResult SelectTransactionImgById(int exportId) {
+            var model = new List<TransactionImgModel>();
+            try {
+                model = GetTransactionImgById(exportId);
+            }
+            catch (Exception ex) {
+                {
+                      Console.WriteLine(ex.InnerException.Message);
+                }
+            }   
+            return View(new GridModel(model));
+        }
+
+
+         List<TransactionImgModel> GetTransactionImgById(int exportId) {
+             var model = new List<TransactionImgModel>();
+             //var technicalManager = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name, MyUtilities.UserRole.TechicalManagerLv2);
+
+             using (var vfi = new tammaContext()) {
+                 var index = 1;
+                 var transactionCode = vfi.ExportFormTP_KD.Where(t => t.ExportId == exportId).Select(t => t.TransactionCode).FirstOrDefault();
+                 var transactionId = vfi.Transactions.Where(t => t.TransactionCode == transactionCode).Select(t => t.TransactionId).FirstOrDefault();
+                 var transactionImgs = vfi.TransactionImgs.Where(t => t.TransactionId == transactionId).OrderBy(t => t.ModifiedDate);
+                 foreach (var transactionImg in transactionImgs) {
+                     var entity = new TransactionImgModel {
+                         ImgId = transactionImg.ImgId,
+                         TransactionId = (long)transactionId,
+                         ImgUrl = transactionImg.ImgUrl,
+                         TransactionNumber = transactionImg.TransactionNumber,
+                         ModifiedDate = transactionImg.ModifiedDate,
+                         ModifiedUser = transactionImg.ModifiedUser,
+                         //CanModify = technicalManager,
+                         Description = transactionImg.Description,
+                         Name = transactionImg.Name,
+                         Index = index,
+                     };
+                     model.Add(entity);
+                     index++;
+                 }
+             }
+             return model;
+         }
+
+
         List<InvoiceDetailTempModel> InvoiceDetailListByExportId_New(int exportId, long invoiceId) {
             var model = new List<InvoiceDetailTempModel>();
             using (var vfi = new tammaContext()) {
@@ -1353,8 +1584,11 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Sales.Controllers {
                         TaxPercent = invoice.TaxPercent,
                         ExchangeRate = invoice.ExchangeRate,
                         ExportDetailId = detail.DetailId,
-                        ProductId = detail.ProductId ?? 0
+                        ProductId = detail.ProductId ?? 0,
+                        TransactionCode = export.TransactionCode,
                     };
+
+
                     var invoiceDetails = vfi.InvoiceDetails.Where(id => id.ExportDetailId == entity.ExportDetailId && id.Active);
                     if (invoiceDetails.Any()) {
                         entity.Quantity = invoiceDetails.Sum(id => id.Piece);
@@ -1402,6 +1636,9 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Sales.Controllers {
 
             return model;
         }
+
+
+
 
         List<InvoiceDetailTempModel> InvoiceDetailListByExportDetailId(int exportDetailId) {
             var model = new List<InvoiceDetailTempModel>();
@@ -2234,6 +2471,30 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Sales.Controllers {
         }
 
         [GridAction]
+        public ActionResult SelectDetailByExportId(int exportId) {
+            var model = new List<InvoiceDetailTempModel>();
+            try {
+                model = GetDetailByExportId(exportId);
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("SelectDetailByTransactionCode", ex.Message);
+            }
+            return View(new GridModel(model));
+        }
+
+        [GridAction]
+        public ActionResult SelectMaterialCertificateByExportId(int exportId) {
+            var model = new List<InvoiceDetailTempModel>();
+            try {
+                model = GetMaterialCertificateByExportId(exportId);
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("SelectDetailByTransactionCode", ex.Message);
+            }
+            return View(new GridModel(model));
+        }
+
+        [GridAction]
         public ActionResult SelectInvoiceDetailByExportDetailId(int exportDetailId) {
             var model = new List<InvoiceDetailTempModel>();
             try {
@@ -2504,6 +2765,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Sales.Controllers {
                         TaxInvoice = "",
                         Note = invoice.Note,
                         ExchangeRate = invoice.ExchangeRate,
+                        TransactionCode = export.TransactionCode,
                         //EmployeeSale = order.Employee.EmployeeName,
                     };
                     foreach (var exportDetail in export.ExportFormTP_KDDetail) {
@@ -3436,6 +3698,8 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Sales.Controllers {
             }
             catch (Exception exception) {
                 ModelState.AddModelError("ExportOrderDetailSaveDefault", "" + exception.Message);
+                return Json("Error! " + exception.Message, JsonRequestBehavior.AllowGet);
+
             }
             return Json("Error! UnKnow", JsonRequestBehavior.AllowGet);
             //return View(new GridModel(new List<OrderDetailModel>()));
@@ -3482,8 +3746,8 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Sales.Controllers {
                 //var export = vfi.ExportFormTP_KD.FirstOrDefault(e => e.ExportId == invoice.InvoiceId);
                 if (list.Select(l => l.Currency).Distinct().Count() > 1)
                     throw new AggregateException("Lỗi! Có 2 đơn hàng khác tiền tệ !");
-                if (list.Select(l => l.UnitPrice).Distinct().Count() > 1)
-                    throw new AggregateException("Lỗi! Có 2 đơn hàng khác giá tiền !");
+                //if (list.Select(l => l.UnitPrice).Distinct().Count() > 1)
+                //    throw new AggregateException("Lỗi! Có 2 đơn hàng khác giá tiền !");
                 var orderDetailFirst = list.FirstOrDefault();
                 var exportDetail =
                     vfi.ExportFormTP_KDDetail.FirstOrDefault(

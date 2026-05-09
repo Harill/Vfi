@@ -20,6 +20,9 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public string Note { get; set; }
         public string Currency { get; set; }
         public string InquiryNumber { get; set; }
+
+        public byte ManagementSignature { get; set; }
+
         public virtual MaterialClassified MaterialClassified { get; set; }
         public virtual PurchaseOrderDetail PurchaseOrderDetail { get; set; }
         public virtual Vendor Vendor { get; set; }

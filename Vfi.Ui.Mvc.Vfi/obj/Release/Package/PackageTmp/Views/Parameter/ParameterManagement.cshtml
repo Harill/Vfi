@@ -17,7 +17,7 @@
             .Update("UpdateParam", "Parameter")
         )
         .Columns(columns=> {
-                         columns.Command(cmd => cmd.Edit().ButtonType(GridButtonType.Image)).Width(100);
+                         columns.Command(cmd => cmd.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(100);
                          columns.Bound(f => f.ParamCode).ReadOnly(true);
                          columns.Bound(f => f.Name);
                          columns.Bound(f => f.Value).Width(100);

@@ -244,7 +244,7 @@
                             .ClientTemplate("<input type='checkbox' name='chkOrderDetailIds' value='<#= OrderDetailId #>' />")
                             .HtmlAttributes(new {style = "text-align:center"}).ReadOnly(true);
                         columns.Command(command =>
-                            command.Edit().ButtonType(GridButtonType.Image)
+                            command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
                                 .UpdateText("Sửa").CancelText("Huỷ").Text("Cập Nhật")
                             ).Width(30).Title("").HtmlAttributes(new {style = "text-align:center"});
                         // columns.Bound(f => f.OrderDetailId);

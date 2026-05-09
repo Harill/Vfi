@@ -623,7 +623,7 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers.Production {
                                         p.ProductName,
                                         p.DesignNo,
                                         ProductPrice = p.UnitPrice,
-
+                                        p.Currency,
                                         p.CustomerId,
                                         CustomerCode = p.Customer.CustomerCode,
 
@@ -654,7 +654,7 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers.Production {
                             ProductName = product.ProductName,
                             ProductDesignNo = product.DesignNo,
                             ProductPrice = product.ProductPrice ?? 0,
-
+                            ProductCurrency = product.Currency,
                             CustomerId = product.CustomerId,
                             CustomerCode = product.CustomerCode,
 
@@ -4045,8 +4045,6 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers.Production {
             //if (!techicalManager)
             //    return model;
 
-            //techicalManager = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name,
-            //    MyUtilities.UserRole.TechicalManagerLv2);
             using (var vfi = new tammaContext()) {
                 var productImgs = vfi.ProductImgs.Where(p => p.ProductId == productId).OrderBy(p => p.Step);
                 foreach (var productImg in productImgs) {

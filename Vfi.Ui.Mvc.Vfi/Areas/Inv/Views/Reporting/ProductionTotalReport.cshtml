@@ -205,7 +205,8 @@
                         columns.Bound(f => f.Productivity).Width(50).Title("NS")
                                .Format("{0:n0}")
                                .HtmlAttributes(new { style = "text-align: right;border-right:1px solid black;" });
-                        // so lieu
+                        
+                    // so lieu
                         columns.Bound(f => f.TotalShift.MaterialUse).Title("NL SD").Width(70)
                                .Aggregate(agg => agg.Sum())
                               .Format("{0:n1}")

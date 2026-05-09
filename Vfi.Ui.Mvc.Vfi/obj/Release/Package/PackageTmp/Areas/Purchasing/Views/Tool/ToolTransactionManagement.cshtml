@@ -216,16 +216,24 @@
                                .ClientTemplate("<strong><#= TransactionDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', TransactionDate) #></strong>");
                         columns.Bound(f => f.PoCode).Width(90).Title("Phiếu mua");
                         columns.Bound(f => f.TransactionCode).Width(95).Title("Số phiếu");
-                        columns.Bound(f => f.EoIName).Width(50)
-                            .HeaderTemplate("<span style='text-decoration:underline'>Nhập</span></br>Xuất")
+                        columns.Bound(f => f.EoIName).Width(50).Title("Nhập</br>Xuất")
+                            //.HeaderTemplate("<span style='text-decoration:underline'>Nhập</span></br>Xuất")
                             .HtmlAttributes(new { style = "text-align:center;" });
                         columns.Bound(f => f.TotalQuantity).Width(65).Title("Tổng SL")
                             .HtmlAttributes(new { style = "text-align:right;" })
-                               .ClientTemplate("<#= TotalQuantity == null ? 0 : $.telerik.formatString('{0:n2}', TotalQuantity) #>");
-                        columns.Bound(f => f.TotalPrice).Width(75)
-                            .HeaderTemplate("Tổng tiền</br>(VNĐ)")
+                            .ClientTemplate("<#= TotalQuantity == null ? 0 : $.telerik.formatString('{0:n2}', TotalQuantity) #>")
+                            .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .FooterHtmlAttributes(new { style = "text-align: right; font-weight:bold;  " })
+                            .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .Aggregate(agg => agg.Sum());
+                        columns.Bound(f => f.TotalPrice).Width(75).Title("Tổng tiền</br>(VNĐ)")
+                            //.HeaderTemplate("Tổng tiền</br>(VNĐ)")
                             .HtmlAttributes(new { style = "text-align:right;" })
-                               .ClientTemplate("<#= TotalPrice == null ? 0 : $.telerik.formatString('{0:n0}', TotalPrice) #>");
+                            .ClientTemplate("<#= TotalPrice == null ? 0 : $.telerik.formatString('{0:n0}', TotalPrice) #>")
+                            .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .FooterHtmlAttributes(new { style = "text-align: right; font-weight:bold; " })
+                            .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .Aggregate(agg => agg.Sum());
                         columns.Bound(f => f.Department).Width(80).Title("BP đề xuất");
 
                         columns.Bound(f => f.MachineName).Width(80).Title("Máy");

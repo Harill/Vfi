@@ -50,8 +50,15 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
             }
             ViewData = GetPageConfigData();
             return View();
-        }  
+        }
         public ActionResult MachineHistory() {
+            if (!Request.IsAuthenticated) {
+                return RedirectToAction("Index", "Home", new { area = "" });
+            }
+            ViewData = GetPageConfigData();
+            return View();
+        }
+        public ActionResult MachineReport() {
             if (!Request.IsAuthenticated) {
                 return RedirectToAction("Index", "Home", new { area = "" });
             }
@@ -1068,24 +1075,36 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
                     vfi.Configuration.LazyLoadingEnabled = false;
                     var fDate = MyUtilities.Function.ParseDate(fromDate);
                     var tDate = MyUtilities.Function.ParseLastDateTime(toDate);
+
                     var results = (from d in vfi.ImportFormSX1Detail
                                    join h in vfi.ImportFormSX1
                                        on d.ImportId equals h.ImportId
                                    where ((machineId == 0 || d.MachineId == machineId) &&
-                                         h.ImportDate >= fDate &&
-                                         h.ImportDate <= tDate
+                                         h.MaterialUseDate >= fDate &&
+                                         h.MaterialUseDate <= tDate
                                          )
                                    select new {
+                                       d.ImportId,
                                        d.Machine,
+                                       h.MaterialUseDate,
                                        d.MachineId,
-
+                                       StateId = d.Machine1.MachineState.StateId,
+                                       StateDate = d.Machine1.ModifiedState,
+                                       
+                                       //product
                                        d.ProductId,
                                        ProductCode = d.Product.ProductCode,
+                                       ProductLenght = d.Product.Length,
                                        ProductionNumber = d.Number1 + d.Number2,
                                        DefectNumber = d.DefectProduct1 + d.DefectProduct2,
                                        ProductUnitPrice = d.Product.UnitPrice,
                                        Currency = d.Product.Currency,
-
+                                       Productivity = d.Product.Productivity,
+                                       Processing = d.Processing1 + d.Processing2,
+                                       TotalNumber = (d.Number1 + d.Number2) + (d.Processing1 + d.Processing2) + (d.DefectProduct1 + d.DefectProduct2),
+                                       NGNumber = (d.Processing1 + d.Processing2) + (d.DefectProduct1 + d.DefectProduct2),
+                                       
+                                       // Material
                                        d.MaterialInvId,
                                        MaterialUsed = d.MaterialUse1 + d.MaterialUse2,
                                        MaterialId = d.MaterialInventory.MaterialId,
@@ -1093,22 +1112,53 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
                                        MaterialUnitWeight = d.MaterialInventory.UnitWeight,
                                        MaterialCode = d.MaterialInventory.Material.MaterialCode,
                                        LotMaterial = d.MaterialInventory.LotNumber,
-                                   }).OrderBy(m => m.Machine).ToList();
+                                       ProductionRate = d.Product.ProductionRate ?? 0,
+
+                                  }).OrderBy(m => m.Machine).ToList();
+                    var exchangeRate2 = MyUtilities.Monitor.GetParameterValue(MyUtilities.Monitor.ExchangeToVndRate2);
+                    var EUR = MyUtilities.Monitor.GetParameterValue(MyUtilities.Monitor.ExchangeToVndRate3);
+
+                    // Machine
                     var machineIds = results.Select(t => t.MachineId).Distinct().ToList();
-                    var exchangeRate = MyUtilities.Monitor.GetParameterValue(MyUtilities.Monitor.ExchangeToVndRate);
+                    // MachineState
+                    var machineStateIdList = results.Select(t => t.StateId).ToList();
+                    var getMachineState = vfi.MachineStates.Where(t => machineStateIdList.Contains(t.StateId))
+                                                           .Select(t => new {
+                                                               StateId = t.StateId,
+                                                               Description = t.Description,
+                                                           }).OrderByDescending(t => t.StateId).Distinct().ToList();
+                    //var lastStateDate = results.Where(t => t.StateId == x.FirstOrDefault().StateId)
+                    //                     .Select(t => t.StateDate)
+                    //                     .LastOrDefault();
 
-                    //var salePrice = (double)0.7;
 
 
+
+                    // Material
+                    var lotNumberList = results.Select(t => t.LotMaterial).Distinct().ToList();
                     var materialIds = results.Select(t => t.MaterialId).Distinct().ToList();
                     var materialDict = vfi.Materials
                         .Where(t => materialIds.Contains(t.MaterialId))
                         .ToDictionary(t => t.MaterialId, t => t.MaterialCode);
 
+                    var materialLenghtList = vfi.MaterialInventories.Where(t => materialIds.Contains(t.MaterialId)
+                                                                            && lotNumberList.Contains(t.LotNumber))
+                                                                    .Select(t => new {
+                                                                        t.Length,
+                                                                        t.MaterialId,
+                                                                        t.LotNumber,
+                                                                    }).Distinct().ToList();
 
+                    // Product
+                    var productIds = results.Select(t => t.ProductId).Distinct().ToList();
+                    var productProductivityList = vfi.Products.Where(t => productIds.Contains(t.ProductId))
+                                                     .Select(p => new{
+                                                        p.Productivity,
+                                                        p.ProductId,
+                                                        ProductLenght = p.Length,
+                                                  }).Distinct().ToList();
 
                     // Tool RCM
-
                     var exp = (from ed in vfi.ExportToolDetails
                                where ed.ExportTool.TransactionFpt.Status == 2
                                   && ed.ExportTool.TransactionFpt.TransactionDate >= fDate
@@ -1127,12 +1177,14 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
                     // repair machine
                     var repairList = (from re in vfi.RepairFormDetails
                                       where re.Status != (byte)MyUtilities.Machine.State.RepairStatus.Delete
-                                            && re.StartDate <= tDate 
+                                            && re.MachineRepairForm.CauseDate <= tDate
                                             && (re.FinishDate == null || re.FinishDate >= fDate)
                                             && machineIds.Contains(re.MachineRepairForm.MachineId)
+                                            && re.Status == 2
                                       select new {
                                           MachineId = re.MachineRepairForm.MachineId,
-                                          re.DetailId,                                         
+                                          MachineName = re.MachineRepairForm.Machine.MachineName,
+                                          re.DetailId,
                                           re.StartDate,
                                           re.FinishDate,
                                           HowToFix = re.MachineStateDetail.Description,
@@ -1141,105 +1193,388 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
                                           ErrorCause = re.MachineRepairForm.ErrorCauseForm.Name,
                                           StateCode = re.MachineRepairForm.MachineState.StateCode,
                                           Descripbe = re.MachineRepairForm.MachineState.Description,
+                                          Status = re.MachineRepairForm.Status,
+                                      }).ToList()
+                                        .GroupBy(re => new { re.MachineId, re.CauseDate })
+                                        .Select(g => new {
+                                            MachineId = g.Key.MachineId,
+                                            CauseDate = g.Key.CauseDate,
+                                            MachineName = g.First().MachineName,
+                                            Repairs = g.Select(re => {
+                                                var finishDate = (re.FinishDate == null || re.FinishDate > tDate)
+                                                             ? tDate
+                                                             : re.FinishDate.Value;
+                                                var causeDate = re.CauseDate < fDate ? fDate : re.CauseDate;
 
 
-                                      })
-                                      .ToList()
-                                      .GroupBy(re => re.MachineId)
-                                      .Select(g => new {
-                                          MachineId = g.Key,
-                                          Repairs = g.Select(re => {
-                                              var start = re.StartDate < fDate ? fDate : re.StartDate;
-                                              var finish = (re.FinishDate == null || re.FinishDate > tDate)
-                                                           ? tDate
-                                                           : re.FinishDate.Value;
+                                                var causeDate1 = causeDate;
+                                                var finishDate1 = finishDate;
+                                                bool causeIsSunday = causeDate1.DayOfWeek == DayOfWeek.Sunday;
+                                                bool finishIsSunday = finishDate1.DayOfWeek == DayOfWeek.Sunday;
 
-                                              return new {
-                                                  re.DetailId,
-                                                  re.MachineId,
-                                                  ProductCode = re.ProductCode,
-                                                  StateCode = re.StateCode,
-                                                  Descripbe = re.Descripbe,
-                                                  ErrorCause = re.ErrorCause,
-                                                  HowToFix = re.HowToFix,
-                                                  CauseDate = re.CauseDate,
-                                                  StartDate = start,
-                                                  FinishDate = finish,
-                                                  FixTime = (finish - start).TotalHours,
-                                              };
-                                          }).ToList()
-                                      })
-                                      .ToList();
+                                                double checkErrorTime = 0;
+
+                                                if (causeIsSunday && finishIsSunday) {
+                                                    checkErrorTime = 0;
+                                                }
+
+                                                else if (causeIsSunday) {
+                                                        // Đẩy causeDate sang thứ 2
+                                                        var hoursOverMonday = 23 - causeDate1.Hour;
+                                                        var minuteOverMonday = 60 - causeDate1.Minute;
+                                                        causeDate1 = causeDate1.AddHours(hoursOverMonday).AddMinutes(minuteOverMonday);
+                                                        checkErrorTime = (finishDate - causeDate1).TotalHours;
+                                                    }
+
+                                                else if (finishIsSunday) {
+                                                        // Lùi finish về trước Chủ nhật
+                                                        var hourBeforeSunday = finishDate1.Hour;
+                                                        var minuteBeforSunday = finishDate1.Minute;
+                                                        finishDate1 = finishDate1.AddHours(-hourBeforeSunday).AddMinutes(-minuteBeforSunday).AddSeconds(-1);
+                                                        checkErrorTime = (finishDate1 - causeDate).TotalHours;
+                                                    }
+
+                                                else{ checkErrorTime = (((finishDate - causeDate).TotalHours)
+                                                        - (((int)Math.Round((finishDate - causeDate).TotalDays)
+                                                        - (MyUtilities.Function.DaysNoSunDay(causeDate, finishDate) - 1)) * 24));
+                                                }
+
+                                                return new {
+                                                    re.DetailId,
+                                                    re.MachineId,
+                                                    ProductCode = re.ProductCode,
+                                                    StateCode = re.StateCode,
+                                                    Descripbe = re.Descripbe,
+                                                    ErrorCause = re.ErrorCause,
+                                                    HowToFix = re.HowToFix,
+                                                    CauseDate = re.CauseDate,
+                                                    FinishDate = finishDate,
+                                                    CheckErrorTime = checkErrorTime,
+                                                    causeDate1 = causeDate1,
+                                                    finishDate1 = finishDate1,
+                                                };
+                                            }).ToList()
+                                        })
+                                        .ToList();
+
+
+
+
 
 
 
 
                     var dayCount = ((MyUtilities.Function.DaysNoSunDay(fDate, tDate)) -1);
-                    var fullDayTiming = MyUtilities.Monitor.GetParameterValue(MyUtilities.Monitor.FactoryFullDayTiming);
-                    var maxRunTime = MyUtilities.Function.RoundDown( dayCount * fullDayTiming / (60 * 60));
+                    var fullDayTiming = 20;
+                    var maxRunTime = MyUtilities.Function.RoundDown( dayCount * fullDayTiming);
 
 
-                   
+
+                   // get trackup
+                    var DayBefore = MyUtilities.Function.ParseDate(fromDate).AddDays(-15);
+                    //var DayAfter = MyUtilities.Function.ParseLastDateTime(toDate).AddDays(+1);
+                    var trackupList = (from tr in vfi.TrackUpMachines
+                                       where machineIds.Contains(tr.MachineId)
+                                             && tr.StartDate >= DayBefore
+                                             && tr.StartDate <= tDate
+                                       group tr by new { tr.MachineId, tr.ProductId, tr.MaterialId, tr.RealProductivity, tr.RealRate, tr.StartDate } into g
+                                       select new {
+                                           MachineId = g.Key.MachineId,
+                                           ProductId = g.Key.ProductId,
+                                           MaterialId = g.Key.MaterialId,
+                                           Productivity = g.Key.RealProductivity,
+                                           RealRate = g.Key.RealRate,
+                                           StartDate = g.Key.StartDate,
+                                       }).OrderBy(t => t.StartDate).ToList();
+
 
                     // model
                     model = results.GroupBy(m => m.Machine)
                                   .Select(x => new MachineHistoryModel {
                                       MachineName = x.Key,
                                       MachineId = x.FirstOrDefault().MachineId ?? 0,
+                                      MachineState = getMachineState.Where(t => x.FirstOrDefault().StateId == t.StateId).Select(p => p.Description).LastOrDefault(),
 
                                       // products
-                                      TotalAll =  (x.Sum(t => t.DefectNumber)) + (x.Sum(t => t.ProductionNumber)),
+                                      TotalAll =  x.Sum(t => t.TotalNumber),
                                       ProductName = string.Join(",  ", x.Select(t => t.ProductCode).Distinct()),
                                       TotalProductPrice = x.Sum(t => t.Currency == "USD"
-                                                 ? (t.ProductionNumber + t.DefectNumber) * (double)t.ProductUnitPrice * exchangeRate
-                                                 : (t.ProductionNumber + t.DefectNumber) * (double)t.ProductUnitPrice
+                                                 ? (t.ProductionNumber + t.Processing + t.DefectNumber) * (double)t.ProductUnitPrice * exchangeRate2
+                                                 : t.Currency == "EUR"
+                                                    ? (t.ProductionNumber + t.Processing + t.DefectNumber) * (double)t.ProductUnitPrice * EUR
+                                                    : (t.ProductionNumber + t.Processing + t.DefectNumber) * (double)t.ProductUnitPrice
                                                  ),
-                                      
-                                      ProductDetails = x.GroupBy(p => new { p.ProductId, p.ProductCode, p.ProductUnitPrice, p.Currency, })
+
+                                      NoNGPrice = x.Sum(t => t.Currency == "USD"
+                                          ? (t.ProductionNumber + t.Processing ) * (double)t.ProductUnitPrice * exchangeRate2
+                                          : t.Currency == "EUR"
+                                            ? (t.ProductionNumber + t.Processing ) * (double)t.ProductUnitPrice * EUR
+                                            : (t.ProductionNumber + t.Processing) * (double)t.ProductUnitPrice
+                                          ),
+
+
+
+                                      Productivity = x.GroupBy(p => new { p.ProductId, p.MachineId, p.MaterialId, p.Productivity })
+                                                      .Select(g =>
+                                                        {
+                                                            var trackProd = trackupList
+                                                                .Where(t => t.MachineId == g.Key.MachineId 
+                                                                            && t.ProductId == g.Key.ProductId 
+                                                                            && t.MaterialId == g.Key.MaterialId)
+                                                                .Select(p => p.Productivity)
+                                                                .LastOrDefault();
+
+                                                            var prod = trackProd == 0 
+                                                                ? productProductivityList
+                                                                    .Where(t => t.ProductId == g.Key.ProductId)
+                                                                    .Select(p => p.Productivity)
+                                                                    .LastOrDefault()
+                                                                : trackProd ;
+
+                                                            return (g.Sum(t => t.TotalNumber) * (double)prod) / 3600;
+                                                        })
+                                                        .Sum(),
+
+
+                                      NGPersent = (x.Sum(t => t.NGNumber)) / (x.Sum(t => t.TotalNumber)) * 100, 
+
+                                      ProductDetails = x.GroupBy(p => new { p.ProductId, p.ProductCode, p.ProductUnitPrice, p.Currency, p.MachineId, p.Productivity, p.MaterialId})
+                                                        .OrderBy(t => t.Key.ProductCode)
                                                         .Select((g, index) => new ProductDetailModel {
                                                             Index = index + 1,
                                                             ProductId = g.Key.ProductId,
                                                             ProductCode = g.Key.ProductCode,
                                                             ProductUnitPrice = (double)g.Key.ProductUnitPrice,
                                                             TotalProduct = g.Sum(t => t.ProductionNumber),
+
                                                             Currency = g.Key.Currency,
                                                             ProductPrice = g.Sum(t => t.Currency == "USD"
-                                                                ? t.ProductionNumber * (double)t.ProductUnitPrice * exchangeRate
-                                                                : t.ProductionNumber * (double)t.ProductUnitPrice
+                                                                ? t.ProductionNumber * (double)t.ProductUnitPrice * exchangeRate2
+                                                                : t.Currency == "EUR"
+                                                                    ? t.ProductionNumber * (double)t.ProductUnitPrice * EUR
+                                                                    : t.ProductionNumber * (double)t.ProductUnitPrice
                                                                ),
                                                             TotalDefect = g.Sum(t => t.DefectNumber),
                                                             DefectPrice = g.Sum(t => t.Currency == "USD"
-                                                                ? t.DefectNumber * (double)t.ProductUnitPrice * exchangeRate
-                                                                : t.DefectNumber * (double)t.ProductUnitPrice
+                                                                ? t.DefectNumber * (double)t.ProductUnitPrice * exchangeRate2
+                                                                : t.Currency == "EUR"
+                                                                    ? t.DefectNumber * (double)t.ProductUnitPrice * EUR
+                                                                    : t.DefectNumber * (double)t.ProductUnitPrice 
                                                                 ),
+
+                                                            TotalProcessing = g.Sum(t => t.Processing),
+                                                            ProcessingPrice = g.Sum(t => t.Currency == "USD"
+                                                                ? t.Processing * (double)t.ProductUnitPrice * exchangeRate2
+                                                                : t.Currency == "EUR"
+                                                                    ? t.Processing * (double)t.ProductUnitPrice * EUR
+                                                                    : t.Processing * (double)t.ProductUnitPrice 
+                                                                ),
+
+                                                            TotalAllProduction = g.Sum(t => t.ProductionNumber) + g.Sum(t => t.Processing) + g.Sum(t => t.DefectNumber),
+
+                                                            NGPersent = (g.Sum(t => t.NGNumber)) / (g.Sum(t => t.TotalNumber)) * 100, 
+
                                                             TotalPrice = g.Sum(t => t.Currency == "USD"
-                                                                ? (t.ProductionNumber + t.DefectNumber) * (double)t.ProductUnitPrice * exchangeRate
-                                                                : (t.ProductionNumber + t.DefectNumber) * (double)t.ProductUnitPrice
+                                                                ? (t.ProductionNumber + t.Processing + t.DefectNumber) * (double)t.ProductUnitPrice * exchangeRate2
+                                                                : t.Currency == "EUR"
+                                                                    ? (t.ProductionNumber + t.Processing + t.DefectNumber) * (double)t.ProductUnitPrice * EUR
+                                                                    : (t.ProductionNumber + t.Processing + t.DefectNumber) * (double)t.ProductUnitPrice 
                                                                 ),
+                                                            ProductProductivityActual = trackupList.Where(t => t.MachineId == g.Key.MachineId                   
+                                                                                                            && t.ProductId == g.Key.ProductId
+                                                                                                            && t.MaterialId == g.Key.MaterialId)
+                                                                                                   .Select(p => p.Productivity)
+                                                                                                   .LastOrDefault(),
+                                                                                                   //.DefaultIfEmpty(0)
+                                                                                                   //.Average(),
+
+                                                            ProductProductivitySetting = (double)g.Key.Productivity,
+
+                                                            ProductProductionTime = (g.GroupBy(p => new { p.ProductId, p.MachineId, p.MaterialId, p.Productivity })
+                                                                                     .Select(d => {
+                                                                                         var trackProd = trackupList
+                                                                                             .Where(t => t.MachineId == g.Key.MachineId
+                                                                                                      && t.ProductId == g.Key.ProductId
+                                                                                                      && t.MaterialId == g.Key.MaterialId)
+                                                                                             .Select(p => p.Productivity)
+                                                                                             .LastOrDefault();
+
+                                                                                         var prod = trackProd == 0
+                                                                                             ? productProductivityList
+                                                                                                 .Where(t => t.ProductId == g.Key.ProductId)
+                                                                                                 .Select(p => p.Productivity)
+                                                                                                 .LastOrDefault()
+                                                                                             : trackProd;
+
+                                                                                         return (d.Sum(t => t.TotalNumber) * (double)prod) / 3600;
+                                                                                     }).Sum())
+                                                                
+
                                                         }).OrderBy(t => t.Index)
                                                          .ToList(),
 
+
+
+                                      TotalCost = (x.Sum(t => t.MaterialUnitPrice * t.MaterialUsed * t.MaterialUnitWeight)) 
+                                                  + (exp.Where(e => e.MachineId == x.FirstOrDefault().MachineId).Sum(t => t.Quantity * t.UnitPrice)),
+
+                                       
                                       // materials
                                       TotalMaterialUsed = x.Sum(t => t.MaterialUsed),
                                       MaterialName = string.Join(",  ",  x.Select(t => t.MaterialCode).Distinct()),
                                       TotalMaterialCost = x.Sum(t => t.MaterialUnitPrice * t.MaterialUsed * t.MaterialUnitWeight),
 
-                                      MaterialDetails = x.GroupBy(p => new { p.MaterialId, p.MaterialUnitPrice, p.MaterialUnitWeight, p.LotMaterial })
-                                                         .OrderBy(t => t.Key.MaterialId)
+                                      MaterialDetails = x.GroupBy(p => new { p.MaterialId, p.MaterialUnitPrice, p.MaterialUnitWeight, p.LotMaterial, p.ProductCode, p.ProductionRate, p.ProductId })
+                                                         .OrderBy(t => t.Key.ProductCode)
+                                                         .ThenBy(t => t.Key.MaterialId)
+                                                         .ThenBy(t => t.Key.LotMaterial)
                                                          .Select((g, index) => new MaterialDetailModel {
                                                              Index = index + 1,
                                                              MaterialId = g.Key.MaterialId,
                                                              MaterialCode = materialDict.ContainsKey(g.Key.MaterialId)
                                                                              ? materialDict[g.Key.MaterialId]
                                                                              : "",
+                                                             Productcode = g.Key.ProductCode,
                                                              MaterialUnitPrice = (double)g.Key.MaterialUnitPrice,
                                                              TotalMaterial = g.Sum(t => t.MaterialUsed),
                                                              MaterialUnitWeight = g.Key.MaterialUnitWeight,
                                                              MaterialLot = g.Key.LotMaterial,
+                                                             ProductionRate = g.Key.ProductionRate,
+                                                             MaterialLenght = materialLenghtList.Where(t => t.MaterialId == g.Key.MaterialId
+                                                                                                        && t.LotNumber == g.Key.LotMaterial)
+                                                                                                 .Select(t => t.Length).Distinct().LastOrDefault(),
+                                                             ProductionRateNumber = (g.Sum(z => z.MaterialUsed * (trackupList.Where(t => t.MachineId == x.FirstOrDefault().MachineId
+                                                                                                       && t.ProductId == g.Key.ProductId
+                                                                                                       && t.MaterialId == g.Key.MaterialId)
+                                                                                                .Select(t => t.RealRate)
+                                                                                                .LastOrDefault()-1)
+                                                                                                )),
+                                                             ProductionRateDiffNumber = g.Sum(z => z.TotalNumber - (z.MaterialUsed * (trackupList.Where(t => t.MachineId == x.FirstOrDefault().MachineId
+                                                                                                       && t.ProductId == g.Key.ProductId
+                                                                                                       && t.MaterialId == g.Key.MaterialId
+                                                                                                       && lotNumberList.Contains(g.Key.LotMaterial))
+                                                                                                .Select(t => t.RealRate)
+                                                                                                .LastOrDefault()-1)
+                                                                                                )),
+                                                             MaxDiffNumber = g.Sum(t => t.MaterialUsed) * 5,
+                                                             MinDiffNumber = g.Sum(t => t.MaterialUsed) * 3,
+                                                             PercentProductionRate = 
+                                                             (((g.Sum(t => t.TotalNumber)) - (g.Sum(z => z.MaterialUsed * (trackupList.Where(t => t.MachineId == x.FirstOrDefault().MachineId
+                                                                                                       && t.ProductId == g.Key.ProductId
+                                                                                                       && t.MaterialId == g.Key.MaterialId)
+                                                                                                .Select(t => t.RealRate)
+                                                                                                .LastOrDefault()-1)
+                                                                                                ))) / 
+                                                                                                 (g.Sum(z => z.MaterialUsed * (trackupList.Where(t => t.MachineId == x.FirstOrDefault().MachineId
+                                                                                                       && t.ProductId == g.Key.ProductId
+                                                                                                       && t.MaterialId == g.Key.MaterialId
+                                                                                                       && lotNumberList.Contains(g.Key.LotMaterial))
+                                                                                                .Select(t => t.RealRate)
+                                                                                                .LastOrDefault()-1)
+                                                                                                ))) * 100,
+
+                                                             ProductionRateActual = (trackupList.Where(t => t.MachineId == x.FirstOrDefault().MachineId 
+                                                                                                       && t.ProductId == g.Key.ProductId
+                                                                                                       && t.MaterialId == g.Key.MaterialId)
+                                                                                                .Select(t => t.RealRate)
+                                                                                                .LastOrDefault()-1),
+
+                                                                                                
                                                              MaterialPrice = g.Sum(t => t.MaterialUsed * (double)t.MaterialUnitWeight * t.MaterialUnitPrice),
                                                          }).OrderBy(t => t.Index)
                                                          .ToList(),
 
+                                        
+                                      // ProductionRate
+
+                                      //ProductionRate = x.Sum(t => t.MaterialUsed * t.ProductionRate),
+
+                                      PercentProductionRate = (((x.Sum(t => t.TotalNumber)) - (x.Sum(t => t.MaterialUsed *
+                                                                                                        (trackupList.Where(z => z.MachineId == x.FirstOrDefault().MachineId
+                                                                                                       && z.ProductId == t.ProductId
+                                                                                                       && z.MaterialId == t.MaterialId)
+                                                                                                .Select(z => z.RealRate)
+                                                                                                .LastOrDefault()-1)
+                                                                                                ))) 
+                                                                                                / 
+                                                                                                (x.Sum(t => t.MaterialUsed * 
+                                                                                                    (trackupList.Where(z => z.MachineId == x.FirstOrDefault().MachineId 
+                                                                                                       && z.ProductId == t.ProductId
+                                                                                                       && z.MaterialId == t.MaterialId)
+                                                                                                .Select(z => z.RealRate)
+                                                                                                .LastOrDefault()-1)
+                                                                                                ))) 
+                                                                                                * 100
+                                                                                                ,
+
+                                      ProductionRateDiffNumber = (x.Sum(t => t.TotalNumber)) - (x.Sum(t => t.MaterialUsed * t.ProductionRate)),
+
+                                      ProductionTimeDiffNumber = (x.GroupBy(p => new { p.ProductId, p.MachineId, p.MaterialId, p.Productivity })
+                                                      .Select(g => {
+                                                            var trackProd = trackupList
+                                                                .Where(t => t.MachineId == g.Key.MachineId
+                                                                            && t.ProductId == g.Key.ProductId
+                                                                            && t.MaterialId == g.Key.MaterialId)
+                                                                .Select(p => p.Productivity)
+                                                                .LastOrDefault();
+
+                                                            var prod = trackProd == 0
+                                                                ? productProductivityList
+                                                                    .Where(t => t.ProductId == g.Key.ProductId)
+                                                                    .Select(p => p.Productivity)
+                                                                    .LastOrDefault()
+                                                                : trackProd;
+
+                                                            return (g.Sum(t => t.TotalNumber) * (double)prod) / 3600;
+                                                        })
+                                                        .Sum()) - 
+                                                        ((x.Where(t => t.StateId == x.FirstOrDefault().StateId)
+                                                              .Select(t => t.StateDate)
+                                                              .LastOrDefault()) == null
+                                                           ? maxRunTime
+                                                               - repairList.Where(e => e.MachineId == x.FirstOrDefault().MachineId)
+                                                                           .SelectMany(e => e.Repairs)
+                                                                           .Sum(r => r.CheckErrorTime)
+                                                           : (
+                                                               (x.Where(t => t.StateId == x.FirstOrDefault().StateId)
+                                                                  .Select(t => t.StateDate)
+                                                                  .LastOrDefault() < fDate)
+                                                               ? 0
+                                                               : (
+                                                                   (x.Where(t => t.StateId == x.FirstOrDefault().StateId)
+                                                                      .Select(t => t.StateDate)
+                                                                      .LastOrDefault() >= fDate &&
+                                                                    x.Where(t => t.StateId == x.FirstOrDefault().StateId)
+                                                                      .Select(t => t.StateDate)
+                                                                      .LastOrDefault() <= tDate)
+                                                                   ?
+                                                                   (x.Where(t => t.StateId == x.FirstOrDefault().StateId)
+                                                                       .Select(t => t.StateDate)
+                                                                       .LastOrDefault().Value - fDate).TotalHours
+                                                                     - repairList.Where(e => e.MachineId == x.FirstOrDefault().MachineId)
+                                                                                 .SelectMany(e => e.Repairs)
+                                                                                 .Sum(r => r.CheckErrorTime)
+                                                                     -
+                                                                     (((int)Math.Round(
+                                                                            (x.Where(t => t.StateId == x.FirstOrDefault().StateId)
+                                                                               .Select(t => t.StateDate)
+                                                                               .LastOrDefault().Value - fDate).TotalDays,
+                                                                            MidpointRounding.AwayFromZero)
+                                                                         - (MyUtilities.Function.DaysNoSunDay(
+                                                                                fDate,
+                                                                                x.Where(t => t.StateId == x.FirstOrDefault().StateId)
+                                                                                 .Select(t => t.StateDate)
+                                                                                 .LastOrDefault().Value) - 1)) * 24)
+
+                                                                   : maxRunTime
+                                                                     - repairList.Where(e => e.MachineId == x.FirstOrDefault().MachineId)
+                                                                                 .SelectMany(e => e.Repairs)
+                                                                                 .Sum(r => r.CheckErrorTime)
+                                                                 )
+                                                             )),
+
+                                      //MaxDiffNumber = x.Sum(t => t.MaterialUsed ) * 5,
+                                      //MinDiffNumber = x.Sum(t => t.MaterialUsed ) * 3,
 
 
                                       // tools
@@ -1260,15 +1595,62 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
                                                        }).OrderBy(t => t.Index)
                                                        .ToList(),
 
-
                                       // repair
-                                      MaxProductionTime = maxRunTime - repairList.Where(e => e.MachineId == x.FirstOrDefault().MachineId).SelectMany(e => e.Repairs).Sum(r => r.FixTime),
+                                      //MaxProductionTime = maxRunTime - repairList.Where(e => e.MachineId == x.FirstOrDefault().MachineId).SelectMany(e => e.Repairs).Sum(r => r.CheckErrorTime),
+                                      MaxProductionTime2 =  (x.Where(t => t.StateId == x.FirstOrDefault().StateId)
+                                                              .Select(t => t.StateDate)
+                                                              .LastOrDefault()) == null
+                                                           ? maxRunTime
+                                                               - repairList.Where(e => e.MachineId == x.FirstOrDefault().MachineId)
+                                                                           .SelectMany(e => e.Repairs)
+                                                                           .Sum(r => r.CheckErrorTime)
+                                                           : (
+                                                               (x.Where(t => t.StateId == x.FirstOrDefault().StateId)
+                                                                  .Select(t => t.StateDate)
+                                                                  .LastOrDefault() < fDate)
+                                                               ? 0
+                                                               : (
+                                                                   (x.Where(t => t.StateId == x.FirstOrDefault().StateId)
+                                                                      .Select(t => t.StateDate)
+                                                                      .LastOrDefault() >= fDate &&
+                                                                    x.Where(t => t.StateId == x.FirstOrDefault().StateId)
+                                                                      .Select(t => t.StateDate)
+                                                                      .LastOrDefault() <= tDate)
+                                                                   ?
+                                                                   (x.Where(t => t.StateId == x.FirstOrDefault().StateId)
+                                                                       .Select(t => t.StateDate)
+                                                                       .LastOrDefault().Value - fDate).TotalHours
+                                                                     - repairList.Where(e => e.MachineId == x.FirstOrDefault().MachineId)
+                                                                                 .SelectMany(e => e.Repairs)
+                                                                                 .Sum(r => r.CheckErrorTime)
+                                                                     -
+                                                                     (((int)Math.Round(
+                                                                            (x.Where(t => t.StateId == x.FirstOrDefault().StateId)
+                                                                               .Select(t => t.StateDate)
+                                                                               .LastOrDefault().Value - fDate).TotalDays,
+                                                                            MidpointRounding.AwayFromZero)
+                                                                         - (MyUtilities.Function.DaysNoSunDay(
+                                                                                fDate,
+                                                                                x.Where(t => t.StateId == x.FirstOrDefault().StateId)
+                                                                                 .Select(t => t.StateDate)
+                                                                                 .LastOrDefault().Value) - 1)) * 24)
+
+                                                                   : maxRunTime
+                                                                     - repairList.Where(e => e.MachineId == x.FirstOrDefault().MachineId)
+                                                                                 .SelectMany(e => e.Repairs)
+                                                                                 .Sum(r => r.CheckErrorTime)
+                                                                 )
+                                                             ),
+
+
+
+                                                                          
                                       CountRepairTimes = repairList.Where(e => e.MachineId == x.FirstOrDefault().MachineId)
                                           .SelectMany(e => e.Repairs)
                                           .Select(r => r.DetailId)
                                           .Distinct()
                                           .Count(),
-                                      TotalRepairTime = repairList.Where(e => e.MachineId == x.FirstOrDefault().MachineId).SelectMany(e => e.Repairs).Sum(r => r.FixTime),
+                                      //TotalRepairTime = repairList.Where(e => e.MachineId == x.FirstOrDefault().MachineId).SelectMany(e => e.Repairs).Sum(r => r.FixTime),
                                       RepairDetails = repairList.Where(e => e.MachineId == x.FirstOrDefault().MachineId)
                                                                   .SelectMany(e => e.Repairs)
                                                                   .OrderBy(t => t.CauseDate)
@@ -1279,12 +1661,39 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
                                                                       CauseDate = r.CauseDate,
                                                                       ErrorCause = string.IsNullOrEmpty(r.ErrorCause) ? " " : r.ErrorCause,
                                                                       HowToFix = string.IsNullOrEmpty(r.HowToFix) ? " " : r.HowToFix,
-                                                                      StartDate = r.StartDate,
-                                                                      FixTime = r.FixTime,
+                                                                      //StartDate = r.StartDate,
+                                                                      //FixTime = r.FixTime,
                                                                       FinishDate = r.FinishDate,
                                                                       StatusMachine = r.StateCode + "."+ r.Descripbe,
+                                                                      CheckTime = r.CheckErrorTime,
+
                                                                   }).OrderBy(t => t.Index)
                                                                     .ToList(),
+
+                                        //MachineStateTime = x.Select(t => t.StateDate).LastOrDefault(),
+                                        MachineStopTime = repairList.Where(e => e.MachineId == x.FirstOrDefault().MachineId).SelectMany(p => p.Repairs).Sum(t => t.CheckErrorTime),
+                                                            Efficiency = (
+                                                                (x.GroupBy(p => new { p.ProductId, p.MachineId, p.MaterialId, p.Productivity })
+                                                                     .Select(g =>
+                                                                     {
+                                                                         var trackProd = trackupList
+                                                                             .Where(t => t.MachineId == g.Key.MachineId
+                                                                                      && t.ProductId == g.Key.ProductId
+                                                                                      && t.MaterialId == g.Key.MaterialId)
+                                                                             .Select(p => p.Productivity)
+                                                                             .LastOrDefault();
+
+                                                                         var prod = trackProd == 0
+                                                                             ? productProductivityList
+                                                                                 .Where(t => t.ProductId == g.Key.ProductId)
+                                                                                 .Select(p => p.Productivity)
+                                                                                 .LastOrDefault()
+                                                                             : trackProd;
+
+                                                                         return (g.Sum(t => t.TotalNumber) * (double)prod) / 3600;
+                                                                     }).Sum())
+                                                                / (maxRunTime ))
+                                                                * 100,
 
                                   }).ToList();
                 }
@@ -7180,5 +7589,6 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
 
 
         #endregion
+
     }
 }

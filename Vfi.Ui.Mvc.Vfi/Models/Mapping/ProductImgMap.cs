@@ -7,6 +7,7 @@ namespace Vfi.Ui.Mvc.Vfi.Models.Mapping
     {
         public ProductImgMap()
         {
+            this.ToTable("ProductImg", "Factory");
             // Primary Key
             this.HasKey(t => t.ImgId);
 
@@ -15,7 +16,6 @@ namespace Vfi.Ui.Mvc.Vfi.Models.Mapping
                 .HasMaxLength(50);
 
             // Table & Column Mappings
-            this.ToTable("ProductImg", "Factory");
             this.Property(t => t.ImgId).HasColumnName("ImgId");
             this.Property(t => t.ProductId).HasColumnName("ProductId");
             this.Property(t => t.ImgUrl).HasColumnName("ImgUrl");

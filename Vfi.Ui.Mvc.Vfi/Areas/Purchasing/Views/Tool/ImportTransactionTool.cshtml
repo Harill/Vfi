@@ -183,6 +183,18 @@
             });
 
         }
+
+        function gridPoDetail_OnDataBinding(args) {
+            var po = $('#PONumber').data('tComboBox').value();
+            console.log("PO value:", po);
+
+            if (po === "")
+                po = 0;
+
+            args.data = $.extend(args.data, {
+                purchaseOrderId: po
+            });
+        }
     </script>
 }
 
@@ -281,7 +293,7 @@
             .DataKeys(keys => keys.Add(f => f.PurchaseOrderDetailId).RouteKey("purchaseOrderDetailId"))
                                        .DataBinding(dataDindings => dataDindings.Ajax()
                                                                                 .Select("SelectPurchaseOrderDetailByPOId", "PurchaseOrder",
-                                                                                        new { area = "Purchasing", purchaseOrderId = 0 }))
+                                                                                        new { area = "Purchasing"}))
             .Columns(columns =>
                 {
                     columns.Bound(f => f.PurchaseOrderDetailId).Title("Chọn").Width(75)
@@ -305,7 +317,6 @@
             .Scrollable(f => f.Height(200))
             .ClientEvents(events => events.OnDataBinding("gridPoDetail_OnDataBinding")
             .OnRowDataBound("gridPoDetail_OnRowDataBound")
-            .OnDataBinding("gridPoDetail_OnDataBinding")
             .OnError("grid_OnError"))
             //.Filterable()
             //.Pageable(f => f.PageOnScroll(true).Style(GridPagerStyles.Status))
@@ -318,7 +329,7 @@
 @{
     Html.Telerik().Grid<TransactionFptDetailModel>()
         .Name("gridFuel")
-        .ToolBar(bar=>bar.SubmitChanges().ButtonType(GridButtonType.ImageAndText).SaveText("Lưu tất cả").CancelText("Xóa tất cả"))
+        .ToolBar(bar=>bar.SubmitChanges().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).SaveText("Lưu tất cả").CancelText("Xóa tất cả"))
         .DataKeys(keys => keys.Add(f => f.FuelId).RouteKey("fuelId"))
         .DataBinding(dataBindings => dataBindings.Ajax()
             .Select("SelectToolInPo", "Tool", new { ids = "", poId = 0 })
@@ -345,14 +356,14 @@
             //columns.Bound(f => f.LotNumber).Width(50).Title("Lô")
             //               .HtmlAttributes(new { style = "text-align:right" });
             columns.Bound(f => f.Note);
-            columns.Command(commands => commands.Delete().ButtonType(GridButtonType.Image)).Width(40).Title("");
+            columns.Command(commands => commands.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(40).Title("");
         })
         .ClientEvents(events => events
             .OnSubmitChanges("grid_OnSubmitChanges")
             .OnSave("grid_OnSave")
             .OnError("grid_OnError")
         )
-        .Editable(f=>f.Mode(GridEditMode.InCell))
+        .Editable(f=>f.Mode(Telerik.Web.Mvc.UI.GridEditMode.InCell))
         .Footer(true)
         .Render();   
 }

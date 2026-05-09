@@ -1,4 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System;
+
+
 
 namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Models
 {
@@ -18,5 +21,27 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Models
         public int FormType { get; set; }
         public bool CanEdit { get; set; }
         public string LotNumber { get; set; }
+        public int Index { get; set; }
+        public string MachineName { get; set; }
+
+        public DateTime StartDate { get; set; }
+        public string StartDateStr {
+            get {
+                return StartDate == DateTime.MinValue
+                                 ? ""
+                                 : string.Format("{0:HH:mm dd/MM/yyyy}", StartDate);
+            }
+        }
+
+
+        public DateTime? EndDate { get; set; }
+        public string EndDateStr {
+            get {
+                return EndDate != null
+                                 ? string.Format("{0:HH:mm dd/MM/yyyy}", EndDate)
+                                 : "";
+            }
+        }
+        public string Eol { set; get; }
     }
 }

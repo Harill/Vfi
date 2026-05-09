@@ -296,6 +296,10 @@ namespace Vfi.Ui.Mvc.Vfi.Utilities {
             public static int ApproveInternalMaterial = 286;
             public static int ApproveInternalFuel = 287;
             public static int ApproveInternalTool = 288;
+            /// <summary>
+            /// Là Trưởng bộ phận duyet YC MH
+            /// </summary>
+            public static int ManagementApprovedPurchase = 383;
 
             public static bool CheckRole(string userName, int type) {
                 if (string.IsNullOrWhiteSpace(userName)) return false;
@@ -785,6 +789,8 @@ namespace Vfi.Ui.Mvc.Vfi.Utilities {
                                 BaseInventoryPriceRate = "BaseInventoryPriceRate",
                                 BaseProductionPriceRate = "BaseProductionPriceRate",
                                 ExchangeToVndRate = "ExchangeToVndRate",
+                                ExchangeToVndRate2 = "ExchangeToVndRate2",
+                                ExchangeToVndRate3 = "ExchangeToVndRate3",
                                 WorkOrderTolerance = "WorkOrderTolerance",
                                 MaterialWorkPieceDesign = "MaterialWorkPieceDesign",
                                 RoundMaterialMaterialDesign = "RoundMaterialMaterialDesign",
@@ -1686,7 +1692,37 @@ namespace Vfi.Ui.Mvc.Vfi.Utilities {
                 return rs;
             }
 
-        }
+            // 08/05/2026
+                public static bool CheckDesign(long transactionId) {
+                    try {
+                        using (var vfi = new vfiContext()) {
+                            var transaction = vfi.Transactions.FirstOrDefault(p => p.TransactionId == transactionId);
+                            if (transaction == null) return false;
+                            if (transaction.FinishDesign) return true;
+
+                            return true;
+                        }
+                    }
+                    catch (Exception ex) {
+                        throw ex;
+                    }
+                }
+
+                public static void UpdateTransactionDesign(long transactionId) {
+                    try {
+                        using (var vfi = new vfiContext()) {
+                            var transaction = vfi.Transactions.FirstOrDefault(p => p.TransactionId == transactionId);
+                            if (transaction == null) return;
+                            if (transaction.FinishDesign) return;
+                            transaction.FinishDesign = true;
+                            vfi.SaveChanges();
+                        }
+                    }
+                    catch (Exception ex) {
+                        throw ex;
+                    }
+                }
+            }
         #endregion
 
         #region section
@@ -1825,6 +1861,45 @@ namespace Vfi.Ui.Mvc.Vfi.Utilities {
         }
         #endregion
 
+        #region Invoice
+        // 05/05/2026
+        public static class Invoice {
+            public static bool CheckDesign(int invoiceId) {
+                //var chk = false;
+                try {
+                    using (var vfi = new vfiContext()) {
+                        var invoice = vfi.Invoices.FirstOrDefault(p => p.InvoiceId == invoiceId);
+                        if (invoice == null) return false;
+                        if (invoice.FinishDesign) return true;
+
+                        return true;
+                    }
+                }
+                catch (Exception ex) {
+                    throw ex;
+                }
+            }
+            
+            public static void UpdateInvoiceDesign(int invoiceId) {
+                try {
+                    using (var vfi = new vfiContext()) {
+                        var invoice = vfi.Invoices.FirstOrDefault(p => p.InvoiceId == invoiceId);
+                        if (invoice == null) return;
+                        if (invoice.FinishDesign) return;
+                        invoice.FinishDesign = true;
+                        vfi.SaveChanges();
+                    }
+                }
+                catch (Exception ex) {
+                    throw ex;
+                }
+            }
+        }
+
+        #endregion        
+        
+
+
         #region purchasing
         public static class PurchaseOrder {
             public static DateTime StartTaxInvoiceDate = new DateTime(2016, 12, 1, 0, 0, 0).AddSeconds(-1);
@@ -1850,6 +1925,44 @@ namespace Vfi.Ui.Mvc.Vfi.Utilities {
                 Approved = 3,
                 MakePo = 5,
                 Cancel = 9
+            }
+
+            public enum PurchaseEnum {
+                Waiting = 1,
+                Comfirm = 3,
+                Approved = 5,
+                FinalApproved = 7,
+                Delivering = 9,
+                Delivered = 11,
+                Cancel = 13,
+            }
+
+            public static string GetPurchaseEnumStatusName(int status) {
+                string name = "";
+                switch (status) {
+                    case (int)PurchaseEnum.Waiting:
+                        name = "Chờ xác nhận";
+                        break;
+                    case (int)PurchaseEnum.Comfirm:
+                        name = "Đã xác nhận";
+                        break;
+                    case (int)PurchaseEnum.Approved:
+                        name = "Đã chuyển thành phiếu mua";
+                        break;
+                    case (int)PurchaseEnum.FinalApproved:
+                        name = "Đã duyệt phiếu mua";
+                        break;
+                    case (int)PurchaseEnum.Delivering:
+                        name = "Đang giao";
+                        break;
+                    case (int)PurchaseEnum.Delivered:
+                        name = "Đã giao";
+                        break;
+                    case (int)PurchaseEnum.Cancel:
+                        name = "Hủy";
+                        break;
+                }
+                return name;
             }
 
             public static string GetInquiryTrackingStatusName(int status) {

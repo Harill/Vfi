@@ -57,6 +57,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
         public FuelModel FuelModel { get; set; }
         public ToolModel ToolModel { get; set; }
 
+
         public bool IsPurchaseManager { get; set; }
 
         public double LastPrice { get; set; }

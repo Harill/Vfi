@@ -326,8 +326,8 @@
             .DataKeys(keys => keys.Add(f => f.PurchaseOrderDetailId).RouteKey("purchaseOrderDetailId"))
             .ToolBar(bar =>
                          {
-                             bar.Insert().ButtonType(GridButtonType.ImageAndText).Text("Thêm mới");
-                             bar.SubmitChanges().ButtonType(GridButtonType.ImageAndText).SaveText("Lưu lại").CancelText("Hủy");
+                             bar.Insert().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).Text("Thêm mới");
+                             bar.SubmitChanges().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).SaveText("Lưu lại").CancelText("Hủy");
                          })
             .DataBinding(dataBindings => dataBindings.Ajax()
                 .Select("SelectPurchaseOrderDetail", "PurchaseOrder")
@@ -359,7 +359,7 @@
                 .OnSubmitChanges("gridPurchaseOrderDetailPartial_onSubmitChanges")
                 .OnError("grid_OnError")
             )
-            .Editable(editing => editing.Mode(GridEditMode.InCell))
+            .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InCell))
             .KeyboardNavigation()
             .Footer(true)
             .Render();
