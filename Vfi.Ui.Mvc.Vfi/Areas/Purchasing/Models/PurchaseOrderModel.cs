@@ -119,5 +119,12 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
         public string CurrencyCode { get; set; }
         [DisplayName("Số hợp đồng")]
         public string ContractNumber { get; set; }
+
+        public int AddressId { get; set; }
+        [UIHint("_DeliveryAddressTemplate")]
+        public string AddressName { get; set; }
+        public string Address { get; set; }
+        public string AddressFullName { get; set; }
+
     }
 }

@@ -5420,7 +5420,8 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                 var productionDates = vfi.ProductionLocks.Where(x => x.LockDate >= fDate && x.LockDate <= tDate).Select(x => new { x.LockDate, x.Shift1Name, x.Shift2Name }).ToList();
                 var warehouse = vfi.Warehouses.FirstOrDefault(x => x.WarehouseId == warehouseId);
                 if ((warehouse == null || warehouse.IsProduction)
-                    && MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name, MyUtilities.UserRole.ImportSx1)) {
+                    && MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name, MyUtilities.UserRole.ImportSx1)
+                    ) {
                     var list = (from x in vfi.ImportFormSX1
                                 where x.ImportDate >= fDate && x.ImportDate <= tDate
                                 && (status == 0 || x.Status == status)
@@ -5663,7 +5664,8 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
 
                 // function code = export tp - kd
                 if ((warehouse == null || warehouse.IsFinish)
-                    && MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name, MyUtilities.UserRole.ExportFinish)) {
+                    //&& MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name, MyUtilities.UserRole.ExportFinish)
+                    ) {
 
                     var list = (from x in vfi.ExportFormTP_KD
                                 where x.DateCreate >= fDate && x.DateCreate <= tDate
@@ -6094,7 +6096,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                                         Index = index,
                                     };
                                     entity.Eol = vfi.Transactions.Where(t => t.TransactionId == entity.TransactionId).Select(t => t.EoI).FirstOrDefault();
-                                    if (entity.Eol == "0") {
+                                    if (entity.Eol == "0"|| entity.Eol == "2") {
                                         entity.EndDate = vfi.ImportNCU_QCB.Where(t => t.TransactionId == entity.TransactionId).Select(t => t.ImportDate).FirstOrDefault();
                                     }
                                     if (detail.ProductInventory != null) {

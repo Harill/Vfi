@@ -609,6 +609,12 @@
     <Compile Include="Areas\Inv\Models\ExpectedProduction2PlanModel.cs" />
     <Compile Include="Areas\Inv\Models\MaterialProductionReport.cs" />
     <Compile Include="Areas\Inv\Models\ProductionLockModel.cs" />
+    <Compile Include="Areas\Inv\Reports\RptPurchaseOrderDetailEN.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Areas\Inv\Reports\RptPurchaseOrderDetailEN.Designer.cs">
+      <DependentUpon>RptPurchaseOrderDetailEN.cs</DependentUpon>
+    </Compile>
     <Compile Include="Areas\Inv\Reports\RptAllProducts.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -1214,6 +1220,7 @@
     <Compile Include="Areas\Purchasing\Controllers\VendorController.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Areas\Purchasing\Models\DeliveryAddressModel.cs" />
     <Compile Include="Areas\Purchasing\Models\PoProgressModel.cs" />
     <Compile Include="Areas\Purchasing\Models\PurchaseProgressModel.cs" />
     <Compile Include="Areas\Purchasing\Models\DepartmentModel.cs" />
@@ -1303,6 +1310,8 @@
     </Compile>
     <Compile Include="Areas\Sales\Models\WaitingOrderBalancingPlanModel.cs" />
     <Compile Include="Areas\Sales\SalesAreaRegistration.cs" />
+    <Compile Include="Models\DeliveryAddress.cs" />
+    <Compile Include="Models\Mapping\DeliveryAddressMap.cs" />
     <Compile Include="Models\Mapping\TransactionImgMap.cs" />
     <Compile Include="Models\TransactionImg.cs" />
     <Compile Include="Models\Mapping\MaterialQuoteBaseDetailMap.cs" />
@@ -1351,6 +1360,7 @@
     <Content Include="Areas\Inv\Views\Inv\PageTransactionFormGroup.aspx" />
     <Content Include="Areas\Inv\Views\Reporting\PageNotFinishInvProductReport.aspx" />
     <Content Include="Areas\Inv\Views\Reporting\PageDeliverySalesReport.aspx" />
+    <Content Include="Areas\Purchasing\Views\PurchaseOrder\PagePrintPurchaseOrderDetailEN.aspx" />
     <Content Include="Areas\Purchasing\Views\Tool\PagePrintToolTransactionInternal.aspx" />
     <Content Include="Areas\Sales\Views\Orders\PagePreparationTools.aspx" />
     <Content Include="Content\FileUpload\CertificateMaterial2\askquestion.jpg">
@@ -3105,6 +3115,7 @@
     <Content Include="Areas\Purchasing\Views\PurchaseOrder\Copy of ApprovePlatingForm.cshtml" />
     <Content Include="Areas\Purchasing\Views\PurchaseOrder\PurchasingProgress.cshtml" />
     <Content Include="Areas\Factory\Views\Machine\MachineReport.cshtml" />
+    <Content Include="Areas\Purchasing\Views\PurchaseOrder\EditorTemplates\_DeliveryAddressTemplate.cshtml" />
     <None Include="Utilities\weighingvalue.json" />
     <Content Include="Logs\read.txt" />
     <Content Include="Resources\lock.png" />
@@ -3901,6 +3912,10 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GridLocalization.vi-VN1.designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="Areas\Inv\Reports\RptPurchaseOrderDetailEN.resx">
+      <DependentUpon>RptPurchaseOrderDetailEN.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Areas\Inv\Reports\RptAllProducts.resx">
       <DependentUpon>RptAllProducts.cs</DependentUpon>
     </EmbeddedResource>

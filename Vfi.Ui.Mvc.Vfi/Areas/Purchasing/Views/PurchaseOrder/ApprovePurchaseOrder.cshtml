@@ -59,7 +59,22 @@
 
             } catch (err) { alert("Co Loi !"); }
             return false;
+    }
+
+    function PrintPOFormEN(val) {
+        alert(val);
+        $('#result').load('@Url.Action("PrintPurchaseOrderEN", "PurchaseOrder", new { area = "Purchasing" })',
+                {
+                    purchaseOrderId: val
+                }, function () {
+                    var window = $('#windowReport').data('tWindow');
+                    window.open();
+                });
+            return false;
         }
+
+
+
 </script>
 }
 
@@ -104,7 +119,11 @@
                 columns.Bound(f => f.CurrencyCode).Width(75).ReadOnly(true);                
                 columns.Bound(f => f.StatusName).Width(75).ReadOnly(true);
                 columns.Bound(f => f.EmployeeName).Width(75).ReadOnly(true);
-                columns.Bound(f => f.Note).ReadOnly(true);
+                columns.Bound(f => f.AddressName).Title("Nơi giao").Width(75); 
+                columns.Bound(f => f.Note).ReadOnly(true).Title("Ghi chú");
+                columns.Bound(f => f.PurchaseOrderId).Title("PO EN").Width(55).ReadOnly(true)
+                       .ClientTemplate("<input type='button' id='id_<#= PurchaseOrderId #>' value='In' class='t-button' onclick=PrintPOFormEN(<#= PurchaseOrderId #>) />")
+                       .HtmlAttributes(new { style = "text-align:center" });
                 columns.Command(c => c.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(40);
                 columns.Bound(f => f.ModifiedUser).Width(70).ReadOnly(true);
                 columns.Bound(f => f.ModifiedDate).Title("Ngày tạo").Width(90).Format("{0:dd/MM/yyyy HH:mm:ss}").ReadOnly(true);
@@ -161,6 +180,7 @@
                                               .ClientFooterTemplate("<div style='text-align: right; width: 100%;'><#= $.telerik.formatString('{0:n2}', Sum) #></div>");
                                        columns.Bound(f => f.DueDate).Title("Ngày giao").Width(90).Format("{0:dd/MM/yyyy}");
 
+                                       columns.Bound(f => f.Standard).Title("Tiêu chuẩn").Width(100);
                                        columns.Bound(f => f.InquiryNote).Title("Ghi chú YC").Width(300);
                                        columns.Bound(f => f.SpecificNote).Title("");
                                    })
@@ -185,3 +205,47 @@
         .Render();
 }
 </div>
+
+<!-- windown -->
+@{
+    Html.Telerik().Window()
+        .Name("windowReport")
+        .Modal(true)
+        .Draggable(true)
+        .Content
+        (
+    @<text>
+    <div id="result"></div>
+    </text>
+)
+        //.ClientEvents(e => e.OnLoad("Window_onLoad"));
+        .Visible(false)
+        .Width(960)
+        .Render();
+}
+
+<style type="text/css">
+    #windowReport {
+        /*
+            float: right;
+            Position: relative;
+            */
+        min-height: 580px;
+        top: 15%;
+    }
+
+    #result {
+        height: 520px;
+        overflow: hidden;
+    }
+
+    #ReportBody {
+        padding-bottom: 25px;
+        margin-bottom: 25px;
+    }
+
+    .tb-witdh td {
+        width: 55px;
+    }
+</style>
+

@@ -309,8 +309,8 @@
             </button>
         </div>
 
-        <div class ="TLHH grid_28">
-             Note: (1) Chờ xác nhận / (2) Đã xác nhận / (3) Đã có phiếu mua / (4) Đã duyệt phiếu mua / (5) Đang giao / (6) Đã giao
+        <div class ="TLHH grid_30">
+             Note: (1) Chờ duyệt phiếu yêu cầu / (2) Trưởng bộ phận đã duyệt / (3) Đang liên hệ NCC / (4) NCC đã xác nhận / (5) Đang giao / (6) Đã giao
         </div>
 
 @*        <div class="grid_6">
@@ -325,7 +325,7 @@
 </div>
 <div class="clear"></div>
 
-<div class="clear"></div>
+@*<div class="clear"></div>*@
 <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px;">
 <div class="clear"></div>
 
@@ -404,7 +404,7 @@
                     //    .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                     //    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>");
 
-                    columns.Bound(f => f.DueDate).Width(80).Title("Ngày YC")
+                    columns.Bound(f => f.DueDate).Width(75).Title("Ngày YC")
                         .HtmlAttributes(new { style = "border-bottom:1px black solid; border-right:1px black solid; " })
                         .ClientTemplate("<#= DueDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', DueDate) #>");
 
@@ -414,7 +414,10 @@
                     columns.Bound(f => f.RevisionNumber).Width(85).Title("Số đơn")
                         .HtmlAttributes(new { style = "border-bottom:1px black solid; font-weight:bold; border-left:1px black solid;" });
 
-                    columns.Bound(f => f.DeliveryDate).Width(80).Title("Ngày </br>giao hàng")
+                    //columns.Bound(f => f.PurchaseDetailId).Width(85).Title("Id")
+                    //    .HtmlAttributes(new { style = "border-bottom:1px black solid; font-weight:bold; border-left:1px black solid;" });
+
+                    columns.Bound(f => f.DeliveryDate).Width(75).Title("Ngày xác nhận</br>giao hàng")
                         .ClientTemplate("<#= DeliveryDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', DeliveryDate) #>")
                         .HtmlAttributes(new { style = "border-bottom:1px black solid;  border-right:1px black solid; " });
                     
@@ -434,12 +437,12 @@
                         .Filterable(false)
                         .HtmlAttributes(new { style = "border-bottom:1px black solid; " });
 
-                    columns.Bound(f => f.Nulla).Width(60).Title("(5)").ReadOnly(true)
+                    columns.Bound(f => f.StringReceivedQty).Width(60).Title("(5)").ReadOnly(true)
                         .Filterable(false)
-                        .HtmlAttributes(new { style = "border-bottom:1px black solid; " });
+                        .HtmlAttributes(new { style = "border-bottom:1px black solid; text-align: right; " });
 
-                    columns.Bound(f => f.Nulla).Width(60).Title("(6)").ReadOnly(true)
-                        .HtmlAttributes(new { style = "border-bottom:1px black solid; " })                       
+                    columns.Bound(f => f.ImportDateStr).Width(70).Title("(6)").ReadOnly(true)
+                        .HtmlAttributes(new { style = "border-bottom:1px black solid; text-align: right; " })                       
                         .Filterable(false);
                         
                 })
@@ -457,7 +460,6 @@
                 .Footer(true)
                 .Render();
         }
-</div>
 </div>
 
  

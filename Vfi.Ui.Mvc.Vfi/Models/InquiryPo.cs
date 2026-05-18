@@ -22,6 +22,7 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public string InquiryNumber { get; set; }
 
         public byte ManagementSignature { get; set; }
+        public string Standard { get; set; }
 
         public virtual MaterialClassified MaterialClassified { get; set; }
         public virtual PurchaseOrderDetail PurchaseOrderDetail { get; set; }

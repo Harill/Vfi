@@ -222,6 +222,7 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public DbSet<SelectProductInventoryAndPeriod> SelectProductInventoryAndPeriods { get; set; }
         public DbSet<SelectToolInvAndPeriod> SelectToolInvAndPeriods { get; set; }
         public DbSet<TransactionImg> TransactionImgs { get; set; }
+        public DbSet<DeliveryAddress> DeliveryAddresses { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -232,6 +233,7 @@ namespace Vfi.Ui.Mvc.Vfi.Models
             modelBuilder.Configurations.Add(new DefectTransactionMap());
             modelBuilder.Configurations.Add(new DefectTransactionDetailMap());
             modelBuilder.Configurations.Add(new DepartmentMap());
+            modelBuilder.Configurations.Add(new DeliveryAddressMap());
             modelBuilder.Configurations.Add(new ErrorCauseFormMap());
             modelBuilder.Configurations.Add(new FuelMap());
             modelBuilder.Configurations.Add(new MachineMap());

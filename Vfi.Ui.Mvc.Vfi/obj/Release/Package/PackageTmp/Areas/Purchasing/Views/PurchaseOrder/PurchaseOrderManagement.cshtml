@@ -430,7 +430,7 @@
                                         .FooterHtmlAttributes(new { style = "text-align: right;" })
                                         .Aggregate(agg => agg.Sum())
                                         .FooterHtmlAttributes(new { style = "text-align: right;" })
-                                        .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>");
+                                        .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>");                                    
                                     columns.Bound(f => f.UnitPrice).Width(70)
                                         .HtmlAttributes(new { style = "text-align: right;" })
                                         .ClientTemplate("<#= UnitPriceString  #>");
@@ -444,6 +444,7 @@
                                     columns.Bound(f => f.DueDate).Title("Ngày giao").ReadOnly(true).Width(80)
                                         .Format("{0:dd/MM/yyyy}");
                                     columns.Bound(f => f.InquiryNote).Title("Số Yêu cầu").ReadOnly(true).Width(150);
+                                    columns.Bound(f => f.Note).Title("Note").Width(150);
                                 })
                                 .ClientEvents(events => events.OnError("grid_OnError")
 
@@ -484,7 +485,7 @@
                                                                                  )
                                                        .Columns(columns => {
                                                            columns.Command(command =>
-                                                               command.Edit().ButtonType(GridButtonType.Image)
+                                                               command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
                                                                ).Width(50).Title("").HtmlAttributes(new { style = "text-align:center" });
                                                            columns.Bound(f => f.FuelName).Title("Tên chi tiết").Width(150).ReadOnly(true);
                                                            columns.Bound(f => f.FuelCode).Title("Mã").Width(200).ReadOnly(true);

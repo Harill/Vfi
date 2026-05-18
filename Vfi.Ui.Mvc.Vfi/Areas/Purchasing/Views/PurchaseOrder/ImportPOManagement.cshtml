@@ -38,7 +38,6 @@
         // start
 
         var vendorOnTime = 0, vendorLate = 0;
-        //var groupOnTime = 0, groupLate = 0;           Lam hoai ko ra/ group r loc = tay
 
         // Đếm cho từng dòng
         function grid_OnRowDataBound(e) {
@@ -46,11 +45,9 @@
 
             if (dataItem.VendorDeliveryOnDate) {
                 vendorLate++;
-                //groupLate++;
             }
             else {
                 vendorOnTime++;
-                //groupOnTime++;
             }
         }
 
@@ -60,14 +57,9 @@
             $("#VendorOnTimeFooter").text(vendorOnTime);
             $("#VendorLateFooter").text(vendorLate);
 
-            //$("#VendorOnTimeGroup").text(groupOnTime);
-            //$("#VendorLateGroup").text(groupLate);
-
             // Reset biến tổng
             vendorOnTime = 0;
             vendorLate = 0;
-            //groupOnTime = 0;
-            //groupLate = 0;
 
         }
 
@@ -184,7 +176,7 @@
                            .HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(f => f.UnitMeasure).Title("ĐVT").Width(40)
                            .HtmlAttributes(new { style = "text-align: center;" });
-                    columns.Bound(f => f.Quantity).Title("Số lượng").Width(70)
+                    columns.Bound(f => f.Quantity).Title("Số lượng").Width(75)
                            .Format("{0:n2}")
                            //.ClientTemplate("<#= QuantityStr #>")
                            .HtmlAttributes(new { style = "text-align: right;" })
@@ -198,10 +190,10 @@
                     columns.Bound(f => f.UnitPriceString).Title("Đơn giá").Width(75)
                            .ClientTemplate("<#= UnitPriceString #>")
                            .HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(f => f.ExchangeRate).Title("Tỉ giá").Width(40)
+                    columns.Bound(f => f.ExchangeRate).Title("Tỉ giá").Width(50)
                            .Format("{0:n0}")
                            .HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(f => f.Price).Title("Thành tiền").Width(105)
+                    columns.Bound(f => f.Price).Title("Thành tiền").Width(110)
                            .Format("{0:n0}")
                            .HtmlAttributes(new { style = "text-align: right;" })
                            .Aggregate(agg => agg.Sum())
@@ -214,11 +206,11 @@
                            .Width(120)
                            .FooterTemplate("<span style='color:green'>Đúng hạn: <span id='VendorOnTimeFooter'></span></span>")
                            //.ClientGroupFooterTemplate("<span style='color:green'>Đúng hạn: <span id='VendorOnTimeGroup'></span></span>")
-                           .FooterHtmlAttributes(new { style = "text-align: right;" });
+                           .FooterHtmlAttributes(new { style = "text-align: center;" });
 
                     columns.Bound(f => f.VendorDeliveryOnDate)
                            .Title("OTD")
-                           .Width(90)
+                           .Width(70)
                            .ReadOnly(true)
                            .ClientTemplate(
                                "<# if (VendorDeliveryOnDate) { #>" +
@@ -229,7 +221,7 @@
                            .HtmlAttributes(new { style = "text-align:center;" })
                            .FooterTemplate("<span style='color:red'>Trễ hạn: <span id='VendorLateFooter'></span></span>")
                            //.ClientGroupFooterTemplate("<span style='color:red'>Trễ hạn: <span id='VendorLateGroup'></span></span>")
-                           .FooterHtmlAttributes(new { style = "text-align: right;" });
+                           .FooterHtmlAttributes(new { style = "text-align: center;" });
 
 
 
@@ -261,6 +253,7 @@
             .Scrollable(f => f.Height(650))
             .Resizable(f => f.Columns(true))
             .Sortable()
+            .Groupable(group => group.Groups(g => g.Add(model => model.VendorName)))
             .Filterable()
             .ClientEvents(events => events.OnDataBinding("grid_OnDataBinding")
                                           .OnError("grid_OnError")

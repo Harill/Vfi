@@ -368,6 +368,7 @@
                 columns.Bound(f => f.InquiryId).Title("Chọn").Width(30).ReadOnly(true)
                     .ClientTemplate("<# if (PurchasingSignatureType == 1) { #>" + "<input type='checkbox' name='chkIds' class='chkCheck' value='<#= InquiryId #>' />" + "<# } #>")
                     .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid; " });
+
                 columns.Command(command => command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image))
                     .Width(40).Title("Sửa")
 
@@ -436,7 +437,7 @@
                     .HtmlAttributes(new { style = "border-bottom:1px black solid; border-right:2px black solid; " });
                 
                 //
-                columns.Bound(f => f.InquiryId).Title("Quản lý</br>xác nhận").Width(65)
+                columns.Bound(f => f.InquiryId).Title("Quản lý</br>xác nhận").Width(65).ReadOnly(true)
                     .ClientTemplate("<button class='t-button purchasing' id='QLM_<#= InquiryId #>' onclick=Signature(<#= InquiryId #>) ><span class='t-icon t-insert'></span></button>")
                     .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid; border-left:2px black solid;" });
                 columns.Command(commands => commands.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(50).Title("")

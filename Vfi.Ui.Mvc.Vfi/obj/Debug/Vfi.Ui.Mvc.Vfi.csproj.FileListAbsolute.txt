@@ -919,6 +919,7 @@ C:\Job\vfi\Vfi.Ui.Mvc.Vfi\bin\System.Web.WebPages.Deployment.xml
 C:\Job\vfi\Vfi.Ui.Mvc.Vfi\bin\System.Web.WebPages.Razor.xml
 C:\Job\vfi\Vfi.Ui.Mvc.Vfi\bin\Vfi.Client.Core.Common.pdb
 C:\Job\vfi\Vfi.Ui.Mvc.Vfi\obj\Debug\Vfi.Ui.Mvc.Vfi.csprojResolveAssemblyReference.cache
+C:\Job\vfi\Vfi.Ui.Mvc.Vfi\obj\Debug\Vfi.Ui.Mvc.Vfi.Areas.Inv.Reports.RptPurchaseOrderDetailEN.resources
 C:\Job\vfi\Vfi.Ui.Mvc.Vfi\obj\Debug\Vfi.Ui.Mvc.Vfi.Areas.Inv.Reports.RptAllProducts.resources
 C:\Job\vfi\Vfi.Ui.Mvc.Vfi\obj\Debug\Vfi.Ui.Mvc.Vfi.Areas.Inv.Reports.RptWorkOrderFinishCard.resources
 C:\Job\vfi\Vfi.Ui.Mvc.Vfi\obj\Debug\Vfi.Ui.Mvc.Vfi.Areas.Inv.Reports.RptBarcode.resources

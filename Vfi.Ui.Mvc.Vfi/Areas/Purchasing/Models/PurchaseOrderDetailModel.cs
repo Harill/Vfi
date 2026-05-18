@@ -51,6 +51,8 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
         public string Note { get; set; }
         public string PurchaseOrderNumber { get; set; }
         public DateTime PurchaseDateTime { get; set; }
+
+
         public string ClassifiedName { get; set; }
         public string StatusName { get; set; }
         public MaterialModel MaterialModel { get; set; }
@@ -98,5 +100,35 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
         }
 
         public WorkGroupInfo Info { get; set; }
+
+        public string Standard { get; set; }
+
+        public int AddressId { get; set; }
+        public string AddressName { get; set; }
+        public string Address { get; set; }
+        public string AddressFullName { get; set; }
+        public DateTime? OrderDate { get; set; }
+        public string Employee { get; set; }
+        public int VendorNo { get; set; }
+        public string Tel { get; set; }
+        public string RevisionNumber { get; set; }
+        public string VendorAddress { get; set; }
+        public string VendorPhone { get; set; }
+        public string Year { get; set; }
+
+
+        public bool Active { get; set; }
+        public string ActiveString {
+            get {
+                return Active == true ? "(Official)" : "(Not Official)";
+            }
+        }
+
+        public DateTime OrderDateCheck {
+            get {
+                return OrderDate == null ? DateTime.Today : OrderDate.Value;
+            }
+        }
+
     }
 }

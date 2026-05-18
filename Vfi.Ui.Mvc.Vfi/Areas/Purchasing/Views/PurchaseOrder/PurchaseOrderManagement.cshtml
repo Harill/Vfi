@@ -171,6 +171,17 @@
                 });
             return false;
         }
+        function PrintPOFormEN(val) {
+            alert(val);
+            $('#result').load('@Url.Action("PrintPurchaseOrderEN", "PurchaseOrder", new { area = "Purchasing" })',
+                {
+                    purchaseOrderId: val
+                }, function () {
+                    var window = $('#windowReport').data('tWindow');
+                    window.open();
+                });
+            return false;
+        }
 
         function PrintImport(val, type) {
             alert(val);
@@ -381,9 +392,13 @@
                        .HeaderTemplate("Dung</br>Sai")
                        .ClientTemplate("<#= Tolerance == null ? 0 : $.telerik.formatString('{0:n0}', Tolerance) #>%").ReadOnly(true);
                 columns.Bound(f => f.StatusName).Width(75).ReadOnly(true);
-                columns.Bound(f => f.EmployeeName).Width(100).ReadOnly(true);
-                columns.Bound(f => f.Note).Width(120).ReadOnly(true);
-                columns.Bound(f => f.PurchaseOrderId).Title("In").Width(55).ReadOnly(true)
+                columns.Bound(f => f.EmployeeName).Width(70);
+                columns.Bound(f => f.AddressName).Width(70).Title("Giao tới");
+                columns.Bound(f => f.Note).Width(100).ReadOnly(true);
+                columns.Bound(f => f.PurchaseOrderId).Title("PO EN").Width(55).ReadOnly(true)
+                       .ClientTemplate("<input type='button' id='id_<#= PurchaseOrderId #>' value='In' class='t-button' onclick=PrintPOFormEN(<#= PurchaseOrderId #>) />")
+                       .HtmlAttributes(new { style = "text-align:center" });
+                columns.Bound(f => f.PurchaseOrderId).Title("PO VN").Width(55).ReadOnly(true)
                        .ClientTemplate("<input type='button' id='id_<#= PurchaseOrderId #>' value='In' class='t-button' onclick=PrintPOForm(<#= PurchaseOrderId #>) />")
                        .HtmlAttributes(new { style = "text-align:center" });
                 columns.Bound(f => f.ModifiedUser).Width(70).ReadOnly(true);
@@ -430,7 +445,7 @@
                                         .FooterHtmlAttributes(new { style = "text-align: right;" })
                                         .Aggregate(agg => agg.Sum())
                                         .FooterHtmlAttributes(new { style = "text-align: right;" })
-                                        .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>");
+                                        .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>");                                    
                                     columns.Bound(f => f.UnitPrice).Width(70)
                                         .HtmlAttributes(new { style = "text-align: right;" })
                                         .ClientTemplate("<#= UnitPriceString  #>");
@@ -444,6 +459,8 @@
                                     columns.Bound(f => f.DueDate).Title("Ngày giao").ReadOnly(true).Width(80)
                                         .Format("{0:dd/MM/yyyy}");
                                     columns.Bound(f => f.InquiryNote).Title("Số Yêu cầu").ReadOnly(true).Width(150);
+                                    columns.Bound(f => f.Standard).Title("Tiêu chuẩn").Width(50);
+                                    columns.Bound(f => f.Note).Title("Note").Width(150);
                                 })
                                 .ClientEvents(events => events.OnError("grid_OnError")
 
@@ -484,7 +501,7 @@
                                                                                  )
                                                        .Columns(columns => {
                                                            columns.Command(command =>
-                                                               command.Edit().ButtonType(GridButtonType.Image)
+                                                               command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
                                                                ).Width(50).Title("").HtmlAttributes(new { style = "text-align:center" });
                                                            columns.Bound(f => f.FuelName).Title("Tên chi tiết").Width(150).ReadOnly(true);
                                                            columns.Bound(f => f.FuelCode).Title("Mã").Width(200).ReadOnly(true);

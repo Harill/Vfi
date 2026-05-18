@@ -114,6 +114,30 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
 
         public int index { get; set; }
 
+        public DateTime ImportDate { get; set; }
+
+        public string ImportDateStr {
+            get {
+                return ImportDate == DateTime.MinValue
+                                 ? ""
+                                 : string.Format("{0:dd/MM/yyyy}", ImportDate);
+            }
+        }
+
+        public long PurchaseDetailId { get; set; }
+
+
+        public double ReceivedQty { get; set; }
+        public string StringReceivedQty {
+            get {
+                return ReceivedQty == 0.00
+                                ? ""
+                                : string.Format("{0:n2}", ReceivedQty);
+            }
+        }
+        
+
+
 
     }
 }

@@ -433,11 +433,13 @@
                 columns.Bound(f => f.DueDate).Width(100).Title("Ngày YC")
                     .HtmlAttributes(new { style = "border-bottom:1px black solid; " })
                     .ClientTemplate("<#= DueDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', DueDate) #>");
+                columns.Bound(f => f.Standard).Width(50).Title("Tiêu</br> chuẩn")
+                    .HtmlAttributes(new { style = "border-bottom:1px black solid; border-right:2px black solid; " });
                 columns.Bound(f => f.Note).Width(150)
                     .HtmlAttributes(new { style = "border-bottom:1px black solid; border-right:2px black solid; " });
                 
                 //
-                columns.Bound(f => f.InquiryId).Title("Quản lý</br>xác nhận").Width(65).ReadOnly(true)
+                columns.Bound(f => f.InquiryId).Title("Quản lý</br>xác nhận").Width(65)
                     .ClientTemplate("<button class='t-button purchasing' id='QLM_<#= InquiryId #>' onclick=Signature(<#= InquiryId #>) ><span class='t-icon t-insert'></span></button>")
                     .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid; border-left:2px black solid;" });
                 columns.Command(commands => commands.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(50).Title("")

@@ -334,7 +334,7 @@
                                               .HeaderTemplate("SL chuyển</br>(Kg)")
                                               .HtmlAttributes(new { style = "text-align: right;" })
                                               .Format("{0:n2}");
-                                       columns.Bound(f => f.Note);
+                                       columns.Bound(f => f.Note).ReadOnly(true);
                                    })
                                        .ClientEvents(events => events
                                            .OnError("grid_OnError"))

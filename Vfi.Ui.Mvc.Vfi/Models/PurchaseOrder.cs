@@ -28,10 +28,13 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public int MaterialClassifiedId { get; set; }
         public string ContractNumber { get; set; }
 
+        public int AddressId { get; set; }
+
         public virtual MaterialClassified MaterialClassified { get; set; }
         public virtual ICollection<ImportPurchaseOrder> ImportPurchaseOrders { get; set; }
         public virtual Vendor Vendor { get; set; }
         public virtual ICollection<PurchaseOrderDetail> PurchaseOrderDetails { get; set; }
         public virtual ICollection<TransactionFpt> TransactionFpts { get; set; }
+        public virtual DeliveryAddress DeliveryAddress { get; set; }
     }
 }

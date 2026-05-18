@@ -94,6 +94,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
 
         public double Total3MonthsUsed { get; set; }
 
+        public string Standard { get; set; }
         
 
     }

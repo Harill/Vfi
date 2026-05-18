@@ -185,12 +185,12 @@
             )
             .Columns(columns =>
             {
-                //columns.Bound(f => f.InquiryId).Title("Chọn").Width(50).ReadOnly(true)
-                //    .ClientTemplate("<input type='checkbox' name='chkIds' value='<#= InquiryId #>' />")
-                //    .HtmlAttributes(new { style = "text-align:center" });
-                //columns.Command(command => command.Edit().ButtonType(GridButtonType.Image))
-                //    .Width(50).Title("Sửa")
-                //    .HtmlAttributes(new { style = "text-align:center" });
+                columns.Bound(f => f.InquiryId).Title("Chọn").Width(50).ReadOnly(true)
+                    .ClientTemplate("<input type='checkbox' name='chkIds' value='<#= InquiryId #>' />")
+                    .HtmlAttributes(new { style = "text-align:center" });
+                columns.Command(command => command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image))
+                    .Width(50).Title("Sửa")
+                    .HtmlAttributes(new { style = "text-align:center" });
                 columns.Bound(f => f.InquiryNumber).Width(100).Title("Số yêu cầu");
                 columns.Bound(f => f.ClassifiedName).Width(100).Title("Phân loại").ReadOnly(true);
                 columns.Bound(f => f.TypeName).Width(100).Title("Loại").ReadOnly(true);
@@ -225,7 +225,7 @@
                     .HtmlAttributes(new { style = "text-align: right;" })
                     .Format("{0:n2}");
                 columns.Bound(f => f.Note).Width(150);
-                //columns.Command(commands => commands.Delete().ButtonType(GridButtonType.Image)).Width(70).Title("");
+                columns.Command(commands => commands.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(70).Title("");
                 columns.Bound(f => f.ModifiedDate).Width(90).Title("Ngày làm").ReadOnly(true)
                        .ClientTemplate("<#= ModifiedDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy HH:mm}', ModifiedDate) #>");
                 columns.Bound(f => f.ModifiedUser).Width(90).Title("Người làm").ReadOnly(true);

@@ -25,6 +25,9 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public Nullable<bool> IsComplete { get; set; }
         public string Unit { get; set; }
         public Nullable<double> Met { get; set; }
+
+        public string Standard { get; set; }
+
         public virtual MaterialClassified MaterialClassified { get; set; }
         public virtual ICollection<InquiryPo> InquiryPoes { get; set; }
         public virtual PurchaseOrder PurchaseOrder { get; set; }

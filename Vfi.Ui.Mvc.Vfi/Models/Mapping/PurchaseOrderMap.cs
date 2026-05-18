@@ -45,6 +45,7 @@ namespace Vfi.Ui.Mvc.Vfi.Models.Mapping
             this.Property(t => t.CurrencyCode).HasColumnName("CurrencyCode");
             this.Property(t => t.MaterialClassifiedId).HasColumnName("MaterialClassifiedId");
             this.Property(t => t.ContractNumber).HasColumnName("ContractNumber");
+            this.Property(t => t.AddressId).HasColumnName("AddressId");
 
             // Relationships
             this.HasRequired(t => t.MaterialClassified)
@@ -53,6 +54,9 @@ namespace Vfi.Ui.Mvc.Vfi.Models.Mapping
             this.HasRequired(t => t.Vendor)
                 .WithMany(t => t.PurchaseOrders)
                 .HasForeignKey(d => d.VendorId);
+            this.HasRequired(t => t.DeliveryAddress)
+                .WithMany(t => t.PurchaseOrders)
+                .HasForeignKey(d => d.AddressId);
 
         }
     }

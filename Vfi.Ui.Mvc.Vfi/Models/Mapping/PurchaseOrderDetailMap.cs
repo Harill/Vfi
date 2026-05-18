@@ -35,6 +35,8 @@ namespace Vfi.Ui.Mvc.Vfi.Models.Mapping
             this.Property(t => t.IsComplete).HasColumnName("IsComplete");
             this.Property(t => t.Unit).HasColumnName("Unit");
             this.Property(t => t.Met).HasColumnName("Met");
+            this.Property(t => t.Standard).HasColumnName("Standard");
+
 
             // Relationships
             this.HasRequired(t => t.MaterialClassified)

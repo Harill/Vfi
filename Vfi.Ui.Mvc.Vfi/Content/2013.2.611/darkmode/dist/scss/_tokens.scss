@@ -1,0 +1,984 @@
+// Compatible with @progress/kendo-theme-fluent v.13.0.0
+
+:root {
+--tb-kendo-border-radius-none: 
+0px;
+;
+--tb-kendo-border-radius-xs: 
+1px;
+;
+--tb-kendo-border-radius-sm: 
+0.125rem;
+;
+--tb-kendo-border-radius-md: 
+0.25rem;
+;
+--tb-kendo-border-radius-lg: 
+0.375rem;
+;
+--tb-kendo-border-radius-xl: 
+0.5rem;
+;
+--tb-kendo-border-radius-xxl: 
+0.75rem;
+;
+--tb-kendo-border-radius-xxxl: 
+1rem;
+;
+--tb-kendo-border-radius-full: 
+9999px;
+;
+--tb-kendo-spacing-0: 
+0px;
+;
+--tb-kendo-spacing-1: 
+0.25rem;
+;
+--tb-kendo-spacing-2: 
+0.5rem;
+;
+--tb-kendo-spacing-3: 
+0.75rem;
+;
+--tb-kendo-spacing-4: 
+1rem;
+;
+--tb-kendo-spacing-5: 
+1.25rem;
+;
+--tb-kendo-spacing-6: 
+1.5rem;
+;
+--tb-kendo-spacing-7: 
+1.75rem;
+;
+--tb-kendo-spacing-8: 
+2rem;
+;
+--tb-kendo-spacing-9: 
+2.25rem;
+;
+--tb-kendo-spacing-10: 
+2.5rem;
+;
+--tb-kendo-spacing-11: 
+2.75rem;
+;
+--tb-kendo-spacing-12: 
+3rem;
+;
+--tb-kendo-spacing-13: 
+3.25rem;
+;
+--tb-kendo-spacing-14: 
+3.5rem;
+;
+--tb-kendo-spacing-15: 
+3.75rem;
+;
+--tb-kendo-spacing-16: 
+4rem;
+;
+--tb-kendo-spacing-17: 
+4.25rem;
+;
+--tb-kendo-spacing-18: 
+4.5rem;
+;
+--tb-kendo-spacing-19: 
+4.75rem;
+;
+--tb-kendo-spacing-20: 
+5rem;
+;
+--tb-kendo-spacing-21: 
+5.25rem;
+;
+--tb-kendo-spacing-22: 
+5.5rem;
+;
+--tb-kendo-spacing-23: 
+5.75rem;
+;
+--tb-kendo-spacing-24: 
+6rem;
+;
+--tb-kendo-spacing-25: 
+7rem;
+;
+--tb-kendo-spacing-26: 
+8rem;
+;
+--tb-kendo-spacing-27: 
+9rem;
+;
+--tb-kendo-spacing-28: 
+10rem;
+;
+--tb-kendo-spacing-29: 
+11rem;
+;
+--tb-kendo-spacing-30: 
+12rem;
+;
+--tb-kendo-spacing-1px: 
+1px;
+;
+--tb-kendo-spacing-0-5: 
+0.125rem;
+;
+--tb-kendo-spacing-1-5: 
+0.375rem;
+;
+--tb-kendo-spacing-2-5: 
+0.625rem;
+;
+--tb-kendo-spacing-3-5: 
+0.875rem;
+;
+--tb-kendo-spacing-4-5: 
+1.125rem;
+;
+--tb-kendo-spacing-5-5: 
+1.375rem;
+;
+--tb-kendo-spacing-6-5: 
+1.625rem;
+;
+--tb-kendo-spacing-7-5: 
+1.875rem;
+;
+--tb-kendo-font-size-xs: 
+0.625rem;
+;
+--tb-kendo-font-size-sm: 
+0.75rem;
+;
+--tb-kendo-font-size-md: 
+0.875rem;
+;
+--tb-kendo-font-size-lg: 
+1rem;
+;
+--tb-kendo-font-size-xl: 
+1.25rem;
+;
+--tb-kendo-font-weight-thin: 
+100;
+;
+--tb-kendo-font-weight-extra-light: 
+200;
+;
+--tb-kendo-font-weight-light: 
+300;
+;
+--tb-kendo-font-weight-normal: 
+400;
+;
+--tb-kendo-font-weight-medium: 
+500;
+;
+--tb-kendo-font-weight-semibold: 
+600;
+;
+--tb-kendo-font-weight-bold: 
+700;
+;
+--tb-kendo-font-weight-extra-bold: 
+800;
+;
+--tb-kendo-font-weight-black: 
+900;
+;
+--tb-kendo-line-height-xs: 
+1;
+;
+--tb-kendo-line-height-sm: 
+1.25;
+;
+--tb-kendo-line-height-md: 
+1.4285714285714286;
+;
+--tb-kendo-line-height-lg: 
+1.33;
+;
+--tb-kendo-letter-spacing-tightest: 
+-0.15px;
+;
+--tb-kendo-letter-spacing-tighter: 
+-0.1px;
+;
+--tb-kendo-letter-spacing-tight: 
+-0.5px;
+;
+--tb-kendo-letter-spacing-normal: 
+0px;
+;
+--tb-kendo-letter-spacing-wide: 
+0.5px;
+;
+--tb-kendo-letter-spacing-wider: 
+0.1px;
+;
+--tb-kendo-letter-spacing-widest: 
+0.15px;
+;
+--tb-kendo-color-app-surface: 
+#111318;
+;
+--tb-kendo-color-on-app-surface: 
+#a9edf3ff;
+;
+--tb-kendo-color-subtle: 
+#9aa3af;
+;
+--tb-kendo-color-surface: 
+#171a21;
+;
+--tb-kendo-color-surface-alt: 
+#1d212a;
+;
+--tb-kendo-color-border: 
+rgba(255, 255, 255, 0.18);
+;
+--tb-kendo-color-border-alt: 
+rgba(255, 255, 255, 0.10);
+;
+--tb-kendo-color-base-subtle: 
+#171a21;
+;
+--tb-kendo-color-base-subtle-hover: 
+#1d212a;
+;
+--tb-kendo-color-base-subtle-active: 
+#252b37;
+;
+--tb-kendo-color-base: 
+#1f242e;
+;
+--tb-kendo-color-base-hover: 
+#252b37;
+;
+--tb-kendo-color-base-active: 
+#2b3240;
+;
+--tb-kendo-color-base-emphasis: 
+#3a4252;
+;
+--tb-kendo-color-base-on-subtle: 
+#f5f7fa;
+;
+--tb-kendo-color-on-base: 
+#f5f7fa;
+;
+--tb-kendo-color-base-on-surface: 
+#f5f7fa;
+;
+--tb-kendo-color-primary-subtle: 
+#16263d;
+;
+--tb-kendo-color-primary-subtle-hover: 
+#1a3150;
+;
+--tb-kendo-color-primary-subtle-active: 
+#203b5e;
+;
+--tb-kendo-color-primary: 
+#7fb6feff;
+;
+--tb-kendo-color-primary-hover: 
+#6aaaff;
+;
+--tb-kendo-color-primary-active: 
+#3b86f0;
+;
+--tb-kendo-color-primary-emphasis: 
+#7ab6ff;
+;
+--tb-kendo-color-primary-on-subtle: 
+#b8d7ff;
+;
+--tb-kendo-color-on-primary: 
+#ffffff;
+;
+--tb-kendo-color-primary-on-surface: 
+#7ab6ff;
+;
+--tb-kendo-color-secondary-subtle: 
+#171a21;
+;
+--tb-kendo-color-secondary-subtle-hover: 
+#1d212a;
+;
+--tb-kendo-color-secondary-subtle-active: 
+#252b37;
+;
+--tb-kendo-color-secondary: 
+#2a303b;
+;
+--tb-kendo-color-secondary-hover: 
+#323845;
+;
+--tb-kendo-color-secondary-active: 
+#3a4150;
+;
+--tb-kendo-color-secondary-emphasis: 
+#4a5263;
+;
+--tb-kendo-color-secondary-on-subtle: 
+#d6dbe3;
+;
+--tb-kendo-color-on-secondary: 
+#f5f7fa;
+;
+--tb-kendo-color-secondary-on-surface: 
+#d6dbe3;
+;
+--tb-kendo-color-tertiary-subtle: 
+#24162d;
+;
+--tb-kendo-color-tertiary-subtle-hover: 
+#2f1c3b;
+;
+--tb-kendo-color-tertiary-subtle-active: 
+#3b2549;
+;
+--tb-kendo-color-tertiary: 
+#c45cff;
+;
+--tb-kendo-color-tertiary-hover: 
+#d27dff;
+;
+--tb-kendo-color-tertiary-active: 
+#b146f0;
+;
+--tb-kendo-color-tertiary-emphasis: 
+#dc9cff;
+;
+--tb-kendo-color-tertiary-on-subtle: 
+#efccff;
+;
+--tb-kendo-color-on-tertiary: 
+#ffffff;
+;
+--tb-kendo-color-tertiary-on-surface: 
+#dc9cff;
+;
+--tb-kendo-color-info-subtle: 
+#152331;
+;
+--tb-kendo-color-info-subtle-hover: 
+#1a2c3f;
+;
+--tb-kendo-color-info-subtle-active: 
+#203651;
+;
+--tb-kendo-color-info: 
+#5bb7ff;
+;
+--tb-kendo-color-info-hover: 
+#7ac6ff;
+;
+--tb-kendo-color-info-active: 
+#3d9df0;
+;
+--tb-kendo-color-info-emphasis: 
+#8ccfff;
+;
+--tb-kendo-color-info-on-subtle: 
+#c4e6ff;
+;
+--tb-kendo-color-on-info: 
+#ffffff;
+;
+--tb-kendo-color-info-on-surface: 
+#8ccfff;
+;
+--tb-kendo-color-success-subtle: 
+#13281b;
+;
+--tb-kendo-color-success-subtle-hover: 
+#173223;
+;
+--tb-kendo-color-success-subtle-active: 
+#1d3d2d;
+;
+--tb-kendo-color-success: 
+#3ccf7a;
+;
+--tb-kendo-color-success-hover: 
+#5ae08f;
+;
+--tb-kendo-color-success-active: 
+#2eb768;
+;
+--tb-kendo-color-success-emphasis: 
+#86e6ae;
+;
+--tb-kendo-color-success-on-subtle: 
+#c8f4da;
+;
+--tb-kendo-color-on-success: 
+#ffffff;
+;
+--tb-kendo-color-success-on-surface: 
+#86e6ae;
+;
+--tb-kendo-color-warning-subtle: 
+#2a2112;
+;
+--tb-kendo-color-warning-subtle-hover: 
+#362a16;
+;
+--tb-kendo-color-warning-subtle-active: 
+#43331b;
+;
+--tb-kendo-color-warning: 
+#ffb34d;
+;
+--tb-kendo-color-warning-hover: 
+#ffc56e;
+;
+--tb-kendo-color-warning-active: 
+#f59f2f;
+;
+--tb-kendo-color-warning-emphasis: 
+#ffd08a;
+;
+--tb-kendo-color-warning-on-subtle: 
+#ffe4ba;
+;
+--tb-kendo-color-on-warning: 
+#1b1f27;
+;
+--tb-kendo-color-warning-on-surface: 
+#ffd08a;
+;
+--tb-kendo-color-error-subtle: 
+#2b1518;
+;
+--tb-kendo-color-error-subtle-hover: 
+#381b1f;
+;
+--tb-kendo-color-error-subtle-active: 
+#462227;
+;
+--tb-kendo-color-error: 
+#ff6b7a;
+;
+--tb-kendo-color-error-hover: 
+#ff8894;
+;
+--tb-kendo-color-error-active: 
+#f24f60;
+;
+--tb-kendo-color-error-emphasis: 
+#ff9aa5;
+;
+--tb-kendo-color-error-on-subtle: 
+#ffc7cf;
+;
+--tb-kendo-color-on-error: 
+#ffffff;
+;
+--tb-kendo-color-error-on-surface: 
+#ff9aa5;
+;
+--tb-kendo-color-light-subtle: 
+#171a21;
+;
+--tb-kendo-color-light-subtle-hover: 
+#1d212a;
+;
+--tb-kendo-color-light-subtle-active: 
+#252b37;
+;
+--tb-kendo-color-light: 
+#2a303b;
+;
+--tb-kendo-color-light-hover: 
+#323845;
+;
+--tb-kendo-color-light-active: 
+#3a4150;
+;
+--tb-kendo-color-light-emphasis: 
+#4a5263;
+;
+--tb-kendo-color-light-on-subtle: 
+#d6dbe3;
+;
+--tb-kendo-color-on-light: 
+#f5f7fa;
+;
+--tb-kendo-color-light-on-surface: 
+#d6dbe3;
+;
+--tb-kendo-color-dark-subtle: 
+#050608;
+;
+--tb-kendo-color-dark-subtle-hover: 
+#0d0f14;
+;
+--tb-kendo-color-dark-subtle-active: 
+#141821;
+;
+--tb-kendo-color-dark: 
+#0d0f14;
+;
+--tb-kendo-color-dark-hover: 
+#141821;
+;
+--tb-kendo-color-dark-active: 
+#1a1f2a;
+;
+--tb-kendo-color-dark-emphasis: 
+#2a303b;
+;
+--tb-kendo-color-dark-on-subtle: 
+#ffffff;
+;
+--tb-kendo-color-on-dark: 
+#f5f7fa;
+;
+--tb-kendo-color-dark-on-surface: 
+#d6dbe3;
+;
+--tb-kendo-color-inverse-subtle: 
+#1d212a;
+;
+--tb-kendo-color-inverse-subtle-hover: 
+#252b37;
+;
+--tb-kendo-color-inverse-subtle-active: 
+#2b3240;
+;
+--tb-kendo-color-inverse: 
+#f5f7fa;
+;
+--tb-kendo-color-inverse-hover: 
+#e6ebf2;
+;
+--tb-kendo-color-inverse-active: 
+#d6dbe3;
+;
+--tb-kendo-color-inverse-emphasis: 
+#ffffff;
+;
+--tb-kendo-color-inverse-on-subtle: 
+#f5f7fa;
+;
+--tb-kendo-color-on-inverse: 
+#111318;
+;
+--tb-kendo-color-inverse-on-surface: 
+#f5f7fa;
+;
+--tb-kendo-color-series-a: 
+#63d2d6;
+;
+--tb-kendo-color-series-a-bold: 
+#2aa0a4;
+;
+--tb-kendo-color-series-a-bolder: 
+#1d6f72;
+;
+--tb-kendo-color-series-a-subtle: 
+#245d60;
+;
+--tb-kendo-color-series-a-subtler: 
+#17393b;
+;
+--tb-kendo-color-series-b: 
+#ffd166;
+;
+--tb-kendo-color-series-b-bold: 
+#d4aa2f;
+;
+--tb-kendo-color-series-b-bolder: 
+#8f731f;
+;
+--tb-kendo-color-series-b-subtle: 
+#5f4b1c;
+;
+--tb-kendo-color-series-b-subtler: 
+#3a2f12;
+;
+--tb-kendo-color-series-c: 
+#ff7ac8;
+;
+--tb-kendo-color-series-c-bold: 
+#d85aa8;
+;
+--tb-kendo-color-series-c-bolder: 
+#933b72;
+;
+--tb-kendo-color-series-c-subtle: 
+#5d2747;
+;
+--tb-kendo-color-series-c-subtler: 
+#38182a;
+;
+--tb-kendo-color-series-d: 
+#6ee787;
+;
+--tb-kendo-color-series-d-bold: 
+#3ccf7a;
+;
+--tb-kendo-color-series-d-bolder: 
+#22985a;
+;
+--tb-kendo-color-series-d-subtle: 
+#1f4b2f;
+;
+--tb-kendo-color-series-d-subtler: 
+#132c1c;
+;
+--tb-kendo-color-series-e: 
+#8ea2ff;
+;
+--tb-kendo-color-series-e-bold: 
+#637cef;
+;
+--tb-kendo-color-series-e-bolder: 
+#4457b7;
+;
+--tb-kendo-color-series-e-subtle: 
+#29366d;
+;
+--tb-kendo-color-series-e-subtler: 
+#1a2244;
+;
+--tb-kendo-color-series-f: 
+#ff9b6a;
+;
+--tb-kendo-color-series-f-bold: 
+#ff7b3d;
+;
+--tb-kendo-color-series-f-bolder: 
+#c95a22;
+;
+--tb-kendo-color-series-f-subtle: 
+#6b3320;
+;
+--tb-kendo-color-series-f-subtler: 
+#3f1f13;
+;
+--tb-kendo-elevation-1: 
+0px 0.3px 0.9px 0 rgba(0, 0, 0, 0.1), 0px 1.6px 3.6px 0 rgba(0, 0, 0, 0.13);
+;
+--tb-kendo-elevation-2: 
+0px 1px 2px 0px rgba(0, 0, 0, 0.14), 0px 0px 2px 0px rgba(0, 0, 0, 0.12);
+;
+--tb-kendo-elevation-3: 
+0px 2px 4px 0px rgba(0, 0, 0, 0.14), 0px 0px 2px 0px rgba(0, 0, 0, 0.12);
+;
+--tb-kendo-elevation-4: 
+0px 4px 8px 0px rgba(0, 0, 0, 0.14), 0px 0px 2px 0px rgba(0, 0, 0, 0.12);
+;
+--tb-kendo-elevation-5: 
+0px 8px 16px 0px rgba(0, 0, 0, 0.14), 0px 0px 2px 0px rgba(0, 0, 0, 0.12);
+;
+--tb-kendo-elevation-6: 
+0px 14px 28.8px 0px rgba(0, 0, 0, 0.24), 0px 0px 8px 0px rgba(0, 0, 0, 0.2);
+;
+--tb-kendo-elevation-7: 
+0px 20px 38px 0px rgba(0, 0, 0, 0.24), 0px 0px 8px 0px rgba(0, 0, 0, 0.2);
+;
+--tb-kendo-elevation-8: 
+0px 32px 64px 0px rgba(0, 0, 0, 0.24), 0px 0px 8px 0px rgba(0, 0, 0, 0.2);
+;
+--tb-kendo-elevation-9: 
+0px 32px 64px 0px rgba(0, 0, 0, 0.24), 0px 0px 8px 0px rgba(0, 0, 0, 0.2);
+;
+--tb-kendo-font-family-sans: 
+Arial, Verdana, Tahoma, "Trebuchet MS", Helvetica, Impact, Gill Sans;
+--tb-kendo-font-family-serif: 
+"Times New Roman", Georgia, Garamond, Palatino, Baskerville;
+--tb-kendo-font-family-sans-serif: 
+system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+--tb-kendo-font-family-monospace: 
+SFMono-Regular, Menlo, Monaco, Consolas, "Roboto Mono", "Ubuntu Mono", "Lucida Console", "Courier New", monospace;
+
+  --kendo-border-radius-none: var(--tb-kendo-border-radius-none);
+  --kendo-border-radius-xs: var(--tb-kendo-border-radius-xs);
+  --kendo-border-radius-sm: var(--tb-kendo-border-radius-sm);
+  --kendo-border-radius-md: var(--tb-kendo-border-radius-md);
+  --kendo-border-radius-lg: var(--tb-kendo-border-radius-lg);
+  --kendo-border-radius-xl: var(--tb-kendo-border-radius-xl);
+  --kendo-border-radius-xxl: var(--tb-kendo-border-radius-xxl);
+  --kendo-border-radius-xxxl: var(--tb-kendo-border-radius-xxxl);
+  --kendo-border-radius-full: var(--tb-kendo-border-radius-full);
+  --kendo-spacing-0: var(--tb-kendo-spacing-0);
+  --kendo-spacing-1: var(--tb-kendo-spacing-1);
+  --kendo-spacing-2: var(--tb-kendo-spacing-2);
+  --kendo-spacing-3: var(--tb-kendo-spacing-3);
+  --kendo-spacing-4: var(--tb-kendo-spacing-4);
+  --kendo-spacing-5: var(--tb-kendo-spacing-5);
+  --kendo-spacing-6: var(--tb-kendo-spacing-6);
+  --kendo-spacing-7: var(--tb-kendo-spacing-7);
+  --kendo-spacing-8: var(--tb-kendo-spacing-8);
+  --kendo-spacing-9: var(--tb-kendo-spacing-9);
+  --kendo-spacing-10: var(--tb-kendo-spacing-10);
+  --kendo-spacing-11: var(--tb-kendo-spacing-11);
+  --kendo-spacing-12: var(--tb-kendo-spacing-12);
+  --kendo-spacing-13: var(--tb-kendo-spacing-13);
+  --kendo-spacing-14: var(--tb-kendo-spacing-14);
+  --kendo-spacing-15: var(--tb-kendo-spacing-15);
+  --kendo-spacing-16: var(--tb-kendo-spacing-16);
+  --kendo-spacing-17: var(--tb-kendo-spacing-17);
+  --kendo-spacing-18: var(--tb-kendo-spacing-18);
+  --kendo-spacing-19: var(--tb-kendo-spacing-19);
+  --kendo-spacing-20: var(--tb-kendo-spacing-20);
+  --kendo-spacing-21: var(--tb-kendo-spacing-21);
+  --kendo-spacing-22: var(--tb-kendo-spacing-22);
+  --kendo-spacing-23: var(--tb-kendo-spacing-23);
+  --kendo-spacing-24: var(--tb-kendo-spacing-24);
+  --kendo-spacing-25: var(--tb-kendo-spacing-25);
+  --kendo-spacing-26: var(--tb-kendo-spacing-26);
+  --kendo-spacing-27: var(--tb-kendo-spacing-27);
+  --kendo-spacing-28: var(--tb-kendo-spacing-28);
+  --kendo-spacing-29: var(--tb-kendo-spacing-29);
+  --kendo-spacing-30: var(--tb-kendo-spacing-30);
+  --kendo-spacing-1px: var(--tb-kendo-spacing-1px);
+  --kendo-spacing-0-5: var(--tb-kendo-spacing-0-5);
+  --kendo-spacing-1-5: var(--tb-kendo-spacing-1-5);
+  --kendo-spacing-2-5: var(--tb-kendo-spacing-2-5);
+  --kendo-spacing-3-5: var(--tb-kendo-spacing-3-5);
+  --kendo-spacing-4-5: var(--tb-kendo-spacing-4-5);
+  --kendo-spacing-5-5: var(--tb-kendo-spacing-5-5);
+  --kendo-spacing-6-5: var(--tb-kendo-spacing-6-5);
+  --kendo-spacing-7-5: var(--tb-kendo-spacing-7-5);
+  --kendo-font-size-xs: var(--tb-kendo-font-size-xs);
+  --kendo-font-size-sm: var(--tb-kendo-font-size-sm);
+  --kendo-font-size-md: var(--tb-kendo-font-size-md);
+  --kendo-font-size-lg: var(--tb-kendo-font-size-lg);
+  --kendo-font-size-xl: var(--tb-kendo-font-size-xl);
+  --kendo-font-weight-thin: var(--tb-kendo-font-weight-thin);
+  --kendo-font-weight-extra-light: var(--tb-kendo-font-weight-extra-light);
+  --kendo-font-weight-light: var(--tb-kendo-font-weight-light);
+  --kendo-font-weight-normal: var(--tb-kendo-font-weight-normal);
+  --kendo-font-weight-medium: var(--tb-kendo-font-weight-medium);
+  --kendo-font-weight-semibold: var(--tb-kendo-font-weight-semibold);
+  --kendo-font-weight-bold: var(--tb-kendo-font-weight-bold);
+  --kendo-font-weight-extra-bold: var(--tb-kendo-font-weight-extra-bold);
+  --kendo-font-weight-black: var(--tb-kendo-font-weight-black);
+  --kendo-line-height-xs: var(--tb-kendo-line-height-xs);
+  --kendo-line-height-sm: var(--tb-kendo-line-height-sm);
+  --kendo-line-height-md: var(--tb-kendo-line-height-md);
+  --kendo-line-height-lg: var(--tb-kendo-line-height-lg);
+  --kendo-letter-spacing-tightest: var(--tb-kendo-letter-spacing-tightest);
+  --kendo-letter-spacing-tighter: var(--tb-kendo-letter-spacing-tighter);
+  --kendo-letter-spacing-tight: var(--tb-kendo-letter-spacing-tight);
+  --kendo-letter-spacing-normal: var(--tb-kendo-letter-spacing-normal);
+  --kendo-letter-spacing-wide: var(--tb-kendo-letter-spacing-wide);
+  --kendo-letter-spacing-wider: var(--tb-kendo-letter-spacing-wider);
+  --kendo-letter-spacing-widest: var(--tb-kendo-letter-spacing-widest);
+  --kendo-color-app-surface: var(--tb-kendo-color-app-surface);
+  --kendo-color-on-app-surface: var(--tb-kendo-color-on-app-surface);
+  --kendo-color-subtle: var(--tb-kendo-color-subtle);
+  --kendo-color-surface: var(--tb-kendo-color-surface);
+  --kendo-color-surface-alt: var(--tb-kendo-color-surface-alt);
+  --kendo-color-border: var(--tb-kendo-color-border);
+  --kendo-color-border-alt: var(--tb-kendo-color-border-alt);
+  --kendo-color-base-subtle: var(--tb-kendo-color-base-subtle);
+  --kendo-color-base-subtle-hover: var(--tb-kendo-color-base-subtle-hover);
+  --kendo-color-base-subtle-active: var(--tb-kendo-color-base-subtle-active);
+  --kendo-color-base: var(--tb-kendo-color-base);
+  --kendo-color-base-hover: var(--tb-kendo-color-base-hover);
+  --kendo-color-base-active: var(--tb-kendo-color-base-active);
+  --kendo-color-base-emphasis: var(--tb-kendo-color-base-emphasis);
+  --kendo-color-base-on-subtle: var(--tb-kendo-color-base-on-subtle);
+  --kendo-color-on-base: var(--tb-kendo-color-on-base);
+  --kendo-color-base-on-surface: var(--tb-kendo-color-base-on-surface);
+  --kendo-color-primary-subtle: var(--tb-kendo-color-primary-subtle);
+  --kendo-color-primary-subtle-hover: var(--tb-kendo-color-primary-subtle-hover);
+  --kendo-color-primary-subtle-active: var(--tb-kendo-color-primary-subtle-active);
+  --kendo-color-primary: var(--tb-kendo-color-primary);
+  --kendo-color-primary-hover: var(--tb-kendo-color-primary-hover);
+  --kendo-color-primary-active: var(--tb-kendo-color-primary-active);
+  --kendo-color-primary-emphasis: var(--tb-kendo-color-primary-emphasis);
+  --kendo-color-primary-on-subtle: var(--tb-kendo-color-primary-on-subtle);
+  --kendo-color-on-primary: var(--tb-kendo-color-on-primary);
+  --kendo-color-primary-on-surface: var(--tb-kendo-color-primary-on-surface);
+  --kendo-color-secondary-subtle: var(--tb-kendo-color-secondary-subtle);
+  --kendo-color-secondary-subtle-hover: var(--tb-kendo-color-secondary-subtle-hover);
+  --kendo-color-secondary-subtle-active: var(--tb-kendo-color-secondary-subtle-active);
+  --kendo-color-secondary: var(--tb-kendo-color-secondary);
+  --kendo-color-secondary-hover: var(--tb-kendo-color-secondary-hover);
+  --kendo-color-secondary-active: var(--tb-kendo-color-secondary-active);
+  --kendo-color-secondary-emphasis: var(--tb-kendo-color-secondary-emphasis);
+  --kendo-color-secondary-on-subtle: var(--tb-kendo-color-secondary-on-subtle);
+  --kendo-color-on-secondary: var(--tb-kendo-color-on-secondary);
+  --kendo-color-secondary-on-surface: var(--tb-kendo-color-secondary-on-surface);
+  --kendo-color-tertiary-subtle: var(--tb-kendo-color-tertiary-subtle);
+  --kendo-color-tertiary-subtle-hover: var(--tb-kendo-color-tertiary-subtle-hover);
+  --kendo-color-tertiary-subtle-active: var(--tb-kendo-color-tertiary-subtle-active);
+  --kendo-color-tertiary: var(--tb-kendo-color-tertiary);
+  --kendo-color-tertiary-hover: var(--tb-kendo-color-tertiary-hover);
+  --kendo-color-tertiary-active: var(--tb-kendo-color-tertiary-active);
+  --kendo-color-tertiary-emphasis: var(--tb-kendo-color-tertiary-emphasis);
+  --kendo-color-tertiary-on-subtle: var(--tb-kendo-color-tertiary-on-subtle);
+  --kendo-color-on-tertiary: var(--tb-kendo-color-on-tertiary);
+  --kendo-color-tertiary-on-surface: var(--tb-kendo-color-tertiary-on-surface);
+  --kendo-color-info-subtle: var(--tb-kendo-color-info-subtle);
+  --kendo-color-info-subtle-hover: var(--tb-kendo-color-info-subtle-hover);
+  --kendo-color-info-subtle-active: var(--tb-kendo-color-info-subtle-active);
+  --kendo-color-info: var(--tb-kendo-color-info);
+  --kendo-color-info-hover: var(--tb-kendo-color-info-hover);
+  --kendo-color-info-active: var(--tb-kendo-color-info-active);
+  --kendo-color-info-emphasis: var(--tb-kendo-color-info-emphasis);
+  --kendo-color-info-on-subtle: var(--tb-kendo-color-info-on-subtle);
+  --kendo-color-on-info: var(--tb-kendo-color-on-info);
+  --kendo-color-info-on-surface: var(--tb-kendo-color-info-on-surface);
+  --kendo-color-success-subtle: var(--tb-kendo-color-success-subtle);
+  --kendo-color-success-subtle-hover: var(--tb-kendo-color-success-subtle-hover);
+  --kendo-color-success-subtle-active: var(--tb-kendo-color-success-subtle-active);
+  --kendo-color-success: var(--tb-kendo-color-success);
+  --kendo-color-success-hover: var(--tb-kendo-color-success-hover);
+  --kendo-color-success-active: var(--tb-kendo-color-success-active);
+  --kendo-color-success-emphasis: var(--tb-kendo-color-success-emphasis);
+  --kendo-color-success-on-subtle: var(--tb-kendo-color-success-on-subtle);
+  --kendo-color-on-success: var(--tb-kendo-color-on-success);
+  --kendo-color-success-on-surface: var(--tb-kendo-color-success-on-surface);
+  --kendo-color-warning-subtle: var(--tb-kendo-color-warning-subtle);
+  --kendo-color-warning-subtle-hover: var(--tb-kendo-color-warning-subtle-hover);
+  --kendo-color-warning-subtle-active: var(--tb-kendo-color-warning-subtle-active);
+  --kendo-color-warning: var(--tb-kendo-color-warning);
+  --kendo-color-warning-hover: var(--tb-kendo-color-warning-hover);
+  --kendo-color-warning-active: var(--tb-kendo-color-warning-active);
+  --kendo-color-warning-emphasis: var(--tb-kendo-color-warning-emphasis);
+  --kendo-color-warning-on-subtle: var(--tb-kendo-color-warning-on-subtle);
+  --kendo-color-on-warning: var(--tb-kendo-color-on-warning);
+  --kendo-color-warning-on-surface: var(--tb-kendo-color-warning-on-surface);
+  --kendo-color-error-subtle: var(--tb-kendo-color-error-subtle);
+  --kendo-color-error-subtle-hover: var(--tb-kendo-color-error-subtle-hover);
+  --kendo-color-error-subtle-active: var(--tb-kendo-color-error-subtle-active);
+  --kendo-color-error: var(--tb-kendo-color-error);
+  --kendo-color-error-hover: var(--tb-kendo-color-error-hover);
+  --kendo-color-error-active: var(--tb-kendo-color-error-active);
+  --kendo-color-error-emphasis: var(--tb-kendo-color-error-emphasis);
+  --kendo-color-error-on-subtle: var(--tb-kendo-color-error-on-subtle);
+  --kendo-color-on-error: var(--tb-kendo-color-on-error);
+  --kendo-color-error-on-surface: var(--tb-kendo-color-error-on-surface);
+  --kendo-color-light-subtle: var(--tb-kendo-color-light-subtle);
+  --kendo-color-light-subtle-hover: var(--tb-kendo-color-light-subtle-hover);
+  --kendo-color-light-subtle-active: var(--tb-kendo-color-light-subtle-active);
+  --kendo-color-light: var(--tb-kendo-color-light);
+  --kendo-color-light-hover: var(--tb-kendo-color-light-hover);
+  --kendo-color-light-active: var(--tb-kendo-color-light-active);
+  --kendo-color-light-emphasis: var(--tb-kendo-color-light-emphasis);
+  --kendo-color-light-on-subtle: var(--tb-kendo-color-light-on-subtle);
+  --kendo-color-on-light: var(--tb-kendo-color-on-light);
+  --kendo-color-light-on-surface: var(--tb-kendo-color-light-on-surface);
+  --kendo-color-dark-subtle: var(--tb-kendo-color-dark-subtle);
+  --kendo-color-dark-subtle-hover: var(--tb-kendo-color-dark-subtle-hover);
+  --kendo-color-dark-subtle-active: var(--tb-kendo-color-dark-subtle-active);
+  --kendo-color-dark: var(--tb-kendo-color-dark);
+  --kendo-color-dark-hover: var(--tb-kendo-color-dark-hover);
+  --kendo-color-dark-active: var(--tb-kendo-color-dark-active);
+  --kendo-color-dark-emphasis: var(--tb-kendo-color-dark-emphasis);
+  --kendo-color-dark-on-subtle: var(--tb-kendo-color-dark-on-subtle);
+  --kendo-color-on-dark: var(--tb-kendo-color-on-dark);
+  --kendo-color-dark-on-surface: var(--tb-kendo-color-dark-on-surface);
+  --kendo-color-inverse-subtle: var(--tb-kendo-color-inverse-subtle);
+  --kendo-color-inverse-subtle-hover: var(--tb-kendo-color-inverse-subtle-hover);
+  --kendo-color-inverse-subtle-active: var(--tb-kendo-color-inverse-subtle-active);
+  --kendo-color-inverse: var(--tb-kendo-color-inverse);
+  --kendo-color-inverse-hover: var(--tb-kendo-color-inverse-hover);
+  --kendo-color-inverse-active: var(--tb-kendo-color-inverse-active);
+  --kendo-color-inverse-emphasis: var(--tb-kendo-color-inverse-emphasis);
+  --kendo-color-inverse-on-subtle: var(--tb-kendo-color-inverse-on-subtle);
+  --kendo-color-on-inverse: var(--tb-kendo-color-on-inverse);
+  --kendo-color-inverse-on-surface: var(--tb-kendo-color-inverse-on-surface);
+  --kendo-color-series-a: var(--tb-kendo-color-series-a);
+  --kendo-color-series-a-bold: var(--tb-kendo-color-series-a-bold);
+  --kendo-color-series-a-bolder: var(--tb-kendo-color-series-a-bolder);
+  --kendo-color-series-a-subtle: var(--tb-kendo-color-series-a-subtle);
+  --kendo-color-series-a-subtler: var(--tb-kendo-color-series-a-subtler);
+  --kendo-color-series-b: var(--tb-kendo-color-series-b);
+  --kendo-color-series-b-bold: var(--tb-kendo-color-series-b-bold);
+  --kendo-color-series-b-bolder: var(--tb-kendo-color-series-b-bolder);
+  --kendo-color-series-b-subtle: var(--tb-kendo-color-series-b-subtle);
+  --kendo-color-series-b-subtler: var(--tb-kendo-color-series-b-subtler);
+  --kendo-color-series-c: var(--tb-kendo-color-series-c);
+  --kendo-color-series-c-bold: var(--tb-kendo-color-series-c-bold);
+  --kendo-color-series-c-bolder: var(--tb-kendo-color-series-c-bolder);
+  --kendo-color-series-c-subtle: var(--tb-kendo-color-series-c-subtle);
+  --kendo-color-series-c-subtler: var(--tb-kendo-color-series-c-subtler);
+  --kendo-color-series-d: var(--tb-kendo-color-series-d);
+  --kendo-color-series-d-bold: var(--tb-kendo-color-series-d-bold);
+  --kendo-color-series-d-bolder: var(--tb-kendo-color-series-d-bolder);
+  --kendo-color-series-d-subtle: var(--tb-kendo-color-series-d-subtle);
+  --kendo-color-series-d-subtler: var(--tb-kendo-color-series-d-subtler);
+  --kendo-color-series-e: var(--tb-kendo-color-series-e);
+  --kendo-color-series-e-bold: var(--tb-kendo-color-series-e-bold);
+  --kendo-color-series-e-bolder: var(--tb-kendo-color-series-e-bolder);
+  --kendo-color-series-e-subtle: var(--tb-kendo-color-series-e-subtle);
+  --kendo-color-series-e-subtler: var(--tb-kendo-color-series-e-subtler);
+  --kendo-color-series-f: var(--tb-kendo-color-series-f);
+  --kendo-color-series-f-bold: var(--tb-kendo-color-series-f-bold);
+  --kendo-color-series-f-bolder: var(--tb-kendo-color-series-f-bolder);
+  --kendo-color-series-f-subtle: var(--tb-kendo-color-series-f-subtle);
+  --kendo-color-series-f-subtler: var(--tb-kendo-color-series-f-subtler);
+  --kendo-elevation-1: var(--tb-kendo-elevation-1);
+  --kendo-elevation-2: var(--tb-kendo-elevation-2);
+  --kendo-elevation-3: var(--tb-kendo-elevation-3);
+  --kendo-elevation-4: var(--tb-kendo-elevation-4);
+  --kendo-elevation-5: var(--tb-kendo-elevation-5);
+  --kendo-elevation-6: var(--tb-kendo-elevation-6);
+  --kendo-elevation-7: var(--tb-kendo-elevation-7);
+  --kendo-elevation-8: var(--tb-kendo-elevation-8);
+  --kendo-elevation-9: var(--tb-kendo-elevation-9);
+  --kendo-font-family-sans: var(--tb-kendo-font-family-sans);
+  --kendo-font-family-serif: var(--tb-kendo-font-family-serif);
+  --kendo-font-family-sans-serif: var(--tb-kendo-font-family-sans-serif);
+  --kendo-font-family-monospace: var(--tb-kendo-font-family-monospace);
+
+  --kendo-font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+  --kendo-font-size: 14px;
+  --kendo-font-weight: 400;
+  --kendo-line-height: 1.4285714286;
+}
+
+$tb-typography: (
+  kendo-default-typography: (
+      font-family: ("Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif),
+      font-size: 14px,
+      font-weight: 400,
+      line-height: 1.4285714286,
+        ),
+);
+
+@mixin typography-classes ($typography) {
+  @each $selector, $property in $typography {
+    &-#{$selector} {
+      @each $propName, $propValue in $property {
+        #{$propName}: $propValue;
+      }
+    } &-#{$selector}-important {
+      @each $propName, $propValue in $property {
+        #{$propName}: $propValue !important;
+      }
+    }
+  }
+}
+
+$tb-effects: (
+  tb-internal-none-effects: (
+      box-shadow: (none), filter: (none), backdrop-filter: (none),  ),
+);
+
+@mixin effects-classes ($effects) {
+  @each $selector, $property in $effects {
+    &-#{$selector} {
+      @each $propName, $propValue in $property {
+        #{$propName}: $propValue;
+      }
+    } &-#{$selector}-important {
+      @each $propName, $propValue in $property {
+        #{$propName}: $propValue !important;
+      }
+    }
+  }
+}

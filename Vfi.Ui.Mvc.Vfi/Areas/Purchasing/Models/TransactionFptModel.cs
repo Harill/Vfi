@@ -56,6 +56,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
 
         public int InvManager { get; set; }
         public bool IsInternal { get; set; }
+
         public string MachineName { get; set; }                 // 28/03/2026
 
 
