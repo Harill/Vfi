@@ -13,6 +13,7 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public bool Active { get; set; }
         public DateTime ModifiedDate { get; set; }
         public string ModifiedUser { get; set; }
+        public string Recipient { get; set; }
 
         public ICollection<PurchaseOrder> PurchaseOrders { get; set; }
     }

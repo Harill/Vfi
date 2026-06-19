@@ -4,7 +4,7 @@
         .DataBinding(binding => binding.Ajax().Select("SelectComboBoxRotateWarehouse", "Warehouse", new { area = "Inv" }).Delay(350))
         //.HtmlAttributes(new { style = "width: 200px" })
         .DropDownHtmlAttributes(new { style = "width: 200px" })
-        .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+        .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
         .HighlightFirstMatch(true)
         .AutoFill(true)
         .Render();

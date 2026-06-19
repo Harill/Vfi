@@ -13,6 +13,7 @@ namespace Vfi.Ui.Mvc.Vfi.Models
             this.MachineRepairForms = new List<MachineRepairForm>();
             this.MaterialLimitPlans = new List<MaterialLimitPlan>();
             this.ProductImgs = new List<ProductImg>();
+            this.QcImgs = new List<QcImg>();
             this.Production2TransactionDetail = new List<Production2TransactionDetail>();
             this.ProductionDefects = new List<ProductionDefect>();
             this.ProductionFuels = new List<ProductionFuel>();
@@ -144,6 +145,7 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public virtual ProcessClassified ProcessClassified { get; set; }
         public virtual ProcessingType ProcessingType { get; set; }
         public virtual ICollection<ProductImg> ProductImgs { get; set; }
+        public virtual ICollection<QcImg> QcImgs { get; set; }
         public virtual ICollection<Production2TransactionDetail> Production2TransactionDetail { get; set; }
         public virtual ICollection<ProductionDefect> ProductionDefects { get; set; }
         public virtual ICollection<ProductionFuel> ProductionFuels { get; set; }

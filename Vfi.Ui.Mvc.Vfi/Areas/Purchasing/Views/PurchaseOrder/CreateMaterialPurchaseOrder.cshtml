@@ -139,6 +139,7 @@
                 var materialClassified = $('#MaterialClassifiedName').data('tDropDownList').value();
                 var vendor = $('#VendorCodeName').data('tComboBox').value();
                 var deliveryAddress = $('#DeliveryAddress').data('tDropDownList').value();
+                var billToAddress = $('#BillToAddress').data('tDropDownList').value();
                 var currencyCode = $('#CurrencyCode').data('tDropDownList').value();
                 var employeeName = $('#EmployeeName').val();
                 var tolerance = $('#Tolerance').val();
@@ -161,6 +162,7 @@
                         tolerance: tolerance,
                         currencyCode: currencyCode,
                         deliveryAddress : deliveryAddress,
+                        billToAddress: billToAddress,
                         note: note,
                     }
                 );
@@ -179,6 +181,7 @@
             var vendorCodeName = $('#VendorCodeName').data('tComboBox').value();
             var currencyCode = $('#CurrencyCode').data('tDropDownList').value();
             var deliveryAddress = $('#DeliveryAddress').data('tDropDownList').value();
+            var billToAddress = $('#BillToAddress').data('tDropDownList').value();
             var employeeName = $('#EmployeeName').val();
             var tolerance = $('#Tolerance').val();
 
@@ -193,6 +196,9 @@
             }
             if (deliveryAddress === "") {
                 strMsgAlert += "Vui lòng chọn nơi giao hàng.\t\r\n";
+            }
+            if (billToAddress === "") {
+                strMsgAlert += "Vui lòng chọn nơi giao bill.\t\r\n";
             }
             if (employeeName === "") {
                 strMsgAlert += "Vui lòng điền tên nhân viên.\t\r\n";
@@ -258,9 +264,10 @@
             </button></div>
         
           <div class="grid_5">@Html.LabelFor(f => f.CurrencyCode)</div>
-          <div class="grid_5">@Html.LabelFor(f => f.ContractNumber)</div>
+          <div class="grid_5">@Html.Label("Số báo giá")</div>
           <div class="grid_5">@Html.LabelFor(f => f.OrderDate)</div>
           <div class="grid_5">@Html.Label("Nơi giao hàng")</div>
+          <div class="grid_5">@Html.Label("Nơi giao Bill")</div>
 
 
         <div class="clear"></div>
@@ -312,6 +319,15 @@
             @{
                 Html.Telerik().DropDownList()
                     .Name("DeliveryAddress")
+                    .DataBinding(binding => binding.Ajax().Select("SelectComboBoxDeliveryAddress", "PurchaseOrder", new { area = "" }))
+                    .DropDownHtmlAttributes(new { style = "width: 250px" })
+                    .Render();
+            }
+        </div>
+                <div class="grid_5">
+            @{
+                Html.Telerik().DropDownList()
+                    .Name("BillToAddress")
                     .DataBinding(binding => binding.Ajax().Select("SelectComboBoxDeliveryAddress", "PurchaseOrder", new { area = "" }))
                     .DropDownHtmlAttributes(new { style = "width: 250px" })
                     .Render();

@@ -65,7 +65,7 @@
     Html.Telerik().Upload().Name("ProductImg")
         .Async(async => async
                             .Save("SaveProductImg", "Product", new { area = "" })
-                            .AutoUpload(false))
+                            .AutoUpload(true))
         .ClientEvents(events => events
                                     .OnUpload("upload_OnUpload")
                                     .OnSuccess("upload_OnSuccess")

@@ -25,6 +25,8 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public System.DateTime ModifiedDate { get; set; }
         public int ProductInvId { get; set; }
         public string LotNumber { get; set; }
+
+
         public virtual ProductInventory ProductInventory { get; set; }
         public virtual Product Product { get; set; }
         public virtual Transaction Transaction { get; set; }

@@ -195,6 +195,43 @@
             }
         }
 
+        function grid_OnRowDataBound_Color(e) {
+            var dataItem = e.dataItem;
+            var $row = $(e.row);
+
+            // Nếu có NG trong chi tiết thì tô đỏ toàn bộ hàng
+            if (dataItem.HaveNG == true
+                && dataItem.HaveLock == true
+                ) {
+                $row.children().css({
+                    "background-color": "#ab153c",
+                    "color": "white",
+                });
+            }
+
+            else if (dataItem.HaveNG == true && dataItem.HaveLock == false) {
+                $row.children().css({
+                    "background-color": "#dea452", // đỏ nhat.
+                });
+            }
+            else if (dataItem.HaveNG == false && dataItem.HaveLock == true) {
+                $row.children().css({
+                    "background-color": "#8d02f0", // Tim'
+                    "color": "#FFFFFF"             // chữ trắng
+                });
+            }
+            //else {
+            //    // Giữ lại logic cũ nếu muốn
+            //    if (dataItem.State == 1) {
+            //        $row.children().eq(5).css("background-color", "#FA5858");
+            //    } else if (dataItem.State == 2) {
+            //        $row.children().eq(5).css("background-color", "yellow");
+            //    }
+            //}
+        }
+
+
+
     </script>
 
 }
@@ -291,6 +328,9 @@
                 columns.Bound(f => f.TransactionId).Title("").Width(50).ReadOnly(true)
                        .ClientTemplate("<input type='button' id='rollback_<#= TransactionId #>' value='Rollback' class='t-button rollback_<#= TransactionId #>' onclick='RollbackTransaction(<#= TransactionId #>)' />")
                        .HtmlAttributes(new { style = "text-align:center" });
+                columns.Bound(f => f.HaveNG).Hidden(true);
+                columns.Bound(f => f.HaveLock).Hidden(true);
+
             })
             .DetailView(details => details.ClientTemplate(
                 Html.Telerik().TabStrip()
@@ -334,6 +374,24 @@
                                               .HeaderTemplate("SL chuyển</br>(Kg)")
                                               .HtmlAttributes(new { style = "text-align: right;" })
                                               .Format("{0:n2}");
+
+                                       columns.Bound(f => f.NGString).Title("Chất lượng").Width(70).ReadOnly(true)
+                                               .HtmlAttributes(new { style = "text-align: center;" })
+                                               .ClientTemplate(
+                                                   "<# if (NGString == 'NG') { #>" +
+                                                       "<span style='color:red'>NG</span>" +
+                                                   "<# } else { #>" +
+                                                       "<span style='color:green'>Đạt</span>" +
+                                                   "<# } #>");
+                                       columns.Bound(f => f.LockString).Title("Khóa").Width(70).ReadOnly(true)
+                                                .HtmlAttributes(new { style = "text-align: center;" })
+                                                .ClientTemplate(
+                                                    "<# if (LockString == 'Đã khóa') { #>" +
+                                                        "<span style='color:red'>Đã khóa</span>" +
+                                                    "<# } #>"
+                                                );
+
+
                                        columns.Bound(f => f.Note).ReadOnly(true);
                                    })
                                        .ClientEvents(events => events
@@ -349,7 +407,9 @@
                 .OnRowSelect("grid_OnRowSelect")
                 .OnRowDataBound("grid_OnRowDataBound")
                 .OnDataBinding("gridTransaction_onDataBinding")
-                .OnDataBound("OnLoadedData"))
+                .OnDataBound("OnLoadedData")
+                .OnRowDataBound("grid_OnRowDataBound_Color")
+                )
             .Filterable()
                 .Scrollable(f => f.Height(510))
             .Render();

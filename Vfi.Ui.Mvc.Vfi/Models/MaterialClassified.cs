@@ -14,6 +14,7 @@ namespace Vfi.Ui.Mvc.Vfi.Models
             this.PurchaseOrders = new List<PurchaseOrder>();
             this.PurchaseOrderDetails = new List<PurchaseOrderDetail>();
             this.Vendors = new List<Vendor>();
+            this.EvaluationForms = new List<EvaluationForm>();
         }
 
         public int MaterialClassifiedId { get; set; }
@@ -28,5 +29,6 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public virtual ICollection<PurchaseOrder> PurchaseOrders { get; set; }
         public virtual ICollection<PurchaseOrderDetail> PurchaseOrderDetails { get; set; }
         public virtual ICollection<Vendor> Vendors { get; set; }
+        public virtual ICollection<EvaluationForm> EvaluationForms { get; set; }
     }
 }

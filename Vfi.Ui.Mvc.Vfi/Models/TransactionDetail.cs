@@ -37,6 +37,9 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public string StoreCode { get; set; }
         public Nullable<int> DefectId { get; set; }
         public Nullable<int> DrawerId { get; set; }
+        public bool NG { set; get; }
+
+
         public virtual Machine Machine { get; set; }
         public virtual ProductionDefect ProductionDefect { get; set; }
         public virtual ProductionProcessByMachine ProductionProcessByMachine { get; set; }

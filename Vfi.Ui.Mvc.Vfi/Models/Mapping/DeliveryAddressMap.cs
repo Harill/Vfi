@@ -28,6 +28,7 @@ namespace Vfi.Ui.Mvc.Vfi.Models.Mapping
             this.Property(t => t.ModifiedUser).HasColumnName("ModifiedUser");
             this.Property(t => t.Active).HasColumnName("Active");
             this.Property(t => t.Telephone).HasColumnName("Telephone");
+            this.Property(t => t.Recipient).HasColumnName("Recipient");
 
             // Relationships
 

@@ -1,0 +1,377 @@
+﻿@using Vfi.Server.Core.DataModel.Models.Inv
+@using Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
+@using Vfi.Ui.Mvc.Vfi.Utilities
+@{
+    ViewBag.Title = "Quản lý phiếu công cụ (Chi tiet(";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Scripts{
+    <script type="text/javascript">
+        function gridTool_OnDataBinding(args) {
+            //var toolCode = $("#ToolCode").data("tAutoComplete").value();
+            var statusValue = $("#Status").data("tComboBox").value();
+            if (statusValue === "")
+                statusValue = 1;
+            var fromDate = $("#fromDate").data("tDatePicker").value();
+            if (fromDate === null)
+                fromDate = "";
+            else {
+                fromDate = $.telerik.formatString('{0:dd/MM/yyyy}', fromDate);
+            }
+            var toDate = $("#toDate").data("tDatePicker").value();
+            if (toDate === null)
+                toDate = "";
+            else {
+                toDate = $.telerik.formatString('{0:dd/MM/yyyy 23:59:59}', toDate);
+            }
+            args.data = $.extend(args.data, {
+                //toolCode: toolCode,
+                status: statusValue,
+                fromDate: fromDate,
+                toDate: toDate
+            });
+            index = 0;
+            count = 0;
+        }
+
+        function status_onChange() {
+            RefreshGrid("gridTool");
+        }
+
+        function status_onload() {
+            var combobox = $('#Status').data('tComboBox');
+            var dataSource =
+            [
+                { Text: "Chưa duyệt", Value: "1" },
+                { Text: "Đã duyệt", Value: "2" },
+                { Text: "Huỷ", Value: "3" }
+            ];
+            combobox.dataBind(dataSource);
+        }
+
+        var index = 0;
+        var count = 0;
+
+@*        function gridTool_OnRowDataBound(e) {
+            var dataItem = e.dataItem;
+            if (dataItem.PurchasingSignature == 0) {
+                if (dataItem.PurchasingSignatureType == 0) {
+                    document.getElementsByClassName("t-button purchasing")[index - count].parentNode.innerHTML = "<span class='t-icon t-cancel'></span>";
+                    count++;
+                }
+            } else {
+                document.getElementsByClassName("t-button purchasing")[index - count].parentNode.innerHTML = "<span class='t-icon t-insert'></span>";
+                count++;
+            }
+            if (!dataItem.CanUpdate) {
+                e.row.getElementsByClassName("t-button rollback_" + e.dataItem.TransactionId)[0].parentNode.innerHTML = "";
+            }
+            index++;
+        }
+
+        function Signature(transactionId, type) {
+            $.ajax({
+                type: 'post',
+                data: { transactionId: transactionId, type: type },
+                dataType: 'json',
+                url: '@Url.Action("FuelSignature", "User", new {area = ""})',
+                timeout: 20000,
+                success: function() {
+                    alert("Thêm chữ ký thành công !");
+                    RefreshGrid("gridTool");
+                    index = 0;
+                    count = 0;
+                }
+            });
+            return false;
+        }*@
+
+        function PrintForm(val) {
+            alert(val);
+            $('#result').load('@Url.Action("PrintTransactionTool", "Tool")',
+                {
+                    transactionId: val
+                }, function() {
+                    var window = $('#windowReport').data('tWindow');
+                    window.open();
+                });
+            return false;
+        }
+        function RollbackTransaction(id) {
+            var message = "Phục hồi lệnh trở về chưa duyệt";
+            message += "\nĐồng ý ??";
+            if (confirm(message)) {
+
+                $.ajax({
+                    type: 'post',
+                    data: { transactionId: id },
+                    dataType: 'json',
+                    url: '@Url.Action("CreateRollbackTransaction", "Tool", new { area = "Purchasing" })',
+                    timeout: 20000,
+                    success: function (res) {
+                        if (res.Code === 1) {
+                            alert("Đã lưu " + res.Data);
+                            if (res.Message && res.Message != "") {
+                                alert(res.Message);
+                            }
+                            RefreshGrid("gridTool");
+                        } else {
+                            alert("Lỗi! " + res.Message);
+                        }
+                    }
+                });
+                
+            } else {
+            }
+        }
+    </script>
+}
+
+<div class="title">Quản lý thông tin chi tiết phiếu xuất nhập công cụ</div>
+<div id="pnlInvPeriod">
+    <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px; width: auto;">
+        <br />
+        <fieldset>
+            <legend>Tiêu chí trích lọc</legend>
+            
+ @*           <div class="grid_2_5">Mã Công cụ:</div>
+            <div class="grid_7">
+                @{
+                    Html.Telerik().AutoComplete()
+                        .Name("ToolCode")
+                        .DataBinding(binding => binding.Ajax().Select("SelectComboBoxTool", "Material", new { area = "" }).Delay(350))
+                        .HtmlAttributes(new {style = "width: 248px"})
+                        .DropDownHtmlAttributes(new {style = "width: 250px"})
+                        .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
+                        .HighlightFirstMatch(true)
+                        .AutoFill(true)
+                        .Render();
+                }
+            </div>*@
+            <div class="grid_3">
+                Tình trạng phiếu:
+            </div>
+            <div class="grid_6">
+                @{
+                    Html.Telerik().ComboBox()
+                        .Name("Status")
+                        //.DataBinding(binding => binding.Ajax().Select("SelectStatus", "Orders"))
+                        .HtmlAttributes(new {style = "width: 200px"})
+                        .DropDownHtmlAttributes(new {style = "width: 198px"})
+                        .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
+                        .HighlightFirstMatch(true)
+                        .AutoFill(true)
+                        .ClientEvents(events => events.OnChange("status_onChange").OnLoad("status_onload"))
+                        //.Enable(false)
+                        .Render();
+                }
+            </div>
+            
+            <div class="grid_3">
+                @{
+                    Html.Telerik().DatePicker()
+                        .Name("fromDate")
+                        .Format("dd/MM/yyyy")
+                        .Value(new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1))
+                        .Render();
+                } 
+            </div>
+            <div class="grid_2">
+                @{
+                    Html.Telerik().DatePicker()
+                        .Name("toDate")
+                        .Format("dd/MM/yyyy")
+                        .Value(new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1).AddMonths(1).AddDays(-1))
+                        .Render();
+                }
+            </div>
+            
+            <div class="grid_3 prefix_1">
+                <button id="btnRefesh" class="t-button" onclick=" return RefreshGrid('gridTool'); ">
+                    <span class='t-icon t-insert'></span>
+                    Làm mới
+                </button>
+            </div>
+        </fieldset>
+    </div>
+    <div class="clear"></div>
+    <div class="cover-div">
+        @{
+            Html.Telerik().Grid<TransactionFptDetailModel>()
+                .Name("gridTool")
+                .DataKeys(keys => keys.Add(f => f.TransactionId).RouteKey("transactionId"))
+                .DataBinding(dataBindings => dataBindings.Ajax()
+                                                         .Select("SelectDetailTransactionTool", "Tool",
+                                                                 new
+                                                                     {
+                                                                         //toolCode = "",
+                                                                         status = (byte) MyUtilities.Sales.Status.Waiting,
+                                                                         fromDate = "",
+                                                                         toDate = ""
+                                                                     }))
+                .Columns(columns =>
+                    {
+                        columns.Bound(f => f.Index).Width(40).Title("STT")
+                           .HtmlAttributes(new { style = "text-align:center;" });
+
+                        columns.Bound(f => f.TransactionDate).Width(100).Title("Ngày nhập")
+                               .ClientTemplate("<strong><#= TransactionDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', TransactionDate) #></strong>");
+                        columns.Bound(f => f.PoCode).Width(110).Title("Phiếu mua");
+                        columns.Bound(f => f.TransactionCode).Width(110).Title("Số phiếu");
+                        columns.Bound(f => f.EoIName).Width(90).Title("Nhập</br>Xuất")
+                            .HtmlAttributes(new { style = "text-align:left;" });
+
+                        columns.Bound(f => f.VendorName).Width(180).Title("Nhà cung cấp");
+                        columns.Bound(f => f.ToolName).Width(180).Title("Tên công cụ");
+                        columns.Bound(f => f.ToolFullCodeName).Width(300).Title("Mã công cụ");
+                        columns.Bound(f => f.LotNumber).Width(80).Title("Lô");
+
+                        columns.Bound(f => f.ToolInv).Width(50).Title("Ton </br>kho")
+                            .HtmlAttributes(new { style = "text-align:right;" })
+                            .ClientTemplate("<#= ToolInv == null ? 0 : $.telerik.formatString('{0:n0}', ToolInv) #>")
+                            .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .FooterHtmlAttributes(new { style = "text-align: right; font-weight:bold; " })
+                            .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .Aggregate(agg => agg.Sum());
+
+                        columns.Bound(f => f.Quantity).Width(45).Title("Số</br>lượng")
+                            .HtmlAttributes(new { style = "text-align:right;" })
+                            .ClientTemplate("<#= Quantity == null ? 0 : $.telerik.formatString('{0:n0}', Quantity) #>")
+                            .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .FooterHtmlAttributes(new { style = "text-align: right; font-weight:bold;  " })
+                            .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .Aggregate(agg => agg.Sum());
+
+                        columns.Bound(f => f.UnitPrice).Width(90).Title("Đơn giá</br>(VNĐ)")
+                            .ClientTemplate("<#= Price == null ? 0 : $.telerik.formatString('{0:n0}', UnitPrice) #>")
+                            .HtmlAttributes(new { style = "text-align:right;" });
+
+
+                        columns.Bound(f => f.Price).Width(95).Title("Tổng tiền</br>(VNĐ)")
+                            //.HeaderTemplate("Tổng tiền</br>(VNĐ)")
+                            .HtmlAttributes(new { style = "text-align:right;" })
+                            .ClientTemplate("<#= Price == null ? 0 : $.telerik.formatString('{0:n0}', Price) #>")
+                            .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .FooterHtmlAttributes(new { style = "text-align: right; font-weight:bold; " })
+                            .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .Aggregate(agg => agg.Sum());
+
+                        columns.Bound(f => f.UnitMeasure).Width(60).Title("ĐVT")
+                            .HtmlAttributes(new { style = "text-align:center;" });
+
+                        columns.Bound(f => f.Note).Title("Note");
+
+
+                    })
+                //.DetailView(details => details.ClientTemplate(
+                //    Html.Telerik().TabStrip()
+                //        .Name("TabStrip_<#= TransactionId #>")
+                //        .SelectedIndex(0)
+                //        .Items(items =>
+                //               items.Add().Text("Thông tin chi tiết").Content(
+                //                   Html.Telerik().Grid<TransactionFptDetailModel>()
+                //                       .Name("gridTransactionDetail_<#= TransactionId #>")
+                //                       .DataBinding(dataDindings => dataDindings.Ajax()
+                //                                                            .Select("SelectTransactionToolDetail", "Tool",
+                //                                                                        new { transactionId = "<#= TransactionId #>" }))
+                //                       .Columns(columns =>
+                //                       {
+                //                           columns.Bound(f => f.VendorName).Title("NCC").Width(100);
+                //                           columns.Bound(f => f.ToolName).Title("Tên công cụ").Width(100);
+                //                           columns.Bound(f => f.ToolFullCodeName).Title("Mã công cụ").Width(200);
+                //                           //columns.Bound(f => f.ToolDesignNo).Title("Quy cách").Width(200);
+                //                           columns.Bound(f => f.LotNumber).Width(75).Title("Lô")
+                //                                  .HtmlAttributes(new { style = "text-align: right;" });
+                //                           //columns.Bound(f => f.TotalInv).Width(75).Title("Tồn kho")
+                //                           //       .Format("{0:n2}")
+                //                           //       .HtmlAttributes(new { style = "text-align: right;" });
+                //                           columns.Bound(f => f.Quantity).Width(75).Title("SL")
+                //                                  .Format("{0:n2}")
+                //                                  .HtmlAttributes(new { style = "text-align: right;" });
+                //                           columns.Bound(f => f.UnitPrice).Width(100).Title("Đơn giá (VNĐ)")
+                //                                  .Format("{0:n2}")
+                //                                  .HtmlAttributes(new { style = "text-align: right;" });
+                //                           columns.Bound(f => f.Price).Width(100).Title("Thành tiền (VNĐ)")
+                //                                  .Format("{0:n2}")
+                //                                  .HtmlAttributes(new { style = "text-align: right;" });
+                //                           columns.Bound(f => f.UnitMeasure).Width(50).Title("ĐVT");
+                //                           columns.Bound(f => f.Note).Title("Ghi chú");
+                //                           })
+                //.ClientEvents(events => events.OnError("grid_OnError"))
+                //                       .ToHtmlString()
+                //                   )
+                //        )
+                //        .ToHtmlString()
+                //                           ))
+                .Selectable()
+                .Groupable()
+                .Reorderable(f => f.Columns(true))
+                .Resizable(f => f.Columns(true))
+                .Sortable()
+                .Filterable()
+                .ClientEvents(events => events.OnDataBinding("gridTool_OnDataBinding")
+                                              //.OnRowDataBound("gridTool_OnRowDataBound")
+                                              .OnRowSelect("grid_OnRowSelect")
+                                              .OnError("grid_OnError"))
+                .Scrollable(f => f.Height(610))
+                .Render();
+        }
+    </div>
+    
+</div>
+<!-- windown -->
+@{
+    Html.Telerik().Window()
+        .Name("windowReport")
+        .Modal(true)
+        .Draggable(true)
+        .Content
+        (
+    @<text>
+    <div id="result"></div>
+    </text>
+        )
+        //.ClientEvents(e => e.OnLoad("Window_onLoad"));
+        .Visible(false)
+        .Width(960)
+        .ClientEvents(e => e.OnOpen("window_onopen"))
+        .Render();
+}
+
+<script>
+    function window_onopen() {
+        //alert("b");
+        $("#rptvPageImportToolForm_ReportToolbar_ExportGr_FormatList option[value='XLS']").remove();
+        $("#rptvPageImportToolForm_ReportToolbar_ExportGr_FormatList option[value='RTF']").remove();
+        $("#rptvPageImportToolForm_ReportToolbar_ExportGr_FormatList option[value='MHTML']").remove();
+        //$("#rptvPagePrintImportTool_ReportToolbar_ExportGr_FormatList_DropDownList option[value='XLS']").remove();
+        //$("#rptvPagePrintImportTool_ReportToolbar_ExportGr_FormatList_DropDownList option[value='RTF']").remove();
+        //$("#rptvPagePrintImportTool_ReportToolbar_ExportGr_FormatList_DropDownList option[value='MHTML']").remove();
+    }
+</script>
+<style type="text/css">
+    #windowReport {
+        /*
+            float: right;
+            Position: relative;
+            */
+        min-height: 580px;
+        top: 15%;
+    }
+
+    #result {
+        height: 520px;
+        overflow: hidden;
+    }
+
+    #ReportBody {
+        padding-bottom: 25px;
+        margin-bottom: 25px;
+    }
+
+    .tb-witdh td {
+        width: 55px;
+    }
+</style>
+

@@ -23,6 +23,11 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public Nullable<int> PoReferenceDetailId { get; set; }
         public Nullable<long> PoDetailId { get; set; }
         public Nullable<bool> IsInternal { get; set; }
+
+        public bool NG { get; set; }
+        public bool Lock { get; set; }
+
+
         public virtual ICollection<ExportToolDetail> ExportToolDetails { get; set; }
         public virtual PoTaxInvoiceReferenceDetail PoTaxInvoiceReferenceDetail { get; set; }
         public virtual TransactionFpt TransactionFpt { get; set; }

@@ -29,6 +29,8 @@ namespace Vfi.Ui.Mvc.Vfi.Models.Mapping
             this.Property(t => t.PoReferenceDetailId).HasColumnName("PoReferenceDetailId");
             this.Property(t => t.PoDetailId).HasColumnName("PoDetailId");
             this.Property(t => t.IsInternal).HasColumnName("IsInternal");
+            this.Property(t => t.NG).HasColumnName("NG");
+            this.Property(t => t.Lock).HasColumnName("Lock");
 
 
             // Relationships

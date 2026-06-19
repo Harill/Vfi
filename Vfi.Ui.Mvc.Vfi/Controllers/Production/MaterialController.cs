@@ -579,34 +579,44 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers.Production {
         }
 
         public ActionResult SelectComboBoxProductionMaterial(int productId) {
-            using (var vfi = new tammaContext()) {
-                var materialIds = vfi.ProductionMaterials.Where(x => x.Active && x.ProductId == productId)
-                    .Select(x => x.MaterialId)
-                    .ToList();
-                var product = vfi.Products.FirstOrDefault(x => x.ProductId == productId);
-                if (product != null && product.MaterialId != null) {
-                    materialIds.Add(product.MaterialId.Value);
-                    materialIds = materialIds.Distinct().ToList();
+            try {
+                using (var vfi = new tammaContext()) {
+                    var materialIds = vfi.ProductionMaterials.Where(x => x.Active && x.ProductId == productId)
+                        .Select(x => x.MaterialId)
+                        .ToList();
+                    var product = vfi.Products.FirstOrDefault(x => x.ProductId == productId);
+                    if (product != null && product.MaterialId != null) {
+                        materialIds.Add(product.MaterialId.Value);
+                        materialIds = materialIds.Distinct().ToList();
+                    }
+                    var model = vfi.MaterialInventories
+                        .Where(m => materialIds.Contains(m.MaterialId) && m.TotalQty > 0)
+                        .Select(m => new MaterialInventoryModel {
+                            MaterialInventoryId = m.MaterialInventoryId,
+                            MaterialCode = m.Material.MaterialCode,
+                            LotNumber = m.LotNumber,
+                            Length = m.Length,
+                            VendorCode = m.Vendor.VendorCode,
+                            MaterialName = m.Material.MaterialName,
+                            OutDiameter = m.Material.OutDiameter,
+                            InDiameter = m.Material.InDiameter,
+                            Shape = m.Material.Shape,
+                            DiameterType = m.Material.DiameterType,
+                        })
+                        .OrderBy(m => m.MaterialName).ThenBy(m => m.OutDiameter).ThenBy(m => m.InDiameter).ThenBy(m => m.Length);
+
+
+                    //var a = 10;
+
+                        return new JsonResult {
+                            Data =
+                                new SelectList(model.ToList(), "MaterialInventoryId", "MaterialCodeLotNumber")
+                    };
                 }
-                var model = vfi.MaterialInventories
-                    .Where(m => materialIds.Contains(m.MaterialId) && m.TotalQty > 0)
-                    .Select(m => new MaterialInventoryModel {
-                        MaterialInventoryId = m.MaterialInventoryId,
-                        MaterialCode = m.Material.MaterialCode,
-                        LotNumber = m.LotNumber,
-                        Length = m.Length,
-                        VendorCode = m.Vendor.VendorCode,
-                        MaterialName = m.Material.MaterialName,
-                        OutDiameter = m.Material.OutDiameter,
-                        InDiameter = m.Material.InDiameter,
-                        Shape = m.Material.Shape,
-                        DiameterType = m.Material.DiameterType,
-                    })
-                    .OrderBy(m => m.MaterialName).ThenBy(m => m.OutDiameter).ThenBy(m => m.InDiameter).ThenBy(m => m.Length);
-                return new JsonResult {
-                    Data =
-                        new SelectList(model.ToList(), "MaterialInventoryId", "MaterialCodeLotNumber")
-                };
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("SelectComboBoxProductionMaterial", ex.Message);
+                return Json(new { error = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -1011,6 +1021,230 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers.Production {
             return View(new GridModel(GetMaterialListByProductId(materialId)));
         }
         #endregion
+
+
+        #region Material Img 
+
+        [GridAction]
+        public ActionResult SelectMaterialImgById(int materialId, int type) {
+            var model = new List<MaterialImgModel>();
+            try {
+                model = GetMaterialImgById(materialId, type);
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("SelectMaterialImgById", ex.Message);
+            }
+            return View(new GridModel(model));
+        }
+
+        List<MaterialImgModel> GetMaterialImgById(int materialId ,int type) {
+            var model = new List<MaterialImgModel>();
+            //var qcManager = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name, MyUtilities.UserRole.QcManager);
+            using (var vfi = new tammaContext()) {
+                var materialImgs = vfi.MaterialImgs.Where(t => t.MaterialId == materialId && t.Type == type).OrderBy(t => t.ImgId);
+                foreach (var materialimg in materialImgs) {
+                    var entity = new MaterialImgModel {
+                        ImgId = materialimg.ImgId,
+                        ImgUrl = materialimg.ImgUrl,
+                        ModifiedDate = materialimg.ModifiedDate,
+                        ModifiedUser = materialimg.ModifiedUser,
+                        CanModify = true,
+                        Name = materialimg.Name,
+                        MaterialId = materialId,
+                    };
+                    model.Add(entity);
+                }
+            }
+            return model;
+        }
+
+        [GridAction]
+        public ActionResult InsertMaterialImg(MaterialImgModel insert, int materialId, int type) {
+            try {
+                if (!Request.IsAuthenticated) {
+                    throw new AggregateException("Bạn đã bị mất quyền đăng nhập. \r\n " +
+                                             "1 trong các nguyên nhân như mất thời gian chờ. \r\n " +
+                                             "Xin vui lòng đăng nhập lại hệ thống.");
+                }
+                //var qcManager = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name, MyUtilities.UserRole.QcManager);
+                //if (!qcManager) {
+                //    throw new AggregateException("Lỗi! Không có quyền thêm - sửa hình.");
+                //}
+                if (string.IsNullOrWhiteSpace(insert.ImgUrl)) {
+                    throw new AggregateException("Lỗi! Không tìm thấy hình được upload!");
+                }
+
+                var materialImg = new MaterialImg() {
+                    MaterialId = materialId,
+                    ImgId = insert.ImgId,
+                    ImgUrl = insert.ImgUrl,
+                    Name = insert.Name,
+                    ModifiedDate = DateTime.Now,
+                    ModifiedUser = HttpContext.User.Identity.Name,
+                    Type = type,
+                };
+                using (var vfi = new tammaContext()) {
+                    vfi.MaterialImgs.Add(materialImg);
+                    vfi.SaveChanges();
+                }
+            }
+            catch (Exception ex) {
+                var errorMessage = ex.Message;
+                if (ex.InnerException != null) {
+                    errorMessage += " | Inner Exception: " + ex.InnerException.Message;
+                    if (ex.InnerException.InnerException != null) {
+                        errorMessage += " | Inner Inner Exception: " + ex.InnerException.InnerException.Message;
+                    }
+                }
+                ModelState.AddModelError("InsertMaterialImg", errorMessage);
+            }
+            return View(new GridModel(GetMaterialImgById(materialId,type)));
+
+        }
+
+        [GridAction]
+        public ActionResult UpdateMaterialImg(MaterialImgModel update, int materialId, int type) {
+            try {
+                if (!Request.IsAuthenticated) {
+                    throw new AggregateException("Bạn đã bị mất quyền đăng nhập. \r\n " +
+                                             "1 trong các nguyên nhân như mất thời gian chờ. \r\n " +
+                                             "Xin vui lòng đăng nhập lại hệ thống.");
+                }
+                //var qcManager = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name, MyUtilities.UserRole.QcManager);
+                //if (!qcManager){
+                //    throw new AggregateException ("Lỗi! Không có quyền thêm - sửa hình.");
+                //}
+                using (var vfi = new tammaContext()) {
+                    var materialImg = vfi.MaterialImgs.FirstOrDefault(t => t.ImgId == update.ImgId && t.Type == type);
+                    if (materialImg == null) {
+                        throw new AggregateException("Lỗi! Không tìm thấy bản vẽ sản phẩm!");
+                    }
+                    if (!string.IsNullOrWhiteSpace(update.ImgUrl)) {
+                        var materialImgs = vfi.MaterialImgs.Where(t => t.ImgUrl.Equals(materialImg.ImgUrl));
+                        if (!materialImgs.Any()) {
+                            DeleteMaterialImg(materialImg.ImgUrl);
+                        }
+                        materialImg.ImgUrl = update.ImgUrl;
+                    }
+                    materialImg.Name = update.Name;
+                    materialImg.ModifiedUser = HttpContext.User.Identity.Name;
+                    materialImg.ModifiedDate = DateTime.Now;
+                    vfi.SaveChanges();
+
+                }
+                MyUtilities.Product.UpdateProductDesign(materialId);
+
+
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("UpdateMaterialImg", ex.Message);
+            }
+
+            return View(new GridModel(GetMaterialImgById(materialId, type)));
+        }
+
+        [GridAction]
+        public ActionResult DeleteMaterialImg(MaterialImgModel delete, int materialId, int type) {
+            try {
+                if (!Request.IsAuthenticated) {
+                    throw new AggregateException("Bạn đã bị mất quyền đăng nhập. \r\n " +
+                                             "1 trong các nguyên nhân như mất thời gian chờ. \r\n " +
+                                             "Xin vui lòng đăng nhập lại hệ thống.");
+                }
+                //var techicalManager = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name,
+                //    MyUtilities.UserRole.TechicalManagerLv2);
+                //if (!techicalManager)
+                //    throw new AggregateException("Lỗi! Không có quyền thêm - sửa hình.");
+                using (var vfi = new tammaContext()) {
+                    var materialImg = vfi.MaterialImgs.FirstOrDefault(pi => pi.ImgId == delete.ImgId && pi.Type == type);
+                    if (materialImg == null)
+                        throw new AggregateException("Lỗi! Không tìm thấy bản vẽ sản phẩm!");
+                    var materialImgs =
+                        vfi.MaterialImgs.Where(pi => pi.ImgUrl.Equals(materialImg.ImgUrl) && pi.MaterialId != materialId);
+                    if (!materialImgs.Any())
+                        DeleteMaterialImg(materialImg.ImgUrl);
+                    vfi.MaterialImgs.Remove(materialImg);
+                    vfi.SaveChanges();
+
+                }
+                MyUtilities.Product.UpdateProductDesign(materialId);
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("DeleteMaterialImg", ex.Message);
+            }
+            return View(new GridModel(GetMaterialImgById(materialId, type)));
+        }
+
+        void DeleteMaterialImg(string imgUrl) {
+            var destinationPath = Path.Combine(Server.MapPath("~/Content/FileUpload/MaterialImg"),
+                imgUrl);
+            if (System.IO.File.Exists(@destinationPath)) {
+                System.IO.File.Delete(@destinationPath);
+            }
+        }
+
+
+        public ActionResult CheckMaterialImage(string upload) {
+            try {
+
+                using (var vfi = new tammaContext()) {
+                    var materialCode = "";
+                    var MaterialImgs = vfi.MaterialImgs.Where(p => p.ImgUrl.Equals(upload));
+                    if (MaterialImgs.Any()) {
+                        foreach (var materialImg in MaterialImgs) {
+                            materialCode += materialImg.Material.MaterialCode + " | ";
+                        }
+                        return Json("9! " + materialCode);
+                    }
+                }
+            }
+            catch (Exception ex) {
+                return Json("0! " + ex.Message);
+            }
+            return Json("");
+        }
+
+        [HttpPost]
+        public ActionResult SaveMaterialImg(IEnumerable<HttpPostedFileBase> MaterialImg) {
+            // The Name of the Upload component is "attachments"       
+            try {
+                //var attachments = new List<HttpPostedFileBase>();
+                if (MaterialImg.Any()) {
+                    foreach (var file in MaterialImg) {
+                        // Some browsers send file names with full path. We only care about the file name.
+                        var fileName = Path.GetFileName(file.FileName);
+                        if (fileName == null) continue;
+                        var destinationPath = Path.Combine(Server.MapPath("~/Content/FileUpload/MaterialImg"), fileName);
+                        // giam kich thuoc
+                        Image bm = Image.FromStream(file.InputStream);
+                        var designWidth = 3000.0;
+                        var designHeight = 1500.0;
+                        var ratioW = designWidth / (double)bm.Width;
+                        var ratioH = designHeight / (double)bm.Height;
+                        var ratio = ratioH < ratioW ? ratioH : ratioW;
+                        var newWidth = Convert.ToInt32(bm.Width * ratio);
+                        var newHeight = Convert.ToInt32(bm.Height * ratio);
+                        bm = MyUtilities.Function.ResizeBitmap((Bitmap)bm, newWidth, newHeight);
+                        bm.Save(destinationPath, bm.RawFormat);
+                    }
+                    return Json("Upload thành công !");
+                }
+                else {
+                    throw new AggregateException("attachments null");
+                }
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("UploadSave", ex.Message);
+                return Json(ex.Message);
+            }
+            // Redirect to a view showing the result of the form submissSaveion.    
+            //return Json("False");
+        }
+
+        # endregion
+
+
+
 
         #region material product quote
 

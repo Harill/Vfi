@@ -13,6 +13,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Models {
             MaterialUse = 0;
             RunDate = DateTime.Now;
             ProductImgs = new List<ProductImgModel>();
+            QcImgs = new List<QcImgModel>();
         }
         public int MachineId { get; set; }
         public string MachineName { get; set; }
@@ -85,6 +86,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Models {
 
         public List<string> Notes { get; set; }
         public List<ProductImgModel> ProductImgs { get; set; }
+        public List<QcImgModel> QcImgs { get; set; }
 
         public double ProcessingQuantity { get; set; }
         public string ProcessingQuantityStr { get { return string.Format("{0:n0}", ProcessingQuantity); } }

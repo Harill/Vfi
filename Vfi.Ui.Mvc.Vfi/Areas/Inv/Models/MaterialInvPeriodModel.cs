@@ -114,6 +114,12 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Models {
                        LastQuantity + LastOnMachine > 0;
             }
         }
+
+        public bool HaveNG { get; set; }
+        public bool HaveLock { get; set; }
+
+
+
         [UIHint("_UploadTemplate")]
         public string InfoImg { get; set; }
         public string UploadDate { get; set; }

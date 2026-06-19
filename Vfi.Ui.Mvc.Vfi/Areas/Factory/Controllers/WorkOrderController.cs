@@ -1392,6 +1392,10 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
                     if (materialInv == null) {
                         throw new AggregateException("Lỗi! Không tìm thấy lô nguyên liệu");
                     }
+                    var LockMaterial = vfi.MaterialInventories.Any(t => t.MaterialInventoryId == materialInvId && t.Lock == true);
+                    if (LockMaterial == true) {
+                        throw new AggregateException("Lô nguyên liệu đang bị Khóa vì NG. Vui lòng chọn lô khác hoặc liên hệ Quản lý để gỡ bỏ.");
+                    }
                     var availableInv = materialInv.TotalQty;
                     var waitingTransactions = vfi.ExportMaterialDetails.Where(x => x.MaterialInvId == materialInvId &&
                                                         x.TransactionDetail.Transaction.Status == (byte)MyUtilities.Transaction.Status.Open)

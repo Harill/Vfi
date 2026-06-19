@@ -104,6 +104,8 @@
         }
 
 
+        // Tô màu khi "Còn tồn" ít hơn "Tồn kho"
+
         function grid_OnRowDataBound(e) {
             var dataItem = e.dataItem; //FA5858 F4FA58
             // to mau
@@ -113,7 +115,45 @@
             else if (dataItem.TotalInv == 0) {
                 e.row.childNodes[6].style.backgroundColor = "#F4FA58";
             }
+
+            if (dataItem.NG == true && dataItem.Lock == true) {
+                $(e.row).css({
+                    "background-color": "#ba3636", // đỏ
+                    "color": "#FFFFFF"             // chữ trắng
+                });
+            }
+            else if (dataItem.NG == true && dataItem.Lock == false) {
+                $(e.row).css({
+                    "background-color": "#dea452", // đỏ nhat.
+
+                });
+            }
+            else if (dataItem.NG == false && dataItem.Lock == true) {
+                $(e.row).css({
+                    "background-color": "#8d02f0", // Tim'
+                    "color": "#FFFFFF"             // chữ trắng
+                });
+            }
         }
+
+
+        //Tô màu khi lô Công cụ bị NG
+
+        //function grid_OnRowData(e) {
+        //    var dataItem = e.dataItem;
+
+        //    // Nếu NG == true thì tô đỏ toàn bộ hàng và đổi chữ sang trắng
+        //    if (dataItem.NG === true) {
+        //        $(e.row).css({
+        //            "background-color": "#ba3636", // đỏ
+        //            "color": "#FFFFFF"             // chữ trắng
+        //        });
+        //    }
+        //}
+
+
+
+
     </script>
 }
 
@@ -252,6 +292,8 @@
                 //    .HtmlAttributes(new { style = "text-align:right;" })
                 //       .ClientTemplate("<span name='MachineReturn'><#= MachineReturn == null ? 0 : $.telerik.formatString('{0:n1}', MachineReturn) #></span>")
                 //       .FooterTemplate("<span id='TotalReturn'></span>");
+                columns.Bound(f => f.NG).Hidden(true);
+                columns.Bound(f => f.Lock).Hidden(true);
                 columns.Bound(f => f.Note);
                 columns.Bound(f => f.StatusName).Width(360).Title("Ghi chú công cụ").ReadOnly(true);
                 //columns.Command(commands => commands.Delete().ButtonType(GridButtonType.Image)).Width(40).Title("");

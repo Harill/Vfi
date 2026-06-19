@@ -15,6 +15,8 @@ namespace Vfi.Ui.Mvc.Vfi.Models
             this.PlatingForms = new List<PlatingForm>();
             this.PoTaxInvoices = new List<PoTaxInvoice>();
             this.PurchaseOrders = new List<PurchaseOrder>();
+            this.EvaluationForms = new List<EvaluationForm>();
+            this.VendorImgs = new List<VendorImg>();
         }
 
         public int VendorId { get; set; }
@@ -37,6 +39,8 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public string ModifiedUser { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<int> MaterialClassifiedId { get; set; }
+        public bool Priority { get; set; }
+
         public virtual ICollection<FuelInventory> FuelInventories { get; set; }
         public virtual ICollection<MaterialInventory> MaterialInventories { get; set; }
         public virtual ICollection<ToolInventory> ToolInventories { get; set; }
@@ -46,5 +50,8 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public virtual ICollection<PlatingForm> PlatingForms { get; set; }
         public virtual ICollection<PoTaxInvoice> PoTaxInvoices { get; set; }
         public virtual ICollection<PurchaseOrder> PurchaseOrders { get; set; }
+        public virtual ICollection<EvaluationForm> EvaluationForms { get; set; }
+        public virtual ICollection<VendorImg> VendorImgs { get; set; }
+
     }
 }

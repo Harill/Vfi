@@ -14,7 +14,7 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public long PurchaseOrderId { get; set; }
         public int MaterialClassifiedId { get; set; }
         public int ReferenceId { get; set; }
-        public int OrderQty { get; set; }
+        public double OrderQty { get; set; }
         public double UnitPrice { get; set; }
         public double ReceivedQty { get; set; }
         public double RejectedQty { get; set; }
@@ -27,6 +27,11 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public Nullable<double> Met { get; set; }
 
         public string Standard { get; set; }
+        public string Note { get; set; }
+        public string ManagerNote { get; set; }
+
+        public string ApprovedPo { get; set; }
+        public DateTime? DateApproved { get; set; }
 
         public virtual MaterialClassified MaterialClassified { get; set; }
         public virtual ICollection<InquiryPo> InquiryPoes { get; set; }

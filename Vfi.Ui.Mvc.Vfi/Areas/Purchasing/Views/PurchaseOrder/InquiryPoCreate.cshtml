@@ -190,7 +190,7 @@
                 columns.Bound(f => f.DueDate).Width(100).Title("Ngày YC (*)")
                     .HeaderHtmlAttributes(new { @class = "edit-column" })
                     .ClientTemplate("<#= DueDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', DueDate) #>");
-                columns.Bound(f => f.Standard).Width(100).Title("Tiêu chuẩn");
+                columns.Bound(f => f.Standard).Width(100).Title("Tiêu chuẩn (*)");
                 columns.Bound(f => f.Note).Title("Ghi chú");
                 columns.Command(commands => commands.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(70).Title("");
             })

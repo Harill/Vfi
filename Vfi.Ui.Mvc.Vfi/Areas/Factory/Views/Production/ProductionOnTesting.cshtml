@@ -333,6 +333,7 @@
             }
         }
         </div>
+@*        Ban ve Ky thuat*@
         <div>
             @{
                 if (@Model.ProductImgs.Any()) {
@@ -342,7 +343,7 @@
                                 <a href='@Url.Content("~/Content/FileUpload/ProductImg/" + productImg.ImgUrl + "?" + productImg.UploadDate)' class='highslide' onclick='return hs.expand(this)'>
                                     <img src='@Url.Content("~/Content/FileUpload/ProductImg/" + productImg.ImgUrl + "?" + productImg.UploadDate)' title='Mở lớn' alt="@Model.ProductCode"
                                        @* height='40' width='40' *@
-                                        style="max-height:160px"
+                                        style="max-height:120px; max-width:160px;"
                                         />
                                 </a>
                             }    
@@ -351,6 +352,28 @@
                 }
             }
         </div>
+         <div class="grid_2_5"><h3>Ngoại quan ===></h3></div>
+
+@*        Ban ve QC*@
+                <div>
+            @{
+                if (@Model.QcImgs.Any()) {
+                    <div style="float:left;">
+                        @{
+                            foreach (var qcImg in @Model.QcImgs) {
+                                <a href='@Url.Content("~/Content/FileUpload/QcImg/" + qcImg.ImgUrl + "?" + qcImg.UploadDate)' class='highslide' onclick='return hs.expand(this)'>
+                                    <img src='@Url.Content("~/Content/FileUpload/QcImg/" + qcImg.ImgUrl + "?" + qcImg.UploadDate)' title='Mở lớn' alt="@Model.ProductCode"
+                                       @* height='40' width='40' *@
+                                        style="max-height:120px; max-width:160px;"
+                                        />
+                                </a>
+                            }    
+                        }
+                    </div>
+                }
+            }
+        </div>
+
     </fieldset>
 </div>
 
@@ -378,10 +401,12 @@
                 columns.Bound(f => f.MinNumber).Width(70).Title("MIN").ReadOnly(true);
                 columns.Bound(f => f.MaxNumber).Width(70).Title("MAX").ReadOnly(true);
                 columns.Bound(f => f.TestNumber).Width(100).Title("Số đo")
-                               .ClientTemplate("<span class='TestNumber'><#= TestNumber #></span>");
-                columns.Bound(f => f.MachineName).Title("Dụng cụ");
+                       .ClientTemplate("<span class='TestNumber'><#= TestNumber #></span>");
+
                 columns.Bound(f => f.MachineTypeName).Width(300).Title("Loại dụng cụ").ReadOnly(true)
                        .ClientTemplate("<strong><#= MachineTypeName #></strong>");
+                columns.Bound(f => f.MachineName).Title("Dụng cụ");
+
             })
             .Editable(editing => editing.Mode(GridEditMode.InCell))
             .KeyboardNavigation()

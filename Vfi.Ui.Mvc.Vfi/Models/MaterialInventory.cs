@@ -43,6 +43,13 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public double Length { get; set; }
         public string InfoImg { get; set; }
         public string InfoImg2 { get; set; }
+
+        public bool NG { get; set; }
+        public bool Lock { get; set; }
+
+
+
+
         public virtual ICollection<SmartProduction> SmartProductions { get; set; }
         public virtual ICollection<TrackUpMaterial> TrackUpMaterials { get; set; }
         public virtual ICollection<WorkOrderRouting> WorkOrderRoutings { get; set; }

@@ -1220,6 +1220,8 @@
     <Compile Include="Areas\Purchasing\Controllers\VendorController.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Areas\Purchasing\Models\AssignToolModel.cs" />
+    <Compile Include="Areas\Purchasing\Models\EvaluationFormModel.cs" />
     <Compile Include="Areas\Purchasing\Models\DeliveryAddressModel.cs" />
     <Compile Include="Areas\Purchasing\Models\PoProgressModel.cs" />
     <Compile Include="Areas\Purchasing\Models\PurchaseProgressModel.cs" />
@@ -1310,9 +1312,20 @@
     </Compile>
     <Compile Include="Areas\Sales\Models\WaitingOrderBalancingPlanModel.cs" />
     <Compile Include="Areas\Sales\SalesAreaRegistration.cs" />
+    <Compile Include="Areas\Purchasing\Models\VendorImgModel.cs" />
+    <Compile Include="Models\VendorImg.cs" />
+    <Compile Include="Models\EvaluationForm.cs" />
+    <Compile Include="Models\Mapping\QcImgMap.cs" />
+    <Compile Include="Models\Mapping\EvaluationFormMap.cs" />
+    <Compile Include="Models\Mapping\MaterialImgMap.cs" />
+    <Compile Include="Models\MaterialImg.cs" />
+    <Compile Include="Models\QcImg.cs" />
+    <Compile Include="Models\Mapping\VendorImgMap.cs" />
+    <Compile Include="Models\QcImgModel.cs" />
     <Compile Include="Models\DeliveryAddress.cs" />
     <Compile Include="Models\Mapping\DeliveryAddressMap.cs" />
     <Compile Include="Models\Mapping\TransactionImgMap.cs" />
+    <Compile Include="Models\Production\MaterialImgModel.cs" />
     <Compile Include="Models\TransactionImg.cs" />
     <Compile Include="Models\Mapping\MaterialQuoteBaseDetailMap.cs" />
     <Compile Include="Models\Mapping\MaterialQuoteBaseMap.cs" />
@@ -3116,6 +3129,15 @@
     <Content Include="Areas\Purchasing\Views\PurchaseOrder\PurchasingProgress.cshtml" />
     <Content Include="Areas\Factory\Views\Machine\MachineReport.cshtml" />
     <Content Include="Areas\Purchasing\Views\PurchaseOrder\EditorTemplates\_DeliveryAddressTemplate.cshtml" />
+    <Content Include="Areas\Purchasing\Views\PurchaseOrder\EditorTemplates\_PaymentTemplate.cshtml" />
+    <Content Include="Areas\Purchasing\Views\PurchaseOrder\EditorTemplates\_DeliveryByTemplate.cshtml" />
+    <Content Include="Areas\Purchasing\Views\PurchaseOrder\EditorTemplates\_ConditionDeliveryTemplate.cshtml" />
+    <Content Include="Areas\Purchasing\Views\Tool\ToolTransactionDetail.cshtml" />
+    <Content Include="Areas\Purchasing\Views\PurchaseOrder\EditorTemplates\_BillToAddressTemplate.cshtml" />
+    <Content Include="Areas\Purchasing\Views\PurchaseOrder\CreateEvaluationForm.cshtml" />
+    <Content Include="Areas\Purchasing\Views\PurchaseOrder\ApprovedEvaluationForm.cshtml" />
+    <Content Include="Areas\Purchasing\Views\PurchaseOrder\EvaluationFormManager.cshtml" />
+    <Content Include="Areas\Purchasing\Views\Vendor\EditorTemplates\_UpLoadVendorImgTemplate.cshtml" />
     <None Include="Utilities\weighingvalue.json" />
     <Content Include="Logs\read.txt" />
     <Content Include="Resources\lock.png" />
@@ -3193,6 +3215,8 @@
     <Content Include="Views\Product\EditorTemplates\_UploadProductHistoryImage.cshtml" />
     <Content Include="Views\Product\EditorTemplates\_DateTemplateNullable.cshtml" />
     <Content Include="Areas\Inv\Views\Transaction\EditorTemplates\_UploadTransactionImgTemplate.cshtml" />
+    <Content Include="Views\Product\EditorTemplates\_UploadQcImgTemplate.cshtml" />
+    <Content Include="Views\Material\EditorTemplates\_UploadMaterialImgTemplate.cshtml" />
     <None Include="Web-server.Release.config">
       <DependentUpon>Web-server.config</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

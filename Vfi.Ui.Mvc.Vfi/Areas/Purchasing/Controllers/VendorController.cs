@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using System.Web.Mvc;
 using Microsoft.Practices.Unity;
 using Telerik.Web.Mvc;
+using System.Web;
+using System.Drawing;
+
 //using Vfi.Client.Module.Purchasing.Interfaces;
 using Vfi.Server.Core.CrossCutting.UnitOfWork;
 using Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models;
@@ -69,10 +73,11 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                     TaxCode = vendor.TaxCode,
                     VendorCode = vendor.VendorCode,
                     VendorName = vendor.VendorName,
-                    VendorId = vendor.VendorId
+                    VendorId = vendor.VendorId,
+                    Priority = vendor.Priority,
                 }));
             }
-            return model.OrderBy(m => m.MaterialClassifiedName).ThenBy(m => m.VendorCode).ToList();
+            return model.OrderBy(m => m.MaterialClassifiedName).ThenByDescending(t => t.Priority).ThenBy(m => m.VendorCode).ToList();
         }
 
         [HttpPost]
@@ -120,6 +125,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                             TaxCode = newVendor.TaxCode,
                             VendorCode = newVendor.VendorCode,
                             VendorName = newVendor.VendorName,
+                            Priority = false,
                         };
                         vfi.Vendors.Add(vendor);
                         vfi.SaveChanges();
@@ -184,6 +190,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                         vendor.TaxCode = updateVendor.TaxCode;
                         vendor.VendorCode = updateVendor.VendorCode;
                         vendor.VendorName = updateVendor.VendorName;
+                        vendor.Priority = updateVendor.Priority;
                         vfi.SaveChanges();
                     }
                     else
@@ -261,6 +268,303 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                         "VendorId", "VendorCodeName")
             };
         }
+
+
+        [GridAction]
+        public ActionResult SelectGetEvaluationForm(int vendorId) {
+            var model = new List<EvaluationFormModel>();
+            try {
+                model = GetEvaluationForm(vendorId);
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("GetEvaluationForm", ex.Message);
+            }
+            return View(new GridModel(model));
+        }
+
+        List<EvaluationFormModel> GetEvaluationForm(int vendorId) {
+            var model = new List<EvaluationFormModel>();
+            using (var vfi = new tammaContext()) {
+                try {
+                    var materialClassifiedId = vfi.Vendors.Where(t => t.VendorId == vendorId).Select(t => t.MaterialClassifiedId).FirstOrDefault();
+                    var evaluationForms = vfi.EvaluationForms.Where(t => t.VendorId == vendorId 
+                                                                    && t.MaterialClassifiedId == materialClassifiedId 
+                                                                    && t.Status == (byte)MyUtilities.PurchaseOrder.EvaluationEnum.Approved)
+                                                             .ToList();
+                    int index = 1;
+                    foreach (var evaluation in evaluationForms) {
+                        var entity = new EvaluationFormModel {
+                            Index = index,
+                            Name = evaluation.Name,
+                            FromDate = evaluation.FromDate,
+                            ToDate = evaluation.ToDate,
+                            TotalPoint = evaluation.TotalPoint,
+                            ZeroPointCount = evaluation.ZeroPointCount,
+                            PricePoint = evaluation.PricePoint,
+                            TechSpPoint = evaluation.TechSpPoint,
+                            LogisticsPoint = evaluation.LogisticsPoint,
+                            QuantityDeliveryPoint = evaluation.QuantityDeliveryPoint,
+                            NGNumberPoint = evaluation.NGNumberPoint,
+                            NGTimePoint = evaluation.NGTimePoint,
+                            Note = evaluation.Note,
+                            ModifiedDate = evaluation.ModifiedDate,
+                            ModifiedUser = evaluation.ModifiedUser,
+                            ApprovedDate = evaluation.ApprovedDate,
+                            ApprovedUser = evaluation.ApprovedUser,
+                            Grade = evaluation.Grade,
+                        };
+                        if (entity.Grade == null) {
+                            entity.Grade = "E";
+                        }
+
+                        index++;
+                        model.Add(entity);
+
+                    }
+
+                }
+                catch (Exception ex) {
+                    ModelState.AddModelError("GetEvationForm", ex.Message);
+                }
+
+            }
+
+            return model;
+        }
+
+
         #endregion
+
+
+        #region Vendor Img
+
+        [GridAction]
+        public ActionResult SelectVendorImgById(int vendorId, int type) {
+            var model = new List<VendorImgModel>();
+            try {
+                model = GetVendorImgById(vendorId, type);
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("SelectVendorImgById", ex.Message);
+            }
+            return View(new GridModel(model));
+        }
+
+        List<VendorImgModel> GetVendorImgById(int vendorId, int type) {
+            var model = new List<VendorImgModel>();
+            try {
+                //var qcManager = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name, MyUtilities.UserRole.QcManager);
+                using (var vfi = new tammaContext()) {
+                    var vendorImgs = vfi.VendorImgs.Where(t => t.VendorId == vendorId && t.Type == type).OrderBy(t => t.ImgId);
+                    foreach (var vendorImg in vendorImgs) {
+                        var entity = new VendorImgModel {
+                            ImgId = vendorImg.ImgId,
+                            ImgUrl = vendorImg.ImgUrl,
+                            ModifiedDate = vendorImg.ModifiedDate,
+                            ModifiedUser = vendorImg.ModifiedUser,
+                            CanModify = true,
+                            Name = vendorImg.Name,
+                            VendorId = vendorId,
+                        };
+                        model.Add(entity);
+                    }
+                }
+            }
+            catch (Exception ex) {
+                var errorMessage = ex.InnerException != null
+                    ? ex.InnerException.Message
+                    : ex.Message;
+
+                ModelState.AddModelError("GetVendorImgById", errorMessage);
+            }
+
+            return model;
+        }
+
+        [GridAction]
+        public ActionResult InsertVendorImg(VendorImgModel insert, int vendorId, int type) {
+            try {
+                if (!Request.IsAuthenticated) {
+                    throw new AggregateException("Bạn đã bị mất quyền đăng nhập. \r\n " +
+                                             "1 trong các nguyên nhân như mất thời gian chờ. \r\n " +
+                                             "Xin vui lòng đăng nhập lại hệ thống.");
+                }
+                //var qcManager = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name, MyUtilities.UserRole.QcManager);
+                //if (!qcManager) {
+                //    throw new AggregateException("Lỗi! Không có quyền thêm - sửa hình.");
+                //}
+                if (string.IsNullOrWhiteSpace(insert.ImgUrl)) {
+                    throw new AggregateException("Lỗi! Không tìm thấy hình được upload!");
+                }
+
+                var vendorImg = new VendorImg() {
+                    VendorId = vendorId,
+                    ImgId = insert.ImgId,
+                    ImgUrl = insert.ImgUrl,
+                    Name = insert.Name,
+                    ModifiedDate = DateTime.Now,
+                    ModifiedUser = HttpContext.User.Identity.Name,
+                    Type = type,
+                };
+                using (var vfi = new tammaContext()) {
+                    vfi.VendorImgs.Add(vendorImg);
+                    vfi.SaveChanges();
+                }
+            }
+            catch (Exception ex) {
+                var errorMessage = ex.Message;
+                if (ex.InnerException != null) {
+                    errorMessage += " | Inner Exception: " + ex.InnerException.Message;
+                    if (ex.InnerException.InnerException != null) {
+                        errorMessage += " | Inner Inner Exception: " + ex.InnerException.InnerException.Message;
+                    }
+                }
+                ModelState.AddModelError("InsertVendorImg", errorMessage);
+            }
+            return View(new GridModel(GetVendorImgById(vendorId, type)));
+
+        }
+
+        [GridAction]
+        public ActionResult UpdateVendorImg(VendorImgModel update, int vendorId, int type) {
+            try {
+                if (!Request.IsAuthenticated) {
+                    throw new AggregateException("Bạn đã bị mất quyền đăng nhập. \r\n " +
+                                             "1 trong các nguyên nhân như mất thời gian chờ. \r\n " +
+                                             "Xin vui lòng đăng nhập lại hệ thống.");
+                }
+                //var qcManager = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name, MyUtilities.UserRole.QcManager);
+                //if (!qcManager){
+                //    throw new AggregateException ("Lỗi! Không có quyền thêm - sửa hình.");
+                //}
+                using (var vfi = new tammaContext()) {
+                    var vendorImg = vfi.VendorImgs.FirstOrDefault(t => t.ImgId == update.ImgId && t.Type == type);
+                    if (vendorImg == null) {
+                        throw new AggregateException("Lỗi! Không tìm thấy bản vẽ sản phẩm!");
+                    }
+                    if (!string.IsNullOrWhiteSpace(update.ImgUrl)) {
+                        var vendorImgs = vfi.VendorImgs.Where(t => t.ImgUrl.Equals(vendorImg.ImgUrl));
+                        if (!vendorImgs.Any()) {
+                            DeleteVendorImg(vendorImg.ImgUrl);
+                        }
+                        vendorImg.ImgUrl = update.ImgUrl;
+                    }
+                    vendorImg.Name = update.Name;
+                    vendorImg.ModifiedUser = HttpContext.User.Identity.Name;
+                    vendorImg.ModifiedDate = DateTime.Now;
+                    vfi.SaveChanges();
+
+                }
+                MyUtilities.Product.UpdateProductDesign(vendorId);
+
+
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("UpdateVendorImg", ex.Message);
+            }
+
+            return View(new GridModel(GetVendorImgById(vendorId, type)));
+        }
+
+        [GridAction]
+        public ActionResult DeleteVendorImg(VendorImgModel delete, int vendorId, int type) {
+            try {
+                if (!Request.IsAuthenticated) {
+                    throw new AggregateException("Bạn đã bị mất quyền đăng nhập. \r\n " +
+                                             "1 trong các nguyên nhân như mất thời gian chờ. \r\n " +
+                                             "Xin vui lòng đăng nhập lại hệ thống.");
+                }
+                //var techicalManager = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name,
+                //    MyUtilities.UserRole.TechicalManagerLv2);
+                //if (!techicalManager)
+                //    throw new AggregateException("Lỗi! Không có quyền thêm - sửa hình.");
+                using (var vfi = new tammaContext()) {
+                    var vendorImg = vfi.VendorImgs.FirstOrDefault(pi => pi.ImgId == delete.ImgId && pi.Type == type);
+                    if (vendorImg == null)
+                        throw new AggregateException("Lỗi! Không tìm thấy bản vẽ sản phẩm!");
+                    var vendorImgs =
+                        vfi.VendorImgs.Where(pi => pi.ImgUrl.Equals(vendorImg.ImgUrl) && pi.VendorId != vendorId);
+                    if (!vendorImgs.Any())
+                        DeleteVendorImg(vendorImg.ImgUrl);
+                    vfi.VendorImgs.Remove(vendorImg);
+                    vfi.SaveChanges();
+
+                }
+                MyUtilities.Product.UpdateProductDesign(vendorId);
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("DeleteVendorImg", ex.Message);
+            }
+            return View(new GridModel(GetVendorImgById(vendorId, type)));
+        }
+
+        void DeleteVendorImg(string imgUrl) {
+            var destinationPath = Path.Combine(Server.MapPath("~/Content/FileUpload/VendorImg"),
+                imgUrl);
+            if (System.IO.File.Exists(@destinationPath)) {
+                System.IO.File.Delete(@destinationPath);
+            }
+        }
+
+
+        public ActionResult CheckVendorImage(string upload) {
+            try {
+
+                using (var vfi = new tammaContext()) {
+                    var vendorCode = "";
+                    var VendorImgs = vfi.VendorImgs.Where(p => p.ImgUrl.Equals(upload));
+                    if (VendorImgs.Any()) {
+                        foreach (var vendorImg in VendorImgs) {
+                            vendorCode += vendorImg.Vendor.VendorCode + " | ";
+                        }
+                        return Json("9! " + vendorCode);
+                    }
+                }
+            }
+            catch (Exception ex) {
+                return Json("0! " + ex.Message);
+            }
+            return Json("");
+        }
+
+        [HttpPost]
+        public ActionResult SaveVendorImg(IEnumerable<System.Web.HttpPostedFileBase> VendorImg) {
+            // The Name of the Upload component is "attachments"       
+            try {
+                //var attachments = new List<HttpPostedFileBase>();
+                if (VendorImg.Any()) {
+                    foreach (var file in VendorImg) {
+                        // Some browsers send file names with full path. We only care about the file name.
+                        var fileName = Path.GetFileName(file.FileName);
+                        if (fileName == null) continue;
+                        var destinationPath = Path.Combine(Server.MapPath("~/Content/FileUpload/VendorImg"), fileName);
+                        // giam kich thuoc
+                        Image bm = Image.FromStream(file.InputStream);
+                        var designWidth = 3000.0;
+                        var designHeight = 1500.0;
+                        var ratioW = designWidth / (double)bm.Width;
+                        var ratioH = designHeight / (double)bm.Height;
+                        var ratio = ratioH < ratioW ? ratioH : ratioW;
+                        var newWidth = Convert.ToInt32(bm.Width * ratio);
+                        var newHeight = Convert.ToInt32(bm.Height * ratio);
+                        bm = MyUtilities.Function.ResizeBitmap((Bitmap)bm, newWidth, newHeight);
+                        bm.Save(destinationPath, bm.RawFormat);
+                    }
+                    return Json("Upload thành công !");
+                }
+                else {
+                    throw new AggregateException("attachments null");
+                }
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("UploadSave", ex.Message);
+                return Json(ex.Message);
+            }
+            // Redirect to a view showing the result of the form submissSaveion.    
+            //return Json("False");
+        }
+
+        # endregion
+
     }
 }

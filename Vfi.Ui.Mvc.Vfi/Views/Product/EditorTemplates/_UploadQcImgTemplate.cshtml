@@ -1,0 +1,75 @@
+﻿<script>
+    var fileName = "";
+
+    function upload_OnUpload(e) {
+        var files = e.files;
+        $.each(files, function () {
+            fileName = this.name;
+            if (this.extension != ".png" && this.extension != ".jpg" && this.extension != ".jpeg") {
+                alert("Only picture files (png-jpg) can be uploaded");
+                e.preventDefault();
+            }
+        });
+        var flag = CheckUpload(fileName);
+        return flag;
+    }
+
+    function upload_OnError(args) {
+        if (args.textStatus == "modelstateerror" && args.modelState) {
+            var message = "Errors:\n";
+            $.each(args.modelState, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+            args.preventDefault();
+            alert(message);
+        }
+    }
+
+    function upload_OnSuccess(e) {
+        alert(e.response);
+    }
+    
+    function CheckUpload(drawing) {
+        var message = "";
+        var flag = false;
+        $.ajax({
+            type: 'post',
+            async: false,
+            data: {
+                upload: drawing
+            },
+            dataType: 'json',
+            url: '@Url.Action("CheckQcImage", "Product", new {area = ""})',
+                timeout: 20000,
+                success: function (data) {
+                    if (data.startsWith("9!")) {
+                        message += "\nCảnh báo!";
+                        message += "\nTên bản vẽ sản phẩm đã được dùng cho : " + data.split('!')[1];
+                        message += "\nSản phẩm này sẽ bị thay đổi theo bản vẽ mới: " + drawing;
+                        message += "\nĐồng ý lưu ??";
+                        flag = confirm(message);
+                    } else {
+                        flag = true;
+                    }
+                }
+            });
+            return flag;
+        }
+
+</script>
+@{
+    Html.Telerik().Upload().Name("QcImg")
+        .Async(async => async
+                            .Save("SaveQcImg", "Product", new { area = "" })
+                            .AutoUpload(true))
+        .ClientEvents(events => events
+                                    .OnUpload("upload_OnUpload")
+                                    .OnSuccess("upload_OnSuccess")
+                                    .OnError("upload_OnError"))
+        .Multiple(false)
+        .Render();
+}

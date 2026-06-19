@@ -44,6 +44,10 @@ namespace Vfi.Ui.Mvc.Vfi.Models.Mapping
             this.Property(t => t.InquiryNumber).HasColumnName("InquiryNumber");
             this.Property(t => t.ManagementSignature).HasColumnName("ManagementSignature");
             this.Property(t => t.Standard).HasColumnName("Standard");
+            this.Property(t => t.ManagerConfirm).HasColumnName("ManagerConfirm");
+            this.Property(t => t.DateConfirm).HasColumnName("DateConfirm");
+            this.Property(t => t.ApprovedPo).HasColumnName("ApprovedPo");
+            this.Property(t => t.DateApproved).HasColumnName("DateApproved");
 
             // Relationships
             this.HasRequired(t => t.MaterialClassified)

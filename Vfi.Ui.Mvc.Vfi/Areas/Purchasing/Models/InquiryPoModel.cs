@@ -95,7 +95,11 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
         public double Total3MonthsUsed { get; set; }
 
         public string Standard { get; set; }
-        
+
+        public string ManagerConfirm { get; set; }
+        public DateTime? DateConfirm { get; set; }
+        public string ApprovedPo { get; set; }
+        public DateTime? DateApproved { get; set; }
 
     }
 }

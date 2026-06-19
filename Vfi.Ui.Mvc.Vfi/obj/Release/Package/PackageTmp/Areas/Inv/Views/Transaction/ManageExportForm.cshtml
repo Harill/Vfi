@@ -355,46 +355,46 @@
                                    )
                                       .ToHtmlString()
                                   );
-                               items.Add().Text("Chứng nhận đính kèm").Content(
-                                Html.Telerik().Grid<TransactionImgModel>()
-                                    .Name("gridTransactionImg_<#= TransactionId #>")
-                                    .DataKeys(key => key.Add(f => f.ImgId).RouteKey("imgId"))
-                                    .ToolBar(
-                                        toolbar =>
-                                        toolbar.Insert().Text("Thêm mới").ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
-                                    .DataBinding(
-                                        dataBinding => dataBinding.Ajax()
-                                                                  .Select("SelectTransactionImgById", "Transaction", new { area = "Inv", transactionid = "<#= TransactionId #>" })
-                                                                  .Insert("InsertTransactionImg", "Transaction", new { area = "Inv", transactionid = "<#= TransactionId #>" })
-                                                                  .Update("UpdateTransactionImg", "Transaction", new { area = "Inv", transactionid = "<#= TransactionId #>"})
-                                                                  .Delete("DeleteTransactionImg", "Transaction", new { area = "Inv", transactionid = "<#= TransactionId #>" })
-                                    )
-                                    .Columns(columns => {
-                                        columns.Command(command =>
-                                                        command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
-                                            ).Width(40).Title("").HtmlAttributes(new { style = "text-align:center" });
-                                        //columns.Bound(f => f.Index).Title("STT").Width(35).ReadOnly(true);
-                                        columns.Bound(f => f.Name).Title("Tên ảnh").Width(70);
-                                        columns.Bound(f => f.ImgUrl).Width(40).Title("Bản vẽ")
-                                               .ClientTemplate("<a id='<#=ImgId#>' href='" + Url.Content("~/Content/FileUpload/TransactionImg/") + "<#=ImgUrl#>?<#=UploadDate#>' class='highslide' onclick='return hs.expand(this)'>" +
-                                                               "<img src='" + Url.Content("~/Content/FileUpload/TransactionImg/") + "<#=ImgUrl#>?<#=UploadDate#>' height='40' width='40' title='Mở lớn'/>"
-                                            //+ "</a><div class='highslide-caption'><#= Name #>-<#= Description #></div>"
-                                                               )
-                                               .HtmlAttributes(new { style = "text-align:center" });
-                                        columns.Bound(f => f.Description).Title("Mô tả").Width(140);
-                                        columns.Bound(f => f.ModifiedUser).Title("Người tạo").ReadOnly(true).Width(60);
-                                        columns.Bound(f => f.ModifiedDate).Title("Ngày tạo").ReadOnly(true).Width(80)
-                                               .Format("{0:HH:mm - dd/MM/yyyy }")
-                                               .HtmlAttributes(new { style = "text-align:center" });
-                                        columns.Command(commands => commands.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(30).Title("Xoá")
-                                               .HtmlAttributes(new { style = "text-align:center" });
-                                    })
-                                    .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
-                                    .ClientEvents(e => e.OnError("grid_OnError")
-                                        .OnSave("gridTransactionImg_OnSave")
-                                        .OnRowDataBound("gridTransactionImg_OnRowDataBound")
-                                        )
-                                    .ToHtmlString());
+                               //items.Add().Text("Chứng nhận đính kèm").Content(
+                               // Html.Telerik().Grid<TransactionImgModel>()
+                               //     .Name("gridTransactionImg_<#= TransactionId #>")
+                               //     .DataKeys(key => key.Add(f => f.ImgId).RouteKey("imgId"))
+                               //     .ToolBar(
+                               //         toolbar =>
+                               //         toolbar.Insert().Text("Thêm mới").ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
+                               //     .DataBinding(
+                               //         dataBinding => dataBinding.Ajax()
+                               //                                   .Select("SelectTransactionImgById", "Transaction", new { area = "Inv", transactionid = "<#= TransactionId #>" })
+                               //                                   .Insert("InsertTransactionImg", "Transaction", new { area = "Inv", transactionid = "<#= TransactionId #>" })
+                               //                                   .Update("UpdateTransactionImg", "Transaction", new { area = "Inv", transactionid = "<#= TransactionId #>"})
+                               //                                   .Delete("DeleteTransactionImg", "Transaction", new { area = "Inv", transactionid = "<#= TransactionId #>" })
+                               //     )
+                               //     .Columns(columns => {
+                               //         columns.Command(command =>
+                               //                         command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
+                               //             ).Width(40).Title("").HtmlAttributes(new { style = "text-align:center" });
+                               //         //columns.Bound(f => f.Index).Title("STT").Width(35).ReadOnly(true);
+                               //         columns.Bound(f => f.Name).Title("Tên ảnh").Width(70);
+                               //         columns.Bound(f => f.ImgUrl).Width(40).Title("Bản vẽ")
+                               //                .ClientTemplate("<a id='<#=ImgId#>' href='" + Url.Content("~/Content/FileUpload/TransactionImg/") + "<#=ImgUrl#>?<#=UploadDate#>' class='highslide' onclick='return hs.expand(this)'>" +
+                               //                                "<img src='" + Url.Content("~/Content/FileUpload/TransactionImg/") + "<#=ImgUrl#>?<#=UploadDate#>' height='40' width='40' title='Mở lớn'/>"
+                               //             //+ "</a><div class='highslide-caption'><#= Name #>-<#= Description #></div>"
+                               //                                )
+                               //                .HtmlAttributes(new { style = "text-align:center" });
+                               //         columns.Bound(f => f.Description).Title("Mô tả").Width(140);
+                               //         columns.Bound(f => f.ModifiedUser).Title("Người tạo").ReadOnly(true).Width(60);
+                               //         columns.Bound(f => f.ModifiedDate).Title("Ngày tạo").ReadOnly(true).Width(80)
+                               //                .Format("{0:HH:mm - dd/MM/yyyy }")
+                               //                .HtmlAttributes(new { style = "text-align:center" });
+                               //         columns.Command(commands => commands.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(30).Title("Xoá")
+                               //                .HtmlAttributes(new { style = "text-align:center" });
+                               //     })
+                               //     .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
+                               //     .ClientEvents(e => e.OnError("grid_OnError")
+                               //         .OnSave("gridTransactionImg_OnSave")
+                               //         .OnRowDataBound("gridTransactionImg_OnRowDataBound")
+                               //         )
+                               //     .ToHtmlString());
                         
                            }
                     )

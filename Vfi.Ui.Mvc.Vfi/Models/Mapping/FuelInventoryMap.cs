@@ -32,6 +32,8 @@ namespace Vfi.Ui.Mvc.Vfi.Models.Mapping
             this.Property(t => t.CreateDate).HasColumnName("CreateDate");
             this.Property(t => t.EndDate).HasColumnName("EndDate");
             this.Property(t => t.ImportDate).HasColumnName("ImportDate");
+            this.Property(t => t.NG).HasColumnName("NG");
+            this.Property(t => t.Lock).HasColumnName("Lock");
 
             // Relationships
             this.HasRequired(t => t.Fuel)

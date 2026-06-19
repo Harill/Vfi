@@ -54,6 +54,7 @@
                 invIds: ids
             });
         }
+
         function gridToolInventoryDetail_OnSave(e) {
             var $machineName = $(e.cell).find('#MachineName');
 
@@ -117,13 +118,66 @@
             // to mau
             if (dataItem.AvailInv !== dataItem.TotalInv)
                 e.row.childNodes[6].style.backgroundColor = "#F4FA58";
+            if (dataItem.NG == true && dataItem.Lock == true) {
+                $(e.row).css({
+                    "background-color": "#ba3636", // đỏ
+                    "color": "#FFFFFF"             // chữ trắng
+                });
+            }
+                // NG nhung khong Lock
+            else if (dataItem.NG == true && dataItem.Lock == false) {
+                $(e.row).css({
+                    "background-color": "#dea452", // đỏ nhat.
+                });
+            }
+                // Lock nhung khong NG
+            else if (dataItem.NG == false && dataItem.Lock == true) {
+                $(e.row).css({
+                    "background-color": "#8d02f0", // Tim'
+                    "color": "#FFFFFF"             // chữ trắng
+
+                });
+            }
         }
         function gridToolInventoryDetail_OnRowDataBound(e) {
             var dataItem = e.dataItem; //FA5858 F4FA58
             // to mau
             if (dataItem.AvailInv !== dataItem.TotalInv)
                 e.row.childNodes[4].style.backgroundColor = "#F4FA58";
+            if (dataItem.NG == true && dataItem.Lock == true) {
+                $(e.row).css({
+                    "background-color": "#ba3636", // đỏ
+                    "color": "#FFFFFF"             // chữ trắng
+                });
+            }
+            // NG nhung khong Lock
+            else if (dataItem.NG == true && dataItem.Lock == false) {
+                $(e.row).css({
+                    "background-color": "#dea452", // đỏ nhat.
+                });
+            }
+            // Lock nhung khong NG
+            else if (dataItem.NG == false && dataItem.Lock == true) {
+                $(e.row).css({
+                    "background-color": "#8d02f0", // Tim'
+                    "color": "#FFFFFF"             // chữ trắng
+
+                });
+            }
         }
+
+        //function grid_OnRowDataBound(e) {
+        //    var dataItem = e.dataItem;
+
+        //    // Nếu NG == true thì tô đỏ toàn bộ hàng và đổi chữ sang trắng
+        //    if (dataItem.NG === true) {
+        //        $(e.row).css({
+        //            "background-color": "#ba3636", // đỏ
+        //            "color": "#FFFFFF"             // chữ trắng
+        //        });
+        //    }
+        //}
+
 
     </script>
 }
@@ -157,7 +211,7 @@
                             .HtmlAttributes(new {style = "width: 130px"})
                             .DropDownHtmlAttributes(new {style = "width: 130px"})
                             .AutoFill(true)
-                            .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                            .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                             .Render();
                     }
 
@@ -173,7 +227,7 @@
                             .HtmlAttributes(new {style = "width: 130px"})
                             .DropDownHtmlAttributes(new {style = "width: 130px"})
                             .AutoFill(true)
-                            .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                            .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                             .ClientEvents(e => e.OnChange("ToolType_OnChange"))
                             .Render();
                     }
@@ -223,7 +277,7 @@
 <div class="clear"></div>
 <div class="cover-div">
     @{
-        Html.Telerik().Grid<TransactionFptDetailModel>()
+        Html.Telerik().Grid<AssignToolModel>()
             .Name("gridToolInventory")
             .ToolBar(bar => bar.Template(
         @<text>
@@ -255,10 +309,14 @@
                         .HtmlAttributes(new { style = "text-align:right;" })
                            .Format("{0:n2}");
                     columns.Bound(f => f.UnitMeasure).Title("ĐVT").Width(75);
+                    columns.Bound(f => f.NG).Hidden(true);
+                    columns.Bound(f => f.Lock).Hidden(true);
+
                 })
             .Scrollable(f => f.Height(200))
             .ClientEvents(events => events.OnDataBinding("gridToolInventory_OnDataBinding")
                 .OnRowDataBound("gridToolInventory_OnRowDataBound")
+                //.OnRowDataBound("grid_OnRowDataBound")
                 .OnError("grid_OnError"))
             .Render();
     }
@@ -270,15 +328,15 @@
     @{
         Html.Telerik().Grid<TransactionFptDetailModel>()
             .Name("gridToolInventoryDetail")
-            .ToolBar(bar => bar.SubmitChanges().ButtonType(GridButtonType.ImageAndText).SaveText("Lưu tất cả").CancelText("Hủy"))
+            .ToolBar(bar => bar.SubmitChanges().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).SaveText("Lưu tất cả").CancelText("Hủy"))
             .DataKeys(keys => keys.Add(f => f.ToolInvId).RouteKey("toolInvId"))
             .DataBinding(dataBindings => dataBindings.Ajax()
                 .Select("SelectExportToolInventory", "Tool", new { invIds = "",machineId= 0,productId =0 })
                 .Update("UpdateAssignTool2", "Tool"))
             .Columns(columns =>
             {
-                columns.Bound(f => f.VendorCodeName).Width(150).Title("NCC").ReadOnly(true);
-                columns.Bound(f => f.ToolFullCodeName).Width(250).Title("Công cụ").ReadOnly(true);
+                columns.Bound(f => f.VendorCodeName).Width(200).Title("NCC").ReadOnly(true);
+                columns.Bound(f => f.ToolFullCodeName).Width(300).Title("Công cụ").ReadOnly(true);
                 columns.Bound(f => f.UnitMeasure).Width(70).Title("ĐVT").ReadOnly(true);
                 columns.Bound(f => f.TotalInv).Width(70).ReadOnly(true)
                     .HeaderTemplate("Tồn kho")
@@ -288,7 +346,7 @@
                     .HeaderTemplate("Còn tồn")
                     .Format("{0:n2}")
                     .HtmlAttributes(new { style = "text-align:right" });
-                columns.Bound(f => f.LotNumber).Width(50).ReadOnly(true).Title("Lô");
+                columns.Bound(f => f.LotNumber).Width(85).ReadOnly(true).Title("Lô");
                 columns.Bound(f => f.TaxInvoiceDateString).Width(70).ReadOnly(true).Title("Ngày nhập");
                 columns.Bound(f => f.Quantity).Width(70)
                     .HeaderTemplate("SL Phát")
@@ -301,15 +359,18 @@
                 columns.Bound(f => f.ProductCode).Width(75).Title("SP")
                     .HeaderHtmlAttributes(new { @class = "edit-column" });
                 columns.Bound(f => f.Note);
-                columns.Command(commands => commands.Delete().ButtonType(GridButtonType.Image)).Width(40).Title("");
+                columns.Bound(f => f.NG).Hidden(true);
+                columns.Bound(f => f.Lock).Hidden(true);
+                columns.Command(commands => commands.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(40).Title("");
             })
             .ClientEvents(events => events
                 .OnSave("gridToolInventoryDetail_OnSave")
                 .OnRowDataBound("gridToolInventoryDetail_OnRowDataBound")
                 .OnSubmitChanges("gridToolInventoryDetail_OnSubmitChanges")
+                //.OnRowDataBound("grid_OnRowDataBound")
                 .OnError("grid_OnError")
             )
-            .Editable(f => f.Mode(GridEditMode.InCell))
+            .Editable(f => f.Mode(Telerik.Web.Mvc.UI.GridEditMode.InCell))
             // .Footer(true)
             .Render();   
     }

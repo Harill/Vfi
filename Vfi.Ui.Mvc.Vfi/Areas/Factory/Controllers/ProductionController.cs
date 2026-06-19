@@ -56,6 +56,14 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
                                                             ModifiedDate = x.ModifiedDate
                                                         })
                                                         .ToList();
+                        var qcImgs = vfi.QcImgs.Where(t => t.ProductId == productId
+                                                      && t.Type == 1
+                                                      && t.Active == true)
+                                               .OrderBy(t => t.ImgId)
+                                               .Select(t => new QcImgModel {
+                                                   ImgUrl = t.ImgUrl,
+                                                   ModifiedDate = t.ModifiedDate,
+                                               }).ToList();
                         entity = new MachineDiagram {
                             MachineId = machineId,
                             MachineName = machine != null ? machine.MachineName : "Không tìm thấy máy " + machineId,
@@ -63,6 +71,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
                             ProductCode = product != null ? product.ProductCode : "Không tìm thấy sản phẩm " + productId,
                             Notes = testingNotes,
                             ProductImgs = productImgs,
+                            QcImgs = qcImgs,
                             WarehouseId = machine.ProcessingType.ForWarehouseId.Value
                         };
                     }
@@ -79,6 +88,13 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
                                                             ModifiedDate = x.ModifiedDate
                                                         })
                                                         .ToList();
+                        var qcImgs = vfi.QcImgs.Where(t => t.ProductId == productId
+                                                      && t.Active == true)
+                                               .OrderBy(t => t.ImgId)
+                                               .Select(t => new QcImgModel {
+                                                   ImgUrl = t.ImgUrl,
+                                                   ModifiedDate = t.ModifiedDate,
+                                               }).ToList();
                         entity = new MachineDiagram {
                             MachineId = machineId,
                             MachineName = machine != null ? machine.MachineName : "Không tìm thấy máy " + machineId,
@@ -86,6 +102,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
                             ProductCode = product != null ? product.ProductCode : "Không tìm thấy sản phẩm " + productId,
                             Notes = testingNotes,
                             ProductImgs = productImgs,
+                            QcImgs = qcImgs,
                             WarehouseId = machine.ProcessingType.ForWarehouseId.Value
                         };
                     }

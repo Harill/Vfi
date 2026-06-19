@@ -26,6 +26,10 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public Nullable<System.DateTime> FirstUseDate { get; set; }
         public Nullable<System.DateTime> EndDate { get; set; }
         public string StoreCode { get; set; }
+
+        public bool NG { set; get; }
+        public bool Lock { set; get; }
+
         public virtual Tool Tool { get; set; }
         public virtual ICollection<ExportToolDetail> ExportToolDetails { get; set; }
         public virtual Vendor Vendor { get; set; }

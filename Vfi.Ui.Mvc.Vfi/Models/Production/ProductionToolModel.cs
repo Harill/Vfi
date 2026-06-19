@@ -52,7 +52,8 @@ namespace Vfi.Ui.Mvc.Vfi.Models.Production {
         public double ToolRequired {
             get {
                 return (ToolQuota > 0 && ProductRequired / ToolQuota - ToolInv > 0)
-                    ? ProductRequired / ToolQuota - ToolInv : 0;
+                    ? ProductRequired / ToolQuota - ToolInv 
+                    : 0;
             }
         }
         public int ToolRequiredColor { get; set; }

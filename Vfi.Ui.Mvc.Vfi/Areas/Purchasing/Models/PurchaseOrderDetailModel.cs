@@ -102,25 +102,45 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
         public WorkGroupInfo Info { get; set; }
 
         public string Standard { get; set; }
+        public string Employee { get; set; }
+        public string QuotationNumber { get; set; }
+        public string DeliveryMethodName { get; set; }
+        public string ShipMethodName { get; set; }
+        public string PaymentMethodName { get; set; }
 
+        public string ManagerNote { get; set; }
+        // Address
         public int AddressId { get; set; }
         public string AddressName { get; set; }
         public string Address { get; set; }
         public string AddressFullName { get; set; }
-        public DateTime? OrderDate { get; set; }
-        public string Employee { get; set; }
-        public int VendorNo { get; set; }
+        public string Recipient { get; set; }
         public string Tel { get; set; }
+        public DateTime? OrderDate { get; set; }
+
+        // BillTo 
+        public int BillToId { get; set; }
+        public string BillToAddress { get; set; }
+        public string BillToFullName { get; set; }
+        public string ReceiptBill { get; set; }
+        public string ReceiptBillPhoneNumber { get; set; }
+
+
+        // Vendor
+        public int VendorNo { get; set; }
         public string RevisionNumber { get; set; }
         public string VendorAddress { get; set; }
         public string VendorPhone { get; set; }
         public string Year { get; set; }
+        public string VendorCompanyName { get; set; }
+        public string VendorContactName { get; set; }
+
 
 
         public bool Active { get; set; }
         public string ActiveString {
             get {
-                return Active == true ? "(Official)" : "(Not Official)";
+                return Active == true ? "(APPROVED)" : "(PENDING)";
             }
         }
 
@@ -129,6 +149,9 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
                 return OrderDate == null ? DateTime.Today : OrderDate.Value;
             }
         }
+        public string Creater { set; get; }
+
+        public bool NG { get; set; }
 
     }
 }

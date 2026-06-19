@@ -3902,6 +3902,12 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                         var month = now.ToString("MM");  // tháng
                         var day = now.ToString("dd");    // ngày
                         import.InquiryNumber = vendorCode + year + month + day;
+                        import.DateConfirm = now;
+                        import.ManagerConfirm = HttpContext.User.Identity.Name;
+                        //var managerConfirm = HttpContext.User.Identity.Name;
+                        //import.ManagerConfirm = vfi.Users.Where(t => managerConfirm.Contains(t.Username)).Select(t => t.FullName).FirstOrDefault();
+
+
                     }
                     else if (import.InquiryNumber != null){
                         var vendorCode = import.Vendor != null ? import.Vendor.VendorCode : "";
@@ -3998,7 +4004,9 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                             DesignCode = MyUtilities.Material.GetMaterialDesignNo(material),
                             Length = importDetail.Length,
                             IsManager = invManager,
-                            PoDetailId = importDetail.PoDetailId ?? 0
+                            PoDetailId = importDetail.PoDetailId ?? 0,
+                            NG = importDetail.NG,
+                            Lock = importDetail.Lock,
                         };
                         if (importPo.PurchaseOrder != null) {
                             entity.QuantityKg = importDetail.QuantityKg;
@@ -5664,7 +5672,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
 
                 // function code = export tp - kd
                 if ((warehouse == null || warehouse.IsFinish)
-                    //&& MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name, MyUtilities.UserRole.ExportFinish)
+                    && MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name, MyUtilities.UserRole.ExportFinish)
                     ) {
 
                     var list = (from x in vfi.ExportFormTP_KD
@@ -6362,7 +6370,6 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
             return Json("");
         }
 
-        // check again
         [HttpPost]
         public ActionResult SaveTransactionImg(IEnumerable<HttpPostedFileBase> TransactionImg) {
             // The Name of the Upload component is "attachments"       
@@ -7382,6 +7389,8 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                             CanApprove = invManager,
                             IsInternal = transaction.IsInternal ?? false
                         };
+                        entity.HaveNG = vfi.ImportPurchaseOrderDetails.Any(t => t.ImportPurchaseOrder.TransactionId == entity.TransactionId && t.NG == true);
+
 
                         if (entity.WarehouseIssueId == MyUtilities.Warehouse.Production1) {
                             var form = vfi.ImportFormSX1.FirstOrDefault(i => i.TransactionCode.Equals(entity.TransactionCode));
@@ -7464,6 +7473,14 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                             TotalQualityKg = transactionDetails.Sum(t => t.QuantityKg ?? 0.0),
                             CanApprove = invManager,
                         };
+                        if (entity.EoI == Convert.ToChar(MyUtilities.Transaction.EoIEnum.Import).ToString()) {
+                            entity.HaveNG = vfi.ImportPurchaseOrderDetails.Any(t => t.ImportPurchaseOrder.TransactionId == entity.TransactionId 
+                                                                               && t.NG == true);
+                            entity.HaveLock = vfi.ImportPurchaseOrderDetails.Any(t => t.ImportPurchaseOrder.TransactionId == entity.TransactionId
+                                                                                 && t.Lock == true);
+                        }
+
+
                         if (entity.EoI == Convert.ToChar(MyUtilities.Transaction.EoIEnum.Export).ToString()) {
                             var exportMaterial = vfi.ExportMaterials.FirstOrDefault(em => em.TransactionId == transaction.TransactionId);
                             if (exportMaterial != null) {

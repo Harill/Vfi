@@ -22,6 +22,12 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public System.DateTime CreateDate { get; set; }
         public Nullable<System.DateTime> EndDate { get; set; }
         public Nullable<System.DateTime> ImportDate { get; set; }
+
+        public bool NG { set; get; }
+        public bool Lock { set; get; }
+
+
+
         public virtual Fuel Fuel { get; set; }
         public virtual Vendor Vendor { get; set; }
         public virtual ICollection<FuelInventoryPeriod> FuelInventoryPeriods { get; set; }

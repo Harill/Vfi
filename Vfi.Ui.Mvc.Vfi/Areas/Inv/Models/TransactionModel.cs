@@ -87,6 +87,9 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Models {
 
         public bool IsInternal { get; set; }
         public bool Highlight { get; set; }
+
+        public bool HaveNG { get; set; }
+        public bool HaveLock { get; set; }
     }
 
 

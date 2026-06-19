@@ -1501,7 +1501,10 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                                         x.InfoImg2,
                                         x.ModifiedDate,
                                         x.TotalQty,
+                                        x.NG,
+                                        x.Lock,
                                     }).ToList();
+
                 var materialInvIds = materialInvs.Select(mi => mi.MaterialInventoryId).ToList();
                 var onShelves = vfi.OnShelves.Where(x => x.Active && materialInvIds.Contains(x.ReferenceInvId))
                     .Select(x => new InventoryDrawerModel {
@@ -1623,7 +1626,12 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                         UploadDate = materialInv.ModifiedDate.ToString("yyyyMMddhhmmss"),
                         CanEdit = invManagementLv2,
                         CanUpload = invManagementLv1,
+
                     };
+
+                    entity.HaveNG = materialInv.NG;
+                    entity.HaveLock = materialInv.Lock;
+
                     var onShelvesById = onShelves.Where(x => x.ReferenceInvId == materialInv.MaterialInventoryId).ToList();
                     if (onShelvesById.Any()) {
                         entity.StoreCode = string.Join("+", onShelvesById.Distinct().OrderBy(x => x.DrawerCode).Select(x => x.DrawerCode).ToList());
@@ -9739,6 +9747,8 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                                                pm.UnitWeightByMaterial
                                            }).ToList();
 
+
+
                 //var productIds = forecasts.Where(x => x.Date >= fromDate).Select(x => x.ProductId).Union(productions.Select(x => x.ProductId)).ToList();
                 var orders = (from od in vfi.OrderDetails
                               where (od.Order.Status == (byte)MyUtilities.Sales.Status.Waiting ||
@@ -9832,6 +9842,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                                                                  .ToList().Sum(x => x.Quantity);
                             detail.OrderRemaining = orders.Where(x => x.ProductId == detail.ProductId)
                                                           .ToList().Sum(y => y.Quantity);
+
                             var ordersByMonthById = ordersByMonth.Where(x => x.ProductId == detail.ProductId).ToList();
                             if (ordersByMonthById.Any()) {
                                 detail.ForecastByMonth = Math.Max(detail.ForecastByMonth, ordersByMonthById.Sum(x => x.Quantity));
@@ -9840,7 +9851,34 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                                 if (ordersNextMonthById != null) {
                                     detail.ForecastNextMonth = Math.Max(detail.ForecastNextMonth, ordersNextMonthById.Quantity);
                                 }
-                            }
+                           }
+
+                           // get SaleInMonth 22/05/2026
+                           var productInvPeriods = (from pip in vfi.ProductInventoryPeriods
+                                                    where pip.ProductId == detail.ProductId && pip.PeriodDate <= toDate && pip.PeriodDate>= fromDate
+                                                    select new {
+                                                        Date = pip.PeriodDate,
+                                                        pip.WarehouseId,
+                                                        pip.EarlyPeriodQuantity,
+                                                        pip.LastPeriodQuantity,
+                                                        pip.Quantity,
+                                                        pip.LotNumber,
+                                                        pip.Transaction.WarehouseIssueId,
+                                                        pip.Transaction.WarehouseReceiptId,
+                                                        IsInternal = pip.Transaction.IsInternal ?? false,
+                                                    }).ToList();
+
+                           var warehouses = MyUtilities.Warehouse.GetWarehouseId_SumTotalQuantity();
+
+                           var exportsPeriod = productInvPeriods.Where(x => x.WarehouseIssueId != null
+                                               && warehouses.Contains(x.WarehouseIssueId.Value))
+                                    .ToList();
+
+                           detail.SaleInMonth = (from p in exportsPeriod
+                                          where p.WarehouseId == MyUtilities.Warehouse.Business &&
+                                                p.WarehouseIssueId == MyUtilities.Warehouse.Finish &&
+                                                p.WarehouseReceiptId == MyUtilities.Warehouse.Business
+                                          select p).ToList().Sum(t => t.Quantity);
                         }
                     }
 
@@ -9860,7 +9898,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                     if (productInvsById != null) {
                         detail.TotalInv = productInvsById.TotalQuantity;
                     }
-                    detail.RequireByMonth = detail.OrderRemaining + detail.ForecastByMonth - detail.TotalInv;
+                    detail.RequireByMonth = detail.OrderRemaining + detail.ForecastByMonth - detail.SaleInMonth - detail.TotalInv;
                     if (detail.RequireByMonth < 0) {
                         detail.RequireByMonth = 0;
                     }

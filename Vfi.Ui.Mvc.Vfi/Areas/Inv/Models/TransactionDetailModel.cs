@@ -100,5 +100,23 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Models
         public string PoNumber { get; set; }
         public bool IsInternal { get; set; }
         public WorkGroupInfo Info { get; set; }
+
+        public bool NG { get; set; }
+        public string NGString {
+            get {
+                return NG == true
+                        ? "NG"
+                        : "Đạt";
+            }
+        }
+        public bool Lock { get; set; }
+        public string LockString {
+            get {
+                return Lock == true
+                        ? "Đã khóa"
+                        : "";
+            }
+        }
+
     }
 }

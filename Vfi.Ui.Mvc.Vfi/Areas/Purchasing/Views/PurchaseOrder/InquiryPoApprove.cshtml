@@ -390,20 +390,21 @@
                     .HtmlAttributes(new { style = "border-bottom:1px black solid; " });
                 columns.Bound(f => f.ReferenceCode).Width(190).Title("Mã").ReadOnly(true)
                     .HtmlAttributes(new { style = "border-bottom:1px black solid; font-weight:bold;" });
-                columns.Bound(f => f.TotalInv).Width(60).Title("Tồn kho").ReadOnly(true)
+                columns.Bound(f => f.TotalInv).Width(65).Title("Tồn kho").ReadOnly(true)
                     .HtmlAttributes(new { style = "text-align: right; border-bottom:1px black solid; font-weight:bold;" })
-                    .Format("{0:n2}")
+                    .Format("{0:n1}")
                     .Aggregate(agg => agg.Sum())
                     .FooterHtmlAttributes(new { style = "text-align: right; font-weight:bold;" })
-                    .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
-                    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>"); ;
-                columns.Bound(f => f.Total3MonthsUsed).Width(60).Title("SL SD</br> 3T").ReadOnly(true)
+                    .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n1}', Sum) #>")
+                    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n1}', Sum) #>"); ;
+                
+                columns.Bound(f => f.Total3MonthsUsed).Width(65).Title("SL SD</br> 3T").ReadOnly(true)
                     .HtmlAttributes(new { style = "text-align: right; border-bottom:1px black solid; border-right:2px black solid; font-weight:bold;" })
-                    .Format("{0:n2}")
+                    .Format("{0:n1}")
                     .Aggregate(agg => agg.Sum())
                     .FooterHtmlAttributes(new { style = "text-align: right; font-weight:bold;" })
-                    .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
-                    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>"); ;
+                    .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n1}', Sum) #>")
+                    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n1}', Sum) #>"); ;
 
                 
                 //
@@ -415,11 +416,11 @@
                     .HtmlAttributes(new { style = "border-bottom:1px black solid; " });
                 columns.Bound(f => f.OrderQty).Width(50).Title("SL").ReadOnly(true)
                     .HtmlAttributes(new { style = "text-align: right; border-bottom:1px black solid; font-weight:bold;" })
-                    .Format("{0:n0}")
+                    .Format("{0:n1}")
                     .Aggregate(agg => agg.Sum())
                     .FooterHtmlAttributes(new { style = "text-align: right; font-weight:bold;" })
-                    .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>");
+                    .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n1}', Sum) #>")
+                    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n1}', Sum) #>");
                 columns.Bound(f => f.UnitPrice).Width(100).Title("ĐG")
                     .HtmlAttributes(new { style = "text-align: right; border-bottom:1px black solid;" })
                     .ClientTemplate("<#= UnitPriceStr #>");
@@ -457,7 +458,7 @@
                 .OnError("grid_OnError")
             )
             .Groupable(group => group.Groups(g => g.Add(model => model.ClassifiedName)))
-            .Scrollable(f => f.Height("auto"))
+            .Scrollable(f => f.Height(700))
             .Sortable()
             .Filterable()
             .Resizable(resizing => resizing.Columns(true))

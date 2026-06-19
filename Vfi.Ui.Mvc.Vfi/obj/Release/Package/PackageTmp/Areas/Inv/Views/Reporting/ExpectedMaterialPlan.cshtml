@@ -309,9 +309,14 @@
                                               .HtmlAttributes(new { style = "text-align: right;" });
                                        columns.Bound(f => f.ForecastByMonth).Width(70)
                                            //.HeaderTemplate("Dự báo</br>theo tháng (pcs)")
-                       .HeaderTemplate("Dự báo</br><span class='ForecastByMonthHeaderDetail'>theo tháng</span></br>(pcs)")
+                                              .HeaderTemplate("Dự báo</br><span class='ForecastByMonthHeaderDetail'>theo tháng</span></br>(pcs)")
                                               .Format("{0:n0}")
                                               .HtmlAttributes(new { style = "text-align: right;" });
+                                       columns.Bound(f => f.SaleInMonth).Width(70)
+                                              .HeaderTemplate("Xuất bán</br>(pcs)")
+                                              .Format("{0:n0}")
+                                              .HtmlAttributes(new { style = "text-align: right;" });
+                                       
                                        columns.Bound(f => f.OrderRemaining).Width(70)
                                               .HeaderTemplate("Đơn hàng<br/>còn lại</br>(pcs)")
                                               .Format("{0:n0}")
@@ -325,7 +330,7 @@
                                               .Format("{0:n0}")
                                               .HtmlAttributes(new { style = "text-align: right;" });
                                        columns.Bound(f => f.RequireByMonthKg).Width(70)
-                                              .HeaderTemplate("Yêu cầu<br/>NL</br>(kg)")
+                                              .HeaderTemplate("Yêu cầu<br/>NL</br>(Tấn)")
                                               .Format("{0:n2}")
                                               .HtmlAttributes(new { style = "text-align: right;" });
                                        columns.Bound(f => f.UseInMonthKg).Width(70)

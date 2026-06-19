@@ -28,6 +28,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
 
         public virtual int ShipMethodId { get; set; }
         [DisplayName("Phương thức vận chuyển")]
+        [UIHint("_DeliveryByTemplate")]
         public virtual string ShipMethodName { get; set; }
         /// <summary>
         /// ShipMethodId
@@ -41,6 +42,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
 
         public virtual int DeliveryMethodId { get; set; }
         [DisplayName("Địa điểm giao hàng")]
+        [UIHint("_ConditionDeliveryTemplate")]
         public virtual string DeliveryMethodName { get; set; }
         /// <summary>
         /// DeliveryMethodId
@@ -67,6 +69,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
 
         public virtual int PaymentMethodId { get; set; }
         [DisplayName("Phương thức thanh toán")]
+        [UIHint("_PaymentTemplate")]
         public virtual string PaymentMethodName { get; set; }
         /// <summary>
         /// PaymentMethodId
@@ -125,6 +128,19 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
         public string AddressName { get; set; }
         public string Address { get; set; }
         public string AddressFullName { get; set; }
+
+        public bool Approve { get; set; }
+
+        public int BillToId { get; set; }
+        [UIHint("_BillToAddressTemplate")]
+        public string BillTo { get; set; }
+        public string BillToAddress { get; set; }
+        public string BillToFullName { get; set; }
+        public string ReceiptBill { get; set; }
+        public string ReceiptBillPhoneNumber { get; set; }
+
+
+        public string BillOfLanding { get; set; }
 
     }
 }

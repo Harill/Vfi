@@ -635,9 +635,9 @@
             // 
             this.textBox27.CanGrow = true;
             this.textBox27.Format = "{0:N0}";
-            this.textBox27.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(2.1001183986663818D), Telerik.Reporting.Drawing.Unit.Inch(0D));
+            this.textBox27.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(2.1042845249176025D), Telerik.Reporting.Drawing.Unit.Inch(0D));
             this.textBox27.Name = "textBox27";
-            this.textBox27.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.59999978542327881D), Telerik.Reporting.Drawing.Unit.Inch(0.20000000298023224D));
+            this.textBox27.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.59583377838134766D), Telerik.Reporting.Drawing.Unit.Inch(0.20000000298023224D));
             this.textBox27.Style.BorderStyle.Left = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox27.Style.BorderStyle.Right = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox27.Style.BorderWidth.Left = Telerik.Reporting.Drawing.Unit.Point(0.5D);
@@ -695,9 +695,9 @@
             // 
             this.textBox51.CanGrow = true;
             this.textBox51.Format = "{0:N2}";
-            this.textBox51.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(6.0005908012390137D), Telerik.Reporting.Drawing.Unit.Inch(0D));
+            this.textBox51.Location = new Telerik.Reporting.Drawing.PointU(Telerik.Reporting.Drawing.Unit.Inch(6.0005912780761719D), Telerik.Reporting.Drawing.Unit.Inch(0D));
             this.textBox51.Name = "textBox51";
-            this.textBox51.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.59999960660934448D), Telerik.Reporting.Drawing.Unit.Inch(0.20000000298023224D));
+            this.textBox51.Size = new Telerik.Reporting.Drawing.SizeU(Telerik.Reporting.Drawing.Unit.Inch(0.599999189376831D), Telerik.Reporting.Drawing.Unit.Inch(0.20000000298023224D));
             this.textBox51.Style.BorderStyle.Left = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox51.Style.BorderStyle.Right = Telerik.Reporting.Drawing.BorderType.Solid;
             this.textBox51.Style.BorderWidth.Left = Telerik.Reporting.Drawing.Unit.Point(0.5D);

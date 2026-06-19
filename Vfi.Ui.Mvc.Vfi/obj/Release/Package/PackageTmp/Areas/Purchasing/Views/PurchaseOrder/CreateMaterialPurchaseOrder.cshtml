@@ -138,6 +138,8 @@
 
                 var materialClassified = $('#MaterialClassifiedName').data('tDropDownList').value();
                 var vendor = $('#VendorCodeName').data('tComboBox').value();
+                var deliveryAddress = $('#DeliveryAddress').data('tDropDownList').value();
+                var billToAddress = $('#BillToAddress').data('tDropDownList').value();
                 var currencyCode = $('#CurrencyCode').data('tDropDownList').value();
                 var employeeName = $('#EmployeeName').val();
                 var tolerance = $('#Tolerance').val();
@@ -159,7 +161,9 @@
                         employeeName: employeeName,
                         tolerance: tolerance,
                         currencyCode: currencyCode,
-                        note: note
+                        deliveryAddress : deliveryAddress,
+                        billToAddress: billToAddress,
+                        note: note,
                     }
                 );
             }
@@ -176,6 +180,8 @@
 
             var vendorCodeName = $('#VendorCodeName').data('tComboBox').value();
             var currencyCode = $('#CurrencyCode').data('tDropDownList').value();
+            var deliveryAddress = $('#DeliveryAddress').data('tDropDownList').value();
+            var billToAddress = $('#BillToAddress').data('tDropDownList').value();
             var employeeName = $('#EmployeeName').val();
             var tolerance = $('#Tolerance').val();
 
@@ -187,6 +193,12 @@
             }
             if (currencyCode === "") {
                 strMsgAlert += "Vui lòng chọn đơn vị tính.\t\r\n";
+            }
+            if (deliveryAddress === "") {
+                strMsgAlert += "Vui lòng chọn nơi giao hàng.\t\r\n";
+            }
+            if (billToAddress === "") {
+                strMsgAlert += "Vui lòng chọn nơi giao bill.\t\r\n";
             }
             if (employeeName === "") {
                 strMsgAlert += "Vui lòng điền tên nhân viên.\t\r\n";
@@ -252,8 +264,11 @@
             </button></div>
         
           <div class="grid_5">@Html.LabelFor(f => f.CurrencyCode)</div>
-          <div class="grid_5">@Html.LabelFor(f => f.ContractNumber)</div>
+          <div class="grid_5">@Html.Label("Số báo giá")</div>
           <div class="grid_5">@Html.LabelFor(f => f.OrderDate)</div>
+          <div class="grid_5">@Html.Label("Nơi giao hàng")</div>
+          <div class="grid_5">@Html.Label("Nơi giao Bill")</div>
+
 
         <div class="clear"></div>
         <div class="grid_5">
@@ -275,7 +290,7 @@
                     .HtmlAttributes(new { style = "width: 175px" })
                     .DropDownHtmlAttributes(new { style = "width: 250px" })
                     .AutoFill(true)
-                    .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                    .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                     //.ClientEvents(e => e.OnChange("vendor_OnChange"))
                     .Render();                                              
             }
@@ -297,6 +312,24 @@
                     .Name("OrderDate")
                     .Format("dd/MM/yyyy")
                     .Value(DateTime.Today)
+                    .Render();
+            }
+        </div>        
+        <div class="grid_5">
+            @{
+                Html.Telerik().DropDownList()
+                    .Name("DeliveryAddress")
+                    .DataBinding(binding => binding.Ajax().Select("SelectComboBoxDeliveryAddress", "PurchaseOrder", new { area = "" }))
+                    .DropDownHtmlAttributes(new { style = "width: 250px" })
+                    .Render();
+            }
+        </div>
+                <div class="grid_5">
+            @{
+                Html.Telerik().DropDownList()
+                    .Name("BillToAddress")
+                    .DataBinding(binding => binding.Ajax().Select("SelectComboBoxDeliveryAddress", "PurchaseOrder", new { area = "" }))
+                    .DropDownHtmlAttributes(new { style = "width: 250px" })
                     .Render();
             }
         </div>
@@ -345,8 +378,8 @@
                 columns.Bound(f => f.LineTotal).Width(115)
                        .ClientTemplate("<span name='LineTotal'><#= LineTotal == null ? 0 : $.telerik.formatString('{0:n}', LineTotal) #></span>")
                            .FooterTemplate("<span id='TotalLineTotal'></span>");
-                    
 
+                columns.Bound(f => f.Standard).Width(60).Title("Tiêu chuẩn");
                 columns.Bound(f => f.DueDate).Width(98)
                        .ClientTemplate("<#= DueDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', DueDate) #>");
                 //columns.Bound(f => f.InquiryNote).Title("Ghi chú");

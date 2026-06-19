@@ -1955,6 +1955,44 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers.Production {
             // Redirect to a view showing the result of the form submissSaveion.    
             //return Json("False");
         }
+
+
+        [HttpPost]
+        public ActionResult SaveQcImg(IEnumerable<HttpPostedFileBase> QcImg) {
+            try {
+                if (QcImg.Any()) {
+                    foreach (var file in QcImg) {
+                        var fileName = Path.GetFileName(file.FileName);
+                        if (fileName == null) continue;
+                        var destinationPath = Path.Combine(Server.MapPath("~/Content/FileUpload/QcImg"), fileName);
+                        // giam kich thuoc
+                        Image bm = Image.FromStream(file.InputStream);
+                        var designWidth = 3000.0;
+                        var designHeight = 1500.0;
+                        var ratioW = designWidth / (double)bm.Width;
+                        var ratioH = designHeight / (double)bm.Height;
+                        var ratio = ratioH < ratioW ? ratioH : ratioW;
+                        var newWidth = Convert.ToInt32(bm.Width * ratio);
+                        var newHeight = Convert.ToInt32(bm.Height * ratio);
+                        bm = MyUtilities.Function.ResizeBitmap((Bitmap)bm, newWidth, newHeight);
+                        bm.Save(destinationPath, bm.RawFormat);
+                    }
+                    return Json("Upload thành công !");
+                }
+                else {
+                    throw new AggregateException("attachments null");
+                }
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("UploadSave", ex.Message);
+                return Json(ex.Message);
+            }
+        }
+
+
+
+
+
         [HttpPost]
         public ActionResult Save2D(IEnumerable<HttpPostedFileBase> Attachment2D, IEnumerable<HttpPostedFileBase> AttachmentReal) {
             // The Name of the Upload component is "attachments"       
@@ -2003,6 +2041,28 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers.Production {
             }
             return Json("");
         }
+
+        public ActionResult CheckQcImage(string upload) {
+            try {
+
+                using (var vfi = new tammaContext()) {
+                    var productCodes = "";
+                    var qcImgs = vfi.QcImgs.Where(p => p.ImgUrl.Equals(upload));
+                    if (qcImgs.Any()) {
+                        foreach (var qcImg in qcImgs) {
+                            productCodes += qcImg.Product.ProductCode + " || ";
+                        }
+                        return Json("9! " + productCodes);
+                    }
+                }
+            }
+            catch (Exception ex) {
+                return Json("0! " + ex.Message);
+            }
+            return Json("");
+        }
+
+
 
         public ActionResult CheckUploadImage(string upload) {
             //if (date.DayOfWeek == DayOfWeek.Monday)
@@ -4031,7 +4091,10 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers.Production {
         public ActionResult SelectProductImgById(int productId) {
             var model = new List<ProductImgModel>();
             try {
-                model = GetProductImgById(productId);
+                var techicalManager = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name, MyUtilities.UserRole.TechicalManagerLv2);
+                if (techicalManager) {
+                    model = GetProductImgById(productId);
+                }
             }
             catch (Exception ex) {
                 ModelState.AddModelError("SelectProductImgById", ex.Message);
@@ -4196,6 +4259,398 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers.Production {
             }
         }
         #endregion
+
+
+
+        #region product img For QC
+
+        //[GridAction]
+        //public ActionResult SelectProductImgById2(int productId) {
+        //    var model = new List<ProductImgModel>();
+        //    try {
+        //        //var techicalManager = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name, MyUtilities.UserRole.TechicalManagerLv2);
+        //        model = GetProductImgById2(productId);
+        //    }
+        //    catch (Exception ex) {
+        //        ModelState.AddModelError("SelectProductImgById2", ex.Message);
+        //    }
+        //    return View(new GridModel(model));
+        //}
+
+        List<ProductImgModel> GetProductImgById2(int productId) {
+            var model = new List<ProductImgModel>();
+            //var techicalManager = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name, MyUtilities.UserRole.TechicalManagerLv2);
+            //if (!techicalManager)
+            //    return model;
+
+            using (var vfi = new tammaContext()) {
+                var productImgs = vfi.ProductImgs.Where(p => p.ProductId == productId).OrderBy(p => p.Step);
+                foreach (var productImg in productImgs) {
+                    var entity = new ProductImgModel {
+                        ImgId = productImg.ImgId,
+                        ProductId = productId,
+                        ProductCode = productImg.Product.ProductCode,
+                        ImgUrl = productImg.ImgUrl,
+                        Step = productImg.Step,
+                        Description = productImg.Description,
+                        ModifiedDate = productImg.ModifiedDate,
+                        ModifiedUser = productImg.ModifiedUser,
+                        CanModify = true,
+                        WarehouseId = productImg.WarehouseId,
+                        WarehouseName = productImg.Warehouse.WarehouseName
+                    };
+                    model.Add(entity);
+                }
+            }
+            return model;
+        }
+
+        [GridAction]
+        public ActionResult InsertProductImg2(ProductImgModel insert, int productId) {
+            try {
+                if (!Request.IsAuthenticated) {
+                    throw new AggregateException("Bạn đã bị mất quyền đăng nhập. \r\n " +
+                                             "1 trong các nguyên nhân như mất thời gian chờ. \r\n " +
+                                             "Xin vui lòng đăng nhập lại hệ thống.");
+                }
+                //var techicalManager = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name,
+                //    MyUtilities.UserRole.TechicalManagerLv2);
+                //if (!techicalManager) {
+                //    throw new AggregateException("Lỗi! Không có quyền thêm - sửa hình.");
+                //}
+                if (string.IsNullOrWhiteSpace(insert.ImgUrl)) {
+                    throw new AggregateException("Lỗi! Không tìm thấy hình được upload!");
+                }
+                int warehouseId = 7;
+                //try {
+                //    //warehouseId = Convert.ToInt32(insert.WarehouseName);
+                //}
+                //catch (Exception) { }
+                if (warehouseId == 0) {
+                    throw new AggregateException("Lỗi! Không tìm thấy công đoạn! Vui lòng chọn lại");
+                }
+                var productImg = new ProductImg() {
+                    ProductId = productId,
+                    ImgUrl = insert.ImgUrl,
+                    Step = insert.Step,
+                    Description = insert.Description,
+                    WarehouseId = warehouseId,
+                    ModifiedDate = DateTime.Now,
+                    ModifiedUser = HttpContext.User.Identity.Name
+                };
+                using (var vfi = new tammaContext()) {
+                    vfi.ProductImgs.Add(productImg);
+                    vfi.SaveChanges();
+                }
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("InsertProductImg", ex.Message);
+            }
+            return View(new GridModel(GetProductImgById2(productId)));
+        }
+
+        //[GridAction]
+        //public ActionResult UpdateProductImg2(ProductImgModel update, int productId) {
+        //    try {
+        //        if (!Request.IsAuthenticated) {
+        //            throw new AggregateException("Bạn đã bị mất quyền đăng nhập. \r\n " +
+        //                                     "1 trong các nguyên nhân như mất thời gian chờ. \r\n " +
+        //                                     "Xin vui lòng đăng nhập lại hệ thống.");
+        //        }
+        //        //var techicalManager = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name,
+        //        //    MyUtilities.UserRole.TechicalManagerLv2);
+        //        //if (!techicalManager)
+        //        //    throw new AggregateException("Lỗi! Không có quyền thêm - sửa hình.");
+        //        using (var vfi = new tammaContext()) {
+        //            var productImg = vfi.ProductImgs.FirstOrDefault(pi => pi.ImgId == update.ImgId);
+        //            if (productImg == null)
+        //                throw new AggregateException("Lỗi! Không tìm thấy bản vẽ sản phẩm!");
+
+        //            if (!string.IsNullOrWhiteSpace(update.ImgUrl)) {
+        //                var productImgs = vfi.ProductImgs.Where(pi => pi.ImgUrl.Equals(productImg.ImgUrl));
+        //                if (!productImgs.Any()) {
+        //                    DeleteProductImg(productImg.ImgUrl);
+        //                }
+        //                productImg.ImgUrl = update.ImgUrl;
+        //            }
+        //            int warehouseId = 0;
+        //            try {
+        //                warehouseId = Convert.ToInt32(update.WarehouseName);
+        //            }
+        //            catch (Exception) { }
+        //            if (warehouseId > 0) {
+        //                productImg.WarehouseId = warehouseId;
+        //            }
+        //            productImg.Description = update.Description;
+        //            productImg.Step = update.Step;
+        //            productImg.ModifiedDate = DateTime.Now;
+        //            productImg.ModifiedUser = HttpContext.User.Identity.Name;
+        //            vfi.SaveChanges();
+        //        }
+        //        MyUtilities.Product.UpdateProductDesign(productId);
+        //    }
+        //    catch (Exception ex) {
+        //        ModelState.AddModelError("UpdateProductImg", ex.Message);
+        //    }
+        //    return View(new GridModel(GetProductImgById(productId)));
+        //}
+        //[GridAction]
+        //public ActionResult DeleteProductImg2(ProductImgModel delete, int productId) {
+        //    try {
+        //        if (!Request.IsAuthenticated) {
+        //            throw new AggregateException("Bạn đã bị mất quyền đăng nhập. \r\n " +
+        //                                     "1 trong các nguyên nhân như mất thời gian chờ. \r\n " +
+        //                                     "Xin vui lòng đăng nhập lại hệ thống.");
+
+        //        }
+
+        //        using (var vfi = new tammaContext()) {
+        //            var productImg = vfi.ProductImgs.FirstOrDefault(pi => pi.ImgId == delete.ImgId);
+        //            if (productImg == null)
+        //                throw new AggregateException("Lỗi! Không tìm thấy bản vẽ sản phẩm!");
+        //            var productImgs =
+        //                vfi.ProductImgs.Where(pi => pi.ImgUrl.Equals(productImg.ImgUrl) && pi.ProductId != productId);
+        //            if (!productImgs.Any())
+        //                DeleteProductImg(productImg.ImgUrl);
+        //            vfi.ProductImgs.Remove(productImg);
+        //            vfi.SaveChanges();
+
+        //        }
+        //        MyUtilities.Product.UpdateProductDesign(productId);
+        //    }
+        //    catch (Exception ex) {
+        //        ModelState.AddModelError("DeleteProductImg", ex.Message);
+        //    }
+        //    return View(new GridModel(GetProductImgById(productId)));
+        //}
+
+
+        #endregion
+
+
+        #region Qc Img
+        [GridAction]
+        public ActionResult SelectQcImgById2(int productId, int type) {
+            var model = new List<QcImgModel>();
+            try {
+                model = GetQcImgById2(productId, type);
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("SelectQcImgById", ex.Message);
+            }
+            return View(new GridModel(model));
+        }
+
+           List<QcImgModel> GetQcImgById2(int productId, int type) {
+            var model = new List<QcImgModel>();
+
+            using (var vfi = new tammaContext()) {
+                var qcImgs = vfi.QcImgs.Where(t => t.ProductId == productId && t.Type == type && t.Active == true).OrderBy(t => t.ImgId);
+                foreach (var qcImg in qcImgs) {
+                    var entity = new QcImgModel {
+                        ImgId = qcImg.ImgId,
+                        ImgUrl = qcImg.ImgUrl,
+                        ModifiedDate = qcImg.ModifiedDate,
+                        ModifiedUser = qcImg.ModifiedUser,
+                        Name = qcImg.Name,
+                        //ProductId = productId,
+                        //ProductCode = qcImg.Product.ProductCode,
+                    };
+                    model.Add(entity);
+                }
+
+            }
+            return model;
+        }
+
+
+
+        [GridAction]
+        public ActionResult SelectQcImgById(int productId, int type) {
+            var model = new List<QcImgModel>();
+            try {
+                model = GetQcImgById(productId, type);
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("SelectQcImgById", ex.Message);
+            }
+            return View(new GridModel(model));
+        }
+
+        List<QcImgModel> GetQcImgById(int productId, int type) {
+            var model = new List<QcImgModel>();
+            //var qcManager = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name, MyUtilities.UserRole.QcManager);
+            using (var vfi = new tammaContext()) {
+                var qcImgs = vfi.QcImgs.Where(t => t.ProductId == productId && t.Type == type).OrderBy(t => t.ImgId);
+                foreach (var qcImg in qcImgs) {
+                    var entity = new QcImgModel {
+                        ImgId = qcImg.ImgId,
+                        ImgUrl = qcImg.ImgUrl,
+                        ModifiedDate = qcImg.ModifiedDate,
+                        ModifiedUser = qcImg.ModifiedUser,
+                        CanModify = true,
+                        Name = qcImg.Name,
+                        ProductId = productId,
+                        ProductCode = qcImg.Product.ProductCode,
+                        Active = qcImg.Active,
+                    };
+                    model.Add(entity);
+                }
+
+            }
+            return model;
+        }
+
+        [GridAction]
+        public ActionResult InsertQcImg(QcImgModel insert, int productId, int type) {
+            try {
+                if (!Request.IsAuthenticated) {
+                    throw new AggregateException("Bạn đã bị mất quyền đăng nhập. \r\n " +
+                                             "1 trong các nguyên nhân như mất thời gian chờ. \r\n " +
+                                             "Xin vui lòng đăng nhập lại hệ thống.");
+                }
+                //var qcManager = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name, MyUtilities.UserRole.QcManager);
+                //if (!qcManager) {
+                //    throw new AggregateException("Lỗi! Không có quyền thêm - sửa hình.");
+                //}
+                if (string.IsNullOrWhiteSpace(insert.ImgUrl)){
+                    throw new AggregateException("Lỗi! Không tìm thấy hình được upload!");
+                }
+
+                var qcImg = new QcImg(){
+                    ProductId = productId,
+                    ImgId = insert.ImgId,
+                    ImgUrl = insert.ImgUrl,
+                    Name = insert.Name,
+                    Type = type,
+                    ModifiedDate = DateTime.Now,
+                    ModifiedUser = HttpContext.User.Identity.Name,
+                    Active = false,
+                };
+                using (var vfi = new tammaContext()) {
+                    vfi.QcImgs.Add(qcImg);
+                    vfi.SaveChanges();
+                }
+            }
+            catch (Exception ex) {
+                var errorMessage = ex.Message;
+                if (ex.InnerException != null) {
+                    errorMessage += " | Inner Exception: " + ex.InnerException.Message;
+                    if (ex.InnerException.InnerException != null) {
+                        errorMessage += " | Inner Inner Exception: " + ex.InnerException.InnerException.Message;
+                    }
+                }
+                ModelState.AddModelError("InsertQcImg", errorMessage);
+            }
+            return View(new GridModel(GetQcImgById(productId, type)));
+            
+        }
+
+        [GridAction]
+        public ActionResult UpdateQcImg(QcImgModel update, int productId, int type) {
+            try {
+                if (!Request.IsAuthenticated) {
+                    throw new AggregateException("Bạn đã bị mất quyền đăng nhập. \r\n " +
+                                             "1 trong các nguyên nhân như mất thời gian chờ. \r\n " +
+                                             "Xin vui lòng đăng nhập lại hệ thống.");
+                }
+                //var qcManager = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name, MyUtilities.UserRole.QcManager);
+                //if (!qcManager){
+                //    throw new AggregateException ("Lỗi! Không có quyền thêm - sửa hình.");
+                //}
+                using (var vfi = new tammaContext()) {
+                    var qcImg = vfi.QcImgs.FirstOrDefault(t => t.ImgId == update.ImgId && type == t.Type);
+                    if (qcImg == null) {
+                        throw new AggregateException("Lỗi! Không tìm thấy bản vẽ sản phẩm!");
+                    }
+                    if(!string.IsNullOrWhiteSpace(update.ImgUrl)){
+                        var qcImgs = vfi.QcImgs.Where(t => t.ImgUrl.Equals(qcImg.ImgUrl));
+                        if (!qcImgs.Any()){
+                            DeleteQcImg(qcImg.ImgUrl);
+                        }
+                        qcImg.ImgUrl = update.ImgUrl;
+                    }
+                    qcImg.Name = update.Name;
+                    qcImg.ModifiedUser = HttpContext.User.Identity.Name;
+                    qcImg.ModifiedDate = DateTime.Now;
+                    vfi.SaveChanges();
+
+                }
+                MyUtilities.Product.UpdateProductDesign(productId);
+
+
+            }
+            catch (Exception ex){
+                ModelState.AddModelError("UpdateQcImg", ex.Message);
+            }
+
+            return View(new GridModel(GetQcImgById(productId, type)));
+        }
+
+        [GridAction]
+        public ActionResult DeleteQcImg(QcImgModel delete, int productId, int type) {
+            try {
+                if (!Request.IsAuthenticated) {
+                    throw new AggregateException("Bạn đã bị mất quyền đăng nhập. \r\n " +
+                                             "1 trong các nguyên nhân như mất thời gian chờ. \r\n " +
+                                             "Xin vui lòng đăng nhập lại hệ thống.");
+                }
+                //var techicalManager = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name,
+                //    MyUtilities.UserRole.TechicalManagerLv2);
+                //if (!techicalManager)
+                //    throw new AggregateException("Lỗi! Không có quyền thêm - sửa hình.");
+                using (var vfi = new tammaContext()) {
+                    var qcImg = vfi.QcImgs.FirstOrDefault(pi => pi.ImgId == delete.ImgId && pi.Type == type);
+                    if (qcImg == null)
+                        throw new AggregateException("Lỗi! Không tìm thấy bản vẽ sản phẩm!");
+                    var qcImgs =
+                        vfi.QcImgs.Where(pi => pi.ImgUrl.Equals(qcImg.ImgUrl) && pi.ProductId != productId);
+                    if (!qcImgs.Any())
+                        DeleteQcImg(qcImg.ImgUrl);
+                    vfi.QcImgs.Remove(qcImg);
+                    vfi.SaveChanges();
+
+                }
+                MyUtilities.Product.UpdateProductDesign(productId);
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("DeleteQcImg", ex.Message);
+            }
+            return View(new GridModel(GetQcImgById(productId, type)));
+        }
+
+        void DeleteQcImg(string imgUrl) {
+            var destinationPath = Path.Combine(Server.MapPath("~/Content/FileUpload/QcImg"),
+                imgUrl);
+            if (System.IO.File.Exists(@destinationPath)) {
+                System.IO.File.Delete(@destinationPath);
+            }
+        }
+
+
+        public ActionResult ActiveImg(int ImgId) {
+            try {
+                using (var vfi = new tammaContext()) {
+                    var Img = vfi.QcImgs.FirstOrDefault(x => x.ImgId== ImgId);
+                    if (Img == null) {
+                        throw new AggregateException("Không tìm thấy ảnh");
+                    }
+                    Img.Active = !Img.Active;
+                    vfi.SaveChanges();
+                    //return View(new GridModel(GetQcImgById(Img.ProductId)));
+                    return Json(new MyUtilities.Monitor.MyJsonResult((int)MyUtilities.Monitor.ErrorCode.NoError, "", Img.ImgId));
+                }
+            }
+            catch (Exception ex) {
+                return Json(new MyUtilities.Monitor.MyJsonResult((int)MyUtilities.Monitor.ErrorCode.Exception, ex.Message, ""));
+            }
+        }
+
+
+
+
+        #endregion
+
 
         #region production material
 

@@ -344,6 +344,42 @@
             return false;
         }
 
+
+
+        function grid_OnRowDataBound_Color(e) {
+            var dataItem = e.dataItem;
+            var $row = $(e.row);
+
+            // Nếu có NG trong chi tiết thì tô đỏ toàn bộ hàng
+            if (dataItem.HaveNG == true && dataItem.HaveLock == true) {
+                $row.children().css({
+                    "background-color": "#ab153c",
+                    "color": "white",
+                });
+            }
+            else if (dataItem.HaveNG == true && dataItem.HaveLock == false) {
+                $row.children().css({
+                    "background-color": "#dea452",
+                    //"color": "white",
+                });
+            }
+            else if (dataItem.HaveNG == false && dataItem.HaveLock == true) {
+                $row.children().css({
+                    "background-color": "#8d02f0", // Tim'
+                    "color": "#FFFFFF"             // chữ trắng
+                });
+            }
+            //else {
+            //    // Giữ lại logic cũ nếu muốn
+            //    if (dataItem.State == 1) {
+            //        $row.children().eq(5).css("background-color", "#FA5858");
+            //    } else if (dataItem.State == 2) {
+            //        $row.children().eq(5).css("background-color", "yellow");
+            //    }
+            //}
+        }
+
+
     </script>
 
 }
@@ -737,6 +773,8 @@
                     .HeaderTemplate("Bắt đầu</br>sử dụng");
                 columns.Bound(f => f.EndUseDateString).Width(90)
                     .HeaderTemplate("Ngày cuối</br>sử dụng");
+                //columns.Bound(f => f.HaveNG).Hidden(true);
+
             })
             
             .DetailView(details => details.ClientTemplate(
@@ -787,6 +825,7 @@
                 .OnDataBound("grid_OnDataBound")
                 .OnRowDataBound("grid_OnRowDataBound")
                 .OnEdit("grid_OnEdit")
+                .OnRowDataBound("grid_OnRowDataBound_Color")
                 .OnDataBinding("gridMaterialInventory_onDataBinding"))
             .Render();
     }

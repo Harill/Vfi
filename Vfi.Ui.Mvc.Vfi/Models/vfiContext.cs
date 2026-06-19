@@ -36,6 +36,7 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public DbSet<ProcessClassified> ProcessClassifieds { get; set; }
         public DbSet<ProcessingType> ProcessingTypes { get; set; }
         public DbSet<ProductImg> ProductImgs { get; set; }
+        public DbSet<QcImg> QcImgs { get; set; }
         public DbSet<Production2Inventory> Production2Inventory { get; set; }
         public DbSet<Production2InventoryPeriod> Production2InventoryPeriod { get; set; }
         public DbSet<Production2Transaction> Production2Transaction { get; set; }
@@ -223,6 +224,9 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public DbSet<SelectToolInvAndPeriod> SelectToolInvAndPeriods { get; set; }
         public DbSet<TransactionImg> TransactionImgs { get; set; }
         public DbSet<DeliveryAddress> DeliveryAddresses { get; set; }
+        public DbSet<MaterialImg> MaterialImgs { get; set; }
+        public DbSet<EvaluationForm> EvaluationForms { get; set; }
+        public DbSet<VendorImg> VendorImgs { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -247,6 +251,8 @@ namespace Vfi.Ui.Mvc.Vfi.Models
             modelBuilder.Configurations.Add(new ProcessClassifiedMap());
             modelBuilder.Configurations.Add(new ProcessingTypeMap());
             modelBuilder.Configurations.Add(new ProductImgMap());
+            modelBuilder.Configurations.Add(new QcImgMap());
+            modelBuilder.Configurations.Add(new MaterialImgMap());
             modelBuilder.Configurations.Add(new Production2InventoryMap());
             modelBuilder.Configurations.Add(new Production2InventoryPeriodMap());
             modelBuilder.Configurations.Add(new Production2TransactionMap());
@@ -298,6 +304,7 @@ namespace Vfi.Ui.Mvc.Vfi.Models
             modelBuilder.Configurations.Add(new WorkOrderProcessMap());
             modelBuilder.Configurations.Add(new WorkOrderRoutingMap());
             modelBuilder.Configurations.Add(new WorkpieceMaterialPeriodMap());
+            modelBuilder.Configurations.Add(new EvaluationFormMap());
             modelBuilder.Configurations.Add(new ExportChangeProductMap());
             modelBuilder.Configurations.Add(new ExportFormQC_TPMap());
             modelBuilder.Configurations.Add(new ExportFormQC_TPDetailMap());
@@ -411,6 +418,7 @@ namespace Vfi.Ui.Mvc.Vfi.Models
             modelBuilder.Configurations.Add(new TaxInvoiceProductMap());
             modelBuilder.Configurations.Add(new TaxInvoiceProductDetailMap());
             modelBuilder.Configurations.Add(new TimeLineMap());
+            modelBuilder.Configurations.Add(new VendorImgMap());
             modelBuilder.Configurations.Add(new ContextLogMap());
             modelBuilder.Configurations.Add(new FunctionMap());
             modelBuilder.Configurations.Add(new MenuMap());

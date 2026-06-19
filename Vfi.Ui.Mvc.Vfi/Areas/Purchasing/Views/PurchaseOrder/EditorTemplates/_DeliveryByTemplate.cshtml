@@ -1,0 +1,17 @@
+﻿@using Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
+@using Vfi.Ui.Mvc.Vfi.Areas.Sales.Models
+@using System.Web.Mvc
+
+@{
+    Html.Telerik().ComboBox()
+        .Name("shipMethodId") // phải trùng với tham số trong action
+        .DataBinding(binding => binding.Ajax()
+            .Select("SelectComboBoxShipMethodBy", "Method", new { area = "Purchasing", typeId = MethodEnumTypeId.DeliveryBy }))
+        .BindTo(new SelectList(Enumerable.Empty<object>(), "ShipMethodId", "ShipMethodName"))
+        .HtmlAttributes(new { style = "width: 200px" })
+        .DropDownHtmlAttributes(new { style = "width: 250px" })
+        .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
+        .HighlightFirstMatch(true)
+        .AutoFill(true)
+        .Render();
+}

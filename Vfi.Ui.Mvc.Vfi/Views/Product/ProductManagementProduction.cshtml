@@ -448,6 +448,29 @@
             return true;
         }
 
+        function gridQcImg_OnSave(e) {
+            //var i = 0;
+            //var drawing2D = "";
+            var editRow = e.target.getElementsByClassName("t-grid-edit-row")[0];
+            var ul2D = editRow.childNodes[2].childNodes[1].childNodes[1];
+            //if (ul2D == null && e.Upload === "" || typeof ul2D == 'undefined') {
+            //    //drawing2D = e.dataItem.ImgUrl;
+            //} else
+            if (ul2D != null) {
+                var child2D = ul2D.childNodes;
+                for (var i = child2D.length - 1; i >= 0; i--) {
+                    if (child2D[i].childNodes[0].textContent === "uploaded") {
+                        e.values.ImgUrl = child2D[0].childNodes[1].title;
+                        //drawing2D = child2D[0].childNodes[1].title;
+                        break;
+                    }
+                }
+            }
+            return true;
+        }
+
+
+
         function gridProductHistory_OnSave(e) {
             //var i = 0;
             //var drawing2D = "";
@@ -470,6 +493,13 @@
         }
 
         function gridProductImg_OnRowDataBound(e) {
+            if (!e.dataItem.CanModify) {
+                e.row.getElementsByClassName("t-button t-grid-edit t-button-icon")[0].parentNode.innerHTML = "";
+                e.row.getElementsByClassName("t-button t-grid-delete t-button-icon")[0].parentNode.innerHTML = "";
+            }
+        }
+
+        function gridQcImg_OnRowDataBound(e) {
             if (!e.dataItem.CanModify) {
                 e.row.getElementsByClassName("t-button t-grid-edit t-button-icon")[0].parentNode.innerHTML = "";
                 e.row.getElementsByClassName("t-button t-grid-delete t-button-icon")[0].parentNode.innerHTML = "";
@@ -576,6 +606,12 @@
             });
             return false;*@
         }
+
+
+
+
+
+
     </script>
 }
 <div class="title">Quản lý thông tin sản phẩm (sản xuất)</div>
@@ -1747,6 +1783,60 @@
                                     //.OnRowDataBound("gridProductImg_OnRowDataBound")
                                     )
                                 .ToHtmlString());
+
+
+                        //items.Add().Text("Bản vẽ ngoại quan").Content(
+                        //    Html.Telerik().Grid<QcImgModel>()
+                        //        .Name("gridQcImg_<#= ProductId #>")
+                        //        .DataKeys(key => key.Add(f => f.ImgId).RouteKey("imgId"))
+                        //        .ToolBar(
+                        //            toolbar =>
+                        //            toolbar.Insert().Text("Thêm mới").ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
+                        //        .DataBinding(
+                        //            dataBinding => dataBinding.Ajax()
+                        //                                      .Select("SelectQcImgById", "Product", new { area = "", productId = "<#= ProductId #>" })
+                        //                                      .Insert("InsertQcImg", "Product", new { area = "", productId = "<#= ProductId #>" })
+                        //                                      .Update("UpdateQcImg", "Product", new { area = "", productId = "<#= ProductId #>" })
+                        //                                      .Delete("DeleteQcImg", "Product", new { area = "", productId = "<#= ProductId #>" })
+                        //        )
+                        //        .Columns(columns => {
+                        //            columns.Command(command =>
+                        //                            command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
+                        //                ).Width(50).Title("")
+                        //                .HtmlAttributes(new { style = "text-align:center" });
+
+                        //            columns.Bound(f => f.ImgId).Title("Kích hoạt").Width(50).ReadOnly(true)
+                        //                   .ClientTemplate(
+                        //                       "<input type='checkbox' id='active_<#= ImgId #>' " +
+                        //                       "onclick='ActiveImg(<#= ImgId #>)' " +
+                        //                       "<#= Active ? \"checked='checked'\" : \"\" #> />"
+                        //                   )
+                        //                   .HtmlAttributes(new { style = "text-align:center" });
+                                    
+
+                        //            columns.Bound(f => f.Name).Title("Tên bản vẽ").Width(70);        // quen thuoc tinh 
+                        //            columns.Bound(f => f.ImgUrl)
+                        //                   .Width(40)
+                        //                   .Title("Bản vẽ")
+                        //                   .ClientTemplate(
+                        //                       "<a id='<#=ImgId#>' href='" + Url.Content("~/Content/FileUpload/QcImg/") + "<#=ImgUrl#>?<#=UploadDate#>' class='highslide' onclick='return hs.expand(this)'>" +
+                        //                           "<img src='" + Url.Content("~/Content/FileUpload/QcImg/") + "<#=ImgUrl#>?<#=UploadDate#>' height='40' width='40' title='Mở lớn'/>" +
+                        //                       "</a>")
+                        //                   .HtmlAttributes(new { style = "text-align:center" });
+                        //            columns.Bound(f => f.ModifiedUser).Title("Người tạo").ReadOnly(true).Width(70);
+                        //            columns.Bound(f => f.ModifiedDate).Title("Ngày tạo").ReadOnly(true).Width(80)
+                        //                   .Format("{0:HH:mm - dd/MM/yyyy }")
+                        //                   .HtmlAttributes(new { style = "text-align:center" });
+                        //            columns.Command(commands => commands.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image))
+                        //                   .Width(30).Title("Xoá")
+                        //                   .HtmlAttributes(new { style = "text-align:center" });
+                        //        })
+                        //        .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
+                        //        .ClientEvents(e => e.OnError("grid_OnError")
+                        //            .OnSave("gridQcImg_OnSave")
+                        //            .OnRowDataBound("gridQcImg_OnRowDataBound")
+                        //            )
+                        //        .ToHtmlString());
                     }
                     )
                     .ToHtmlString()
@@ -1755,7 +1845,7 @@
                                           .OnEdit("gridProduct_onEdit")
                                           .OnError("grid_OnError")
                                           .OnRowSelect("grid_OnRowSelect")
-                .OnRowDataBound("grid_OnRowDataBound")
+                                          .OnRowDataBound("grid_OnRowDataBound")
                                           .OnSave("grid_OnSave"))
             //.Pageable(page => page.PageSize(7))
             .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))

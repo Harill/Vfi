@@ -46,6 +46,8 @@ namespace Vfi.Ui.Mvc.Vfi.Models.Mapping
             this.Property(t => t.Length).HasColumnName("Length");
             this.Property(t => t.InfoImg).HasColumnName("InfoImg");
             this.Property(t => t.InfoImg2).HasColumnName("InfoImg2");
+            this.Property(t => t.NG).HasColumnName("NG");
+            this.Property(t => t.Lock).HasColumnName("Lock");
 
             // Relationships
             this.HasRequired(t => t.Material)

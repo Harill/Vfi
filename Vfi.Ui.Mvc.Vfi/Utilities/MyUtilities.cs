@@ -301,6 +301,8 @@ namespace Vfi.Ui.Mvc.Vfi.Utilities {
             /// </summary>
             public static int ManagementApprovedPurchase = 383;
 
+
+
             public static bool CheckRole(string userName, int type) {
                 if (string.IsNullOrWhiteSpace(userName)) return false;
                 var check = false;
@@ -1927,6 +1929,12 @@ namespace Vfi.Ui.Mvc.Vfi.Utilities {
                 Cancel = 9
             }
 
+            public enum EvaluationEnum {
+                Pending = 1,
+                Approved = 3,
+                Cancel = 5
+            }
+
             public enum PurchaseEnum {
                 Waiting = 1,
                 Comfirm = 3,
@@ -1935,6 +1943,22 @@ namespace Vfi.Ui.Mvc.Vfi.Utilities {
                 Delivering = 9,
                 Delivered = 11,
                 Cancel = 13,
+            }
+
+            public static string GetEvaluationEnumStatusName(int status) {
+                string name = "";
+                switch (status) {
+                    case (int)EvaluationEnum.Pending:
+                        name = "Chờ xác nhận";
+                        break;
+                    case (int)EvaluationEnum.Approved:
+                        name = "Đã xác nhận";
+                        break;
+                    case (int)EvaluationEnum.Cancel:
+                        name = "Hủy";
+                        break;
+                }
+                return name;
             }
 
             public static string GetPurchaseEnumStatusName(int status) {

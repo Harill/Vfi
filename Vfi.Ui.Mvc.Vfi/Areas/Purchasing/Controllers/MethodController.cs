@@ -26,6 +26,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
             ViewData = GetPageConfigData();
             return View();
         }
+
         #region method
 
         [HttpPost]
@@ -153,7 +154,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
             }
         }
 
-        public ActionResult SelectComboBoxMethodByType(int typeId, bool sale, bool buy) {
+        public ActionResult SelectComboBoxMethodByType(int typeId, bool? sale, bool? buy) {
             using (var vfi = new tammaContext()) {
                 var model = from m in vfi.Methods
                             where m.Active.Value && m.MethodTypeId == typeId
@@ -172,6 +173,80 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                 return new JsonResult {
                     Data =
                         new SelectList(model.ToList(), "MethodId", "MethodName")
+                };
+            }
+        }
+
+        public ActionResult SelectComboBoxMethodByType2(int? typeId, bool? buy) {
+            using (var vfi = new tammaContext()) {
+                var model = from m in vfi.Methods
+                            where m.Active.Value && m.MethodTypeId == typeId
+                                  //&& (sale != true || m.SaleMethod.Value)
+                                  && (buy != true || m.BuyMethod.Value)
+                            select new {
+                                MethodId = m.MethodId,
+                                MethodName = m.MethodName_EN,
+
+                            };
+                return new JsonResult {
+                    Data =
+                        new SelectList(model.ToList(), "MethodId", "MethodName")
+                };
+            }
+        }
+
+
+        public ActionResult SelectComboBoxPaymentMethod(int? typeId, bool? buy) {
+            using (var vfi = new tammaContext()) {
+                var model = from m in vfi.Methods
+                            where m.Active.Value && m.MethodTypeId == typeId
+                                //&& (sale != true || m.SaleMethod.Value)
+                                  && (buy != true || m.BuyMethod.Value)
+                            select new {
+                                PaymentMethodId = m.MethodId,
+                                PaymentMethodName = m.MethodName_EN,
+
+                            };
+                return new JsonResult {
+                    Data =
+                        new SelectList(model.ToList(), "PaymentMethodId", "PaymentMethodName")
+                };
+            }
+        }
+
+        public ActionResult SelectComboBoxShipMethodBy(int? typeId, bool? buy) {
+            using (var vfi = new tammaContext()) {
+                var model = from m in vfi.Methods
+                            where m.Active.Value && m.MethodTypeId == typeId
+                                //&& (sale != true || m.SaleMethod.Value)
+                                  && (buy != true || m.BuyMethod.Value)
+                            select new {
+                                ShipMethodId = m.MethodId,
+                                ShipMethodName = m.MethodName_EN,
+
+                            };
+                return new JsonResult {
+                    Data =
+                        new SelectList(model.ToList(), "ShipMethodId", "ShipMethodName")
+                };
+                //return Json(model.ToList(), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult SelectComboBoxConditionMethod(int? typeId, bool? buy) {
+            using (var vfi = new tammaContext()) {
+                var model = from m in vfi.Methods
+                            where m.Active.Value && m.MethodTypeId == typeId
+                                //&& (sale != true || m.SaleMethod.Value)
+                                  && (buy != true || m.BuyMethod.Value)
+                            select new {
+                                DeliveryMethodId = m.MethodId,
+                                DeliveryMethodName = m.MethodName_EN,
+
+                            };
+                return new JsonResult {
+                    Data =
+                        new SelectList(model.ToList(), "DeliveryMethodId", "DeliveryMethodName")
                 };
             }
         }

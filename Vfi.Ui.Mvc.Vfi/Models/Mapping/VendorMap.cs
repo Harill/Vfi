@@ -75,6 +75,7 @@ namespace Vfi.Ui.Mvc.Vfi.Models.Mapping
             this.Property(t => t.SpecialInfo).HasColumnName("SpecialInfo");
             this.Property(t => t.Note).HasColumnName("Note");
             this.Property(t => t.Active).HasColumnName("Active");
+            this.Property(t => t.Priority).HasColumnName("Priority");
             this.Property(t => t.ModifiedUser).HasColumnName("ModifiedUser");
             this.Property(t => t.ModifiedDate).HasColumnName("ModifiedDate");
             this.Property(t => t.MaterialClassifiedId).HasColumnName("MaterialClassifiedId");

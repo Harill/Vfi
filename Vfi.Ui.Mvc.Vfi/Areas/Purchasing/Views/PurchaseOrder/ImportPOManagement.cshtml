@@ -4,6 +4,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+
+
+</style>
 @section Scripts{
     <script type="text/javascript">
 
@@ -35,7 +39,7 @@
             });
 
         }
-        // start
+        // start OTD
 
         var vendorOnTime = 0, vendorLate = 0;
 
@@ -62,10 +66,36 @@
             vendorLate = 0;
 
         }
+        // end OTD
 
+        //----------------------------------------------
 
+        // start NGString
+        var NGQuanlity = 0, OKQuanlity = 0;
+        function grid_GridBound(e) {
+            var dataItem = e.dataItem;
 
-        //end
+            if (dataItem.NGString) {
+                NGQuanlity++;
+            }
+            else {
+                OKQuanlity++;
+            }
+        }
+
+        // Sau khi grid bind xong
+        function grid_OnGridBound(e) {
+            // Gán số liệu tổng vào footer
+            $("#NGFooter").text(NGQuanlity);
+            $("#OKFooter").text(OKQuanlity);
+
+            // Reset biến tổng
+            NGQuanlity = 0;
+            OKQuanlity = 0;
+
+        }
+        //end NG
+
 
         function materialClassified_OnChange() {
             var classified = $('#MaterialClassifiedName').data('tComboBox').value();
@@ -153,30 +183,32 @@
                                                      .Select("SelectImportPoManagement2", "PurchaseOrder"))
             .Columns(columns =>
                 {
-                    columns.Bound(f => f.Index).Title("STT").Width(35)
+                    columns.Bound(f => f.Index).Title("STT").Width(40)
                            .HtmlAttributes(new { style = "text-align: center; " })
                            .Aggregate(agg => agg.Count())
                            .ClientGroupFooterTemplate("<div style='text-align: center; font-weight:bold; '> <#= Count #> </div>")
                            .ClientFooterTemplate("<#= Count #>")
-                           .FooterHtmlAttributes(new { style = "text-align: center; font-weight:bold;" });
+                           .FooterHtmlAttributes(new { style = "text-align: center; font-weight:bold;" })
+                           .Filterable(false);
                      
-                    columns.Bound(f => f.TransactionCode).Title("Phiếu nhập kho").Width(100);
+                    columns.Bound(f => f.TransactionCode).Title("Phiếu</br> nhập kho").Width(110);
                     columns.Bound(f => f.PoCode).Title("Phiếu mua").Width(90);
 
                     columns.Bound(f => f.TransactionDate).Title("Ngày nhập").Width(80)
                            .Format("{0:dd/MM/yyyy}")
                            .HtmlAttributes(new { style = "text-align: center;" });
 
-                    columns.Bound(f => f.DeliveryDate).Title("Ngày yêu cầu").Width(80)
+                    columns.Bound(f => f.DeliveryDate).Title("Ngày</br>yêu cầu").Width(80)
                            .Format("{0:dd/MM/yyyy}")
                            .HtmlAttributes(new { style = "text-align: center;" });
                     columns.Bound(f => f.FptName).Title("Tên chi tiết").Width(140);
-                    columns.Bound(f => f.FptCode).Title("Mã chi tiết").Width(200);
-                    columns.Bound(f => f.LotNumber).Title("Lô").Width(110)
+                    columns.Bound(f => f.FptCode).Title("Mã chi tiết").Width(190);
+                    columns.Bound(f => f.LotNumber).Title("Lô").Width(130)
                            .HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(f => f.UnitMeasure).Title("ĐVT").Width(40)
                            .HtmlAttributes(new { style = "text-align: center;" });
-                    columns.Bound(f => f.Quantity).Title("Số lượng").Width(75)
+
+                    columns.Bound(f => f.Quantity).Title("Số lượng</br>đã giao").Width(85)
                            .Format("{0:n2}")
                            //.ClientTemplate("<#= QuantityStr #>")
                            .HtmlAttributes(new { style = "text-align: right;" })
@@ -184,13 +216,16 @@
                            .FooterHtmlAttributes(new { style = "text-align: right;" })
                            .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
                            .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>");
-                    columns.Bound(f => f.CurrencyCode).Title("Tiền tệ").Width(40)
+                    columns.Bound(f => f.OrderQuantityString).Title("Số lượng</br>đặt hàng").Width(75)
+                           .HtmlAttributes(new { style = "text-align: right;" });
+                    
+                    columns.Bound(f => f.CurrencyCode).Title("Tiền</br> tệ").Width(40)
                            .HtmlAttributes(new { style = "text-align: center;" });
                     //
                     columns.Bound(f => f.UnitPriceString).Title("Đơn giá").Width(75)
                            .ClientTemplate("<#= UnitPriceString #>")
                            .HtmlAttributes(new { style = "text-align: right;" });
-                    columns.Bound(f => f.ExchangeRate).Title("Tỉ giá").Width(50)
+                    columns.Bound(f => f.ExchangeRate).Title("Tỉ giá").Width(60)
                            .Format("{0:n0}")
                            .HtmlAttributes(new { style = "text-align: right;" });
                     columns.Bound(f => f.Price).Title("Thành tiền").Width(110)
@@ -244,13 +279,29 @@
 
                     //columns.Bound(f => f.TaxInvoiceNumber).Title("Hóa đơn").Width(120);
                     //columns.Bound(f => f.TaxInvoiceDateString).Title("Ngày lập").Width(90);
-                    columns.Bound(f => f.Qc).Title("Chất lượng").Width(35);
-                    columns.Bound(f => f.Note).Title("Ghi chú").Width(150);
+                    columns.Bound(f => f.NGString)
+                           .Title("Chất <br/>lượng")
+                           .Width(35)
+                           .ClientTemplate(
+                               "<# if (NGString == 'NG') { #>" +
+                                   "<span style='color:red'>NG</span>" +
+                               "<# } else { #>" +
+                                   "<span style='color:green'>Đạt</span>" +
+                               "<# } #>")
+                           .HtmlAttributes(new { style = "text-align:center;" })
+                           .Filterable(false)
+
+                           //.FooterTemplate("<span style='color:red'>NG: <span id='NGFooter'></span></span></br> <span style='color:red'>OK: <span id='OkFooter'></span></span>")
+                           //.FooterHtmlAttributes(new { style = "text-align: center;" })
+                           ;
+
+
+                    columns.Bound(f => f.Note).Title("Ghi chú").Width(110);
                 })
                 .Groupable()
             .Reorderable(f => f.Columns(true))
-                .Scrollable(f => f.Height("auto"))
-            .Scrollable(f => f.Height(650))
+            //.Scrollable(f => f.Height("auto"))
+            .Scrollable(f => f.Height(700))
             .Resizable(f => f.Columns(true))
             .Sortable()
             .Groupable(group => group.Groups(g => g.Add(model => model.VendorName)))
@@ -259,6 +310,8 @@
                                           .OnError("grid_OnError")
                                           .OnRowDataBound("grid_OnRowDataBound")
                                           .OnDataBound("grid_OnDataBound")
+                                          //.OnRowDataBound("grid_GridBound")
+                                          //.OnDataBound("grid_OnGridBound")
                                           )
                                           
             .Render();

@@ -194,7 +194,39 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
 
         public string PoCode { get; set; }
         public int  PlatingId { get; set; }
+        public double OrderQuantity { get; set;}
+     
+       public string OrderQuantityString { 
+            get{
+                return OrderQuantity == 0.00 
+                    ? "" 
+                    : string.Format("{0:n2}", OrderQuantity);
+                }
+       }
 
+       public int Fpt { get; set; }
+       public double ToolInv { get; set; }
+
+       public long ImportDetailId { get; set; }
+
+       public bool NG { get; set; }
+       public string NGString {
+            get {
+                return NG == true
+                    ? "NG"
+                    : "Đạt";
+            }
+        }
+
+
+        public bool Lock { get; set; }
+        public string LockStr {
+            get {
+                return Lock == true
+                    ? "Đã khóa"
+                    : "";
+            }
+        }
 
     }
 }

@@ -18,6 +18,7 @@ namespace Vfi.Ui.Mvc.Vfi.Models
             this.ImportPurchaseOrderDetails = new List<ImportPurchaseOrderDetail>();
             this.PriceListMaterials = new List<PriceListMaterial>();
             this.Products = new List<Product>();
+            this.MaterialImgs = new List<MaterialImg>();
         }
 
         public int MaterialId { get; set; }
@@ -47,5 +48,6 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public virtual MaterialType MaterialType { get; set; }
         public virtual ICollection<PriceListMaterial> PriceListMaterials { get; set; }
         public virtual ICollection<Product> Products { get; set; }
+        public virtual ICollection<MaterialImg> MaterialImgs { get; set; }
     }
 }

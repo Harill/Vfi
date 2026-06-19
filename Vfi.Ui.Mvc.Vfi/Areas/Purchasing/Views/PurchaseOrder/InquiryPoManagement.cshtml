@@ -2,7 +2,7 @@
 @using Vfi.Ui.Mvc.Vfi.Utilities
 @model PurchaseOrderModel
 @{
-    ViewBag.Title = "Duyệt yêu cầu";
+    ViewBag.Title = "Quản lý phiếu yêu cầu";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Scripts{
@@ -69,7 +69,7 @@
 }
 
 
-<div class="title">Duyệt phiếu yêu cầu</div>
+<div class="title">Quản lý phiếu yêu cầu</div>
 <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px;">
 
     <fieldset>
@@ -185,20 +185,20 @@
             )
             .Columns(columns =>
             {
-                columns.Bound(f => f.InquiryId).Title("Chọn").Width(50).ReadOnly(true)
-                    .ClientTemplate("<input type='checkbox' name='chkIds' value='<#= InquiryId #>' />")
-                    .HtmlAttributes(new { style = "text-align:center" });
-                columns.Command(command => command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image))
-                    .Width(50).Title("Sửa")
-                    .HtmlAttributes(new { style = "text-align:center" });
+                //columns.Bound(f => f.InquiryId).Title("Chọn").Width(50).ReadOnly(true)
+                //    .ClientTemplate("<input type='checkbox' name='chkIds' value='<#= InquiryId #>' />")
+                //    .HtmlAttributes(new { style = "text-align:center" });
+                //columns.Command(command => command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image))
+                //    .Width(50).Title("Sửa")
+                //    .HtmlAttributes(new { style = "text-align:center" });
                 columns.Bound(f => f.InquiryNumber).Width(100).Title("Số yêu cầu");
                 columns.Bound(f => f.ClassifiedName).Width(100).Title("Phân loại").ReadOnly(true);
                 columns.Bound(f => f.TypeName).Width(100).Title("Loại").ReadOnly(true);
                 columns.Bound(f => f.VendorCode).Width(120).Title("NCC");
-                columns.Bound(f => f.ReferenceCode).Width(150).Title("Mã").ReadOnly(true);
+                columns.Bound(f => f.ReferenceCode).Width(160).Title("Mã").ReadOnly(true);
                 columns.Bound(f => f.Unit).Width(50).Title("ĐVT");
                 
-                columns.Bound(f => f.Currency).Width(70).Title("Tiền tệ");
+                columns.Bound(f => f.Currency).Width(60).Title("Tiền tệ");
                 columns.Bound(f => f.UnitPrice).Width(70).Title("Đơn giá")
                     .HtmlAttributes(new { style = "text-align: right;" })
                     .ClientTemplate("<#= UnitPriceStr #>");
@@ -210,8 +210,8 @@
                     .FooterHtmlAttributes(new { style = "text-align: right;" })
                     .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                     .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>");
-                
-                columns.Bound(f => f.Price).Width(100).Title("TT").ReadOnly(true)
+
+                columns.Bound(f => f.Price).Width(100).Title("Tổng tiền").ReadOnly(true)
                     .HtmlAttributes(new { style = "text-align: right;" })
                     .Format("{0:n0}")
                     .Aggregate(agg => agg.Sum())
@@ -219,16 +219,33 @@
                     .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                     .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>");
 
-                columns.Bound(f => f.DueDate).Width(100).Title("Ngày YC")
+                columns.Bound(f => f.DueDate).Width(90).Title("Ngày YC")
                        .ClientTemplate("<#= DueDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', DueDate) #>");
                 columns.Bound(f => f.TotalInv).Width(70).Title("Tồn kho").ReadOnly(true)
                     .HtmlAttributes(new { style = "text-align: right;" })
                     .Format("{0:n2}");
-                columns.Bound(f => f.Note).Width(150);
-                columns.Command(commands => commands.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(70).Title("");
-                columns.Bound(f => f.ModifiedDate).Width(90).Title("Ngày làm").ReadOnly(true)
-                       .ClientTemplate("<#= ModifiedDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy HH:mm}', ModifiedDate) #>");
-                columns.Bound(f => f.ModifiedUser).Width(90).Title("Người làm").ReadOnly(true);
+                columns.Bound(f => f.Note).Width(120)
+                       .HtmlAttributes(new { style = "text-align: left; border-right:1px black solid;" });
+                
+                //columns.Command(commands => commands.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(70).Title("");
+
+
+                columns.Bound(f => f.ApprovedPo).Width(80).Title("Người duyệt/hủy").ReadOnly(true);
+                columns.Bound(f => f.DateApproved).Width(100).Title("Ngày duyệt/hủy").ReadOnly(true)
+                       .ClientTemplate("<#= DateApproved == null ? '' : $.telerik.formatString('{0:HH:mm dd/MM/yyyy }', DateApproved) #>")
+                       .HtmlAttributes(new { style = "text-align: center; border-right:1px black solid;" });
+                
+
+                columns.Bound(f => f.ManagerConfirm).Width(80).Title("Người xác nhận").ReadOnly(true);
+                columns.Bound(f => f.DateConfirm).Width(100).Title("Ngày xác nhận").ReadOnly(true)
+                       .ClientTemplate("<#= DateConfirm == null ? '' : $.telerik.formatString('{0:HH:mm dd/MM/yyyy }', DateConfirm) #>")
+                       .HtmlAttributes(new { style = "text-align: center; border-right:1px black solid;" });
+
+
+                columns.Bound(f => f.ModifiedUser).Width(80).Title("Người lập phiếu").ReadOnly(true);
+                columns.Bound(f => f.ModifiedDate).Width(100).Title("Ngày lập phiếu").ReadOnly(true)
+                       .ClientTemplate("<#= ModifiedDate == null ? '' : $.telerik.formatString('{0:HH:mm dd/MM/yyyy }', ModifiedDate) #>")
+                       .HtmlAttributes(new { style = "text-align: center; " });
             })
             .ClientEvents(events => events
                 .OnDataBinding("grid_OnDataBinding")

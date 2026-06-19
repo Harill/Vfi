@@ -341,7 +341,7 @@
             this.textBox21.Style.Font.Bold = true;
             this.textBox21.Style.Font.Name = "Times New Roman";
             this.textBox21.StyleName = "Data";
-            this.textBox21.Value = "Cần đặt hàng";
+            this.textBox21.Value = "Số lượng cần";
             // 
             // textBox18
             // 

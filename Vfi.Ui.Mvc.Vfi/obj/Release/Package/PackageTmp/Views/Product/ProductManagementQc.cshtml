@@ -7,6 +7,33 @@
     ViewBag.Title = "QC product Management";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+
+ <script type="text/javascript">
+     hs.graphicsDir = '';
+     hs.align = 'center';
+     hs.transitions = ['expand', 'crossfade'];
+     hs.outlineType = '';
+     hs.fadeInOut = true;
+     hs.numberPosition = 'caption';
+     hs.dimmingOpacity = 0.75;
+
+     // Add the controlbar
+     if (hs.addSlideshow)
+         hs.addSlideshow({
+             //slideshowGroup: 'group1',
+             interval: 5000,
+             repeat: false,
+             useControls: true,
+             fixedControls: 'fit',
+             overlayOptions: {
+                 opacity: .75,
+                 position: 'bottom center',
+                 hideOnMouseOut: true
+             }
+         });
+
+     </script>
 @section Scripts{
     <script type="text/javascript">
         function grid_OnSave() {
@@ -43,6 +70,131 @@
         function customer_onChange() {
             RefreshGrid("gridProduct");
         }
+
+        // QC
+
+        function gridQcImg_OnSave(e) {
+            //var i = 0;
+            //var drawing2D = "";
+            var editRow = e.target.getElementsByClassName("t-grid-edit-row")[0];
+
+            var ul2D = editRow.childNodes[3].childNodes[1].childNodes[1];
+
+            //var ul2D = editRow.querySelector("td:nth-child(3) ul");
+
+            //var ul2D = editRow.querySelector(".t-upload ul");
+
+            //if (ul2D == null && e.Upload === "" || typeof ul2D == 'undefined') {
+            //    //drawing2D = e.dataItem.ImgUrl;
+            //} else
+            if (ul2D != null) {
+                var child2D = ul2D.childNodes;
+                for (var i = child2D.length - 1; i >= 0; i--) {
+                    if (child2D[i].childNodes[0].textContent === "uploaded") {
+                        e.values.ImgUrl = child2D[0].childNodes[1].title;
+
+                        // kiểm tra giá trị ImgUrl
+                        if (!e.values.ImgUrl) {
+                            console.log("ImgUrl hiện đang NULL hoặc rỗng");
+                            alert("ImgUrl hiện đang NULL hoặc rỗng");
+                        } else {
+                            console.log("ImgUrl:", e.values.ImgUrl);
+                            alert("ImgUrl: " + e.values.ImgUrl);
+                        }
+
+                        //drawing2D = child2D[0].childNodes[1].title;
+                        break;
+                    }
+                }
+            }
+            return true;
+        }
+
+
+        function gridQcImg_OnRowDataBound(e) {
+            if (!e.dataItem.CanModify) {
+                e.row.getElementsByClassName("t-button t-grid-edit t-button-icon")[0].parentNode.innerHTML = "";
+                e.row.getElementsByClassName("t-button t-grid-delete t-button-icon")[0].parentNode.innerHTML = "";
+            }
+        }
+
+        // product 
+
+        function gridProductImg_OnSave(e) {
+            //var i = 0;
+            //var drawing2D = "";
+            var editRow = e.target.getElementsByClassName("t-grid-edit-row")[0];
+            var ul2D = editRow.childNodes[2].childNodes[1].childNodes[1];
+            //if (ul2D == null && e.Upload === "" || typeof ul2D == 'undefined') {
+            //    //drawing2D = e.dataItem.ImgUrl;
+            //} else
+            if (ul2D != null) {
+                var child2D = ul2D.childNodes;
+                for (var i = child2D.length - 1; i >= 0; i--) {
+                    if (child2D[i].childNodes[0].textContent === "uploaded") {
+                        e.values.ImgUrl = child2D[0].childNodes[1].title;
+                        //drawing2D = child2D[0].childNodes[1].title;
+                        break;
+                    }
+                }
+            }
+            return true;
+        }
+
+        function gridProductImg_OnRowDataBound(e) {
+            if (!e.dataItem.CanModify) {
+                e.row.getElementsByClassName("t-button t-grid-edit t-button-icon")[0].parentNode.innerHTML = "";
+                e.row.getElementsByClassName("t-button t-grid-delete t-button-icon")[0].parentNode.innerHTML = "";
+            }
+        }
+
+@*        function ActiveImg(ImgId) {
+            var message = "Xác nhận thực hiện ";
+            message += "\nĐồng ý ?";
+            if (confirm(message)) {
+                // Save it!
+                $.ajax({
+                    type: 'post',
+                    data: { ImgId: ImgId },
+                    dataType: 'json',
+                    url: '@Url.Action("ActiveImg", "Product", new { area = "" })',
+                    timeout: 20000,
+                    success: function (res) {
+                        if (res.Code != 1)
+                            alert("Lỗi ! " + res.Message);
+                        else {
+                            alert("Thành công ! " + res.Data);
+                            //RefreshGrid("gridProduct");
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        }*@
+
+
+        function ActiveImg(ImgId) {
+            $.ajax({
+                type: 'post',
+                data: { ImgId: ImgId},
+                dataType: 'json',
+                url: '@Url.Action("ActiveImg", "Product", new { area = "" })',
+                timeout: 20000,
+                success: function (res) {
+                    if (res.Code != 1) {
+                        // Nếu muốn vẫn xử lý lỗi, có thể log ra console thay vì alert
+                        console.error("Lỗi ! " + res.Message);
+                    } else {
+                        console.log("Thành công ! " + res.Data);
+                        //RefreshGrid("gridProduct");
+                    }
+                }
+            });
+        }
+
+
+
 
     </script>
 }
@@ -104,12 +256,12 @@
             )
             .Columns(columns =>
                 {
-                    columns.Bound(f => f.CustomerCode).Width(50).ReadOnly(true)
+                    columns.Bound(f => f.CustomerCode).Width(150).ReadOnly(true)
                            .HeaderTemplate("<strong>Mã</br>KH</strong>")
                            .HeaderHtmlAttributes(new {style = "text-align:center;"})
                            .HtmlAttributes(new {style = "text-align:center;"})
                            .ClientTemplate("<strong><#= CustomerCode #></strong>");
-                    columns.Bound(f => f.ProductCode).Width(100).ReadOnly(true)
+                    columns.Bound(f => f.ProductCode).ReadOnly(true)
                            .HeaderTemplate("<strong>Mã</br>SP</strong>")
                            .HeaderHtmlAttributes(new {style = "text-align:center"})
                            .ClientTemplate("<strong><#= ProductCode #></strong>")
@@ -141,12 +293,14 @@
                                     columns.Command(command =>
                                                     command.Edit().ButtonType(GridButtonType.Image)
                                         ).Width(45).Title("").HtmlAttributes(new { style = "text-align:center" });
-                                    columns.Bound(f => f.Idx).Width(50).Title("Tiến trình").ReadOnly(true)
-                                           .Format("{0:n0}");
-                                    columns.Bound(f => f.WarehouseName).Width(150).Title("Tên công đoạn").ReadOnly(true)
+                                    columns.Bound(f => f.Idx).Width(70).Title("Tiến trình").ReadOnly(true)
+                                           .Format("{0:n0}")
+                                           .HtmlAttributes(new { style = "text-align:center" });
+                                    columns.Bound(f => f.WarehouseName).Width(200).Title("Tên công đoạn").ReadOnly(true)
                                                 .ClientTemplate("<strong><#= WarehouseName #></strong>");
                                     columns.Bound(f => f.Note).Title("Ghi chú");
                                     columns.Bound(f => f.ModifiedDate).Width(100).Title("Ngày thêm").ReadOnly(true)
+                                           .HtmlAttributes(new { style = "text-align:center" })
                                            .Format("{0:dd/MM/yyyy HH:mm}");
                                     columns.Bound(f => f.ModifiedUser).Width(100).Title("Người cập nhật").ReadOnly(true);
                                     //columns.Command(commands => commands.Delete().ButtonType(GridButtonType.Image)).Width(30).Title("");
@@ -264,6 +418,150 @@
                                 .ClientEvents(e => e.OnError("grid_OnError"))
                                 .ToHtmlString()
                             );
+                        
+                          items.Add().Text("Bản vẽ ngoại quan").Content(
+                            Html.Telerik().Grid<QcImgModel>()
+                                .Name("gridQcImg_<#= ProductId #>")
+                                .DataKeys(key => key.Add(f => f.ImgId).RouteKey("imgId"))
+                                .ToolBar(
+                                    toolbar =>
+                                    toolbar.Insert().Text("Thêm mới").ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
+                                .DataBinding(
+                                    dataBinding => dataBinding.Ajax()
+                                                              .Select("SelectQcImgById", "Product", new { area = "", productId = "<#= ProductId #>", type = 1})
+                                                              .Insert("InsertQcImg", "Product", new { area = "", productId = "<#= ProductId #>", type = 1 })
+                                                              .Update("UpdateQcImg", "Product", new { area = "", productId = "<#= ProductId #>", type = 1 })
+                                                              .Delete("DeleteQcImg", "Product", new { area = "", productId = "<#= ProductId #>", type = 1 })
+                                )
+                                .Columns(columns => {
+                                    columns.Command(command =>
+                                                    command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
+                                        ).Width(50).Title("")
+                                        .HtmlAttributes(new { style = "text-align:center" });
+
+                                    columns.Bound(f => f.ImgId).Title("Kích hoạt").Width(50).ReadOnly(true)
+                                           .ClientTemplate(
+                                               "<input type='checkbox' id='active_<#= ImgId #>' " +
+                                               "onclick='ActiveImg(<#= ImgId #>)' " + 
+                                               "<#= Active ? \"checked='checked'\" : \"\" #> />"
+                                           )
+                                           .HtmlAttributes(new { style = "text-align:center" });
+
+
+                                    columns.Bound(f => f.Name).Title("Tên bản vẽ").Width(70);         
+                                    columns.Bound(f => f.ImgUrl)
+                                           .Width(40)
+                                           .Title("Bản vẽ")
+                                           .ClientTemplate(
+                                               "<a id='<#=ImgId#>' href='" + Url.Content("~/Content/FileUpload/QcImg/") + "<#=ImgUrl#>?<#=UploadDate#>' class='highslide' onclick='return hs.expand(this)'>" +
+                                                   "<img src='" + Url.Content("~/Content/FileUpload/QcImg/") + "<#=ImgUrl#>?<#=UploadDate#>' height='40' width='40' title='Mở lớn'/>" +
+                                               "</a>")
+                                           .HtmlAttributes(new { style = "text-align:center" });
+                                    columns.Bound(f => f.ModifiedUser).Title("Người tạo").ReadOnly(true).Width(70);
+                                    columns.Bound(f => f.ModifiedDate).Title("Ngày tạo").ReadOnly(true).Width(80)
+                                           .Format("{0:HH:mm - dd/MM/yyyy }")
+                                           .HtmlAttributes(new { style = "text-align:center" });
+                                    columns.Command(commands => commands.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image))
+                                           .Width(30).Title("Xoá")
+                                           .HtmlAttributes(new { style = "text-align:center" });
+                                })
+                                .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
+                                .ClientEvents(e => e.OnError("grid_OnError")
+                                    .OnSave("gridQcImg_OnSave")
+                                    .OnRowDataBound("gridQcImg_OnRowDataBound")
+                                    )
+                                .ToHtmlString());
+
+                          items.Add().Text("Tiêu chuẩn kiểm tra").Content(
+                                  Html.Telerik().Grid<QcImgModel>()
+                                      .Name("gridQcImg2_<#= ProductId #>")
+                                      .DataKeys(key => key.Add(f => f.ImgId).RouteKey("imgId"))
+                                      .ToolBar(
+                                          toolbar =>
+                                          toolbar.Insert().Text("Thêm mới").ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
+                                      .DataBinding(
+                                          dataBinding => dataBinding.Ajax()
+                                                                    .Select("SelectQcImgById", "Product", new { area = "", productId = "<#= ProductId #>", type = 2 })
+                                                                    .Insert("InsertQcImg", "Product", new { area = "", productId = "<#= ProductId #>", type = 2 })
+                                                                    .Update("UpdateQcImg", "Product", new { area = "", productId = "<#= ProductId #>", type = 2 })
+                                                                    .Delete("DeleteQcImg", "Product", new { area = "", productId = "<#= ProductId #>", type = 2 })
+                                      )
+                                      .Columns(columns => {
+                                          columns.Command(command =>
+                                                          command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
+                                              ).Width(50).Title("")
+                                              .HtmlAttributes(new { style = "text-align:center" });
+
+                                          columns.Bound(f => f.ImgId).Title("Kích hoạt").Width(50).ReadOnly(true)
+                                                 .ClientTemplate(
+                                                     "<input type='checkbox' id='active_<#= ImgId #>' " +
+                                                     "onclick='ActiveImg(<#= ImgId #>)' " +
+                                                     "<#= Active ? \"checked='checked'\" : \"\" #> />"
+                                                 )
+                                                 .HtmlAttributes(new { style = "text-align:center" });
+
+
+                                          columns.Bound(f => f.Name).Title("Tên bản vẽ").Width(70);
+                                          columns.Bound(f => f.ImgUrl)
+                                                 .Width(40)
+                                                 .Title("Bản vẽ")
+                                                 .ClientTemplate(
+                                                     "<a id='<#=ImgId#>' href='" + Url.Content("~/Content/FileUpload/QcImg/") + "<#=ImgUrl#>?<#=UploadDate#>' class='highslide' onclick='return hs.expand(this)'>" +
+                                                         "<img src='" + Url.Content("~/Content/FileUpload/QcImg/") + "<#=ImgUrl#>?<#=UploadDate#>' height='40' width='40' title='Mở lớn'/>" +
+                                                     "</a>")
+                                                 .HtmlAttributes(new { style = "text-align:center" });
+                                          columns.Bound(f => f.ModifiedUser).Title("Người tạo").ReadOnly(true).Width(70);
+                                          columns.Bound(f => f.ModifiedDate).Title("Ngày tạo").ReadOnly(true).Width(80)
+                                                 .Format("{0:HH:mm - dd/MM/yyyy }")
+                                                 .HtmlAttributes(new { style = "text-align:center" });
+                                          columns.Command(commands => commands.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image))
+                                                 .Width(30).Title("Xoá")
+                                                 .HtmlAttributes(new { style = "text-align:center" });
+                                      })
+                                      .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
+                                      .ClientEvents(e => e.OnError("grid_OnError")
+                                          .OnSave("gridQcImg_OnSave")
+                                          .OnRowDataBound("gridQcImg_OnRowDataBound")
+                                          )
+                                      .ToHtmlString());
+
+                          //items.Add().Text("Tiêu chuẩn kiểm tra").Content(
+                          //     Html.Telerik().Grid<ProductImgModel>()
+                          //         .Name("gridProductImg_<#= ProductId #>")
+                          //         .DataKeys(key => key.Add(f => f.ImgId).RouteKey("imgId"))
+                          //         .ToolBar(
+                          //             toolbar =>
+                          //             toolbar.Insert().Text("Thêm mới").ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
+                          //         .DataBinding(
+                          //             dataBinding => dataBinding.Ajax()
+                          //                                       .Select("SelectProductImgById", "Product", new { area = "", productId = "<#= ProductId #>" })
+                          //                                       .Insert("InsertProductImg2", "Product", new { area = "", productId = "<#= ProductId #>" })
+                          //                                       .Update("UpdateProductImg", "Product", new { area = "", productId = "<#= ProductId #>" })
+                          //                                       .Delete("DeleteProductImg", "Product", new { area = "", productId = "<#= ProductId #>" })
+                          //         )
+                          //         .Columns(columns => {
+                          //             columns.Command(command =>
+                          //                             command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
+                          //                 ).Width(98).Title("").HtmlAttributes(new { style = "text-align:center" });
+                          //             columns.Bound(f => f.WarehouseName).Title("Công đoạn").Width(70).Hidden(true);
+                          //             columns.Bound(f => f.ImgUrl).Width(40).Title("Bản vẽ")
+                          //                    .ClientTemplate("<a id='<#=ImgId#>' href='" + Url.Content("~/Content/FileUpload/ProductImg/") + "<#=ImgUrl#>?<#=UploadDate#>' class='highslide' onclick='return hs.expand(this)'>" +
+                          //                                    "<img src='" + Url.Content("~/Content/FileUpload/ProductImg/") + "<#=ImgUrl#>?<#=UploadDate#>' height='40' width='40' title='Mở lớn'/>")
+                          //                    .HtmlAttributes(new { style = "text-align:center" });
+                          //             columns.Bound(f => f.Description).Title("Mô tả").Width(70);
+                          //             columns.Bound(f => f.Step).Title("Thứ tự").Width(70);
+                          //             columns.Bound(f => f.ModifiedUser).Title("Người tạo").ReadOnly(true).Width(70);
+                          //             columns.Bound(f => f.ModifiedDate).Title("Ngày tạo").ReadOnly(true).Width(80)
+                          //                    .Format("{0:dd/MM/yyyy HH:mm:ss}");
+                          //             columns.Command(commands => commands.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(30).Title("Xoá");
+                          //         })
+                          //         .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
+                          //         .ClientEvents(e => e.OnError("grid_OnError")
+                          //             .OnSave("gridProductImg_OnSave")
+                          //             .OnRowDataBound("gridProductImg_OnRowDataBound")
+                          //             )
+                          //         .ToHtmlString());
+                    
                     }
                     )
                     .ToHtmlString()

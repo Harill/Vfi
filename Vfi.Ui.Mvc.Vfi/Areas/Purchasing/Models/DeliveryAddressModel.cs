@@ -11,5 +11,6 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
         public bool Active { get; set; }
         public DateTime ModifiedDate { get; set; }
         public string ModifiedUser { get; set; }
+        public string Recipient { get; set; }
     }
 }

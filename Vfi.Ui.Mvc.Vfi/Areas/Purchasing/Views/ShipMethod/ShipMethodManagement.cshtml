@@ -73,6 +73,7 @@
                         .HtmlAttributes(new { style = "text-align:left" });
 
                     columns.Bound(f => f.Address).Title("Địa chỉ");
+                    columns.Bound(f => f.Recipient).Title("Người nhận").Width(150);
                     columns.Bound(f => f.Telephone).Width(200).Title("SĐT");
 
                     columns.Bound(f => f.Active).Width(45).Title("Kích hoạt")

@@ -1,0 +1,12 @@
+﻿@{
+    Html.Telerik().ComboBox()
+        //.Name(ViewData.TemplateInfo.GetFullHtmlFieldName(string.Empty))
+        .Name("billTo")
+        .DataBinding(binding => binding.Ajax().Select("SelectComboBoxDeliveryAddress", "PurchaseOrder").Delay(350))
+        .HtmlAttributes(new {style = "width: 150px"})
+        .DropDownHtmlAttributes(new {style = "width: 250px"})
+        .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
+        .HighlightFirstMatch(true)
+        .AutoFill(true)
+        .Render();
+}

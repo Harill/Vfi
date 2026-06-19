@@ -198,5 +198,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Models
         public double RequirePoKg { get; set; }
 
         public bool IsDuplicate { get; set; }
+
+        public double SaleInMonth { get; set; }
     }
 }

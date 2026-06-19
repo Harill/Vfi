@@ -87,13 +87,15 @@
                     columns.Bound(f => f.Tolerance).Width(70).ReadOnly(true)
                            .HtmlAttributes(new { style = "text-align: right;" })
                            .ClientTemplate("<#= Tolerance == null ? 0 : $.telerik.formatString('{0:n}', Tolerance) #>");
-                    columns.Bound(f => f.ShipMethodName).Width(150).ReadOnly(true);
+                    columns.Bound(f => f.AddressName).Width(50).ReadOnly(true).Title("Giao tới");
+
+
                     columns.Bound(f => f.PaymentMethodName).Width(150).ReadOnly(true);
-                    columns.Bound(f => f.PackagedMethodName).Width(150).ReadOnly(true);
-                    columns.Bound(f => f.DeliveryMethodName).Width(150).ReadOnly(true);
+                    columns.Bound(f => f.ShipMethodName).Width(150).ReadOnly(true);
+                    columns.Bound(f => f.DeliveryMethodName).Width(150).ReadOnly(true).Title("Điều kiện vận chuyển");
                     columns.Bound(f => f.EmployeeName).Width(100).ReadOnly(true);
                     columns.Bound(f => f.ModifiedUser).Width(70).ReadOnly(true);
-                    columns.Bound(f => f.ModifiedDate).Title("Ngày tạo").Width(100).Format("{0:dd/MM/yyyy HH:mm:ss}");
+                    columns.Bound(f => f.ModifiedDate).Title("Ngày tạo").Width(100).Format("{0:dd/MM/yyyy HH:mm:ss}").ReadOnly(true);
                 })
             .DetailView(details => details.ClientTemplate(
                 Html.Telerik().TabStrip()
@@ -147,7 +149,7 @@
                                           .OnRowSelect("grid_OnRowSelect")
                                           .OnSave("Grid_OnSave")
                                           .OnError("grid_OnError"))
-            .Pageable(page => page.PageSize(7))
+            .Pageable(page => page.PageSize(15))
             .Scrollable(f => f.Height("auto"))
             .Sortable()
             .Filterable()

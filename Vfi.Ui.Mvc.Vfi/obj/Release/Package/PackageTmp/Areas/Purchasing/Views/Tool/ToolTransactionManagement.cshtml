@@ -216,7 +216,8 @@
                                .ClientTemplate("<strong><#= TransactionDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', TransactionDate) #></strong>");
                         columns.Bound(f => f.PoCode).Width(90).Title("Phiếu mua");
                         columns.Bound(f => f.TransactionCode).Width(95).Title("Số phiếu");
-                        columns.Bound(f => f.EoIName).Width(50).Title("Nhập</br>Xuất")
+                        columns.Bound(f => f.EoIName).Width(50)
+                            .Title("Nhập</br>Xuất")
                             //.HeaderTemplate("<span style='text-decoration:underline'>Nhập</span></br>Xuất")
                             .HtmlAttributes(new { style = "text-align:center;" });
                         columns.Bound(f => f.TotalQuantity).Width(65).Title("Tổng SL")

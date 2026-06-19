@@ -121,7 +121,7 @@
                 // TH2: số thập phân .5 (5.5, 7.5, 9.5)
                 // tô ô 16 và 17 màu đỏ
                 $row.children().eq(startIndex).addClass("redBackground");
-                $row.children().eq(startIndex + 1).addClass("redBackground");
+                //$row.children().eq(startIndex + 1).addClass("redBackground");
 
                 // sau đó tô tiếp như TH1
                 var count = (Math.floor(dataItem.ProgressState) + 1) / 2;
@@ -310,7 +310,7 @@
         </div>
 
         <div class ="TLHH grid_30">
-             Note: (1) Chờ duyệt phiếu yêu cầu / (2) Trưởng bộ phận đã duyệt / (3) Đang liên hệ NCC / (4) NCC đã xác nhận / (5) Đang giao / (6) Đã giao
+             Note: (1) Đã xác nhận / (2) Đang đặt hàng / (3) Đã đặt hàng / (4) Đang giao / (5) Đã giao 1 phần / (6) Hoàn tất giao hàng
         </div>
 
 @*        <div class="grid_6">
@@ -353,16 +353,16 @@
                          .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>")
                          .FooterHtmlAttributes(new { style = "text-align: center; font-weight:bold; " });
                     
-                    columns.Bound(f => f.InquiryNumber).Width(80).Title("Số yêu cầu").ReadOnly(true)
+                    columns.Bound(f => f.InquiryNumber).Width(90).Title("Số yêu cầu").ReadOnly(true)
                          .HtmlAttributes(new { style = "font-weight:bold; border-bottom:1px black solid; " });
                     
-                    columns.Bound(f => f.ClassifiedName).Width(100).Title("Phân loại").ReadOnly(true)
+                    columns.Bound(f => f.ClassifiedName).Width(80).Title("Phân loại").ReadOnly(true)
                          .HtmlAttributes(new { style = "border-bottom:1px black solid; " });
 
                     //columns.Bound(f => f.TypeName).Width(90).Title("Loại").ReadOnly(true)
                     //     .HtmlAttributes(new { style = "border-bottom:1px black solid; " });
                     
-                    columns.Bound(f => f.ReferenceName).Width(150).Title("Tên").ReadOnly(true)
+                    columns.Bound(f => f.ReferenceName).Width(100).Title("Tên").ReadOnly(true)
                          .HtmlAttributes(new { style = "border-bottom:1px black solid; " });
                     
                     columns.Bound(f => f.ReferenceCode).Width(170).Title("Mã").ReadOnly(true)
@@ -377,7 +377,7 @@
 
                     
                     // Y/C
-                    columns.Bound(f => f.VendorCode).Width(120).Title("NCC")
+                    columns.Bound(f => f.VendorCode).Width(75).Title("NCC")
                          .HtmlAttributes(new { style = "border-bottom:1px black solid; border-left:1px black solid;" });
                 
                     columns.Bound(f => f.OrderQty).Width(60).Title("SL").ReadOnly(true)
@@ -417,32 +417,32 @@
                     //columns.Bound(f => f.PurchaseDetailId).Width(85).Title("Id")
                     //    .HtmlAttributes(new { style = "border-bottom:1px black solid; font-weight:bold; border-left:1px black solid;" });
 
-                    columns.Bound(f => f.DeliveryDate).Width(75).Title("Ngày xác nhận</br>giao hàng")
+                    columns.Bound(f => f.DeliveryDate).Width(70).Title("Ngày xác nhận</br>giao hàng")
                         .ClientTemplate("<#= DeliveryDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', DeliveryDate) #>")
                         .HtmlAttributes(new { style = "border-bottom:1px black solid;  border-right:1px black solid; " });
                     
-                    columns.Bound(f => f.Nulla).Width(60).Title("(1)").ReadOnly(true)
+                    columns.Bound(f => f.Nulla).Width(75).Title("(1)").ReadOnly(true)
                         .Filterable(false)
                         .HtmlAttributes(new { style = "border-bottom:1px black solid; " });
 
-                    columns.Bound(f => f.Nulla).Width(60).Title("(2)").ReadOnly(true)
+                    columns.Bound(f => f.Nulla).Width(75).Title("(2)").ReadOnly(true)
                         .Filterable(false)
                         .HtmlAttributes(new { style = "border-bottom:1px black solid; " });
 
-                    columns.Bound(f => f.Nulla).Width(60).Title("(3)").ReadOnly(true)
+                    columns.Bound(f => f.Nulla).Width(78).Title("(3)").ReadOnly(true)
                         .Filterable(false)
                         .HtmlAttributes(new { style = "border-bottom:1px black solid; " });
 
-                    columns.Bound(f => f.Nulla).Width(60).Title("(4)").ReadOnly(true)
+                    columns.Bound(f => f.BillOfLanding).Width(80).Title("(4)").ReadOnly(true)
                         .Filterable(false)
-                        .HtmlAttributes(new { style = "border-bottom:1px black solid; " });
+                        .HtmlAttributes(new { style = "border-bottom:1px black solid; text-align: center;" });
 
-                    columns.Bound(f => f.StringReceivedQty).Width(60).Title("(5)").ReadOnly(true)
+                    columns.Bound(f => f.StringReceivedQty).Width(80).Title("(5)").ReadOnly(true)
                         .Filterable(false)
-                        .HtmlAttributes(new { style = "border-bottom:1px black solid; text-align: right; " });
+                        .HtmlAttributes(new { style = "border-bottom:1px black solid; text-align: center; " });
 
-                    columns.Bound(f => f.ImportDateStr).Width(70).Title("(6)").ReadOnly(true)
-                        .HtmlAttributes(new { style = "border-bottom:1px black solid; text-align: right; " })                       
+                    columns.Bound(f => f.ImportDateStr).Width(80).Title("(6)").ReadOnly(true)
+                        .HtmlAttributes(new { style = "border-bottom:1px black solid; text-align: center; " })                       
                         .Filterable(false);
                         
                 })

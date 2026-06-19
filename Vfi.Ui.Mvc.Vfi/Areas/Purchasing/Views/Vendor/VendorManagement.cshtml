@@ -5,6 +5,34 @@
 }
 @section Scripts{
 <script type="text/javascript">
+           hs.graphicsDir = '';
+           hs.align = 'center';
+           hs.transitions = ['expand', 'crossfade'];
+           hs.outlineType = '';
+           hs.fadeInOut = true;
+           hs.numberPosition = 'caption';
+           hs.dimmingOpacity = 0.75;
+
+           // Add the controlbar
+           if (hs.addSlideshow)
+               hs.addSlideshow({
+                   //slideshowGroup: 'group1',
+                   interval: 5000,
+                   repeat: false,
+                   useControls: true,
+                   fixedControls: 'fit',
+                   overlayOptions: {
+                       opacity: .75,
+                       position: 'bottom center',
+                       hideOnMouseOut: true
+                   }
+               });
+</script>
+
+
+
+
+<script type="text/javascript">
     function gridVendor_onEdit(e) {
             var mode = e.mode;
             var form = e.form;
@@ -24,7 +52,46 @@
                     });
                 });
             }
+    }
+
+    function gridVendorImg_OnRowDataBound(e) {
+        if (!e.dataItem.CanModify) {
+            e.row.getElementsByClassName("t-button t-grid-edit t-button-icon")[0].parentNode.innerHTML = "";
+            e.row.getElementsByClassName("t-button t-grid-delete t-button-icon")[0].parentNode.innerHTML = "";
         }
+    }
+
+    function gridVendorImg_OnSave(e) {
+        //var i = 0;
+        //var drawing2D = "";
+        var editRow = e.target.getElementsByClassName("t-grid-edit-row")[0];
+        var ul2D = editRow.childNodes[2].childNodes[1].childNodes[1];
+        //if (ul2D == null && e.Upload === "" || typeof ul2D == 'undefined') {
+        //    //drawing2D = e.dataItem.ImgUrl;
+        //} else
+        if (ul2D != null) {
+            var child2D = ul2D.childNodes;
+            for (var i = child2D.length - 1; i >= 0; i--) {
+                if (child2D[i].childNodes[0].textContent === "uploaded") {
+                    e.values.ImgUrl = child2D[0].childNodes[1].title;
+
+                    // kiểm tra giá trị ImgUrl
+                    if (!e.values.ImgUrl) {
+                        console.log("ImgUrl hiện đang NULL hoặc rỗng");
+                        alert("ImgUrl hiện đang NULL hoặc rỗng");
+                    } else {
+                        console.log("ImgUrl:", e.values.ImgUrl);
+                        alert("ImgUrl: " + e.values.ImgUrl);
+                    }
+
+                    //drawing2D = child2D[0].childNodes[1].title;
+                    break;
+                }
+            }
+        }
+        return true;
+    }
+
 </script>
 }
 <div class="title">Quản lý thông tin nhà cung cấp</div>
@@ -36,7 +103,7 @@
         .DataKeys(keys=>keys.Add(f=>f.VendorId).RouteKey("vendorId"))
         .ToolBar(
             toolbar =>
-            toolbar.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
+            toolbar.Insert().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
         .DataBinding(dataBindings=>dataBindings.Ajax()
             .Select("SelectAllVendor","Vendor")
             .Insert("InsertVendor","Vendor")
@@ -45,7 +112,7 @@
         .Columns(columns=>
         {
             columns.Command(command =>
-                command.Edit().ButtonType(GridButtonType.ImageAndText)
+                command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText)
             ).Width(98).Title("Commands").HtmlAttributes(new { style = "text-align:center" });
 
             columns.Bound(f => f.MaterialClassifiedName).Width(125);
@@ -64,17 +131,143 @@
             columns.Bound(f => f.MaxCredit).Width(225);
             columns.Bound(f => f.SpecialInfo).Width(275);
             columns.Bound(f => f.Note).Width(275);
+
+            columns.Bound(f => f.Priority).Width(75)
+                .ClientTemplate("<input type='checkbox' disabled='disabled' name='Priority' <#=Priority? checked='checked' : '' #> />")
+                .HtmlAttributes(new { style = "text-align:center" });
             
             columns.Bound(f => f.Active).Width(75)
                 .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=Active? checked='checked' : '' #> />")
                 .HtmlAttributes(new { style = "text-align:center" });
             
         })
+        
+         .DetailView(details => details.ClientTemplate(
+            Html.Telerik().TabStrip()
+                .Name("TabStrip_<#= VendorId #>")
+                .SelectedIndex(0)
+                .Items(items => {
+                    items.Add()
+                        .Text("Thông tin PDG")
+                        .Content(
+                            Html.Telerik().Grid<EvaluationFormModel>()
+                                .Name("gridEvaluation_<#= VendorId #>")
+                                .DataKeys(key => key.Add(f => f.FormId).RouteKey("FormId"))
+                                .DataBinding(dataBinding => dataBinding.Ajax()
+                                    .Select("SelectGetEvaluationForm", "Vendor", new { vendorId = "<#= VendorId #>" })
+                                )
+                                .Columns(columns => {
+                                    columns.Bound(f => f.Index).Width(40).Title("STT").ReadOnly(true)
+                                                   .HtmlAttributes(new { style = "text-align: center; border-bottom:1px black solid; " })
+                                                   .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>");
+
+                                    columns.Bound(f => f.Name).Width(150).Title("Tên").ReadOnly(true)
+                                        .HtmlAttributes(new { style = "border-bottom:1px black solid; " });
+
+
+                                    columns.Bound(f => f.FromDate).Width(100).Title("Từ Ngày").ReadOnly(true)
+                                        .HtmlAttributes(new { style = "text-align: center; border-bottom:1px black solid" })
+                                        .ClientTemplate("<#= FromDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy }', FromDate) #>");
+                                    columns.Bound(f => f.ToDate).Width(100).Title("Đến Ngày").ReadOnly(true)
+                                        .HtmlAttributes(new { style = "text-align: center; border-bottom:1px black solid;  border-right:1px black solid;" })
+                                        .ClientTemplate("<#= ToDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy }', ToDate) #>");
+
+
+                                    //                
+                                    columns.Bound(f => f.Grade).Width(75).Title("Tổng </br>đánh giá").ReadOnly(true)
+                                        .HtmlAttributes(new { style = "text-align: center; border-bottom:1px black solid; font-weight:bold; border-right:1px black solid;" });
+                                    columns.Bound(f => f.PricePoint).Width(65).Title("Giá</br>(điểm)").ReadOnly(true)
+                                        .HtmlAttributes(new { style = "text-align: center; border-bottom:1px black solid; font-weight:bold;" })
+                                        .Format("{0:n0}");
+                                    columns.Bound(f => f.TechSpPoint).Width(75).Title("Hỗ trợ</br>KT(điểm)").ReadOnly(true)
+                                        .HtmlAttributes(new { style = "text-align: center; border-bottom:1px black solid; font-weight:bold;" })
+                                        .Format("{0:n0}");
+                                    columns.Bound(f => f.LogisticsPoint).Width(75).Title("Giao hàng</br>(điểm)").ReadOnly(true)
+                                        .HtmlAttributes(new { style = "text-align: center; border-bottom:1px black solid; font-weight:bold;" })
+                                        .Format("{0:n0}");
+                                    columns.Bound(f => f.QuantityDeliveryPoint).Width(75).Title("SL hàng</br>(điểm)").ReadOnly(true)
+                                        .HtmlAttributes(new { style = "text-align: center; border-bottom:1px black solid; font-weight:bold;" })
+                                        .Format("{0:n0}");
+                                    columns.Bound(f => f.NGNumberPoint).Width(75).Title("SL NG</br>(điểm)").ReadOnly(true)
+                                        .HtmlAttributes(new { style = "text-align: center; border-bottom:1px black solid; font-weight:bold;" })
+                                        .Format("{0:n0}");
+                                    columns.Bound(f => f.NGTimePoint).Width(75).Title("Lần NG</br>(điểm)").ReadOnly(true)
+                                        .HtmlAttributes(new { style = "text-align: center; border-bottom:1px black solid; font-weight:bold;" })
+                                        .Format("{0:n0}");
+
+                                    //
+                                    columns.Bound(f => f.Note).Title("Ghi chú").ReadOnly(true)
+                                        .HtmlAttributes(new { style = "border-bottom:1px black solid; " });
+                                    columns.Bound(f => f.ApprovedDate).Width(100).Title("Ngày duyệt").ReadOnly(true)
+                                        .HtmlAttributes(new { style = "text-align: center;border-bottom:1px black solid" })
+                                        .ClientTemplate("<#= ApprovedDate == null ? '' : $.telerik.formatString('{0:HH:mm - dd/MM/yyyy }', ApprovedDate) #>");
+                                    columns.Bound(f => f.ApprovedUser).Width(80).Title("Người duyệt ").ReadOnly(true)
+                                        .HtmlAttributes(new { style = "border-bottom:1px black solid" });
+
+                                    columns.Bound(f => f.ModifiedDate).Width(100).Title("Ngày làm").ReadOnly(true)
+                                        .HtmlAttributes(new { style = "text-align: center; border-bottom:1px black solid" })
+                                        .ClientTemplate("<#= ModifiedDate == null ? '' : $.telerik.formatString('{0:HH:mm - dd/MM/yyyy }', ModifiedDate) #>");
+                                    columns.Bound(f => f.ModifiedUser).Width(80).Title("Người làm").ReadOnly(true)
+                                        .HtmlAttributes(new { style = "border-bottom:1px black solid" }); 
+                                    
+                                })
+                                .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
+                                .ClientEvents(e => e.OnError("grid_OnError")
+                                                    //.OnRowDataBound("grid_OnRowDataBound")
+                                                    //.OnDataBound("grid_OnDataBound")
+                                                    )
+                                .ToHtmlString()
+                        );
+
+
+                    items.Add().Text("Chứng chỉ").Content(
+                                           Html.Telerik().Grid<Vfi.Ui.Mvc.Vfi.Models.VendorImgModel>()
+                                               .Name("gridVendorImg_<#= VendorId #>")
+                                               .DataKeys(key => key.Add(f => f.ImgId).RouteKey("imgId"))
+                                               .ToolBar(
+                                                   toolbar =>
+                                                   toolbar.Insert().Text("Thêm mới").ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
+                                               .DataBinding(
+                                                   dataBinding => dataBinding.Ajax()
+                                                                             .Select("SelectVendorImgById", "Vendor", new { area = "", vendorId = "<#= VendorId #>", type = 1 })
+                                                                             .Insert("InsertVendorImg", "Vendor", new { area = "", vendorId = "<#= VendorId #>", type = 1 })
+                                                                             .Update("UpdateVendorImg", "Vendor", new { area = "", vendorId = "<#= VendorId #>", type = 1 })
+                                                                             .Delete("DeleteVendorImg", "Vendor", new { area = "", vendorId = "<#= VendorId #>", type = 1 })
+                                               )
+                                               .Columns(columns => {
+                                                   columns.Command(command =>
+                                                                   command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
+                                                       ).Width(60).Title("").HtmlAttributes(new { style = "text-align:center" });
+                                                   columns.Bound(f => f.Name).Title("Chứng chỉ").Width(300);
+                                                   columns.Bound(f => f.ImgUrl).Width(120).Title("Bản vẽ")
+                                                          .ClientTemplate("<a id='<#=ImgId#>' href='" + Url.Content("~/Content/FileUpload/VendorImg/") + "<#=ImgUrl#>?<#=UploadDate#>' class='highslide' onclick='return hs.expand(this)'>" +
+                                                                          "<img src='" + Url.Content("~/Content/FileUpload/VendorImg/") + "<#=ImgUrl#>?<#=UploadDate#>' height='40' width='40' title='Mở lớn'/>"
+                                                       //+ "</a><div class='highslide-caption'><#= Name #>-<#= Description #></div>"
+                                                                          )
+                                                          .HtmlAttributes(new { style = "text-align:center" });
+                                                   columns.Bound(f => f.ModifiedUser).Title("Người tạo").ReadOnly(true).Width(100);
+                                                   columns.Bound(f => f.ModifiedDate).Title("Ngày tạo").ReadOnly(true).Width(150)
+                                                          .Format("{0:HH:mm - dd/MM/yyyy }")
+                                                          .HtmlAttributes(new { style = "text-align:center" });
+                                                   columns.Command(commands => commands.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Title("Xoá")
+                                                          .HtmlAttributes(new { style = "text-align:center" });
+                                               })
+                                               .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
+                                               .ClientEvents(e => e.OnError("grid_OnError")
+                                                   .OnSave("gridVendorImg_OnSave")
+                                                   .OnRowDataBound("gridVendorImg_OnRowDataBound")
+                                                   )
+                                               .ToHtmlString());
+                })
+                .ToHtmlString()
+        ))
+        
+        
         .ClientEvents(events => events.OnEdit("gridVendor_onEdit").OnError("grid_OnError"))
-        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
         //.Pageable(page => page.PageSize(10))
         .Sortable()
-        .Scrollable(f=>f.Height(510))
+        .Scrollable(f=>f.Height(700))
         .Render();
 }
 </div>

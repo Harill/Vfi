@@ -17,6 +17,8 @@
             purchaseOrderId: purchaseOrderId,
             shipDate: shipDate
         });
+        RefreshGrid("gridTransaction");
+        
     }
 
     function SplitOrderDetails(purchaseOrderId) {
@@ -59,7 +61,37 @@
 
             } catch (err) { alert("Co Loi !"); }
             return false;
-        }
+    }
+
+    function PrintPOFormEN(val) {
+        alert(val);
+        $('#result').load('@Url.Action("PrintPurchaseOrderEN", "PurchaseOrder", new { area = "Purchasing" })',
+                {
+                    purchaseOrderId: val
+                }, function () {
+                    var window = $('#windowReport').data('tWindow');
+                    window.open();
+                });
+            return false;
+    }
+
+
+    function AprrovePo(val) {
+        alert(val);
+        $('#result').load('@Url.Action("ApprovePO", "PurchaseOrder", new { area = "Purchasing" })',
+                {
+                    purchaseOrderId: val
+                },
+                function () {
+                    RefreshGrid("gridTransaction");
+                }
+
+                );
+        return false;
+    }
+
+
+
 </script>
 }
 
@@ -83,28 +115,56 @@
         )
         .Columns(columns =>
             {
-                columns.Command(command =>
-                                command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
-                    ).Width(50).Title("Duyệt").HtmlAttributes(new {style = "text-align:center"});
+                //columns.Bound(f => f.PurchaseOrderId).Title("Duyệt").Width(65).ReadOnly(true)
+                //   .ClientTemplate("<input type='button' id='id_<#= PurchaseOrderId #>' value='Duyệt' class='t-button' onclick=AprrovePo(<#= PurchaseOrderId #>) />")
+                //   .HtmlAttributes(new { style = "text-align:center" });
+
+
+                columns.Bound(f => f.PurchaseOrderId)
+                       .Title("Duyệt")
+                       .Width(62)
+                       .ReadOnly(true)
+                       .ClientTemplate(
+                           "<# if(Approve) { #>" +
+                               "<input type='button' id='id_<#= PurchaseOrderId #>' value='Duyệt' class='t-button' onclick='AprrovePo(<#= PurchaseOrderId #>)' />" +
+                           "<# } #>"
+                       )
+                       .HtmlAttributes(new { style = "text-align:center" });
+                
+                columns.Command(command => command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image))
+                       .Width(40).Title("Sửa")
+                       .HtmlAttributes(new { style = "text-align:center" });
 
                 //columns.Bound(f => f.PurchaseOrderId).Title("Chọn").Width(40).ReadOnly(true)
                 //       .ClientTemplate("<input type='radio' name='chkIds' value='<#= PurchaseOrderId #>' />")
                 //       .HtmlAttributes(new {style = "text-align:center"});
                 columns.Bound(f => f.RevisionNumber).Width(100).ReadOnly(true);
                 columns.Bound(f => f.OrderDate).Width(100).ReadOnly(true)
-                    .Format("{0:dd/MM/yyyy}");
+                       .Format("{0:dd/MM/yyyy}");
                 columns.Bound(f => f.MaterialClasstifiedName).Width(200).Title("Phân loại").ReadOnly(true);
-                columns.Bound(f => f.VendorCodeName).Width(250).ReadOnly(true);
-                columns.Bound(f => f.ContractNumber).Width(100).ReadOnly(true);
-                columns.Bound(f => f.ShipDate).Width(100)
+                columns.Bound(f => f.VendorCodeName).Width(200).ReadOnly(true);
+                columns.Bound(f => f.ContractNumber).Width(80).Title("Số báo giá");
+                columns.Bound(f => f.ShipDate).Width(100).Title("Ngày </br>giao(*)")
                        .ClientTemplate("<strong><#= ShipDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', ShipDate) #></strong>");
                 columns.Bound(f => f.TotalQuality).Title("Tổng SL").Width(75)
                        .HtmlAttributes(new {style = "text-align: right;"})
-                       .ClientTemplate("<#= TotalQuality == null ? 0 : $.telerik.formatString('{0:n}', TotalQuality) #>").ReadOnly(true);
-                columns.Bound(f => f.CurrencyCode).Width(75).ReadOnly(true);                
+                       .ClientTemplate("<#= TotalQuality == null ? 0 : $.telerik.formatString('{0:n1}', TotalQuality) #>").ReadOnly(true);
+                columns.Bound(f => f.CurrencyCode).Width(50).ReadOnly(true);                
                 columns.Bound(f => f.StatusName).Width(75).ReadOnly(true);
-                columns.Bound(f => f.EmployeeName).Width(75).ReadOnly(true);
-                columns.Bound(f => f.Note).ReadOnly(true);
+                columns.Bound(f => f.EmployeeName).Width(75).Title("Nhân viên</br>(*)");
+                columns.Bound(f => f.AddressName).Title("Giao </br>hàng(*)").Width(45);
+
+                columns.Bound(f => f.BillTo).Title("Giao </br>Bill(*)").Width(45);
+
+
+                columns.Bound(f => f.PaymentMethodName).Title("PT(*)</br>Thanh toán").Width(65);
+                columns.Bound(f => f.ShipMethodName).Title("HT(*)</br>vận chuyển").Width(65);
+                columns.Bound(f => f.DeliveryMethodName).Title("ĐK(*)</br>vận chuyển").Width(65); 
+
+                columns.Bound(f => f.Note).Title("Ghi chú");
+                columns.Bound(f => f.PurchaseOrderId).Title("PO EN").Width(65).ReadOnly(true)
+                       .ClientTemplate("<input type='button' id='id_<#= PurchaseOrderId #>' value='In' class='t-button' onclick=PrintPOFormEN(<#= PurchaseOrderId #>) />")
+                       .HtmlAttributes(new { style = "text-align:center" });
                 columns.Command(c => c.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(40);
                 columns.Bound(f => f.ModifiedUser).Width(70).ReadOnly(true);
                 columns.Bound(f => f.ModifiedDate).Title("Ngày tạo").Width(90).Format("{0:dd/MM/yyyy HH:mm:ss}").ReadOnly(true);
@@ -131,16 +191,19 @@
                                     </text>
                                                    ))
                                .DataBinding(dataDindings => dataDindings.Ajax()
-                                                                        .Select("SelectPurchaseOrderDetailByPOId", "PurchaseOrder",
-                                                                                new {purchaseOrderId = "<#= PurchaseOrderId #>"})
+                                                                        .Select("SelectPurchaseOrderDetailByPOId", "PurchaseOrder", new {purchaseOrderId = "<#= PurchaseOrderId #>"})
+                                                                        .Update("UpdatePurchaseOrderDetail", "PurchaseOrder")
                                )
                                .Columns(columns =>
                                    {
+                                       columns.Command(command => command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image))
+                                              .Width(40).Title("Sửa")
+                                              .HtmlAttributes(new { style = "text-align:center" });
                                        columns.Bound(f => f.PurchaseOrderId).Title("Tách").Width(40)
                                               .ClientTemplate("<input type='checkbox' name='chkDetailIds' value='<#= PurchaseOrderDetailId #>' />")
                                               .HtmlAttributes(new {style = "text-align:center"}).ReadOnly(true);
-                                       columns.Bound(f => f.Name).Width(200);
-                                       columns.Bound(f => f.Code).Width(300);
+                                       columns.Bound(f => f.Name).Width(200).ReadOnly(true);
+                                       columns.Bound(f => f.Code).Width(300).ReadOnly(true);
                                        columns.Bound(f => f.OrderQty).Width(80).Title("SL đặt")
                                               .HtmlAttributes(new { style = "text-align: right;" })
                                               .ClientTemplate("<#= OrderQty == null ? 0 : $.telerik.formatString('{0:n}', OrderQty) #>")
@@ -148,20 +211,23 @@
                                               .Aggregate(agg => agg.Sum())
                                               .ClientFooterTemplate("<div style='text-align: right; width: 100%;'><#= $.telerik.formatString('{0:n2}', Sum) #></div>");
 
-                                       columns.Bound(f => f.Unit).Width(50).Title("ĐVT"); 
-                                       columns.Bound(f => f.UnitPrice).Width(110)
+                                       columns.Bound(f => f.Unit).Width(50).Title("ĐVT").ReadOnly(true);
+                                       columns.Bound(f => f.UnitPrice).Width(90).ReadOnly(true)
                                               .HtmlAttributes(new {style = "text-align: right;"})
                                               .ClientTemplate("<#= UnitPrice == null ? 0 : $.telerik.formatString('{0:n}', UnitPrice) #>");
                                        columns.Bound(f => f.CurrencyCode).Width(50).Title("Tiền tệ").ReadOnly(true);
-                                       columns.Bound(f => f.LineTotal).Width(130)
+                                       columns.Bound(f => f.LineTotal).Width(130).ReadOnly(true)
                                               .HtmlAttributes(new {style = "text-align: right;"})
                                               .ClientTemplate("<#= LineTotal == null ? 0 : $.telerik.formatString('{0:n}', LineTotal) #>")
                                               .FooterHtmlAttributes(new { style = "text-align: right;" })
                                               .Aggregate(agg => agg.Sum())
                                               .ClientFooterTemplate("<div style='text-align: right; width: 100%;'><#= $.telerik.formatString('{0:n2}', Sum) #></div>");
-                                       columns.Bound(f => f.DueDate).Title("Ngày giao").Width(90).Format("{0:dd/MM/yyyy}");
+                                       columns.Bound(f => f.DueDate).Title("Ngày giao").Width(90).Format("{0:dd/MM/yyyy}").ReadOnly(true);
 
-                                       columns.Bound(f => f.InquiryNote).Title("Ghi chú YC").Width(300);
+                                       columns.Bound(f => f.Standard).Title("Tiêu chuẩn").Width(70);
+                                       columns.Bound(f => f.InquiryNote).Title("Ghi chú YC").Width(150).ReadOnly(true);
+                                       columns.Bound(f => f.Note).Title("Ghi chú nội bộ").Width(150).ReadOnly(true);
+                                       columns.Bound(f => f.ManagerNote).Title("Ghi chú PO").Width(150);
                                        columns.Bound(f => f.SpecificNote).Title("");
                                    })
         .ClientEvents(events => events.OnError("grid_OnError"))
@@ -185,3 +251,47 @@
         .Render();
 }
 </div>
+
+<!-- windown -->
+@{
+    Html.Telerik().Window()
+        .Name("windowReport")
+        .Modal(true)
+        .Draggable(true)
+        .Content
+        (
+    @<text>
+    <div id="result"></div>
+    </text>
+)
+        //.ClientEvents(e => e.OnLoad("Window_onLoad"));
+        .Visible(false)
+        .Width(960)
+        .Render();
+}
+
+<style type="text/css">
+    #windowReport {
+        /*
+            float: right;
+            Position: relative;
+            */
+        min-height: 580px;
+        top: 15%;
+    }
+
+    #result {
+        height: 750px;
+        overflow: hidden;
+    }
+
+    #ReportBody {
+        padding-bottom: 25px;
+        margin-bottom: 25px;
+    }
+
+    .tb-witdh td {
+        width: 55px;
+    }
+</style>
+

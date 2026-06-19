@@ -24,6 +24,11 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public byte ManagementSignature { get; set; }
         public string Standard { get; set; }
 
+        public string ManagerConfirm { get; set; }
+        public DateTime? DateConfirm { get; set; }
+        public string ApprovedPo { get; set; }
+        public DateTime? DateApproved { get; set; }
+
         public virtual MaterialClassified MaterialClassified { get; set; }
         public virtual PurchaseOrderDetail PurchaseOrderDetail { get; set; }
         public virtual Vendor Vendor { get; set; }

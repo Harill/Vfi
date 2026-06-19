@@ -46,6 +46,7 @@
                 inquiryNumber: inquiryNumber
             });
 
+
         }
 
         function active_onChange() {
@@ -171,6 +172,17 @@
                 });
             return false;
         }
+        function PrintPOFormEN(val) {
+            alert(val);
+            $('#result').load('@Url.Action("PrintPurchaseOrderEN", "PurchaseOrder", new { area = "Purchasing" })',
+                {
+                    purchaseOrderId: val
+                }, function () {
+                    var window = $('#windowReport').data('tWindow');
+                    window.open();
+                });
+            return false;
+        }
 
         function PrintImport(val, type) {
             alert(val);
@@ -219,7 +231,97 @@
             return false;
         }
 
+
+        function ActiveNG2(DetailId, poId) {
+            var message = "Xác nhận thay đổi tình trạng?";
+            message += "\nĐồng ý ?";
+            if (confirm(message)) {
+                $.ajax({
+                    type: 'post',
+                    data: { DetailId: DetailId, PoId: poId }, // gửi cả 2 tham số
+                    dataType: 'json',
+                    url: '@Url.Action("ActiveNG2", "PurchaseOrder", new { area = "Purchasing" })',
+                    timeout: 20000,
+                    success: function (res) {
+                        if (res.Code != 1) {
+                            alert("Lỗi ! " + res.Message);
+                        } else {
+                            alert("Thành công ! " + res.Data);
+                            //RefreshGrid("gridProduct");
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        }
+
+
+        function LockId(DetailId, poId) {
+            var message = "Xác nhận: Khóa / Mở khóa?";
+            message += "\nĐồng ý ?";
+            if (confirm(message)) {
+                $.ajax({
+                    type: 'post',
+                    data: { DetailId: DetailId, PoId: poId }, // gửi cả 2 tham số
+                    dataType: 'json',
+                    url: '@Url.Action("LockId", "PurchaseOrder", new { area = "Purchasing" })',
+                    timeout: 20000,
+                    success: function (res) {
+                        if (res.Code != 1) {
+                            alert("Lỗi ! " + res.Message);
+                        } else {
+                            alert("Thành công ! " + res.Data);
+                            //RefreshGrid("gridProduct");
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        }
+
+
+
+
+        // GetPoImportDetail
+
+
+       @* function ActiveNG(DetailId) {
+            var message = "Xác nhận thay đổi tình trạng?";
+            message += "\nĐồng ý ?";
+            if (confirm(message)) {
+                // Save it!
+                $.ajax({
+                    type: 'post',
+                    data: { DetailId: DetailId },
+                    dataType: 'json',
+                    url: '@Url.Action("ActiveNG", "PurchaseOrder", new { area = "Purchasing" })',
+                    timeout: 20000,
+                    success: function (res) {
+                        if (res.Code != 1)
+                            alert("Lỗi ! " + res.Message);
+                        else {
+                            alert("Thành công ! " + res.Data);
+                            //RefreshGrid("gridProduct");
+                        }
+                    }
+                });
+            } else {
+                return false;
+            }
+        }*@
+
+
+
+
     </script>
+
+
+
+
+
+
 }
 
 <div class="title">Quản lý thông tin mua hàng</div>
@@ -363,29 +465,43 @@
             )
             .Columns(columns => {
                 columns.Command(command =>
-                                command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
-                    ).Width(50).Title("").HtmlAttributes(new { style = "text-align:center" });
+                                command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(50)
+                                       .Title("")
+                                       .HtmlAttributes(new { style = "text-align:center" });
                 columns.Bound(f => f.RevisionNumber).Width(100).ReadOnly(true);
-                columns.Bound(f => f.OrderDate).Width(90).ReadOnly(true)
+                columns.Bound(f => f.OrderDate).Width(90).ReadOnly(true).Title("Ngày đặt<br>lệnh")
                     .Format("{0:dd/MM/yyyy}");
-                columns.Bound(f => f.MaterialClasstifiedName).Width(120).ReadOnly(true);
-                columns.Bound(f => f.VendorName).Width(100);
-                columns.Bound(f => f.ContractNumber).Width(100).ReadOnly(true);
-                columns.Bound(f => f.CurrencyCode).Width(50).ReadOnly(true);
+                columns.Bound(f => f.MaterialClasstifiedName).Width(120).ReadOnly(true).Title("Loại hình</br>cung cấp");
+                columns.Bound(f => f.VendorName).Width(100).Title("Tên nhà </br>cung cấp");
+                columns.Bound(f => f.ContractNumber).Width(100).ReadOnly(true).Title("Số báo giá");
+                columns.Bound(f => f.CurrencyCode).Width(50).ReadOnly(true).Title("Tiền</br>tệ");
                 columns.Bound(f => f.ShipDate).Width(100).ReadOnly(true)
                        .ClientTemplate("<strong><#= ShipDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', ShipDate) #></strong>");
-                columns.Bound(f => f.TotalQuality).Title("Tổng SL").Width(75).ReadOnly(true)
+                columns.Bound(f => f.TotalQuality).Title("Tổng SL").Width(90).ReadOnly(true)
                        .HtmlAttributes(new { style = "text-align: right;" })
                        .ClientTemplate("<#= TotalQuality == null ? 0 : $.telerik.formatString('{0:n}', TotalQuality) #>").ReadOnly(true);
                 columns.Bound(f => f.Tolerance).Width(50).ReadOnly(true)
                        .HeaderTemplate("Dung</br>Sai")
                        .ClientTemplate("<#= Tolerance == null ? 0 : $.telerik.formatString('{0:n0}', Tolerance) #>%").ReadOnly(true);
                 columns.Bound(f => f.StatusName).Width(75).ReadOnly(true);
-                columns.Bound(f => f.EmployeeName).Width(100).ReadOnly(true);
-                columns.Bound(f => f.Note).Width(120).ReadOnly(true);
-                columns.Bound(f => f.PurchaseOrderId).Title("In").Width(55).ReadOnly(true)
+                columns.Bound(f => f.EmployeeName).Width(70).Title("Nhân</br> viên");
+
+                columns.Bound(f => f.AddressName).Width(70).Title("Giao</br>hàng tới");
+                columns.Bound(f => f.BillTo).Width(70).Title("Giao</br>Bill tới");
+                columns.Bound(f => f.PaymentMethodName).Title("PT</br>Thanh toán");
+                columns.Bound(f => f.ShipMethodName).Title("HT</br>vận chuyển");
+                columns.Bound(f => f.DeliveryMethodName).Title("ĐK</br>vận chuyển");
+
+                columns.Bound(f => f.BillOfLanding).Width(100).Title("Vận đơn");
+
+                columns.Bound(f => f.PurchaseOrderId).Title("PO EN").Width(55).ReadOnly(true)
+                       .ClientTemplate("<input type='button' id='id_<#= PurchaseOrderId #>' value='In' class='t-button' onclick=PrintPOFormEN(<#= PurchaseOrderId #>) />")
+                       .HtmlAttributes(new { style = "text-align:center" })
+                       .Filterable(false);
+                columns.Bound(f => f.PurchaseOrderId).Title("PO VN").Width(55).ReadOnly(true)
                        .ClientTemplate("<input type='button' id='id_<#= PurchaseOrderId #>' value='In' class='t-button' onclick=PrintPOForm(<#= PurchaseOrderId #>) />")
-                       .HtmlAttributes(new { style = "text-align:center" });
+                       .HtmlAttributes(new { style = "text-align:center" })
+                       .Filterable(false);
                 columns.Bound(f => f.ModifiedUser).Width(70).ReadOnly(true);
                 columns.Bound(f => f.ModifiedDate).Title("Ngày lập").Width(90).Format("{0:dd/MM/yyyy HH:mm:ss}").ReadOnly(true);
             })
@@ -399,16 +515,15 @@
                                 .Name("gridTransactionDetail_<#= PurchaseOrderId #>")
         .DataKeys(keys => keys.Add(f => f.PurchaseOrderDetailId).RouteKey("purchaseOrderDetailId"))
                                 .DataBinding(dataDindings => dataDindings.Ajax()
-                                                                         .Select("SelectPurchaseOrderDetailByPOId", "PurchaseOrder",
-                                                                                 new { purchaseOrderId = "<#= PurchaseOrderId #>" })
-                                                 .Update("UpdatePurchaseOrderDetail", "PurchaseOrder")
+                                                                         .Select("SelectPurchaseOrderDetailByPOId", "PurchaseOrder", new { purchaseOrderId = "<#= PurchaseOrderId #>" })
+                                                                         .Update("UpdatePurchaseOrderDetail", "PurchaseOrder")
                                 )
                                 .Columns(columns => {
                                     columns.Command(command =>
                                         command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
                                         ).Width(50).Title("").HtmlAttributes(new { style = "text-align:center" });
                                     columns.Bound(f => f.Code).Width(150).Title("Mã").ReadOnly(true);
-                                    columns.Bound(f => f.OrderQty).Width(100).ReadOnly(true)
+                                    columns.Bound(f => f.OrderQty).Width(80).ReadOnly(true)
                                         .HtmlAttributes(new { style = "text-align: right;" })
                                         .Format("{0:n}")
                                         .FooterHtmlAttributes(new { style = "text-align: right;" })
@@ -416,15 +531,15 @@
                                         .FooterHtmlAttributes(new { style = "text-align: right;" })
                                         .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>");
 
-                                    columns.Bound(f => f.Unit).Width(70).ReadOnly(true);
-                                    columns.Bound(f => f.ReceivedQty).Width(100).ReadOnly(true)
+                                    columns.Bound(f => f.Unit).Width(60).ReadOnly(true);
+                                    columns.Bound(f => f.ReceivedQty).Width(80).ReadOnly(true)
                                         .HtmlAttributes(new { style = "text-align: right;" })
                                         .Format("{0:n}")
                                         .FooterHtmlAttributes(new { style = "text-align: right;" })
                                         .Aggregate(agg => agg.Sum())
                                         .FooterHtmlAttributes(new { style = "text-align: right;" })
                                         .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>");
-                                    columns.Bound(f => f.RejectedQty).Width(100).ReadOnly(true)
+                                    columns.Bound(f => f.RejectedQty).Width(80).ReadOnly(true)
                                         .HtmlAttributes(new { style = "text-align: right;" })
                                         .Format("{0:n}")
                                         .FooterHtmlAttributes(new { style = "text-align: right;" })
@@ -434,7 +549,7 @@
                                     columns.Bound(f => f.UnitPrice).Width(70)
                                         .HtmlAttributes(new { style = "text-align: right;" })
                                         .ClientTemplate("<#= UnitPriceString  #>");
-                                    columns.Bound(f => f.LineTotal).Width(100).ReadOnly(true)
+                                    columns.Bound(f => f.LineTotal).Width(90).ReadOnly(true)
                                         .HtmlAttributes(new { style = "text-align: right;" })
                                         .ClientTemplate("<#= LineTotalString #>")
                                         .FooterHtmlAttributes(new { style = "text-align: right;" })
@@ -444,7 +559,9 @@
                                     columns.Bound(f => f.DueDate).Title("Ngày giao").ReadOnly(true).Width(80)
                                         .Format("{0:dd/MM/yyyy}");
                                     columns.Bound(f => f.InquiryNote).Title("Số Yêu cầu").ReadOnly(true).Width(150);
-                                    columns.Bound(f => f.Note).Title("Note").Width(150);
+                                    columns.Bound(f => f.Standard).Title("Tiêu chuẩn").Width(50);
+                                    columns.Bound(f => f.Note).Title("Note nội bộ").Width(150);
+                                    columns.Bound(f => f.ManagerNote).Title("Note PO").Width(100);
                                 })
                                 .ClientEvents(events => events.OnError("grid_OnError")
 
@@ -455,9 +572,7 @@
                                 .Name("gridImport_<#= PurchaseOrderId #>")
                                 .DataKeys(keys => keys.Add(f => f.TransactionId).RouteKey("transactionId"))
                                 .DataBinding(dataDindings => dataDindings.Ajax()
-                                                                         .Select("SelectImportByPoId", "PurchaseOrder",
-                                                                                 new { purchaseOrderId = "<#= PurchaseOrderId #>" })
-                                                                                 )
+                                                                         .Select("SelectImportByPoId", "PurchaseOrder",new { purchaseOrderId = "<#= PurchaseOrderId #>" }))
                                 .Columns(columns => {
                                     columns.Bound(f => f.TransactionDate).Width(75).Title("Ngày nhập")
                                            .Format("{0:dd/MM/yyyy}");
@@ -478,11 +593,8 @@
                                                        .Name("gridTransactionDetail_<#= TransactionId #>_<#= PoId #>")
                                                        .DataKeys(keys => keys.Add(f => f.DetailId).RouteKey("detailId"))
                                                        .DataBinding(dataDindings => dataDindings.Ajax()
-                                                                                                .Select("SelectImportDetail", "PurchaseOrder",
-                                                                                                        new { transactionId = "<#= TransactionId #>", purchaseOrderId = "<#= PoId #>" })
-                                                                                                        .Update("UpdatePoImportDetail", "PurchaseOrder",
-                                                                                                        new { transactionId = "<#= TransactionId #>", purchaseOrderId = "<#= PoId #>" })
-                                                                                 )
+                                                                                                .Select("SelectImportDetail", "PurchaseOrder", new { transactionId = "<#= TransactionId #>", purchaseOrderId = "<#= PoId #>" })
+                                                                                                .Update("UpdatePoImportDetail", "PurchaseOrder",new { transactionId = "<#= TransactionId #>", purchaseOrderId = "<#= PoId #>" }))
                                                        .Columns(columns => {
                                                            columns.Command(command =>
                                                                command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
@@ -496,7 +608,33 @@
                                                            columns.Bound(f => f.Quantity).Title("Số lượng").Width(75)
                                                                   .Format("{0:n2}")
                                                                   .HtmlAttributes(new { style = "text-align: right;" });
-                                                           columns.Bound(f => f.Note).Title("Ghi chú").ReadOnly(true);
+                                                           //columns.Bound(f => f.TransactionId).Title("QC").Width(80)
+                                                           //       .ClientTemplate(
+                                                           //           "<button class='toggleBtn' data-id='<#= TransactionId #>' value='2'>Giá trị: 2</button>"
+                                                           //       )
+                                                           //       .HtmlAttributes(new { style = "text-align:center" });
+
+                                                           columns.Bound(f => f.DetailId).Title("NG").Width(50).ReadOnly(true)
+                                                                  .ClientTemplate(
+                                                                                    "<input type='checkbox' id='NG<#= DetailId #>_<#= PoId #>' " +
+                                                                                    "onclick='ActiveNG2(<#= DetailId #>, <#= PoId #>)' " +
+                                                                                    "<#= NG ? \"checked='checked'\" : \"\" #> />"
+                                                                                )
+
+
+                                                                  .HtmlAttributes(new { style = "text-align:center" }); 
+                                                           columns.Bound(f => f.DetailId).Title("Lock").Width(50).ReadOnly(true)
+                                                                  .ClientTemplate(
+                                                                                     "<input type='checkbox' id='Lock<#= DetailId #>_<#= PoId #>' " +
+                                                                                     "onclick='LockId(<#= DetailId #>, <#= PoId #>)' " +
+                                                                                     "<#= Lock ? \"checked='checked'\" : \"\" #> />"
+                                                                                 )
+
+
+                                                                   .HtmlAttributes(new { style = "text-align:center" });
+                                                           
+                                                           
+                                                           columns.Bound(f => f.Note).Title("Ghi chú");
                                                        })
                                                        .ClientEvents(events => events.OnError("grid_OnError"))
                                                        .ToHtmlString()
@@ -521,7 +659,8 @@
             .ClientEvents(events => events.OnDataBinding("grid_OnDataBinding")
                                           .OnRowSelect("grid_OnRowSelect")
                                           .OnRowDataBound("grid_OnRowDataBound")
-                                          .OnError("grid_OnError"))
+                                          .OnError("grid_OnError")
+                                          )
             .Scrollable(f => f.Height(510))
             .Render();
     }
@@ -556,7 +695,7 @@
     }
 
     #result {
-        height: 520px;
+        height: 750px;
         overflow: hidden;
     }
 

@@ -135,7 +135,8 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
                                 : string.Format("{0:n2}", ReceivedQty);
             }
         }
-        
+
+        public string BillOfLanding { get; set; }
 
 
 
