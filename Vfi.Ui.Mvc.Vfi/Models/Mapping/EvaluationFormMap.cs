@@ -40,6 +40,8 @@ namespace Vfi.Ui.Mvc.Vfi.Models.Mapping
             this.Property(t => t.ZeroPointCount).HasColumnName("ZeroPointCount");
             this.Property(t => t.TotalPoint).HasColumnName("TotalPoint");
             this.Property(t => t.Grade).HasColumnName("Grade");
+            this.Property(t => t.NGQuantity).HasColumnName("NGQuantity");
+            this.Property(t => t.OrderQuantity).HasColumnName("OrderQuantity");
 
 
             // Relationships

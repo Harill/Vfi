@@ -609,6 +609,12 @@
     <Compile Include="Areas\Inv\Models\ExpectedProduction2PlanModel.cs" />
     <Compile Include="Areas\Inv\Models\MaterialProductionReport.cs" />
     <Compile Include="Areas\Inv\Models\ProductionLockModel.cs" />
+    <Compile Include="Areas\Inv\Reports\RptPrintEvaluationForm.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Areas\Inv\Reports\RptPrintEvaluationForm.Designer.cs">
+      <DependentUpon>RptPrintEvaluationForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Areas\Inv\Reports\RptPurchaseOrderDetailEN.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -1221,6 +1227,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Areas\Purchasing\Models\AssignToolModel.cs" />
+    <Compile Include="Areas\Purchasing\Models\VendorObjectiveModel.cs" />
     <Compile Include="Areas\Purchasing\Models\EvaluationFormModel.cs" />
     <Compile Include="Areas\Purchasing\Models\DeliveryAddressModel.cs" />
     <Compile Include="Areas\Purchasing\Models\PoProgressModel.cs" />
@@ -1313,6 +1320,8 @@
     <Compile Include="Areas\Sales\Models\WaitingOrderBalancingPlanModel.cs" />
     <Compile Include="Areas\Sales\SalesAreaRegistration.cs" />
     <Compile Include="Areas\Purchasing\Models\VendorImgModel.cs" />
+    <Compile Include="Models\Mapping\VendorObjectiveMap.cs" />
+    <Compile Include="Models\VendorObjective.cs" />
     <Compile Include="Models\VendorImg.cs" />
     <Compile Include="Models\EvaluationForm.cs" />
     <Compile Include="Models\Mapping\QcImgMap.cs" />
@@ -1373,8 +1382,9 @@
     <Content Include="Areas\Inv\Views\Inv\PageTransactionFormGroup.aspx" />
     <Content Include="Areas\Inv\Views\Reporting\PageNotFinishInvProductReport.aspx" />
     <Content Include="Areas\Inv\Views\Reporting\PageDeliverySalesReport.aspx" />
+    <Content Include="Areas\Purchasing\Views\PurchaseOrder\PagePrintEvaluationForm.aspx" />
     <Content Include="Areas\Purchasing\Views\PurchaseOrder\PagePrintPurchaseOrderDetailEN.aspx" />
-    <Content Include="Areas\Purchasing\Views\Tool\PagePrintToolTransactionInternal.aspx" />
+    <Content Include="Areas\Purchasing\Tool\PagePrintToolTransactionInternal.aspx" />
     <Content Include="Areas\Sales\Views\Orders\PagePreparationTools.aspx" />
     <Content Include="Content\FileUpload\CertificateMaterial2\askquestion.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -1912,11 +1922,11 @@
     <Content Include="Areas\Purchasing\Views\PurchaseOrder\PagePrintPurchaseOrderTracking.aspx" />
     <Content Include="Areas\Purchasing\Views\PurchaseOrder\PagePrinPlatingPriceForm.aspx" />
     <Content Include="Areas\Purchasing\Views\PurchaseOrder\PagePrinPlatingForm.aspx" />
-    <Content Include="Areas\Purchasing\Views\Tool\PageAssignProductionTool.aspx" />
-    <Content Include="Areas\Purchasing\Views\Tool\PagePrintAssignTool.aspx" />
-    <Content Include="Areas\Purchasing\Views\Tool\PagePrintExportTool.aspx" />
-    <Content Include="Areas\Purchasing\Views\Tool\PageToolTotal.aspx" />
-    <Content Include="Areas\Purchasing\Views\Tool\PagePrintImportTool.aspx" />
+    <Content Include="Areas\Purchasing\Tool\PageAssignProductionTool.aspx" />
+    <Content Include="Areas\Purchasing\Tool\PagePrintAssignTool.aspx" />
+    <Content Include="Areas\Purchasing\Tool\PagePrintExportTool.aspx" />
+    <Content Include="Areas\Purchasing\Tool\PageToolTotal.aspx" />
+    <Content Include="Areas\Purchasing\Tool\PagePrintImportTool.aspx" />
     <Content Include="Areas\Sales\Views\Customer\PageCustomerList.aspx" />
     <Content Include="Areas\Inv\Views\Inv\PageOrderNoteForm.aspx" />
     <Content Include="Areas\Sales\Views\SalesOrder\PageApproveOrderDetail.aspx" />
@@ -2778,16 +2788,16 @@
     <Content Include="Areas\Purchasing\Views\Fuel\ImportTransactionFuel.cshtml" />
     <Content Include="Areas\Purchasing\Views\Fuel\AssignFuel.cshtml" />
     <Content Include="Areas\Purchasing\Views\PurchaseOrder\EditorTemplates\_FuelInventoryEditTemplate.cshtml" />
-    <Content Include="Areas\Purchasing\Views\Tool\EditorTemplates\_DateTemplate.cshtml" />
-    <Content Include="Areas\Purchasing\Views\Tool\EditorTemplates\_FuelEditTemplate.cshtml" />
-    <Content Include="Areas\Purchasing\Views\Tool\EditorTemplates\_ToolInventoryEditTemplate.cshtml" />
-    <Content Include="Areas\Purchasing\Views\Tool\EditorTemplates\_ToolEditTemplate.cshtml" />
-    <Content Include="Areas\Purchasing\Views\Tool\EditorTemplates\_VendorEditTemplate.cshtml" />
-    <Content Include="Areas\Purchasing\Views\Tool\EditorTemplates\DateNonNullable.cshtml" />
-    <Content Include="Areas\Purchasing\Views\Tool\EditorTemplates\Number.cshtml" />
-    <Content Include="Areas\Purchasing\Views\Tool\EditorTemplates\Number2.cshtml" />
-    <Content Include="Areas\Purchasing\Views\Tool\EditorTemplates\NumberAsInt.cshtml" />
-    <Content Include="Areas\Purchasing\Views\Tool\EditorTemplates\NumberAsShort.cshtml" />
+    <Content Include="Areas\Purchasing\Tool\EditorTemplates\_DateTemplate.cshtml" />
+    <Content Include="Areas\Purchasing\Tool\EditorTemplates\_FuelEditTemplate.cshtml" />
+    <Content Include="Areas\Purchasing\Tool\EditorTemplates\_ToolInventoryEditTemplate.cshtml" />
+    <Content Include="Areas\Purchasing\Tool\EditorTemplates\_ToolEditTemplate.cshtml" />
+    <Content Include="Areas\Purchasing\Tool\EditorTemplates\_VendorEditTemplate.cshtml" />
+    <Content Include="Areas\Purchasing\Tool\EditorTemplates\DateNonNullable.cshtml" />
+    <Content Include="Areas\Purchasing\Tool\EditorTemplates\Number.cshtml" />
+    <Content Include="Areas\Purchasing\Tool\EditorTemplates\Number2.cshtml" />
+    <Content Include="Areas\Purchasing\Tool\EditorTemplates\NumberAsInt.cshtml" />
+    <Content Include="Areas\Purchasing\Tool\EditorTemplates\NumberAsShort.cshtml" />
     <Content Include="Areas\Purchasing\Views\Fuel\EditorTemplates\_DateTemplate.cshtml" />
     <Content Include="Areas\Purchasing\Views\Fuel\EditorTemplates\_FuelEditTemplate.cshtml" />
     <Content Include="Areas\Purchasing\Views\Fuel\EditorTemplates\_FuelInventoryEditTemplate.cshtml" />
@@ -2801,15 +2811,15 @@
     <Content Include="Areas\Purchasing\Views\Fuel\EditorTemplates\NumberAsInt.cshtml" />
     <Content Include="Areas\Purchasing\Views\Fuel\EditorTemplates\NumberAsShort.cshtml" />
     <Content Include="Areas\Purchasing\Views\Fuel\ExportFuelInventory.cshtml" />
-    <Content Include="Areas\Purchasing\Views\Tool\ApproveTransactionTool.cshtml" />
-    <Content Include="Areas\Purchasing\Views\Tool\ExportToolInventory.cshtml" />
-    <Content Include="Areas\Purchasing\Views\Tool\ToolTransactionManagement.cshtml" />
-    <Content Include="Areas\Purchasing\Views\Tool\ImportToolInventory.cshtml" />
-    <Content Include="Areas\Purchasing\Views\Tool\ImportTransactionTool.cshtml" />
-    <Content Include="Areas\Purchasing\Views\Tool\EditorTemplates\_AllMachineEditTemplate.cshtml" />
-    <Content Include="Areas\Purchasing\Views\Tool\EditorTemplates\_ProductEditTemplate.cshtml" />
+    <Content Include="Areas\Purchasing\Tool\ApproveTransactionTool.cshtml" />
+    <Content Include="Areas\Purchasing\Tool\ExportToolInventory.cshtml" />
+    <Content Include="Areas\Purchasing\Tool\ToolTransactionManagement.cshtml" />
+    <Content Include="Areas\Purchasing\Tool\ImportToolInventory.cshtml" />
+    <Content Include="Areas\Purchasing\Tool\ImportTransactionTool.cshtml" />
+    <Content Include="Areas\Purchasing\Tool\EditorTemplates\_AllMachineEditTemplate.cshtml" />
+    <Content Include="Areas\Purchasing\Tool\EditorTemplates\_ProductEditTemplate.cshtml" />
     <Content Include="Areas\Purchasing\Views\Fuel\EditorTemplates\_UnitTemplate.cshtml" />
-    <Content Include="Areas\Purchasing\Views\Tool\EditorTemplates\_UnitTemplate.cshtml" />
+    <Content Include="Areas\Purchasing\Tool\EditorTemplates\_UnitTemplate.cshtml" />
     <Content Include="Areas\Factory\Views\Section\EditorTemplates\_DateTemplate.cshtml" />
     <Content Include="Areas\Factory\Views\Section\EditorTemplates\_DateTemplateNullable.cshtml" />
     <Content Include="Areas\Factory\Views\Section\EditorTemplates\_MachineDiagramTypeEditTemplate.cshtml" />
@@ -2835,7 +2845,7 @@
     <Content Include="Areas\Sales\Views\Orders\EditorTemplates\NumberAsFactor.cshtml" />
     <Content Include="Areas\Inv\Views\Reporting\TrackUpProduction.cshtml" />
     <Content Include="Areas\Inv\Views\Reporting\ExpectedMaterialPlan.cshtml" />
-    <Content Include="Areas\Purchasing\Views\Tool\EditorTemplates\Number0.cshtml" />
+    <Content Include="Areas\Purchasing\Tool\EditorTemplates\Number0.cshtml" />
     <Content Include="Areas\Purchasing\Views\PurchaseOrder\EditorTemplates\Number1.cshtml" />
     <Content Include="Areas\Purchasing\Views\PurchaseOrder\PurchaseTransactionProduct.cshtml" />
     <Content Include="Areas\Inv\Views\Transaction\EditorTemplates\_ProductCodeNameTemplate.cshtml" />
@@ -2847,7 +2857,7 @@
     <Content Include="Areas\Factory\Views\Section\RotateSection.cshtml" />
     <Content Include="Areas\Factory\Views\Section\EditorTemplates\_Production2CodeEditTemplate.cshtml" />
     <Content Include="Areas\Factory\Views\Section\EditorTemplates\_SectionEditTemplate.cshtml" />
-    <Content Include="Areas\Purchasing\Views\Tool\ToolInventoryCard.cshtml" />
+    <Content Include="Areas\Purchasing\Tool\ToolInventoryCard.cshtml" />
     <Content Include="Areas\Inv\Views\Inv\MaterialInventoryCard.cshtml" />
     <Content Include="Areas\Factory\Views\Section\SectionInventory.cshtml" />
     <Content Include="Areas\Factory\Views\Section\ManagementProduction2.cshtml" />
@@ -2917,9 +2927,9 @@
     <Content Include="Areas\Inv\Views\Inv\EditorTemplates\Number2Digit.cshtml" />
     <Content Include="Areas\Inv\Views\Inv\EditorTemplates\Number3Digit.cshtml" />
     <Content Include="Areas\Inv\Views\Inv\EditorTemplates\NumberAsInt.cshtml" />
-    <Content Include="Areas\Purchasing\Views\Tool\AssignTool.cshtml" />
+    <Content Include="Areas\Purchasing\Tool\AssignTool.cshtml" />
     <Content Include="Areas\Factory\Views\Machine\EditorTemplates\Number0.cshtml" />
-    <Content Include="Areas\Purchasing\Views\Tool\ToolImportExportReport.cshtml" />
+    <Content Include="Areas\Purchasing\Tool\ToolImportExportReport.cshtml" />
     <Content Include="Areas\Inv\Views\Reporting\ExpectedProduction2Plan.cshtml" />
     <Content Include="Areas\Sales\Views\SalesOrder\ForecastOrderQc.cshtml" />
     <Content Include="Areas\Sales\Views\SalesOrder\ForecastOrderCnc.cshtml" />
@@ -2953,13 +2963,13 @@
     <Content Include="Areas\Inv\Views\Transaction\AddTransactionDetail.cshtml" />
     <Content Include="Areas\Inv\Views\Reporting\EditorTemplates\_UploadTemplate.cshtml" />
     <Content Include="Areas\Sales\Views\SalesOrder\ForecastOrderCreate.cshtml" />
-    <Content Include="Areas\Purchasing\Views\Tool\AssignToolProduction2.cshtml" />
-    <Content Include="Areas\Purchasing\Views\Tool\AssignTool_Cu.cshtml" />
-    <Content Include="Areas\Purchasing\Views\Tool\EditorTemplates\_Machine2EditTemplate.cshtml" />
+    <Content Include="Areas\Purchasing\Tool\AssignToolProduction2.cshtml" />
+    <Content Include="Areas\Purchasing\Tool\AssignTool_Cu.cshtml" />
+    <Content Include="Areas\Purchasing\Tool\EditorTemplates\_Machine2EditTemplate.cshtml" />
     <Content Include="Areas\Factory\Views\Machine\EditorTemplates\Int.cshtml" />
     <Content Include="Areas\Factory\Views\Machine\EditorTemplates\_ToolEditTemplate.cshtml" />
     <Content Include="Areas\Factory\Views\Machine\EditorTemplates\_ProductionToolEditTemplate.cshtml" />
-    <Content Include="Areas\Purchasing\Views\Tool\ToolExportReport.cshtml" />
+    <Content Include="Areas\Purchasing\Tool\ToolExportReport.cshtml" />
     <Content Include="Areas\Inv\Views\Reporting\MaterialYearlyReport.cshtml" />
     <Content Include="Areas\Inv\Views\Reporting\ToolYearlyReport.cshtml" />
     <Content Include="Areas\Inv\Views\Reporting\MaterialProductionReport.cshtml" />
@@ -2990,7 +3000,7 @@
     <Content Include="Areas\Factory\Views\Machine\MachineStateHandover.cshtml" />
     <Content Include="Areas\Inv\Views\Inv\Production2InvManagementSplit.cshtml" />
     <Content Include="Areas\Inv\Views\Reporting\MachineSetupPlan.cshtml" />
-    <Content Include="Areas\Purchasing\Views\Tool\ImportToolInventoryB.cshtml" />
+    <Content Include="Areas\Purchasing\Tool\ImportToolInventoryB.cshtml" />
     <Content Include="Areas\Factory\Views\Machine\MachineStateStatistic.cshtml" />
     <Content Include="Areas\Factory\Views\Machine\MaterialLimitPlanManagement.cshtml" />
     <Content Include="Areas\Inv\Views\Transaction\CreateImportSX1_2019.cshtml" />
@@ -3035,8 +3045,8 @@
     <Content Include="Areas\Inv\Views\Transaction\ImportInternalTransactionProduct.cshtml" />
     <Content Include="Areas\Inv\Views\Transaction\ExportInternalTransactionMaterial.cshtml" />
     <Content Include="Areas\Inv\Views\Transaction\ImportInternalTransactionMaterial.cshtml" />
-    <Content Include="Areas\Purchasing\Views\Tool\ImportInternalTransactionTool.cshtml" />
-    <Content Include="Areas\Purchasing\Views\Tool\ExportInternalTransactionTool.cshtml" />
+    <Content Include="Areas\Purchasing\Tool\ImportInternalTransactionTool.cshtml" />
+    <Content Include="Areas\Purchasing\Tool\ExportInternalTransactionTool.cshtml" />
     <Content Include="Areas\Inv\Views\Reporting\ProductCurrentReport.cshtml" />
     <Content Include="Areas\Inv\Views\Transaction\RecipeTransactionProduct.cshtml" />
     <Content Include="Areas\Factory\Views\Machine\EditorTemplates\_WarehouseMainProcessTemplate.cshtml" />
@@ -3132,7 +3142,7 @@
     <Content Include="Areas\Purchasing\Views\PurchaseOrder\EditorTemplates\_PaymentTemplate.cshtml" />
     <Content Include="Areas\Purchasing\Views\PurchaseOrder\EditorTemplates\_DeliveryByTemplate.cshtml" />
     <Content Include="Areas\Purchasing\Views\PurchaseOrder\EditorTemplates\_ConditionDeliveryTemplate.cshtml" />
-    <Content Include="Areas\Purchasing\Views\Tool\ToolTransactionDetail.cshtml" />
+    <Content Include="Areas\Purchasing\Tool\ToolTransactionDetail.cshtml" />
     <Content Include="Areas\Purchasing\Views\PurchaseOrder\EditorTemplates\_BillToAddressTemplate.cshtml" />
     <Content Include="Areas\Purchasing\Views\PurchaseOrder\CreateEvaluationForm.cshtml" />
     <Content Include="Areas\Purchasing\Views\PurchaseOrder\ApprovedEvaluationForm.cshtml" />
@@ -3452,7 +3462,7 @@
     <Content Include="Views\User\ItemCard.cshtml" />
     <Content Include="Views\User\ProductionMonitor.cshtml" />
     <Content Include="Views\Material\EditorTemplates\_MaterialToolTypeEditTemplate.cshtml" />
-    <Content Include="Areas\Purchasing\Views\Tool\ChestManagement.cshtml" />
+    <Content Include="Areas\Purchasing\Tool\ChestManagement.cshtml" />
     <Content Include="Views\Product\ProductManagementTax.cshtml" />
     <Content Include="Views\Material\EditorTemplates\_UploadTemplate.cshtml" />
     <Content Include="Views\Product\EditorTemplates\Number0.cshtml" />
@@ -3936,6 +3946,10 @@
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>GridLocalization.vi-VN1.designer.cs</LastGenOutput>
     </Content>
+    <EmbeddedResource Include="Areas\Inv\Reports\RptPrintEvaluationForm.resx">
+      <DependentUpon>RptPrintEvaluationForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Areas\Inv\Reports\RptPurchaseOrderDetailEN.resx">
       <DependentUpon>RptPurchaseOrderDetailEN.cs</DependentUpon>
       <SubType>Designer</SubType>

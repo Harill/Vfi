@@ -74,19 +74,9 @@
         // QC
 
         function gridQcImg_OnSave(e) {
-            //var i = 0;
-            //var drawing2D = "";
             var editRow = e.target.getElementsByClassName("t-grid-edit-row")[0];
-
             var ul2D = editRow.childNodes[3].childNodes[1].childNodes[1];
 
-            //var ul2D = editRow.querySelector("td:nth-child(3) ul");
-
-            //var ul2D = editRow.querySelector(".t-upload ul");
-
-            //if (ul2D == null && e.Upload === "" || typeof ul2D == 'undefined') {
-            //    //drawing2D = e.dataItem.ImgUrl;
-            //} else
             if (ul2D != null) {
                 var child2D = ul2D.childNodes;
                 for (var i = child2D.length - 1; i >= 0; i--) {
@@ -102,7 +92,6 @@
                             alert("ImgUrl: " + e.values.ImgUrl);
                         }
 
-                        //drawing2D = child2D[0].childNodes[1].title;
                         break;
                     }
                 }
@@ -464,6 +453,9 @@
                                     columns.Command(commands => commands.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image))
                                            .Width(30).Title("Xoá")
                                            .HtmlAttributes(new { style = "text-align:center" });
+                                    //columns.Bound(f => f.ProductId).Hidden(true);
+                                    //columns.Bound(f => f.Type).Hidden(true);
+                                    
                                 })
                                 .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                 .ClientEvents(e => e.OnError("grid_OnError")
@@ -517,6 +509,8 @@
                                           columns.Command(commands => commands.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image))
                                                  .Width(30).Title("Xoá")
                                                  .HtmlAttributes(new { style = "text-align:center" });
+                                          //columns.Bound(f => f.ProductId).Hidden(true);
+                                          //columns.Bound(f => f.Type).Hidden(true);
                                       })
                                       .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                       .ClientEvents(e => e.OnError("grid_OnError")

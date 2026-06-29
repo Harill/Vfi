@@ -4429,39 +4429,39 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers.Production {
 
 
         #region Qc Img
-        [GridAction]
-        public ActionResult SelectQcImgById2(int productId, int type) {
-            var model = new List<QcImgModel>();
-            try {
-                model = GetQcImgById2(productId, type);
-            }
-            catch (Exception ex) {
-                ModelState.AddModelError("SelectQcImgById", ex.Message);
-            }
-            return View(new GridModel(model));
-        }
+        //[GridAction]
+        //public ActionResult SelectQcImgById2(int productId, int type) {
+        //    var model = new List<QcImgModel>();
+        //    try {
+        //        model = GetQcImgById2(productId, type);
+        //    }
+        //    catch (Exception ex) {
+        //        ModelState.AddModelError("SelectQcImgById", ex.Message);
+        //    }
+        //    return View(new GridModel(model));
+        //}
 
-           List<QcImgModel> GetQcImgById2(int productId, int type) {
-            var model = new List<QcImgModel>();
+        //   List<QcImgModel> GetQcImgById2(int productId, int type) {
+        //    var model = new List<QcImgModel>();
 
-            using (var vfi = new tammaContext()) {
-                var qcImgs = vfi.QcImgs.Where(t => t.ProductId == productId && t.Type == type && t.Active == true).OrderBy(t => t.ImgId);
-                foreach (var qcImg in qcImgs) {
-                    var entity = new QcImgModel {
-                        ImgId = qcImg.ImgId,
-                        ImgUrl = qcImg.ImgUrl,
-                        ModifiedDate = qcImg.ModifiedDate,
-                        ModifiedUser = qcImg.ModifiedUser,
-                        Name = qcImg.Name,
-                        //ProductId = productId,
-                        //ProductCode = qcImg.Product.ProductCode,
-                    };
-                    model.Add(entity);
-                }
+        //    using (var vfi = new tammaContext()) {
+        //        var qcImgs = vfi.QcImgs.Where(t => t.ProductId == productId && t.Type == type && t.Active == true).OrderBy(t => t.ImgId);
+        //        foreach (var qcImg in qcImgs) {
+        //            var entity = new QcImgModel {
+        //                ImgId = qcImg.ImgId,
+        //                ImgUrl = qcImg.ImgUrl,
+        //                ModifiedDate = qcImg.ModifiedDate,
+        //                ModifiedUser = qcImg.ModifiedUser,
+        //                Name = qcImg.Name,
+        //                ProductId = productId,
+        //                Type = type,
+        //            };
+        //            model.Add(entity);
+        //        }
 
-            }
-            return model;
-        }
+        //    }
+        //    return model;
+        //}
 
 
 
@@ -4491,6 +4491,7 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers.Production {
                         CanModify = true,
                         Name = qcImg.Name,
                         ProductId = productId,
+                        Type = type,
                         ProductCode = qcImg.Product.ProductCode,
                         Active = qcImg.Active,
                     };
@@ -4516,6 +4517,8 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers.Production {
                 if (string.IsNullOrWhiteSpace(insert.ImgUrl)){
                     throw new AggregateException("Lỗi! Không tìm thấy hình được upload!");
                 }
+                insert.ProductId = productId;
+                insert.Type = type;
 
                 var qcImg = new QcImg(){
                     ProductId = productId,

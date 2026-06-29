@@ -77,7 +77,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                     Priority = vendor.Priority,
                 }));
             }
-            return model.OrderBy(m => m.MaterialClassifiedName).ThenByDescending(t => t.Priority).ThenBy(m => m.VendorCode).ToList();
+            return model.OrderByDescending(m => m.Priority).ThenBy(t => t.MaterialClassifiedName).ThenBy(m => m.VendorCode).ToList();
         }
 
         [HttpPost]
@@ -381,6 +381,12 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
             return model;
         }
 
+        public ActionResult DownloadFile(string fileName) {
+            var path = Server.MapPath("~/Content/FileUpload/VendorImg/" + fileName);
+            byte[] fileBytes = System.IO.File.ReadAllBytes(path);
+            return File(fileBytes, "application/octet-stream", fileName);
+        }
+
         [GridAction]
         public ActionResult InsertVendorImg(VendorImgModel insert, int vendorId, int type) {
             try {
@@ -533,24 +539,32 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
             try {
                 //var attachments = new List<HttpPostedFileBase>();
                 if (VendorImg.Any()) {
+                    var fileExtension = "";
                     foreach (var file in VendorImg) {
                         // Some browsers send file names with full path. We only care about the file name.
                         var fileName = Path.GetFileName(file.FileName);
                         if (fileName == null) continue;
                         var destinationPath = Path.Combine(Server.MapPath("~/Content/FileUpload/VendorImg"), fileName);
-                        // giam kich thuoc
-                        Image bm = Image.FromStream(file.InputStream);
-                        var designWidth = 3000.0;
-                        var designHeight = 1500.0;
-                        var ratioW = designWidth / (double)bm.Width;
-                        var ratioH = designHeight / (double)bm.Height;
-                        var ratio = ratioH < ratioW ? ratioH : ratioW;
-                        var newWidth = Convert.ToInt32(bm.Width * ratio);
-                        var newHeight = Convert.ToInt32(bm.Height * ratio);
-                        bm = MyUtilities.Function.ResizeBitmap((Bitmap)bm, newWidth, newHeight);
-                        bm.Save(destinationPath, bm.RawFormat);
+                        var imgExtensions = new List<String>() { "png", "jpg", "jpeg" };
+                        fileExtension = fileName.Split('.').Reverse().First().ToLower();
+                        if (fileExtension.Contains("pdf")) {
+                            file.SaveAs(destinationPath);
+                        }
+                        else if (imgExtensions.Any(x => fileExtension.Contains(x))) {
+                            // giam kich thuoc
+                            Image bm = Image.FromStream(file.InputStream);
+                            var designWidth = 3000.0;
+                            var designHeight = 1500.0;
+                            var ratioW = designWidth / (double)bm.Width;
+                            var ratioH = designHeight / (double)bm.Height;
+                            var ratio = ratioH < ratioW ? ratioH : ratioW;
+                            var newWidth = Convert.ToInt32(bm.Width * ratio);
+                            var newHeight = Convert.ToInt32(bm.Height * ratio);
+                            bm = MyUtilities.Function.ResizeBitmap((Bitmap)bm, newWidth, newHeight);
+                            bm.Save(destinationPath, bm.RawFormat);
+                        }
                     }
-                    return Json("Upload thành công !");
+                    return Json("Upload thành công !" + fileExtension);
                 }
                 else {
                     throw new AggregateException("attachments null");
@@ -566,5 +580,332 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
 
         # endregion
 
+
+        #region Vendor Objective
+
+        [GridAction]
+        public ActionResult SelectVendorObjective(int vendorId) {
+            var model = new List<VendorObjectiveModel>();
+            try {
+                model = GetVendorObjective(vendorId);
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("SelectVendorObjective", ex.Message);
+            }
+            return View(new GridModel(model));
+        }
+
+        List<VendorObjectiveModel> GetVendorObjective(int vendorId) {
+            var model = new List<VendorObjectiveModel>();
+            using (var vfi = new tammaContext()) {
+                var vendorObjectives = vfi.VendorObjectives.Where(t => t.VendorId == vendorId).OrderByDescending(t => t.Year).ToList();
+                if (!vendorObjectives.Any()) {
+                    return model;
+                }
+                else {
+                    foreach (var objective in vendorObjectives) {
+                        var entity = new VendorObjectiveModel {
+                            ObjectiveId = objective.ObjectiveId,
+                            VendorId = vendorId,
+                            Year = objective.Year,
+                            ModifiedDate = objective.ModifiedDate,
+                            ModifiedUser = objective.ModifiedUser,
+                            Note = objective.Note,
+
+                            PricePoint = objective.PricePoint,
+                            TechSpPoint = objective.TechSpPoint,
+
+                            LateTimes = objective.LateTimes,
+                            LessTimes = objective.LessTimes,
+                            NGTimes = objective.NGTimes,
+                            PercentNGNumber = objective.PercentNGNumber,
+
+                            LogisticsPoint = objective.LogisticsPoint,
+                            QuantityDeliveryPoint = objective.QuantityDeliveryPoint,
+                            NGTimesPoint = objective.NGTimesPoint,
+                            NGNumberPoint = objective.NGNumberPoint,
+
+                            TotalPoint = objective.TotalPoint,
+                        };
+                        model.Add(entity);
+                    }
+                }
+                return model;
+            }
+        }
+
+
+        [HttpPost]
+        [GridAction]
+        public ActionResult InsertVendorObjective(VendorObjectiveModel insert, int vendorId) {
+            if (!Request.IsAuthenticated) {
+                throw new AggregateException("Bạn đã bị mất quyền đăng nhập. \r\n " +
+                                             "1 trong các nguyên nhân như mất thời gian chờ. \r\n " +
+                                             "Xin vui lòng đăng nhập lại hệ thống.");
+            }
+            try {
+                using (var vfi = new tammaContext()) {
+                    var user = vfi.Users.FirstOrDefault(u => u.Username.Equals(HttpContext.User.Identity.Name));
+                    if (user == null)
+                        throw new AggregateException("Vui lòng đăng nhập lại");
+
+                    var entity = new VendorObjective {
+                        ObjectiveId = insert.ObjectiveId,
+                        VendorId = vendorId,
+                        Note = insert.Note,
+                        ModifiedDate = DateTime.Now,
+                        ModifiedUser = HttpContext.User.Identity.Name,
+
+                        PricePoint = insert.PricePoint,
+                        TechSpPoint = insert.TechSpPoint,
+
+                        LateTimes = insert.LateTimes,
+                        LessTimes = insert.LessTimes,
+                        NGTimes = insert.NGTimes,
+                        PercentNGNumber = Math.Round(insert.PercentNGNumber, 1),
+                    };
+                    switch (insert.PricePoint) {
+                        case 0:
+                        case 5:
+                        case 10:
+                            entity.PricePoint = insert.PricePoint;
+                            break;
+                        default:
+                            throw new AggregateException ("Lỗi! Hãy nhập điểm 'Competitivity' (0 - 5 - 10)");
+                    }
+
+                    switch (insert.TechSpPoint) {
+                        case 0:
+                        case 5:
+                        case 10:
+                            entity.TechSpPoint = insert.TechSpPoint;
+                            break;
+                        default:
+                            throw new AggregateException("Lỗi! Hãy nhập điểm 'Technical Support' (0 - 5 - 10)");
+                    }
+
+                    var checkLatestYear = vfi.VendorObjectives.Where(t => t.VendorId == vendorId).Select(t => t.Year).ToList();
+                    if (!checkLatestYear.Any()) {
+                        entity.Year = DateTime.Today.Year;
+                    }
+                    else {
+                        var nextYear = checkLatestYear.Max();
+                        if (checkLatestYear.Max() > (DateTime.Today.Year +1)) {
+                            return View(new GridModel(GetVendorObjective(vendorId)));
+                        }
+                        entity.Year = nextYear + 1;
+                    }
+
+
+
+                    if (insert.LateTimes == 0) {
+                        entity.LogisticsPoint = 20;
+                    }
+                    else if (insert.LateTimes == 1 || insert.LateTimes == 2) {
+                        entity.LogisticsPoint = 15;
+                    }
+                    else if (insert.LateTimes >= 3 && insert.LateTimes <= 5) {
+                        entity.LogisticsPoint = 10;
+                    }
+                    else if (insert.LateTimes > 5) {
+                        entity.LogisticsPoint = 0;
+                    }
+
+                    if (insert.LessTimes == 0) {
+                        entity.QuantityDeliveryPoint = 20;
+                    }
+                    else if (insert.LessTimes == 1 || insert.LessTimes == 2) {
+                        entity.QuantityDeliveryPoint = 15;
+                    }
+                    else if (insert.LessTimes >= 3 && insert.LessTimes <= 5) {
+                        entity.QuantityDeliveryPoint = 10;
+                    }
+                    else if (insert.LessTimes > 5) {
+                        entity.QuantityDeliveryPoint = 0;
+                    }
+
+
+                    if (insert.NGTimes == 0) {
+                        entity.NGTimesPoint = 20;
+                    }
+                    else if (insert.NGTimes == 1 || insert.NGTimes == 2) {
+                        entity.NGTimesPoint = 15;
+                    }
+                    else if (insert.NGTimes == 3 || insert.NGTimes == 4) {
+                        entity.NGTimesPoint = 10;
+                    }
+                    else if (insert.NGTimes > 4) {
+                        entity.NGTimesPoint = 0;
+                    }
+
+                    if (insert.PercentNGNumber < 2) {
+                        entity.NGNumberPoint = 20;
+                    }
+                    else if (insert.PercentNGNumber >= 2 && insert.PercentNGNumber < 3) {
+                        entity.NGNumberPoint = 15;
+                    }
+                    else if (insert.PercentNGNumber >= 3 && insert.PercentNGNumber <= 4) {
+                        entity.NGNumberPoint = 10;
+                    }
+                    else if (insert.PercentNGNumber > 4) {
+                        entity.NGNumberPoint = 0;
+                    }
+
+                    entity.TotalPoint = entity.PricePoint +
+                                entity.TechSpPoint +
+                                entity.LogisticsPoint +
+                                entity.QuantityDeliveryPoint +
+                                entity.NGTimesPoint +
+                                entity.NGNumberPoint;
+
+                    vfi.VendorObjectives.Add(entity);
+                    vfi.SaveChanges();
+
+                }
+            }
+            catch (Exception ex) {
+                var message = ex.Message;
+                if (ex.InnerException != null) {
+                    message += " | Inner Exception: " + ex.InnerException.ToString();
+                }
+                return Json(message);
+            }
+
+            return View(new GridModel(GetVendorObjective(vendorId)));
+        }
+
+        [HttpPost]
+        [GridAction]
+        public ActionResult UpdateVendorObjective(VendorObjectiveModel update, int vendorId) {
+            if (!Request.IsAuthenticated) {
+                throw new AggregateException("Bạn đã bị mất quyền đăng nhập. \r\n " +
+                                             "1 trong các nguyên nhân như mất thời gian chờ. \r\n " +
+                                             "Xin vui lòng đăng nhập lại hệ thống.");
+            }
+            try {
+                using (var vfi = new tammaContext()) {
+                    var user = vfi.Users.FirstOrDefault(u => u.Username.Equals(HttpContext.User.Identity.Name));
+                    if (user == null)
+                        throw new AggregateException("Vui lòng đăng nhập lại");
+                    var entity = vfi.VendorObjectives.FirstOrDefault(t => t.VendorId == vendorId && t.ObjectiveId == update.ObjectiveId);
+                    if (entity == null)
+                        throw new AggregateException("Lỗi! Không tìm thấy NCC");
+                    else if (entity != null) {
+                        entity.ModifiedDate = DateTime.Now;
+                        entity.ModifiedUser = HttpContext.User.Identity.Name;
+
+                        if (update.PricePoint != entity.PricePoint) {
+                            switch (update.PricePoint) {
+                                case 0:
+                                case 5:
+                                case 10:
+                                    entity.PricePoint = update.PricePoint;
+                                    break;
+                                default:
+                                    throw new AggregateException("Chỉ được sửa điểm 'Competitivity' trong (0 - 5 - 10)");
+                            }
+                        }
+                        if (update.TechSpPoint != entity.TechSpPoint) {
+                            switch (update.TechSpPoint) {
+                                case 0:
+                                case 5:
+                                case 10:
+                                    entity.TechSpPoint = update.TechSpPoint;
+                                    break;
+                                default:
+                                    throw new AggregateException("Chỉ được sửa điểm 'Technical Support' trong (0 - 5 - 10)");
+                            }
+                        }
+
+                        if (update.Note != entity.Note) {
+                            entity.Note = update.Note;
+                        }
+
+                        if (update.LateTimes != entity.LateTimes) {
+                            entity.LateTimes = update.LateTimes;
+                            if (update.LateTimes == 0) {
+                                entity.LogisticsPoint = 20;
+                            }
+                            else if (update.LateTimes == 1 || update.LateTimes == 2) {
+                                entity.LogisticsPoint = 15;
+                            }
+                            else if (update.LateTimes >= 3 && update.LateTimes <= 5) {
+                                entity.LogisticsPoint = 10;
+                            }
+                            else if (update.LateTimes > 5) {
+                                entity.LogisticsPoint = 0;
+                            }
+                        }
+
+                        if (update.LessTimes != entity.LessTimes) {
+                            entity.LessTimes = update.LessTimes;
+                            if (update.LessTimes == 0) {
+                                entity.QuantityDeliveryPoint = 20;
+                            }
+                            else if (update.LessTimes == 1 || update.LessTimes == 2) {
+                                entity.QuantityDeliveryPoint = 15;
+                            }
+                            else if (update.LessTimes >= 3 && update.LessTimes <= 5) {
+                                entity.QuantityDeliveryPoint = 10;
+                            }
+                            else if (update.LessTimes > 5) {
+                                entity.QuantityDeliveryPoint = 0;
+                            }
+                        }
+
+                        if (update.NGTimes != entity.NGTimes) {
+                            entity.NGTimes = update.NGTimes;
+                            if (update.NGTimes == 0) {
+                                entity.NGTimesPoint = 20;
+                            }
+                            else if (update.NGTimes == 1 || update.NGTimes == 2) {
+                                entity.NGTimesPoint = 15;
+                            }
+                            else if (update.NGTimes == 3 || update.NGTimes == 4) {
+                                entity.NGTimesPoint = 10;
+                            }
+                            else if (update.NGTimes > 4) {
+                                entity.NGTimesPoint = 0;
+                            }
+                        }
+
+                        if (update.PercentNGNumber != entity.PercentNGNumber) {
+                            entity.PercentNGNumber = Math.Round(update.PercentNGNumber, 1);
+                            if (update.PercentNGNumber < 2) {
+                                entity.NGNumberPoint = 20;
+                            }
+                            else if (update.PercentNGNumber >= 2 && update.PercentNGNumber < 3) {
+                                entity.NGNumberPoint = 15;
+                            }
+                            else if (update.PercentNGNumber >= 3 && update.PercentNGNumber <= 4) {
+                                entity.NGNumberPoint = 10;
+                            }
+                            else if (update.PercentNGNumber > 4) {
+                                entity.NGNumberPoint = 0;
+                            }
+                        }
+
+                        entity.TotalPoint = entity.PricePoint +
+                                            entity.TechSpPoint +
+                                            entity.LogisticsPoint +
+                                            entity.QuantityDeliveryPoint +
+                                            entity.NGTimesPoint +
+                                            entity.NGNumberPoint;
+
+
+
+
+                        vfi.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("UpdateVendorObjective", ex.Message);
+            }
+
+            return View(new GridModel(GetVendorObjective(vendorId)));
+        }
+
+        # endregion
     }
 }

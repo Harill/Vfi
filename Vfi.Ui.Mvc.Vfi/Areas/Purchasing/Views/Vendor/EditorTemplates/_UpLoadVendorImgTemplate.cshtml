@@ -6,7 +6,7 @@
         $.each(files, function () {
             fileName = this.name;
             if (this.extension != ".png" && this.extension != ".jpg" && this.extension != ".jpeg" && this.extension != ".pdf") {
-                alert("Only picture files (png-jpg) can be uploaded");
+                alert("Only picture files (png, jpg, pdf) can be uploaded");
                 e.preventDefault();
             }
         });

@@ -227,6 +227,7 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public DbSet<MaterialImg> MaterialImgs { get; set; }
         public DbSet<EvaluationForm> EvaluationForms { get; set; }
         public DbSet<VendorImg> VendorImgs { get; set; }
+        public DbSet<VendorObjective> VendorObjectives { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -419,6 +420,7 @@ namespace Vfi.Ui.Mvc.Vfi.Models
             modelBuilder.Configurations.Add(new TaxInvoiceProductDetailMap());
             modelBuilder.Configurations.Add(new TimeLineMap());
             modelBuilder.Configurations.Add(new VendorImgMap());
+            modelBuilder.Configurations.Add(new VendorObjectiveMap());
             modelBuilder.Configurations.Add(new ContextLogMap());
             modelBuilder.Configurations.Add(new FunctionMap());
             modelBuilder.Configurations.Add(new MenuMap());

@@ -17,6 +17,7 @@ namespace Vfi.Ui.Mvc.Vfi.Models
             this.PurchaseOrders = new List<PurchaseOrder>();
             this.EvaluationForms = new List<EvaluationForm>();
             this.VendorImgs = new List<VendorImg>();
+            this.VendorObjectives = new List<VendorObjective>();
         }
 
         public int VendorId { get; set; }
@@ -52,6 +53,7 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public virtual ICollection<PurchaseOrder> PurchaseOrders { get; set; }
         public virtual ICollection<EvaluationForm> EvaluationForms { get; set; }
         public virtual ICollection<VendorImg> VendorImgs { get; set; }
+        public virtual ICollection<VendorObjective> VendorObjectives { get; set; }
 
     }
 }

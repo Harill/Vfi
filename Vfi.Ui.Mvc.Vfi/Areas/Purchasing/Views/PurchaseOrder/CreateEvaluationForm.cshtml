@@ -1,7 +1,7 @@
 ﻿@using Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
 @model PurchaseOrderModel
 @{
-    ViewBag.Title = "Tạo đánh giá NCC";
+    ViewBag.Title = "Create Evaluation-Form";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section Scripts{
@@ -169,16 +169,28 @@
             CountNG = 0;
         }
 
+        function RefreshAllGridsAuto() {
+            // Tìm tất cả các phần tử có data("tGrid")
+            $(".t-grid").each(function () {
+                var grid = $(this).data("tGrid");
+                if (grid) {
+                    grid.ajaxRequest();
+                }
+            });
+        }
+
+
+
     </script>
 }
 
-<div class="title">Tạo phiếu đánh giá NCC</div>
+<div class="title">Create Evaluation-Form</div>
 <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px; width: auto;">
 
     <fieldset>
-        <legend>Thông tin phiếu đánh giá</legend>
+        <legend>Evaluation-Form Information</legend>
 
-        <div class="grid_1">Loại</div>
+        <div class="grid_1">Type:</div>
             <div class="grid_5">
             @{
                 Html.Telerik().ComboBox()
@@ -190,7 +202,7 @@
                     .Render();                                              
             }
         </div>
-            <div class="grid_1">NCC</div>
+            <div class="grid_1_5">Supplier:</div>
         <div class="grid_6">
             @{
                 Html.Telerik().ComboBox()
@@ -202,7 +214,7 @@
                     .Render();                                              
             }
         </div>
-        <div class="grid_1">Từ:</div>
+        <div class="grid_1">From:</div>
         <div class="grid_3">
                 @{
                     Html.Telerik().DatePicker()
@@ -215,7 +227,7 @@
 
 
 
-         <div class="grid_1">Đến:</div>
+         <div class="grid_1">To:</div>
          <div class="grid_3">
                 @{
                     Html.Telerik().DatePicker()
@@ -227,7 +239,7 @@
          </div>
 
 
-         <div class="grid_1_5">Ghi Chú:</div>
+         <div class="grid_1_5">Note:</div>
          <div class="grid_7">@Html.TextAreaFor(f => f.Note, new {@class = "multi-line"})</div>
 
 
@@ -237,6 +249,9 @@
                   Làm mới
              </button>
          </div>*@
+        <button onclick="RefreshAllGridsAuto();">
+             Check Point
+        </button>
 
 
     </fieldset>
@@ -250,19 +265,19 @@
             .Name("grid")
             .DataKeys(keys => keys.Add(f => f.FormId).RouteKey("formId"))
             .ToolBar(bar => {
-                bar.Insert().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).Text("Thêm mới");
-                bar.SubmitChanges().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).SaveText("Lưu lại").CancelText("Hủy");
+                bar.Insert().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).Text("New");
+                bar.SubmitChanges().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).SaveText("Save").CancelText("Cancel");
             })
             .DataBinding(dataBindings => dataBindings.Ajax()
                 .Select("SelectEvaluationForm", "PurchaseOrder")
                 .Update("CreateNewEvaluationForm", "PurchaseOrder")
             )
             .Columns(columns => {
-                columns.Bound(f => f.PricePoint).Width(200).Title("Giá cả (Điểm: 0-10)")
+                columns.Bound(f => f.PricePoint).Width(200).Title("Competitivity (Point: 0-5-10)")
                        .HtmlAttributes(new { style = "text-align: center; font-weight:bold;" });
-                columns.Bound(f => f.TechSpPoint).Width(200).Title("Hỗ trợ kỹ thuật (Điểm: 0-10)")
+                columns.Bound(f => f.TechSpPoint).Width(200).Title("Technical Support(Point: 0-5-10)")
                        .HtmlAttributes(new { style = "text-align: center; font-weight:bold;" });
-                columns.Command(commands => commands.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(70).Title("Hủy đánh giá")
+                columns.Command(commands => commands.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(70).Title("Cancel")
                        .HtmlAttributes(new { style = "text-align: center; " });
             })
             .ClientEvents(events => events
@@ -284,26 +299,25 @@
         Html.Telerik().Grid<EvaluationFormModel>()
             .Name("grid2")
             .DataKeys(keys => keys.Add(f => f.FormId).RouteKey("formId"))
-            .ToolBar(commands => {
-                commands.Custom()
-                    .Text("Xem điểm")
-                    .HtmlAttributes(new { id = "btnRefresh", @class = "t-button", onclick = "return RefreshGrid('grid2');" })
-                    .ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText)
-                    .ImageHtmlAttributes(new { @class = "t-icon t-insert" });
-            })
-
+            //.ToolBar(commands => {
+            //    commands.Custom()
+            //        .Text("Xem điểm")
+            //        .HtmlAttributes(new { id = "btnRefresh", @class = "t-button", onclick = "return RefreshGrid('grid2');" })
+            //        .ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText)
+            //        .ImageHtmlAttributes(new { @class = "t-icon t-insert" });
+            //})
             .DataBinding(dataBindings => dataBindings.Ajax()
                 .Select("SelectEvaluationFormBegin", "PurchaseOrder", new { area = "" })
             )
             .Columns(columns => {
-                columns.Bound(f => f.LogisticsPoint).Width(100).ReadOnly(true).Title("Logistic (điểm)")
-                       .HtmlAttributes(new { style = "text-align: center; font-weight:bold;" });
-                columns.Bound(f => f.QuantityDeliveryPoint).Width(90).ReadOnly(true).Title("Chất lượng (điểm)")
-                       .HtmlAttributes(new { style = "text-align: center; font-weight:bold;" });
-                columns.Bound(f => f.NGTimePoint).Width(90).Title("Số lần NG (điểm)").ReadOnly(true)
-                       .HtmlAttributes(new { style = "text-align: center; font-weight:bold;" });
-                columns.Bound(f => f.NGNumberPoint).Width(100).Title("Số lượng NG (điểm)").ReadOnly(true)
-                       .HtmlAttributes(new { style = "text-align: center; font-weight:bold;" });
+                columns.Bound(f => f.LogisticsPoint).Width(100).ReadOnly(true).Title("Delivery Performance (Point)")
+                       .HtmlAttributes(new { style = "text-align: center; font-weight:bold; font-size:16px;" });
+                columns.Bound(f => f.QuantityDeliveryPoint).Width(90).ReadOnly(true).Title("Quantities Performance (Point)")
+                       .HtmlAttributes(new { style = "text-align: center; font-weight:bold; font-size:16px; " });
+                columns.Bound(f => f.NGTimePoint).Width(90).Title("Delivery Demerit (Point)").ReadOnly(true)
+                       .HtmlAttributes(new { style = "text-align: center; font-weight:bold; font-size:16px;" });
+                columns.Bound(f => f.NGNumberPoint).Width(100).Title("Product Demerit (Point)").ReadOnly(true)
+                       .HtmlAttributes(new { style = "text-align: center; font-weight:bold; font-size:16px;" });
 
             })
 
@@ -313,7 +327,7 @@
                     .SelectedIndex(0)
                     .Items(items => {
                         items.Add()
-                            .Text("Thông tin chi tiết")
+                            .Text("Detail")
                             .Content(
                                 Html.Telerik().Grid<EvaluationFormModel>()
                                     .Name("gridEvaluationDetail_<#= FormId #>")
@@ -322,56 +336,56 @@
                                         .Select("SelectEvaluationDetail", "PurchaseOrder", new { area = "" })
                                     )
                                     .Columns(columns => {
-                                        columns.Bound(f => f.Index).Title("STT").ReadOnly(true).Width(30)
+                                        columns.Bound(f => f.Index).Title("No.").ReadOnly(true).Width(30)
                                             .HtmlAttributes(new { style = "text-align: center; " });
-                                        columns.Bound(f => f.PurchaseOrderCode).Title("Phiếu PO").ReadOnly(true).Width(70);
-                                        columns.Bound(f => f.ImportCode).Title("Phiếu nhập kho").ReadOnly(true).Width(70);
-                                        columns.Bound(f => f.MaterialCode).Title("Tên").ReadOnly(true).Width(170);
-                                        columns.Bound(f => f.LotNumber).Title("Lô").ReadOnly(true).Width(60);
-                                        columns.Bound(f => f.UnitMeasure).Title("ĐVT").ReadOnly(true).Width(50);
-                                        columns.Bound(f => f.OrderDate).Title("Ngày yêu cầu").ReadOnly(true).Width(80)
+                                        columns.Bound(f => f.PurchaseOrderCode).Title("PO Number").ReadOnly(true).Width(70);
+                                        columns.Bound(f => f.ImportCode).Title("Warehouse Receipt").ReadOnly(true).Width(70);
+                                        columns.Bound(f => f.MaterialCode).Title("Material Name").ReadOnly(true).Width(170);
+                                        columns.Bound(f => f.LotNumber).Title("Lot").ReadOnly(true).Width(60);
+                                        columns.Bound(f => f.UnitMeasure).Title("Unit Measure").ReadOnly(true).Width(50);
+                                        columns.Bound(f => f.OrderDate).Title("Order Date").ReadOnly(true).Width(80)
                                             .Format("{0:dd/MM/yyyy}");
-                                        columns.Bound(f => f.DeliveryDateString).Title("Ngày giao hàng").ReadOnly(true).Width(80)
+                                        columns.Bound(f => f.DeliveryDateString).Title("Delivery Date").ReadOnly(true).Width(80)
                                             .Format("{0:dd/MM/yyyy}");
-                                        columns.Bound(f => f.CountLateDelivery).Title("Trễ hạn")
+                                        columns.Bound(f => f.CountLateDelivery).Title("Late")
                                             .ReadOnly(true).Width(80)
                                             .HtmlAttributes(new { style = "text-align: center; border-right:2px black solid;" })
                                             .ClientTemplate(
                                                 "<# if (CountLateDelivery == 1) { #>" +
-                                                    "<span style='color:red'>Trễ hạn</span>" +
+                                                    "<span style='color:red'>Late</span>" +
                                                 "<# } #>"
                                             )
-                                            .FooterTemplate("<span style='color:red'>Trễ hạn: <span id='CountLateDelivery'></span></span>")
+                                            .FooterTemplate("<span style='color:red'>Late: <span id='CountLateDelivery'></span></span>")
                                             .FooterHtmlAttributes(new { style = "text-align: center;" });
 
-                                        columns.Bound(f => f.OrderQuantity).Title("SL yêu cầu").ReadOnly(true).Width(70)
+                                        columns.Bound(f => f.OrderQuantity).Title("Order Quantity").ReadOnly(true).Width(70)
                                             .HtmlAttributes(new { style = "text-align: right; " })
                                             .Format("{0:n1}")
                                             .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                                             .FooterHtmlAttributes(new { style = "text-align: right; font-weight:bold; " })
                                             .Aggregate(agg => agg.Sum());
-                                        columns.Bound(f => f.ReceivedQuantity).Title("SL đã giao").ReadOnly(true).Width(70)
+                                        columns.Bound(f => f.ReceivedQuantity).Title("Delivered Quantity").ReadOnly(true).Width(70)
                                             .HtmlAttributes(new { style = "text-align: right; " })
                                             .Format("{0:n1}")
                                             .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                                             .FooterHtmlAttributes(new { style = "text-align: right; font-weight:bold; " })
                                             .Aggregate(agg => agg.Sum());
-                                        columns.Bound(f => f.RemainingQuantity).Title("SL thiếu").ReadOnly(true).Width(70)
+                                        columns.Bound(f => f.RemainingQuantity).Title("Shortage Quantity").ReadOnly(true).Width(70)
                                             .HtmlAttributes(new { style = "text-align: right; " })
                                             .Format("{0:n1}")
                                             .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                                             .FooterHtmlAttributes(new { style = "text-align: right; font-weight:bold; " })
                                             .Aggregate(agg => agg.Sum());
 
-                                        columns.Bound(f => f.CountLessThanOrder).Title("Giao thiếu")
+                                        columns.Bound(f => f.CountLessThanOrder).Title("Shortaged")
                                             .ReadOnly(true).Width(80)
                                             .HtmlAttributes(new { style = "text-align: center; border-right:2px black solid; " })
                                             .ClientTemplate(
                                                 "<# if (CountLessThanOrder == 1) { #>" +
-                                                    "<span style='color:red'>Giao thiếu</span>" +
+                                                    "<span style='color:red'>Shortaged</span>" +
                                                 "<# } #>"
                                             )
-                                            .FooterTemplate("<span style='color:red'>Giao thiếu: <span id='CountLessThanOrder'></span></span>")
+                                            .FooterTemplate("<span style='color:red'>Shortaged: <span id='CountLessThanOrder'></span></span>")
                                             .FooterHtmlAttributes(new { style = "text-align: center;" });
 
                                         columns.Bound(f => f.CountNG).Title("NG")
@@ -384,14 +398,14 @@
                                             )
                                             .FooterTemplate("<span style='color:red'>NG: <span id='CountNG'></span></span>")
                                             .FooterHtmlAttributes(new { style = "text-align: center;" });
-                                        columns.Bound(f => f.NGQuantity).Title("Số lượng </br>NG").ReadOnly(true).Width(60)
+                                        columns.Bound(f => f.NGQuantity).Title("NG</br>Quantity").ReadOnly(true).Width(60)
                                             .HtmlAttributes(new { style = "text-align: center; border-right:2px black solid;" })
                                             .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                                             .FooterHtmlAttributes(new { style = "text-align: center; font-weight:bold; border-right:2px black solid;" })
                                             .Aggregate(agg => agg.Sum());
 
                                     })
-                                    .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
+                                    //.Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
                                     .ClientEvents(e => e.OnError("grid_OnError")
                                                         .OnRowDataBound("grid_OnRowDataBound")
                                                         .OnDataBound("grid_OnDataBound")
@@ -407,7 +421,166 @@
                 .OnDataBinding("grid_OnDataBinding")
                 .OnError("grid_OnError")
             )
-            .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InCell))
+            //.Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InCell))
+            .KeyboardNavigation()
+            .Footer(true)
+            .Scrollable(f => f.Height("auto"))
+            .Render();
+    }
+</div>
+
+<div class="clear"></div>
+<div class="cover-div">
+    @{
+        Html.Telerik().Grid<LogisticsModel>()
+            .Name("grid3")
+            .DataKeys(keys => keys.Add(f => f.Count).RouteKey("count"))
+            .DataBinding(dataBindings => dataBindings.Ajax()
+                .Select("SelectLateDelivery", "PurchaseOrder", new { area = "" })
+            )
+            .Columns(columns => {
+                columns.Bound(f => f.BlankSpace).Width(100).ReadOnly(true).Title("Delivery Performance ==>")
+                    .HtmlAttributes(new { style = "text-align: center; font-weight:bold; border-left:2px black solid; background-color:black; font-size:16px;" });
+                
+                columns.Bound(f => f.PlaceAStr).Width(100).ReadOnly(true).Title("Late 0 Times (20 Point)")
+                       .HtmlAttributes(new { style = "text-align: center; font-weight:bold; border-left:2px black solid; background-color:lightgreen; font-size:16px;" });
+
+                columns.Bound(f => f.PlaceBStr).Width(100).ReadOnly(true).Title("Late 1-2 Times (15 Point)")
+                       .HtmlAttributes(new { style = "text-align: center; font-weight:bold; background-color:yellow; font-size:16px;" });
+
+                columns.Bound(f => f.PlaceCStr).Width(100).ReadOnly(true).Title("Late 3-5 Times (10 Point)")
+                       .HtmlAttributes(new { style = "text-align: center; font-weight:bold; background-color:orange; font-size:16px;" });
+
+                columns.Bound(f => f.PlaceDStr).Width(100).ReadOnly(true).Title("Late > 5 Times (0 Point)")
+                       .HtmlAttributes(new { style = "text-align: center; font-weight:bold; background-color:red; color: white; font-size:16px;" });
+
+                columns.Bound(f => f.Count).Hidden(true);
+            })
+            .ClientEvents(events => events
+                .OnDataBinding("grid_OnDataBinding")
+                .OnError("grid_OnError")
+            )
+            //.Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InCell))
+            .KeyboardNavigation()
+            .Footer(true)
+            .Scrollable(f => f.Height("auto"))
+            .Render();
+    }
+</div>
+
+
+<div class="clear"></div>
+<div class="cover-div">
+    @{
+        Html.Telerik().Grid<LogisticsModel>()
+            .Name("grid4")
+            .DataKeys(keys => keys.Add(f => f.Count).RouteKey("count"))
+            .DataBinding(dataBindings => dataBindings.Ajax()
+                .Select("SelectQuantityDelivery", "PurchaseOrder", new { area = "" })
+            )
+            .Columns(columns => {
+                columns.Bound(f => f.BlankSpace).Width(100).ReadOnly(true).Title("Quantities Performance ==>")
+                       .HtmlAttributes(new { style = "text-align: center; font-weight:bold; border-left:2px black solid; background-color:black; font-size:16px;" });
+
+                columns.Bound(f => f.PlaceAStr).Width(100).ReadOnly(true).Title("Shortaged: 0 Times (20 Point)")
+                       .HtmlAttributes(new { style = "text-align: center; font-weight:bold; border-left:2px black solid;  background-color:lightgreen; font-size:16px;" });
+
+                columns.Bound(f => f.PlaceBStr).Width(100).ReadOnly(true).Title("Shortaged: 1-2 Times (15 Point)")
+                       .HtmlAttributes(new { style = "text-align: center; font-weight:bold; background-color:yellow; font-size:16px;" });
+
+                columns.Bound(f => f.PlaceCStr).Width(100).ReadOnly(true).Title("Shortaged: 3-5 Times (10 Point)")
+                       .HtmlAttributes(new { style = "text-align: center; font-weight:bold; background-color:orange; font-size:16px;" });
+
+                columns.Bound(f => f.PlaceDStr).Width(100).ReadOnly(true).Title("Shortaged: > 5 Times (0 Point)")
+                       .HtmlAttributes(new { style = "text-align: center; font-weight:bold;  background-color:red; color: white; font-size:16px;" });
+
+                columns.Bound(f => f.Count).Hidden(true);
+            })
+            .ClientEvents(events => events
+                .OnDataBinding("grid_OnDataBinding")
+                .OnError("grid_OnError")
+            )
+            //.Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InCell))
+            .KeyboardNavigation()
+            .Footer(true)
+            .Scrollable(f => f.Height("auto"))
+            .Render();
+    }
+</div>
+
+
+<div class="clear"></div>
+<div class="cover-div">
+    @{
+        Html.Telerik().Grid<LogisticsModel>()
+            .Name("grid5")
+            .DataKeys(keys => keys.Add(f => f.Count).RouteKey("count"))
+            .DataBinding(dataBindings => dataBindings.Ajax()
+                .Select("SelectNGDelivery", "PurchaseOrder", new { area = "" })
+            )
+            .Columns(columns => {
+                columns.Bound(f => f.BlankSpace).Width(100).ReadOnly(true).Title("Delivery Demerit  ==>")
+                       .HtmlAttributes(new { style = "text-align: center; font-weight:bold; border-left:2px black solid; background-color:black; font-size:16px;" });
+                
+                columns.Bound(f => f.PlaceAStr).Width(100).ReadOnly(true).Title("NG: 0 Times (20 Point)")
+                       .HtmlAttributes(new { style = "text-align: center; font-weight:bold; border-left:2px black solid;  background-color:lightgreen; font-size:16px;" });
+
+                columns.Bound(f => f.PlaceBStr).Width(100).ReadOnly(true).Title("NG: 1-2 Times (15 Point)")
+                       .HtmlAttributes(new { style = "text-align: center; font-weight:bold; background-color:yellow; font-size:16px;" });
+
+                columns.Bound(f => f.PlaceCStr).Width(100).ReadOnly(true).Title("NG: 3-4 Times (10 Point)")
+                       .HtmlAttributes(new { style = "text-align: center; font-weight:bold; background-color:orange; font-size:16px;" });
+
+                columns.Bound(f => f.PlaceDStr).Width(100).ReadOnly(true).Title("NG: > 4 Times (0 Point)")
+                       .HtmlAttributes(new { style = "text-align: center; font-weight:bold; background-color:red; color: white; font-size:16px;" });
+
+                columns.Bound(f => f.Count).Hidden(true);
+            })
+            .ClientEvents(events => events
+                .OnDataBinding("grid_OnDataBinding")
+                .OnError("grid_OnError")
+            )
+            //.Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InCell))
+            .KeyboardNavigation()
+            .Footer(true)
+            .Scrollable(f => f.Height("auto"))
+            .Render();
+    }
+</div>
+
+
+<div class="clear"></div>
+<div class="cover-div">
+    @{
+        Html.Telerik().Grid<LogisticsModel>()
+            .Name("grid6")
+            .DataKeys(keys => keys.Add(f => f.Count).RouteKey("count"))
+            .DataBinding(dataBindings => dataBindings.Ajax()
+                .Select("SelectNGQuantity", "PurchaseOrder", new { area = "" })
+            )
+            .Columns(columns => {
+                columns.Bound(f => f.BlankSpace).Width(100).ReadOnly(true).Title("Product Demerit ==>")
+                       .HtmlAttributes(new { style = "text-align: center; font-weight:bold; border-left:2px black solid; background-color:black; font-size:16px;" });
+
+                columns.Bound(f => f.PlaceAStr).Width(100).ReadOnly(true).Title("NG Quanitty: < 2% (20 Point)")
+                       .HtmlAttributes(new { style = "text-align: center; font-weight:bold; border-left:2px black solid;  background-color:lightgreen; font-size:16px;" });
+
+                columns.Bound(f => f.PlaceBStr).Width(100).ReadOnly(true).Title("NG Quanitty: 2% - 3% (15 Point)")
+                       .HtmlAttributes(new { style = "text-align: center; font-weight:bold; background-color:yellow; font-size:16px;" });
+
+                columns.Bound(f => f.PlaceCStr).Width(100).ReadOnly(true).Title("NG Quanitty: 3% - 4% (10 Point)")
+                       .HtmlAttributes(new { style = "text-align: center; font-weight:bold; background-color:orange; font-size:16px;" });
+
+                columns.Bound(f => f.PlaceDStr).Width(100).ReadOnly(true).Title("NG Quanitty: > 4% (0 Point)")
+                       .HtmlAttributes(new { style = "text-align: center; font-weight:bold;  background-color: red; color: white; font-size:16px;" });
+
+                columns.Bound(f => f.Count).Hidden(true);
+            })
+            .ClientEvents(events => events
+                .OnDataBinding("grid_OnDataBinding")
+                .OnError("grid_OnError")
+            )
+            //.Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InCell))
             .KeyboardNavigation()
             .Footer(true)
             .Scrollable(f => f.Height("auto"))

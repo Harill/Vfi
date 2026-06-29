@@ -33,6 +33,7 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public bool QcLine { get; set; }
         public string GroupName { get; set; }
         public Nullable<int> UserId { get; set; }
+
         public virtual ICollection<MachineRepairForm> MachineRepairForms { get; set; }
         public virtual ICollection<MachineRepairForm> MachineRepairForms1 { get; set; }
         public virtual ICollection<Production2TransactionDetail> Production2TransactionDetail { get; set; }

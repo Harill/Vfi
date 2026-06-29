@@ -1199,3 +1199,4 @@ C:\Job\vfi\Vfi.Ui.Mvc.Vfi\obj\Release\Vfi.Ui.Mvc.Vfi.csproj.GenerateResource.Cac
 C:\Job\vfi\Vfi.Ui.Mvc.Vfi\obj\Release\Vfi.Ui.Mvc.Vfi.dll
 C:\Job\vfi\Vfi.Ui.Mvc.Vfi\obj\Release\Vfi.Ui.Mvc.Vfi.pdb
 C:\Job\vfi\Vfi.Ui.Mvc.Vfi\obj\Release\Vfi.Ui.Mvc.Vfi.Areas.Inv.Reports.RptPurchaseOrderDetailEN.resources
+C:\Job\vfi\Vfi.Ui.Mvc.Vfi\obj\Release\Vfi.Ui.Mvc.Vfi.Areas.Inv.Reports.RptPrintEvaluationForm.resources

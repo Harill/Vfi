@@ -296,6 +296,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                         };
                         var poDetailList = vfi.PurchaseOrderDetails.Where(t => t.PurchaseOrder.ShipDate >= fDate
                                                                           && t.PurchaseOrder.ShipDate <= tDate
+                                                                          && t.PurchaseOrder.Status != (byte)MyUtilities.Sales.Status.Cancel
                                                                           && t.PurchaseOrder.VendorId == entity.VendorId
                                                                           && t.MaterialClassifiedId == materialClassifiedId)
                                                                    .Select(t => new {
@@ -321,24 +322,30 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                         deliveryLessThenOrder++;
                                     }
                                     else {
-                                        var importInfo = vfi.ImportPurchaseOrderDetails.Where(t => t.PoDetailId == poDetail.PurchaseOrderDetailId)
+                                        var importInfo = vfi.ImportPurchaseOrderDetails.Where(t => t.PoDetailId == poDetail.PurchaseOrderDetailId
+                                                                                              && !string.IsNullOrEmpty(t.LotNumber))
                                                                                        .Select(t => new {
                                                                                            t.NG,
-                                                                                           t.ImportPurchaseOrder.ImportDate
+                                                                                           t.ImportPurchaseOrder.ImportDate,
+                                                                                           t.Quantity,
+                                                                                           t.QuantityKg,
+                                                                                           t.UnitWeight,
                                                                                        }).FirstOrDefault();
 
                                         // 1. Giao hàng trễ
                                         if (importInfo.ImportDate > poDetail.OrderDate) {
                                             lateDeliveryTimes++;
-                                            if ((poDetail.OrderQty * 0.9) > poDetail.ReceivedQty) {
-                                                deliveryLessThenOrder++;
-                                            }
                                         }
 
                                         // 2. Giao hàng thiếu
-                                        if ((poDetail.OrderQty * 0.9) > poDetail.ReceivedQty)
+                                        if (importInfo.QuantityKg == 0) {
+                                            var importKgs = (importInfo.Quantity * importInfo.UnitWeight);
+                                            if ((poDetail.OrderQty * 0.9) > importKgs)
+                                                deliveryLessThenOrder++;
+                                        }
+                                        else if ((poDetail.OrderQty * 0.9) > importInfo.QuantityKg) {
                                             deliveryLessThenOrder++;
-
+                                        }
                                         // 3,4. NG
                                         if (importInfo.NG == true) {
                                             NGTimes++;
@@ -357,10 +364,12 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                         deliveryLessThenOrder++;
                                     }
                                     else {
-                                        var importInfo = vfi.TransactionFptDetails.Where(t => t.PoDetailId == poDetail.PurchaseOrderDetailId)
+                                        var importInfo = vfi.TransactionFptDetails.Where(t => t.PoDetailId == poDetail.PurchaseOrderDetailId
+                                                                                         && !string.IsNullOrEmpty(t.LotNumber))
                                                                                   .Select(t => new {
                                                                                       t.NG,
-                                                                                      ImportDate = t.TransactionFpt.TransactionDate
+                                                                                      ImportDate = t.TransactionFpt.TransactionDate,
+                                                                                      t.Quantity,
                                                                                   }).FirstOrDefault();
                                         // 1. Giao hàng trễ
                                         if (importInfo.ImportDate > poDetail.OrderDate) {
@@ -370,7 +379,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                             }
                                         }
                                         // 2. Giao hàng thiếu
-                                        if ((poDetail.OrderQty) > poDetail.ReceivedQty)
+                                        if ((poDetail.OrderQty) > importInfo.Quantity)
                                             deliveryLessThenOrder++;
 
                                         // 3,4. NG
@@ -392,10 +401,12 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                         deliveryLessThenOrder++;
                                     }
                                     else {
-                                        var importInfo = vfi.TransactionFptDetails.Where(t => t.PoDetailId == poDetail.PurchaseOrderDetailId)
+                                        var importInfo = vfi.TransactionFptDetails.Where(t => t.PoDetailId == poDetail.PurchaseOrderDetailId
+                                                                                         && !string.IsNullOrEmpty(t.LotNumber))
                                                                                   .Select(t => new {
                                                                                       t.NG,
-                                                                                      ImportDate = t.TransactionFpt.TransactionDate
+                                                                                      ImportDate = t.TransactionFpt.TransactionDate,
+                                                                                      t.Quantity,
                                                                                   }).FirstOrDefault();
                                         // 1. Giao hàng trễ
                                         if (importInfo.ImportDate > poDetail.OrderDate) {
@@ -406,7 +417,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                         }
 
                                         // 2. Giao hàng thiếu
-                                        if ((poDetail.OrderQty) > poDetail.ReceivedQty)
+                                        if ((poDetail.OrderQty) > importInfo.Quantity)
                                             deliveryLessThenOrder++;
 
                                         // 3,4. NG
@@ -529,12 +540,6 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                 if (insertedForms != null) {
                     using (var vfi = new tammaContext()) {
                         foreach (var inserted in insertedForms) {
-                            if (inserted.PricePoint < 0 || inserted.PricePoint > 10 )
-                                throw new AggregateException("Lỗi! Hãy nhập 'Giá (điểm)' trong thang điểm từ 0 - 10 ");
-
-                            if (inserted.TechSpPoint < 0 || inserted.TechSpPoint > 10 )
-                                throw new AggregateException("Lỗi! Hãy nhập 'Hỗ trợ KT (điểm)' trong thang điểm từ 0 - 10 ");
-
                             if (fDate == null || fDate >= DateTime.Now)
                                 throw new AggregateException("Lỗi! Từ ngày không thể lớn hơn hoặc bằng ngày hiện tại");
 
@@ -553,12 +558,31 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                 Note = note,
                                 ModifiedDate = DateTime.Now,
                                 ModifiedUser = HttpContext.User.Identity.Name,
-                                TechSpPoint = inserted.TechSpPoint ?? 0,
-                                PricePoint = inserted.PricePoint ?? 0,
                             };
 
+                            switch (inserted.TechSpPoint) {
+                                case 0:
+                                case 5:
+                                case 10:
+                                    entity.TechSpPoint = inserted.TechSpPoint;
+                                    break;
+                                default:
+                                    throw new AggregateException("Lỗi! Hãy nhập 'Technical SP' trong thang điểm (0 - 5 - 10) ");
+                            }
+
+                            switch (inserted.PricePoint) {
+                                case 0:
+                                case 5:
+                                case 10:
+                                    entity.PricePoint = inserted.PricePoint;
+                                    break;
+                                default:
+                                    throw new AggregateException("Lỗi! Hãy nhập 'Competitivity' trong thang điểm (0 - 5 - 10) ");
+                            }
+
                             var poDetailList = vfi.PurchaseOrderDetails.Where(t => t.PurchaseOrder.ShipDate >= fDate
-                                                                              && t.PurchaseOrder.ShipDate <= tDate
+                                                                              && t.PurchaseOrder.ShipDate <= tDate 
+                                                                              && t.PurchaseOrder.Status != (byte)MyUtilities.Sales.Status.Cancel
                                                                               && t.PurchaseOrder.VendorId == entity.VendorId
                                                                               && t.MaterialClassifiedId == materialClassified)
                                                                        .Select(t => new {
@@ -585,23 +609,31 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                             deliveryLessThenOrder++;
                                         }
                                         else {
-                                            var importInfo = vfi.ImportPurchaseOrderDetails.Where(t => t.PoDetailId == poDetail.PurchaseOrderDetailId)
+                                            var importInfo = vfi.ImportPurchaseOrderDetails.Where(t => t.PoDetailId == poDetail.PurchaseOrderDetailId
+                                                                                                  && !string.IsNullOrEmpty(t.LotNumber))
                                                                                            .Select(t => new {
                                                                                                t.NG,
-                                                                                               t.ImportPurchaseOrder.ImportDate
+                                                                                               t.ImportPurchaseOrder.ImportDate,
+                                                                                               t.Quantity,
+                                                                                               t.QuantityKg,
+                                                                                               t.UnitWeight,
                                                                                            }).FirstOrDefault();
 
                                             // 1. Giao hàng trễ
                                             if (importInfo.ImportDate > poDetail.OrderDate) {
                                                 lateDeliveryTimes++;
-                                                if ((poDetail.OrderQty * 0.9) > poDetail.ReceivedQty) {
-                                                    deliveryLessThenOrder++;
-                                                }
-
                                             }
                                             // 2. Giao hàng thiếu
-                                            if ((poDetail.OrderQty * 0.9) > poDetail.ReceivedQty)
-                                                deliveryLessThenOrder++;
+                                            if (importInfo.QuantityKg != 0) {
+                                                if ((poDetail.OrderQty * 0.9) > importInfo.QuantityKg)
+                                                    deliveryLessThenOrder++;
+                                            }
+                                            else if (importInfo.QuantityKg == 0) {
+                                                var importKg = importInfo.Quantity * importInfo.UnitWeight;
+                                                if ((poDetail.OrderQty * 0.9) > importKg) {
+                                                    deliveryLessThenOrder++;
+                                                }
+                                            }
 
                                             // 3,4. NG
                                             if (importInfo.NG == true) {
@@ -621,10 +653,12 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                             deliveryLessThenOrder++;
                                         }
                                         else {
-                                            var importInfo = vfi.TransactionFptDetails.Where(t => t.PoDetailId == poDetail.PurchaseOrderDetailId)
+                                            var importInfo = vfi.TransactionFptDetails.Where(t => t.PoDetailId == poDetail.PurchaseOrderDetailId
+                                                                                             && !string.IsNullOrEmpty(t.LotNumber))
                                                                                       .Select(t => new {
                                                                                           t.NG,
-                                                                                          ImportDate = t.TransactionFpt.TransactionDate
+                                                                                          ImportDate = t.TransactionFpt.TransactionDate,
+                                                                                          t.Quantity,
                                                                                       }).FirstOrDefault();
                                             // 1. Giao hàng trễ
                                             if (importInfo.ImportDate > poDetail.OrderDate) {
@@ -635,7 +669,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                             }
 
                                             // 2. Giao hàng thiếu
-                                            if ((poDetail.OrderQty) > poDetail.ReceivedQty)
+                                            if ((poDetail.OrderQty) > importInfo.Quantity)
                                                 deliveryLessThenOrder++;
 
                                             // 3,4. NG
@@ -657,10 +691,12 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                             deliveryLessThenOrder++;
                                         }
                                         else {
-                                            var importInfo = vfi.TransactionFptDetails.Where(t => t.PoDetailId == poDetail.PurchaseOrderDetailId)
+                                            var importInfo = vfi.TransactionFptDetails.Where(t => t.PoDetailId == poDetail.PurchaseOrderDetailId
+                                                                                             && !string.IsNullOrEmpty(t.LotNumber))
                                                                                       .Select(t => new {
                                                                                           t.NG,
-                                                                                          ImportDate = t.TransactionFpt.TransactionDate
+                                                                                          ImportDate = t.TransactionFpt.TransactionDate,
+                                                                                          t.Quantity,
                                                                                       }).FirstOrDefault();
                                             // 1. Giao hàng trễ
                                             if (importInfo.ImportDate > poDetail.OrderDate) {
@@ -671,7 +707,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                             }
 
                                             // 2. Giao hàng thiếu
-                                            if ((poDetail.OrderQty) > poDetail.ReceivedQty)
+                                            if ((poDetail.OrderQty) > importInfo.Quantity)
                                                 deliveryLessThenOrder++;
 
                                             // 3,4. NG
@@ -781,7 +817,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                     entity.Grade = "C";
                                 }
                                 else if (entity.ZeroPointCount == 0) {
-                                    if (entity.TotalPoint < 90) {
+                                    if (entity.TotalPoint <= 90) {
                                         entity.Grade = "B";
                                     }
                                     else {
@@ -789,7 +825,8 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                     }
                                 }
                             }
-
+                            entity.OrderQuantity = totalRecied;
+                            entity.NGQuantity = totalNGQuantity;
                             var number = vfi.EvaluationForms.Where(t => t.ModifiedDate.Year == DateTime.Now.Year 
                                                                    && t.VendorId == vendorId)
                                                             .Count() +1;
@@ -963,6 +1000,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                                                      && t.PurchaseOrder.ShipDate <= evaluationForm.ToDate
                                                                      && t.MaterialClassifiedId == evaluationForm.MaterialClassifiedId
                                                                      && t.PurchaseOrder.VendorId == evaluationForm.VendorId
+                                                                     && t.PurchaseOrder.Status != (byte)MyUtilities.Sales.Status.Cancel
                                                                      ).Select(t => new { 
                                                                          t.PurchaseOrderDetailId,
                                                                          t.OrderQty,
@@ -1001,6 +1039,9 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                                                                          TransactionCode = t.ImportPurchaseOrder.Transaction.TransactionCode,
                                                                                          t.NG,
                                                                                          t.LotNumber,
+                                                                                         t.Quantity,
+                                                                                         t.QuantityKg,
+                                                                                         t.UnitWeight,
                                                                                 }).FirstOrDefault();
                                     entity.DeliveryDate = import.ImportDate;
                                     entity.ImportCode = import.TransactionCode;
@@ -1012,10 +1053,20 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                     if (entity.DeliveryDate > entity.OrderDate) {
                                         entity.CountLateDelivery = 1;
                                     }
-
-                                    if ((entity.OrderQuantity * 0.9) > entity.ReceivedQuantity) {
-                                        entity.CountLessThanOrder = 1;
-                                        entity.RemainingQuantity = entity.OrderQuantity - entity.ReceivedQuantity;
+                                    if (import.QuantityKg != 0) {
+                                        entity.ReceivedQuantity = import.QuantityKg;
+                                        if ((entity.OrderQuantity * 0.9) > import.QuantityKg) {
+                                            entity.CountLessThanOrder = 1;
+                                            entity.RemainingQuantity = entity.OrderQuantity - import.QuantityKg;
+                                        }
+                                    }
+                                    else if (import.QuantityKg == 0) {
+                                        var importKg = import.Quantity * import.UnitWeight;
+                                        entity.ReceivedQuantity = importKg;
+                                        if ((entity.OrderQuantity * 0.9) > importKg) {
+                                            entity.CountLessThanOrder = 1;
+                                            entity.ReceivedQuantity = entity.OrderQuantity - importKg;
+                                        }
                                     }
                                 }
                                 index++;
@@ -1050,11 +1101,13 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                                      t.TransactionFpt.TransactionCode,
                                                      t.NG,
                                                      t.LotNumber,
+                                                     t.Quantity,
                                                  })
                                                  .FirstOrDefault();
                                     entity.DeliveryDate = import.TransactionDate;
                                     entity.ImportCode = import.TransactionCode;
                                     entity.LotNumber = import.LotNumber;
+                                    entity.ReceivedQuantity = import.Quantity;
 
                                     if (import.NG == true) {
                                         entity.CountNG = 1;
@@ -1065,9 +1118,9 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                         entity.CountLateDelivery = 1;
                                     }
 
-                                    if ((entity.OrderQuantity) > entity.ReceivedQuantity) {
+                                    if ((entity.OrderQuantity) > import.Quantity) {
                                         entity.CountLessThanOrder = 1;
-                                        entity.RemainingQuantity = entity.OrderQuantity - entity.ReceivedQuantity;
+                                        entity.RemainingQuantity = entity.OrderQuantity - import.Quantity;
                                     }
                                 }
                                 index++;
@@ -1104,11 +1157,13 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                                      t.TransactionFpt.TransactionCode,
                                                      t.NG,
                                                      t.LotNumber,
+                                                     t.Quantity,
                                                  }).FirstOrDefault();
 
                                     entity.DeliveryDate = import.TransactionDate;
                                     entity.ImportCode = import.TransactionCode;
                                     entity.LotNumber = import.LotNumber;
+                                    entity.ReceivedQuantity = import.Quantity;
 
                                     if (import.NG == true) {
                                         entity.CountNG = 1;
@@ -1119,9 +1174,9 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                         entity.CountLateDelivery = 1;
                                     }
 
-                                    if ((entity.OrderQuantity) > entity.ReceivedQuantity) {
+                                    if ((entity.OrderQuantity) > import.Quantity) {
                                         entity.CountLessThanOrder = 1;
-                                        entity.RemainingQuantity = entity.OrderQuantity - entity.ReceivedQuantity;
+                                        entity.RemainingQuantity = entity.OrderQuantity - import.Quantity;
 
                                     }
                                 }
@@ -1176,6 +1231,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                                                      && t.PurchaseOrder.ShipDate <= tDate
                                                                      && t.MaterialClassifiedId == materialClassifiedId
                                                                      && t.PurchaseOrder.VendorId == vendorId
+                                                                     && t.PurchaseOrder.Status != (byte)MyUtilities.Sales.Status.Cancel
                                                                      ).Select(t => new {
                                                                          t.PurchaseOrderDetailId,
                                                                          t.OrderQty,
@@ -1214,6 +1270,9 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                                                                     TransactionCode = t.ImportPurchaseOrder.Transaction.TransactionCode,
                                                                                     t.NG,
                                                                                     t.LotNumber,
+                                                                                    t.Quantity,
+                                                                                    t.QuantityKg,
+                                                                                    t.UnitWeight,
                                                                                 }).FirstOrDefault();
                                     entity.DeliveryDate = import.ImportDate;
                                     entity.ImportCode = import.TransactionCode;
@@ -1224,12 +1283,20 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                     }
                                     if (entity.DeliveryDate > entity.OrderDate) {
                                         entity.CountLateDelivery = 1;
-                                        entity.CountLessThanOrder = 1;
                                     }
-                                    if (entity.CountLessThanOrder == 0) {
-                                        if ((entity.OrderQuantity * 0.9) > entity.ReceivedQuantity) {
+                                    if (import.QuantityKg != 0) {
+                                        entity.ReceivedQuantity = import.QuantityKg;
+                                        if ((entity.OrderQuantity * 0.9) > import.QuantityKg) {
                                             entity.CountLessThanOrder = 1;
-                                            entity.RemainingQuantity = entity.OrderQuantity - entity.ReceivedQuantity;
+                                            entity.RemainingQuantity = entity.OrderQuantity - import.QuantityKg;
+                                        }
+                                    }
+                                    else if (import.QuantityKg == 0) {
+                                        var importKg = import.Quantity * import.UnitWeight;
+                                        entity.ReceivedQuantity = importKg;
+                                        if ((entity.OrderQuantity * 0.9) > importKg) {
+                                            entity.CountLessThanOrder = 1;
+                                            entity.RemainingQuantity = entity.OrderQuantity - importKg;
                                         }
                                     }
                                 }
@@ -1265,11 +1332,13 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                                      t.TransactionFpt.TransactionCode,
                                                      t.NG,
                                                      t.LotNumber,
+                                                     t.Quantity,
                                                  })
                                                  .FirstOrDefault();
                                     entity.DeliveryDate = import.TransactionDate;
                                     entity.ImportCode = import.TransactionCode;
                                     entity.LotNumber = import.LotNumber;
+                                    entity.ReceivedQuantity = import.Quantity;
 
                                     if (import.NG == true) {
                                         entity.CountNG = 1;
@@ -1278,14 +1347,12 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
 
                                     if (entity.DeliveryDate > entity.OrderDate) {
                                         entity.CountLateDelivery = 1;
+                                    }
+                                    if ((entity.OrderQuantity) > import.Quantity) {
                                         entity.CountLessThanOrder = 1;
+                                        entity.RemainingQuantity = entity.OrderQuantity - import.Quantity;
                                     }
-                                    if (entity.CountLessThanOrder == 0) {
-                                        if ((entity.OrderQuantity) > entity.ReceivedQuantity) {
-                                            entity.CountLessThanOrder = 1;
-                                            entity.RemainingQuantity = entity.OrderQuantity - entity.ReceivedQuantity;
-                                        }
-                                    }
+                                    
                                 }
                                 index++;
                                 model.Add(entity);
@@ -1321,11 +1388,13 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                                      t.TransactionFpt.TransactionCode,
                                                      t.NG,
                                                      t.LotNumber,
+                                                     t.Quantity,
                                                  }).FirstOrDefault();
 
                                     entity.DeliveryDate = import.TransactionDate;
                                     entity.ImportCode = import.TransactionCode;
                                     entity.LotNumber = import.LotNumber;
+                                    entity.ReceivedQuantity = import.Quantity;
 
                                     if (import.NG == true) {
                                         entity.CountNG = 1;
@@ -1334,14 +1403,11 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
 
                                     if (entity.DeliveryDate > entity.OrderDate) {
                                         entity.CountLateDelivery = 1;
-                                        entity.CountLessThanOrder = 1;
                                     }
 
-                                    if (entity.CountLessThanOrder == 0) {
-                                        if ((entity.OrderQuantity) > entity.ReceivedQuantity) {
-                                            entity.CountLessThanOrder = 1;
-                                            entity.RemainingQuantity = entity.OrderQuantity - entity.ReceivedQuantity;
-                                        }
+                                    if ((entity.OrderQuantity) > import.Quantity) {
+                                        entity.CountLessThanOrder = 1;
+                                        entity.RemainingQuantity = entity.OrderQuantity - import.Quantity;
                                     }
                                 }
                                 index++;
@@ -1369,8 +1435,809 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
             return model;
         }
 
+        // Late
+        [GridAction]
+        public ActionResult SelectLateDelivery(int? vendorId, string fromDate, string toDate, int? materialClassifiedId) {
+            var model = new List<LogisticsModel>();
+            try {
+                model = GetLateDelivery(vendorId, fromDate, toDate, materialClassifiedId);
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("GetEvaluationDetail", ex.Message);
+            }
+            return View(new GridModel(model));
+        }
 
 
+        List<LogisticsModel> GetLateDelivery(int? vendorId, string fromDate, string toDate, int? materialClassifiedId) {
+            var model = new List<LogisticsModel>();
+            //var ManagementApproved = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name, MyUtilities.UserRole.ManagementApprovedPurchase);
+            using (var vfi = new tammaContext()) {
+                try {
+                    var fDate = MyUtilities.Function.ParseDate(fromDate);
+                    var tDate = MyUtilities.Function.ParseDate(toDate);
+
+                    var entity = new LogisticsModel {
+                    };
+                    var poDetaiList = vfi.PurchaseOrderDetails.Where(t => t.PurchaseOrder.ShipDate >= fDate
+                                                                     && t.PurchaseOrder.ShipDate <= tDate
+                                                                     && t.MaterialClassifiedId == materialClassifiedId
+                                                                     && t.PurchaseOrder.VendorId == vendorId
+                                                                     && t.PurchaseOrder.Status != (byte)MyUtilities.Sales.Status.Cancel
+                                                                     ).Select(t => new {
+                                                                         t.PurchaseOrderDetailId,
+                                                                         t.ReceivedQty,
+                                                                         OrderDate = t.PurchaseOrder.ShipDate,
+                                                                     }).ToList();
+                    var countLateDelivery = 0;
+
+                    switch (materialClassifiedId) {
+                        case 1: {
+                            foreach (var detail in poDetaiList){
+                                if (detail.ReceivedQty == 0) {
+                                    countLateDelivery++;
+                                    continue;
+                                }
+                                else if (detail.ReceivedQty != 0) {
+                                    var importDate = vfi.ImportPurchaseOrderDetails.Where(t => t.PoDetailId == detail.PurchaseOrderDetailId
+                                                                                          && t.VendorId == vendorId
+                                                                                          && !string.IsNullOrEmpty(t.LotNumber)
+                                                                                          ).Select(t => t.ImportPurchaseOrder.ImportDate)
+                                                                                          .FirstOrDefault();
+                                    if (detail.OrderDate < importDate) {
+                                        countLateDelivery++;
+                                    }
+                                }
+                                };
+                            break;
+                            }
+                        case 2: {
+                                foreach (var detail in poDetaiList) {
+                                    if (detail.ReceivedQty == 0) {
+                                        countLateDelivery++;
+                                        continue;
+                                    }
+                                    else if (detail.ReceivedQty != 0) {
+                                        var importDate = vfi.TransactionFptDetails.Where(t => t.PoDetailId == detail.PurchaseOrderDetailId
+                                                                                              && t.VendorId == vendorId
+                                                                                              && !string.IsNullOrEmpty(t.LotNumber)
+                                                                                              ).Select(t => t.TransactionFpt.TransactionDate)
+                                                                                              .FirstOrDefault();
+                                        if (detail.OrderDate < importDate) {
+                                            countLateDelivery++;
+                                        }
+                                    }
+                                };
+                                break;
+                            }
+                        case 3: {
+                                foreach (var detail in poDetaiList) {
+                                    if (detail.ReceivedQty == 0) {
+                                        countLateDelivery++;
+                                        continue;
+                                    }
+                                    else if (detail.ReceivedQty != 0) {
+                                        var importDate = vfi.TransactionFptDetails.Where(t => t.PoDetailId == detail.PurchaseOrderDetailId
+                                                                                              && t.VendorId == vendorId
+                                                                                              && !string.IsNullOrEmpty(t.LotNumber)
+                                                                                              ).Select(t => t.TransactionFpt.TransactionDate)
+                                                                                              .FirstOrDefault();
+                                        if (detail.OrderDate < importDate) {
+                                            countLateDelivery++;
+                                        }
+                                    }
+                                };
+                                break;
+                            }
+                    }
+                    if (countLateDelivery == 0) {
+                        entity.PlaceA = true;
+                    }
+                    else if (countLateDelivery == 1 || countLateDelivery == 2) {
+                        entity.PlaceB = true;
+                    }
+                    else if (countLateDelivery >= 3 && countLateDelivery <= 5) {
+                        entity.PlaceC = true;
+                    }
+                    else if (countLateDelivery > 5) {
+                        entity.PlaceD = true;
+                    };
+
+                    entity.Count = countLateDelivery;
+
+                    model.Add(entity);
+                    }
+                catch (Exception ex) {
+                    // Lấy thông tin chi tiết nhất từ Exception
+                    var errorMessage = ex.Message;
+                    if (ex.InnerException != null) {
+                        errorMessage += " | InnerException: " + ex.InnerException.Message;
+                    }
+
+                    // Nếu muốn thêm stack trace để debug
+                    errorMessage += " | StackTrace: " + ex.StackTrace;
+
+                    ModelState.AddModelError("GetLateDelivery", errorMessage);
+                }
+
+            }
+            return model;
+        }
+
+
+        // Quantity
+        [GridAction]
+        public ActionResult SelectQuantityDelivery(int? vendorId, string fromDate, string toDate, int? materialClassifiedId) {
+            var model = new List<LogisticsModel>();
+            try {
+                model = GetQuantityDelivery(vendorId, fromDate, toDate, materialClassifiedId);
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("GetEvaluationDetail", ex.Message);
+            }
+            return View(new GridModel(model));
+        }
+
+
+        List<LogisticsModel> GetQuantityDelivery(int? vendorId, string fromDate, string toDate, int? materialClassifiedId) {
+            var model = new List<LogisticsModel>();
+            //var ManagementApproved = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name, MyUtilities.UserRole.ManagementApprovedPurchase);
+            using (var vfi = new tammaContext()) {
+                try {
+                    var fDate = MyUtilities.Function.ParseDate(fromDate);
+                    var tDate = MyUtilities.Function.ParseDate(toDate);
+
+                    var entity = new LogisticsModel {
+                    };
+                    var poDetaiList = vfi.PurchaseOrderDetails.Where(t => t.PurchaseOrder.ShipDate >= fDate
+                                                                     && t.PurchaseOrder.ShipDate <= tDate
+                                                                     && t.MaterialClassifiedId == materialClassifiedId
+                                                                     && t.PurchaseOrder.VendorId == vendorId
+                                                                     && t.PurchaseOrder.Status != (byte)MyUtilities.Sales.Status.Cancel
+                                                                     ).Select(t => new {
+                                                                         t.PurchaseOrderDetailId,
+                                                                         t.OrderQty,
+                                                                         t.ReceivedQty,
+                                                                     }).ToList();
+                    var countQuantity = 0;
+
+                    switch (materialClassifiedId) {
+                        case 1: {
+                                foreach (var detail in poDetaiList) {
+                                    if (detail.ReceivedQty == 0) {
+                                        countQuantity++;
+                                        continue;
+                                    }
+                                    else if (detail.ReceivedQty != 0) {
+                                        var import = vfi.ImportPurchaseOrderDetails.Where(t => t.PoDetailId == detail.PurchaseOrderDetailId
+                                                                                              && t.VendorId == vendorId
+                                                                                              && !string.IsNullOrEmpty(t.LotNumber)
+                                                                                              ).Select(t => new { t.Quantity, t.QuantityKg, t.UnitWeight })
+                                                                                              .FirstOrDefault();
+                                        if (import.QuantityKg != 0) {
+                                            if ((detail.OrderQty * 0.9) > import.QuantityKg) {
+                                                countQuantity++;
+                                            }
+                                        }
+                                        else if (import.QuantityKg == 0) {
+                                            var importQuantity = import.Quantity * import.UnitWeight;
+                                            if ((detail.OrderQty * 0.9) > importQuantity) {
+                                                countQuantity++;
+                                            }
+                                        }
+                                    }
+                                };
+                                break;
+                            }
+                        case 2: {
+                                foreach (var detail in poDetaiList) {
+                                    if (detail.ReceivedQty == 0) {
+                                        countQuantity++;
+                                        continue;
+                                    }
+                                    else if (detail.ReceivedQty != 0) {
+                                        var import = vfi.TransactionFptDetails.Where(t => t.PoDetailId == detail.PurchaseOrderDetailId
+                                                                                              && t.VendorId == vendorId
+                                                                                              && !string.IsNullOrEmpty(t.LotNumber)
+                                                                                              ).Select(t => t.Quantity)
+                                                                                              .FirstOrDefault();
+                                        if (detail.OrderQty > import) {
+                                            countQuantity++;
+                                        }
+                                    }
+                                };
+                                break;
+                            }
+                        case 3: {
+                                foreach (var detail in poDetaiList) {
+                                    if (detail.ReceivedQty == 0) {
+                                        countQuantity++;
+                                        continue;
+                                    }
+                                    else if (detail.ReceivedQty != 0) {
+                                        var import = vfi.TransactionFptDetails.Where(t => t.PoDetailId == detail.PurchaseOrderDetailId
+                                                                                              && t.VendorId == vendorId
+                                                                                              && !string.IsNullOrEmpty(t.LotNumber)
+                                                                                              ).Select(t => t.Quantity)
+                                                                                              .FirstOrDefault();
+                                        if (detail.OrderQty > import) {
+                                            countQuantity++;
+                                        }
+                                    }
+                                };
+                                break;
+                            }
+                    }
+                    if (countQuantity == 0) {
+                        entity.PlaceA = true;
+                    }
+                    else if (countQuantity == 1 || countQuantity == 2) {
+                        entity.PlaceB = true;
+                    }
+                    else if (countQuantity >= 3 && countQuantity <= 5) {
+                        entity.PlaceC = true;
+                    }
+                    else if (countQuantity > 5) {
+                        entity.PlaceD = true;
+                    };
+
+                    entity.Count = countQuantity;
+
+                    model.Add(entity);
+                }
+                catch (Exception ex) {
+                    // Lấy thông tin chi tiết nhất từ Exception
+                    var errorMessage = ex.Message;
+                    if (ex.InnerException != null) {
+                        errorMessage += " | InnerException: " + ex.InnerException.Message;
+                    }
+
+                    // Nếu muốn thêm stack trace để debug
+                    errorMessage += " | StackTrace: " + ex.StackTrace;
+
+                    ModelState.AddModelError("GetQuantityDelivery", errorMessage);
+                }
+
+            }
+            return model;
+        }
+
+
+        // NG times
+        [GridAction]
+        public ActionResult SelectNGDelivery(int? vendorId, string fromDate, string toDate, int? materialClassifiedId) {
+            var model = new List<LogisticsModel>();
+            try {
+                model = GetNGDelivery(vendorId, fromDate, toDate, materialClassifiedId);
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("GetEvaluationDetail", ex.Message);
+            }
+            return View(new GridModel(model));
+        }
+
+
+        List<LogisticsModel> GetNGDelivery(int? vendorId, string fromDate, string toDate, int? materialClassifiedId) {
+            var model = new List<LogisticsModel>();
+            //var ManagementApproved = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name, MyUtilities.UserRole.ManagementApprovedPurchase);
+            using (var vfi = new tammaContext()) {
+                try {
+                    var fDate = MyUtilities.Function.ParseDate(fromDate);
+                    var tDate = MyUtilities.Function.ParseDate(toDate);
+
+                    var entity = new LogisticsModel {
+                    };
+                    var poDetaiList = vfi.PurchaseOrderDetails.Where(t => t.PurchaseOrder.ShipDate >= fDate
+                                                                     && t.PurchaseOrder.ShipDate <= tDate
+                                                                     && t.MaterialClassifiedId == materialClassifiedId
+                                                                     && t.PurchaseOrder.VendorId == vendorId
+                                                                     && t.PurchaseOrder.Status != (byte)MyUtilities.Sales.Status.Cancel
+                                                                     ).Select(t => new {
+                                                                         t.PurchaseOrderDetailId,
+                                                                         t.OrderQty,
+                                                                         t.ReceivedQty,
+                                                                     }).ToList();
+                    var countNG = 0;
+
+                    switch (materialClassifiedId) {
+                        case 1: {
+                                foreach (var detail in poDetaiList) {
+                                    if (detail.ReceivedQty == 0) {
+                                        continue;
+                                    }
+                                    else if (detail.ReceivedQty != 0) {
+                                        var import = vfi.ImportPurchaseOrderDetails.Where(t => t.PoDetailId == detail.PurchaseOrderDetailId
+                                                                                              && t.VendorId == vendorId
+                                                                                              && !string.IsNullOrEmpty(t.LotNumber)
+                                                                                              ).Select(t =>  t.NG)
+                                                                                              .FirstOrDefault();
+
+                                        if (import == true) {
+                                            countNG++;
+                                        }
+                                    }
+                                };
+                                break;
+                            }
+                        case 2: {
+                                foreach (var detail in poDetaiList) {
+                                    if (detail.ReceivedQty == 0) {
+                                        continue;
+                                    }
+                                    else if (detail.ReceivedQty != 0) {
+                                        var import = vfi.TransactionFptDetails.Where(t => t.PoDetailId == detail.PurchaseOrderDetailId
+                                                                                              && t.VendorId == vendorId
+                                                                                              && !string.IsNullOrEmpty(t.LotNumber)
+                                                                                              ).Select(t => t.NG)
+                                                                                              .FirstOrDefault();
+                                        if (import == true) {
+                                            countNG++;
+                                        }
+                                    }
+                                };
+                                break;
+                            }
+                        case 3: {
+                                foreach (var detail in poDetaiList) {
+                                    if (detail.ReceivedQty == 0) {
+                                        continue;
+                                    }
+                                    else if (detail.ReceivedQty != 0) {
+                                        var import = vfi.TransactionFptDetails.Where(t => t.PoDetailId == detail.PurchaseOrderDetailId
+                                                                                              && t.VendorId == vendorId
+                                                                                              && !string.IsNullOrEmpty(t.LotNumber)
+                                                                                              ).Select(t => t.NG)
+                                                                                              .FirstOrDefault();
+                                        if (import == true) {
+                                            countNG++;
+                                        }
+                                    }
+                                };
+                                break;
+                            }
+                    }
+                    if (countNG == 0) {
+                        entity.PlaceA = true;
+                    }
+                    else if (countNG == 1 || countNG == 2) {
+                        entity.PlaceB = true;
+                    }
+                    else if (countNG == 3 || countNG == 4) {
+                        entity.PlaceC = true;
+                    }
+                    else if (countNG > 4) {
+                        entity.PlaceD = true;
+                    };
+
+                    entity.Count = countNG;
+
+                    model.Add(entity);
+                }
+                catch (Exception ex) {
+                    // Lấy thông tin chi tiết nhất từ Exception
+                    var errorMessage = ex.Message;
+                    if (ex.InnerException != null) {
+                        errorMessage += " | InnerException: " + ex.InnerException.Message;
+                    }
+
+                    // Nếu muốn thêm stack trace để debug
+                    errorMessage += " | StackTrace: " + ex.StackTrace;
+
+                    ModelState.AddModelError("GetNGDelivery", errorMessage);
+                }
+
+            }
+            return model;
+        }
+
+
+        // NG Quanitty
+        [GridAction]
+        public ActionResult SelectNGQuantity(int? vendorId, string fromDate, string toDate, int? materialClassifiedId) {
+            var model = new List<LogisticsModel>();
+            try {
+                model = GetNGQuantity(vendorId, fromDate, toDate, materialClassifiedId);
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("GetEvaluationDetail", ex.Message);
+            }
+            return View(new GridModel(model));
+        }
+
+
+        List<LogisticsModel> GetNGQuantity(int? vendorId, string fromDate, string toDate, int? materialClassifiedId) {
+            var model = new List<LogisticsModel>();
+            //var ManagementApproved = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name, MyUtilities.UserRole.ManagementApprovedPurchase);
+            using (var vfi = new tammaContext()) {
+                try {
+                    var fDate = MyUtilities.Function.ParseDate(fromDate);
+                    var tDate = MyUtilities.Function.ParseDate(toDate);
+
+                    var entity = new LogisticsModel {
+                    };
+                    var poDetaiList = vfi.PurchaseOrderDetails.Where(t => t.PurchaseOrder.ShipDate >= fDate
+                                                                     && t.PurchaseOrder.ShipDate <= tDate
+                                                                     && t.MaterialClassifiedId == materialClassifiedId
+                                                                     && t.PurchaseOrder.VendorId == vendorId
+                                                                     && t.PurchaseOrder.Status != (byte)MyUtilities.Sales.Status.Cancel
+                                                                     ).Select(t => new {
+                                                                         t.PurchaseOrderDetailId,
+                                                                         t.OrderQty,
+                                                                         t.ReceivedQty,
+                                                                     }).ToList();
+                    //var countNG = 0;
+                    int totalOderquantity = 0;
+                    var NGQuantity = 0;
+
+                    switch (materialClassifiedId) {
+                        case 1: {
+                                foreach (var detail in poDetaiList) {
+                                    totalOderquantity += (int)detail.OrderQty;
+                                    if (detail.ReceivedQty == 0) {
+                                        continue;
+                                    }
+                                    else if (detail.ReceivedQty != 0) {
+                                        var import = vfi.ImportPurchaseOrderDetails.Where(t => t.PoDetailId == detail.PurchaseOrderDetailId
+                                                                                              && t.VendorId == vendorId
+                                                                                              && !string.IsNullOrEmpty(t.LotNumber)
+                                                                                              ).Select(t => t.NG)
+                                                                                              .FirstOrDefault();
+
+                                        if (import == true) {
+                                            NGQuantity += (int)detail.OrderQty;
+                                        }
+                                    }
+                                };
+                                break;
+                            }
+                        case 2: {
+                                foreach (var detail in poDetaiList) {
+                                    totalOderquantity += (int)detail.OrderQty;
+                                    if (detail.ReceivedQty == 0) {
+                                        continue;
+                                    }
+                                    else if (detail.ReceivedQty != 0) {
+                                        var import = vfi.TransactionFptDetails.Where(t => t.PoDetailId == detail.PurchaseOrderDetailId
+                                                                                              && t.VendorId == vendorId
+                                                                                              && !string.IsNullOrEmpty(t.LotNumber)
+                                                                                              ).Select(t => t.NG)
+                                                                                              .FirstOrDefault();
+                                        if (import == true) {
+                                            NGQuantity += (int)detail.OrderQty;
+                                        }
+                                    }
+                                };
+                                break;
+                            }
+                        case 3: {
+                                foreach (var detail in poDetaiList) {
+                                    totalOderquantity += (int)detail.OrderQty;
+                                    if (detail.ReceivedQty == 0) {
+                                        continue;
+                                    }
+                                    else if (detail.ReceivedQty != 0) {
+                                        var import = vfi.TransactionFptDetails.Where(t => t.PoDetailId == detail.PurchaseOrderDetailId
+                                                                                              && t.VendorId == vendorId
+                                                                                              && !string.IsNullOrEmpty(t.LotNumber)
+                                                                                              ).Select(t => t.NG)
+                                                                                              .FirstOrDefault();
+                                        if (import == true) {
+                                            NGQuantity += (int)detail.OrderQty;
+                                        }
+                                    }
+                                };
+                                break;
+                            }
+                    }
+                    double percent = (NGQuantity * 100 / totalOderquantity);
+                    if (percent < 2) {
+                        entity.PlaceA = true;
+                    }
+                    else if (percent >= 2 && percent <= 3) {
+                        entity.PlaceB = true;
+                    }
+                    else if (percent > 3 && percent <= 4) {
+                        entity.PlaceC = true;
+                    }
+                    else if (percent > 4) {
+                        entity.PlaceD = true;
+                    }
+                    entity.Count = (int)percent;
+
+                    model.Add(entity);
+                }
+                catch (Exception ex) {
+                    // Lấy thông tin chi tiết nhất từ Exception
+                    var errorMessage = ex.Message;
+                    if (ex.InnerException != null) {
+                        errorMessage += " | InnerException: " + ex.InnerException.Message;
+                    }
+
+                    // Nếu muốn thêm stack trace để debug
+                    errorMessage += " | StackTrace: " + ex.StackTrace;
+
+                    ModelState.AddModelError("GetNGQuantity", errorMessage);
+                }
+
+            }
+            return model;
+        }
+
+        List<PrintEvaluationForm> GetEvaluationFormModel(int formId) {
+            var model = new List<PrintEvaluationForm>();
+            if (formId == 0) return model;
+            try {
+                using (var vfi = new tammaContext()) {
+                    var evaluation = vfi.EvaluationForms.FirstOrDefault(t => t.FormId == formId 
+                                                                        && t.Status != (byte)MyUtilities.PurchaseOrder.EvaluationEnum.Cancel);
+                    if (evaluation != null) {
+                        var info = new WorkGroupInfo();
+                        var workgroup = vfi.WorkGroups.FirstOrDefault(x => x.Active);
+                        if (workgroup != null) {
+                            info = new WorkGroupInfo {
+                                //Logo = workgroup.ImagePath + "/Logo/" + workgroup.LogoImage,
+                                //CompanyFullName = workgroup.CompanyFullName,
+                                //CompanyShortName = workgroup.CompanyShortName,
+                                //Address = workgroup.Address,
+                                //TelNumber = "Tel : " + workgroup.TelNumber,
+                                //FaxNumber = "Fax : " + workgroup.FaxNumber,
+                                //Email = "Email: " + workgroup.Email,
+                                //Website = "Website: " + workgroup.Website,
+                                Logo = workgroup.ImagePath + "/Logo/" +
+                                            (workgroup.LogoImage == "Logo-AVF.png"
+                                                ? "Logo-AVF-New.jpg"
+                                                : workgroup.LogoImage
+                                            ),
+                            };
+                        }
+                        var entity = new PrintEvaluationForm {
+                            FormId = formId,
+                            VendorId = evaluation.VendorId,
+                            LogisticsPoint = evaluation.LogisticsPoint,
+                            QuantityDeliveryPoint = evaluation.QuantityDeliveryPoint,
+                            NGNumberPoint = evaluation.NGNumberPoint,
+                            NGTimePoint = evaluation.NGTimePoint,
+                            FromDate = evaluation.FromDate,
+                            ToDate = evaluation.ToDate,
+                            TechSpPoint = evaluation.TechSpPoint,
+                            PricePoint = evaluation.PricePoint,
+                            TotalPoint = evaluation.TotalPoint,
+                            Grade = evaluation.Grade,
+                            Info = info,
+                            Status = evaluation.Status,
+                            ModifiedDate = evaluation.ModifiedDate,
+                            NGQuantity = evaluation.NGQuantity,
+                            OrderQuantity = evaluation.OrderQuantity,
+                            MaterialClassifiedId = evaluation.MaterialClassifiedId
+                        };
+                        if (entity.NGQuantity == 0) {
+                            entity.PercentNGQuantity = 0;
+                        }
+                        else if (entity.NGQuantity != 0) {
+                            entity.PercentNGQuantity = (entity.NGQuantity * 100) / (double)entity.OrderQuantity;
+                        }
+                        entity.VendorName = vfi.Vendors.Where(t => t.VendorId == entity.VendorId).Select(t => t.CompanyName).FirstOrDefault();
+                        var detailList = vfi.PurchaseOrderDetails.Where(t => t.PurchaseOrder.ShipDate >= entity.FromDate
+                                                                        && t.PurchaseOrder.ShipDate <= entity.ToDate
+                                                                        && t.PurchaseOrder.VendorId == entity.VendorId
+                                                                        && t.MaterialClassifiedId == entity.MaterialClassifiedId
+                                                                        && t.PurchaseOrder.Status != (byte)MyUtilities.Sales.Status.Cancel
+                                                                        ).Select(t => new {
+                                                                            t.PurchaseOrderDetailId,
+                                                                            t.OrderQty,
+                                                                            t.ReceivedQty,
+                                                                            OrderDate = t.PurchaseOrder.ShipDate,
+
+                                                                        }).ToList();
+                        var lateDeliveryCount = 0;
+                        var lessDeliveryCount = 0;
+                        var NGTimesCount = 0;
+
+                        entity.TotalOrder = detailList.Count;
+
+                        switch (entity.MaterialClassifiedId) {
+                            case 1: {
+                                foreach (var detail in detailList) {
+                                    var import = vfi.ImportPurchaseOrderDetails.Where(t => t.PoDetailId == detail.PurchaseOrderDetailId
+                                                                                      && t.VendorId == entity.VendorId
+                                                                                      && !string.IsNullOrEmpty(t.LotNumber)
+                                                                                      ).Select(t => new{
+                                                                                          t.Quantity,
+                                                                                          t.QuantityKg,
+                                                                                          t.UnitWeight,
+                                                                                          t.ImportPurchaseOrder.ImportDate,
+                                                                                          t.NG,
+
+                                                                                      }).FirstOrDefault();
+
+                                    if (detail.ReceivedQty == 0) {
+                                        lateDeliveryCount++;
+                                        lessDeliveryCount++;
+                                    }
+
+                                    else if (detail.ReceivedQty != 0) {
+                                        // 1. Giao hang tre
+                                        if (detail.OrderDate < import.ImportDate) {
+                                            lateDeliveryCount++;
+                                        }
+
+                                        // 2. Giao thieu
+                                        if (import.QuantityKg != 0) {
+                                            if ((detail.OrderQty * 0.9) > import.QuantityKg) {
+                                                lessDeliveryCount++;
+                                            }
+                                        }
+                                        else if (import.QuantityKg == 0) {
+                                            var importQuantity = import.Quantity * import.UnitWeight;
+                                            if ((detail.OrderQty * 0.9) > importQuantity) {
+                                                lessDeliveryCount++;
+                                            }
+                                        }
+
+                                        // 3, NG 
+                                        if (import.NG == true) {
+                                            NGTimesCount++;
+                                        }
+
+                                    }
+                                }
+                                break;
+                                }
+
+
+                            case 2: {
+                                    foreach (var detail in detailList) {
+                                        var import = vfi.TransactionFptDetails.Where(t => t.PoDetailId == detail.PurchaseOrderDetailId
+                                                                                     && t.VendorId == entity.VendorId
+                                                                                     && !string.IsNullOrEmpty(t.LotNumber)
+                                                                                     ).Select(t => new {
+                                                                                         t.Quantity,
+                                                                                         t.TransactionFpt.TransactionDate,
+                                                                                         t.NG,
+                                                                                     }).FirstOrDefault();
+                                        if (detail.ReceivedQty == 0) {
+                                            lateDeliveryCount++;
+                                            lessDeliveryCount++;
+                                        }
+                                        else if (detail.ReceivedQty != 0) {
+                                            // 1.Late
+                                            if (detail.OrderDate < import.TransactionDate) {
+                                                lateDeliveryCount++;
+                                            }
+                                            // 2.Less
+                                            if (detail.OrderQty > import.Quantity){
+                                                lessDeliveryCount++;
+                                            }
+                                            // 3. NG
+                                            if (import.NG == true){
+                                                NGTimesCount++;
+                                            }
+                                        }
+                                    }
+                                break;
+                            }
+                            case 3: {
+                                    foreach (var detail in detailList) {
+                                        var import = vfi.TransactionFptDetails.Where(t => t.PoDetailId == detail.PurchaseOrderDetailId
+                                                                                     && t.VendorId == entity.VendorId
+                                                                                     && !string.IsNullOrEmpty(t.LotNumber)
+                                                                                     ).Select(t => new {
+                                                                                         t.Quantity,
+                                                                                         t.TransactionFpt.TransactionDate,
+                                                                                         t.NG,
+                                                                                     }).FirstOrDefault();
+                                        if (detail.ReceivedQty == 0) {
+                                            lateDeliveryCount++;
+                                            lessDeliveryCount++;
+                                        }
+                                        else if (detail.ReceivedQty != 0) {
+                                            // 1.Late
+                                            if (detail.OrderDate < import.TransactionDate) {
+                                                lateDeliveryCount++;
+                                            }
+                                            // 2.Less
+                                            if (detail.OrderQty > import.Quantity) {
+                                                lessDeliveryCount++;
+                                            }
+                                            // 3.4. NG
+                                            if (import.NG == true) {
+                                                NGTimesCount++;
+                                            }
+                                        }
+                                    }
+                                    break;
+                                }
+                        }
+                        //1.
+                        entity.LateTimes = lateDeliveryCount;
+
+                        // 2.
+                        entity.LessTimes = lessDeliveryCount;
+ 
+                        // 3.
+                        entity.NGTimes = NGTimesCount;
+                        entity.Year = entity.ToDate.Year;
+                        entity.NextYear = entity.ToDate.Year + 1;
+
+
+                        // Commitment
+                        var commitmentPerformance = vfi.VendorObjectives.Where(t => t.VendorId == entity.VendorId
+                                                                               && t.Year == entity.Year
+                                                                               ).Select(t => new {
+                                                                                   t.PricePoint,
+                                                                                   t.TechSpPoint,
+
+                                                                                   t.LateTimes,
+                                                                                   t.LessTimes,
+                                                                                   t.NGTimes,
+                                                                                   t.PercentNGNumber,
+                                                                                   t.TotalPoint,
+                                                                               }).FirstOrDefault();
+                        if (commitmentPerformance == null) {
+                            entity.CommitmentPricePoint = 0;
+                            entity.CommitmentTechSpPoint = 0;
+
+                            entity.CommitmentLateTimes = 0;
+                            entity.CommitmentLessTimes = 0;
+                            entity.CommitmentNGTimes = 0;
+                            entity.CommitmentPercentNGQuanity = 0;
+                            entity.CommitmentTotalPoint = 0;
+                        }
+                        else if (commitmentPerformance != null) {
+                            entity.CommitmentPricePoint = commitmentPerformance.PricePoint;
+                            entity.CommitmentTechSpPoint = commitmentPerformance.TechSpPoint;
+
+                            entity.CommitmentLateTimes = commitmentPerformance.LateTimes;
+                            entity.CommitmentLessTimes = commitmentPerformance.LessTimes;
+                            entity.CommitmentNGTimes = commitmentPerformance.NGTimes;
+                            entity.CommitmentPercentNGQuanity = commitmentPerformance.PercentNGNumber;
+                            entity.CommitmentTotalPoint = commitmentPerformance.TotalPoint;
+                        }
+
+                        // Objective
+                        var objectivePerformance = vfi.VendorObjectives.Where(t => t.VendorId == entity.VendorId
+                                                       && t.Year == entity.NextYear
+                                                       ).Select(t => new {
+                                                           t.PricePoint,
+                                                           t.TechSpPoint,
+
+                                                           t.LateTimes,
+                                                           t.LessTimes,
+                                                           t.NGTimes,
+                                                           t.PercentNGNumber,
+                                                           t.TotalPoint,
+                                                       }).FirstOrDefault();
+                        if (objectivePerformance == null) {
+                            entity.ObjectivePricePoint = 0;
+                            entity.ObjectiveTechSpPoint = 0;
+
+                            entity.ObjectiveLateTimes = 0;
+                            entity.ObjectiveLessTimes = 0;
+                            entity.ObjectiveNGTimes = 0;
+                            entity.ObjectivePercentNGQuanity = 0;
+                            entity.ObjectiveTotalPoint = 0;
+                        }
+                        else if (objectivePerformance != null) {
+                            entity.ObjectivePricePoint = objectivePerformance.PricePoint;
+                            entity.ObjectiveTechSpPoint = objectivePerformance.TechSpPoint;
+
+                            entity.ObjectiveLateTimes = objectivePerformance.LateTimes;
+                            entity.ObjectiveLessTimes = objectivePerformance.LessTimes;
+                            entity.ObjectiveNGTimes = objectivePerformance.NGTimes;
+                            entity.ObjectivePercentNGQuanity = objectivePerformance.PercentNGNumber;
+                            entity.ObjectiveTotalPoint = objectivePerformance.TotalPoint;
+                        }
+
+                        model.Add(entity);
+                    }
+                }
+            }
+            catch (Exception ex) {
+                var error = ex.ToString(); // QUAN TRỌNG
+                ModelState.AddModelError("PObyId", error);
+            }
+            return model;
+        }
 
 
         #endregion
@@ -1677,7 +2544,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                         var workgroup = vfi.WorkGroups.FirstOrDefault(x => x.Active);
                         if (workgroup != null) {
                             info = new WorkGroupInfo {
-                                Logo = workgroup.ImagePath + "/Logo/" + workgroup.LogoImage,
+                                //Logo = workgroup.ImagePath + "/Logo/" + workgroup.LogoImage
                                 //CompanyFullName = workgroup.CompanyFullName,
                                 //CompanyShortName = workgroup.CompanyShortName,
                                 //Address = workgroup.Address,
@@ -1685,7 +2552,13 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                 //FaxNumber = "Fax : " + workgroup.FaxNumber,
                                 //Email = "Email: " + workgroup.Email,
                                 //Website = "Website: " + workgroup.Website
+                                Logo = workgroup.ImagePath + "/Logo/" +
+                                            (workgroup.LogoImage == "Logo-AVF.png"
+                                                ? "Logo-AVF-New.jpg"
+                                                : workgroup.LogoImage
+                                            ),
                             };
+
                         }
                         foreach (var poDetail in purchaseOrder.PurchaseOrderDetails) {
                             var entity = new PurchaseOrderDetailModel {
@@ -1720,7 +2593,6 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                 
                                 
                             };
-                            var a = entity.OrderQty;
                             // Vendor 
                             if (purchaseOrder.VendorId == 0) {
                                 throw new AggregateException("VendorID");
@@ -2031,7 +2903,9 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                     if (update.ManagerNote != poDetail.ManagerNote && update.ManagerNote != null) {
                         poDetail.ManagerNote = update.ManagerNote;
                     }
-                    //poDetail.UnitPrice = update.UnitPrice;
+                    if (update.UnitPrice != 0 && update.UnitPrice != poDetail.UnitPrice) {
+                        poDetail.UnitPrice = update.UnitPrice;
+                    }
                     vfi.SaveChanges();
                 }
             }
@@ -2627,6 +3501,13 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
             var model = GetPurchaseOrderDetailModel(purchaseOrderId);
             return PartialView("PagePrintPurchaseOrderDetailEN", model);
         }
+
+        [HttpPost]
+        public ActionResult PrintEvationForm(int formId) {
+            var model = GetEvaluationFormModel(formId);
+            return PartialView("PagePrintEvaluationForm", model);
+        }
+
 
         [GridAction]
         public ActionResult UpdatePurchaseOrder(PurchaseOrderModel update) {

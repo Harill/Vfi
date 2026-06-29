@@ -91,13 +91,9 @@
 
 
         function gridMaterialImg_OnSave(e) {
-            //var i = 0;
-            //var drawing2D = "";
             var editRow = e.target.getElementsByClassName("t-grid-edit-row")[0];
             var ul2D = editRow.childNodes[2].childNodes[1].childNodes[1];
-            //if (ul2D == null && e.Upload === "" || typeof ul2D == 'undefined') {
-            //    //drawing2D = e.dataItem.ImgUrl;
-            //} else
+
             if (ul2D != null) {
                 var child2D = ul2D.childNodes;
                 for (var i = child2D.length - 1; i >= 0; i--) {

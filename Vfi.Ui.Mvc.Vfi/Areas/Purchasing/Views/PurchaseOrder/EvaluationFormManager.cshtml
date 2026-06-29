@@ -40,6 +40,7 @@
             var vendor = $("#VendorCodeName").data("tComboBox").value();
             if (vendor === "")
                 vendor = 0;
+
             var statusValue = $("#Status").data("tComboBox").value();
             if (statusValue === "")
                 statusValue = 1;
@@ -147,8 +148,21 @@
                 classified: classifiedId,
             });
         }
-    </script>
 
+        function PrintEvationForm(val) {
+            alert(val);
+            $('#result').load('@Url.Action("PrintEvationForm", "PurchaseOrder", new { area = "Purchasing" })',
+                {
+                    formId : val
+                }, function () {
+                    var window = $('#windowReport').data('tWindow');
+                    window.open();
+                });
+            return false;
+        }
+
+
+    </script>
 
 
 }
@@ -250,7 +264,7 @@
                 .FooterHtmlAttributes(new { style = "text-align: center; font-weight:bold; " })
                 .Aggregate(agg => agg.Count());;
 
-            columns.Bound(f => f.Name).Width(80).Title("Tên").ReadOnly(true)
+            columns.Bound(f => f.Name).Width(80).Title("Số phiếu").ReadOnly(true)
                 .HtmlAttributes(new { style = "border-bottom:1px black solid; " });
 
             columns.Bound(f => f.ClassifiedName).Width(110).Title("Phân loại").ReadOnly(true)
@@ -287,6 +301,11 @@
             columns.Bound(f => f.NGNumberPoint).Width(65).Title("SL NG</br>(điểm)").ReadOnly(true)
                 .HtmlAttributes(new { style = "text-align: center; border-bottom:1px black solid; font-weight:bold;  border-right:1px black solid;" })
                 .Format("{0:n0}");
+
+            columns.Bound(f => f.FormId).Title("Phiếu </br> đánh giá").Width(55).ReadOnly(true)
+               .ClientTemplate("<input type='button' id='id_<#= FormId #>' value='In' class='t-button' onclick=PrintEvationForm(<#= FormId #>) />")
+               .HtmlAttributes(new { style = "text-align:center; border-bottom:1px black solid;" })
+               .Filterable(false);
 
 
             //
@@ -448,11 +467,62 @@
     <div id="result"></div>
     </text>
 )
-        //.ClientEvents(e => e.OnLoad("Window_onLoad"));
+        .ClientEvents(e => e.OnOpen("window_onopen"))
         .Visible(false)
         .Width(960)
         .Render();
 }
+
+
+<script>
+    function window_onopen(e) {
+        //alert("b");
+        $("#rptvPagePrintEvaluationForm_ReportToolbar_ExportGr_FormatList_DropDownList option[value='CSV']").remove();
+        $("#rptvPagePrintEvaluationForm_ReportToolbar_ExportGr_FormatList_DropDownList option[value='XLS']").remove();
+        $("#rptvPagePrintEvaluationForm_ReportToolbar_ExportGr_FormatList_DropDownList option[value='RTF']").remove();
+        $("#rptvPagePrintEvaluationForm_ReportToolbar_ExportGr_FormatList_DropDownList option[value='IMAGE']").remove();
+        $("#rptvPagePrintEvaluationForm_ReportToolbar_ExportGr_FormatList_DropDownList option[value='MHTML']").remove();
+        $("#rptvPagePrintEvaluationForm_ReportToolbar_ExportGr_FormatList_DropDownList option[value='XPS']").remove();
+        //$("#rptvPagePrintEvaluationForm_ReportToolbar_ExportGr_FormatList_DropDownList option[value='DOCX']").remove();
+
+        //PDF → PDF
+
+        //CSV → CSV
+
+        //Excel (XLS/XLSX) → XLS
+
+        //Rich Text Formart → RTF
+
+        //TIFF/Image → IMAGE
+
+        //MHTML (Web Archive) → MHTML
+
+        //XPS Document → XPS
+
+        // khong co file Docs
+
+
+    }
+</script>
+
+
+@*  Có thời gian xem lại hàm này
+<script>
+    function window_onopen(e) {
+        // Lấy danh sách tất cả option trong dropdown Export
+        var $options = $("#rptvPagePrintEvaluationForm_ReportToolbar_ExportGr_FormatList_DropDownList option");
+
+        // Duyệt qua từng option
+        $options.each(function () {
+            var val = $(this).val();
+            // Nếu không phải PDF thì xóa
+            if (val !== "PDF") {
+                $(this).remove();
+            }
+        });
+    }
+</script>*@
+
 <style type="text/css">
     #windowReport {
         min-height: 580px;

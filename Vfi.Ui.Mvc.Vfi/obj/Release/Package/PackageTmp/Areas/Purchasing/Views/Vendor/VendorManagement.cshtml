@@ -114,7 +114,9 @@
             columns.Command(command =>
                 command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText)
             ).Width(98).Title("Commands").HtmlAttributes(new { style = "text-align:center" });
-
+            columns.Bound(f => f.Priority).Width(55).Title("Nhà cung cấp được duyệt ")
+                .ClientTemplate("<input type='checkbox' disabled='disabled' name='Priority' <#=Priority? checked='checked' : '' #> />")
+                .HtmlAttributes(new { style = "text-align:center" });
             columns.Bound(f => f.MaterialClassifiedName).Width(125);
             columns.Bound(f => f.VendorCode).Width(125);
             columns.Bound(f => f.VendorName).Width(225);
@@ -131,10 +133,6 @@
             columns.Bound(f => f.MaxCredit).Width(225);
             columns.Bound(f => f.SpecialInfo).Width(275);
             columns.Bound(f => f.Note).Width(275);
-
-            columns.Bound(f => f.Priority).Width(75)
-                .ClientTemplate("<input type='checkbox' disabled='disabled' name='Priority' <#=Priority? checked='checked' : '' #> />")
-                .HtmlAttributes(new { style = "text-align:center" });
             
             columns.Bound(f => f.Active).Width(75)
                 .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=Active? checked='checked' : '' #> />")
@@ -148,7 +146,7 @@
                 .SelectedIndex(0)
                 .Items(items => {
                     items.Add()
-                        .Text("Thông tin PDG")
+                        .Text("Đánh giá NCC")
                         .Content(
                             Html.Telerik().Grid<EvaluationFormModel>()
                                 .Name("gridEvaluation_<#= VendorId #>")
@@ -220,7 +218,7 @@
                         );
 
 
-                    items.Add().Text("Chứng chỉ").Content(
+                    items.Add().Text("Audit").Content(
                                            Html.Telerik().Grid<Vfi.Ui.Mvc.Vfi.Models.VendorImgModel>()
                                                .Name("gridVendorImg_<#= VendorId #>")
                                                .DataKeys(key => key.Add(f => f.ImgId).RouteKey("imgId"))
@@ -231,19 +229,24 @@
                                                    dataBinding => dataBinding.Ajax()
                                                                              .Select("SelectVendorImgById", "Vendor", new { area = "", vendorId = "<#= VendorId #>", type = 1 })
                                                                              .Insert("InsertVendorImg", "Vendor", new { area = "", vendorId = "<#= VendorId #>", type = 1 })
-                                                                             .Update("UpdateVendorlImg", "Vendor", new { area = "", vendorId = "<#= VendorId #>", type = 1 })
-                                                                             .Delete("DeleteVendorlImg", "Vendor", new { area = "", vendorId = "<#= VendorId #>", type = 1 })
+                                                                             .Update("UpdateVendorImg", "Vendor", new { area = "", vendorId = "<#= VendorId #>", type = 1 })
+                                                                             .Delete("DeleteVendorImg", "Vendor", new { area = "", vendorId = "<#= VendorId #>", type = 1 })
                                                )
                                                .Columns(columns => {
                                                    columns.Command(command =>
                                                                    command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
                                                        ).Width(60).Title("").HtmlAttributes(new { style = "text-align:center" });
                                                    columns.Bound(f => f.Name).Title("Chứng chỉ").Width(300);
-                                                   columns.Bound(f => f.ImgUrl).Width(80).Title("Bản vẽ")
-                                                          .ClientTemplate("<a id='<#=ImgId#>' href='" + Url.Content("~/Content/FileUpload/VendorImg/") + "<#=ImgUrl#>?<#=UploadDate#>' class='highslide' onclick='return hs.expand(this)'>" +
-                                                                          "<img src='" + Url.Content("~/Content/FileUpload/VendorImg/") + "<#=ImgUrl#>?<#=UploadDate#>' height='40' width='40' title='Mở lớn'/>"
-                                                       //+ "</a><div class='highslide-caption'><#= Name #>-<#= Description #></div>"
-                                                                          )
+                                                   columns.Bound(f => f.ImgUrl).Width(120).Title("Bản vẽ")
+                                                          //.ClientTemplate("<a id='<#=ImgId#>' href='" + Url.Content("~/Content/FileUpload/VendorImg/")
+                                                          //+ "<#=ImgUrl#>?<#=UploadDate#>' download>" 
+                                                          ////+ "<img src='" 
+                                                          ////+ Url.Content("~/Content/FileUpload/VendorImg/") 
+                                                          ////+ "<#=ImgUrl#>?<#=UploadDate#>' height='40' width='40' title='Mở lớn'/>"
+                                                          //+"Link</a>"
+                                                       //<div class='highslide-caption'><#= Name #>-<#= Description #></div>"
+                                                                          //)
+                                                        .ClientTemplate("<a href='" + Url.Action("DownloadFile", "Vendor")     + "?fileName=<#=ImgUrl#>'>Download</a>")
                                                           .HtmlAttributes(new { style = "text-align:center" });
                                                    columns.Bound(f => f.ModifiedUser).Title("Người tạo").ReadOnly(true).Width(100);
                                                    columns.Bound(f => f.ModifiedDate).Title("Ngày tạo").ReadOnly(true).Width(150)
