@@ -1,0 +1,4174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="BasePrice" xml:space="preserve">
+    <value>Material Price</value>
+  </data>
+  <data name="CancelText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="CheckingEmployee" xml:space="preserve">
+    <value>Checking Employee</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="Currency" xml:space="preserve">
+    <value>Currency</value>
+  </data>
+  <data name="CurrencyCode" xml:space="preserve">
+    <value>Currency Code</value>
+  </data>
+  <data name="CurrencyManagement" xml:space="preserve">
+    <value>Currency Management</value>
+    <comment>CurrencyManagement</comment>
+  </data>
+  <data name="CustomerCode" xml:space="preserve">
+    <value>Customer &lt;/br&gt; Code</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Delete1" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="DetailText" xml:space="preserve">
+    <value>Detail</value>
+  </data>
+  <data name="DiameterType" xml:space="preserve">
+    <value>Diameter&lt;/br&gt;Type</value>
+  </data>
+  <data name="EditText" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="EmployeeCode" xml:space="preserve">
+    <value>Employee Code</value>
+  </data>
+  <data name="EmployeeInformation" xml:space="preserve">
+    <value>Employee Information</value>
+  </data>
+  <data name="EmployeeManagement" xml:space="preserve">
+    <value>Employee Management</value>
+    <comment>EmployeeManagement</comment>
+  </data>
+  <data name="EmployeeName" xml:space="preserve">
+    <value>Employee Name</value>
+  </data>
+  <data name="Factor" xml:space="preserve">
+    <value>Material-Factor</value>
+  </data>
+  <data name="Filter" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="ForecastIn3Month" xml:space="preserve">
+    <value>Forecast&lt;/br&gt;3 Months (pcs)</value>
+  </data>
+  <data name="ForecastInYear" xml:space="preserve">
+    <value>Forecast &lt;/br&gt; 1 Year (pcs)</value>
+  </data>
+  <data name="FromOutDiameter" xml:space="preserve">
+    <value>Min Diameter</value>
+  </data>
+  <data name="FuelCode" xml:space="preserve">
+    <value>Fuel Code</value>
+  </data>
+  <data name="FuelDesctiption" xml:space="preserve">
+    <value>Fuel Desctiption</value>
+  </data>
+  <data name="FuelDesignNo" xml:space="preserve">
+    <value>Fuel Design</value>
+  </data>
+  <data name="FuelFullCode" xml:space="preserve">
+    <value>Fuel Full-Code</value>
+  </data>
+  <data name="FuelManagement" xml:space="preserve">
+    <value>Fuels-Information Management</value>
+    <comment>FuelManagement</comment>
+  </data>
+  <data name="FuelName" xml:space="preserve">
+    <value>Fuel Name</value>
+    <comment>FuelManagement</comment>
+  </data>
+  <data name="Group" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="IdentityCode" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="Img" xml:space="preserve">
+    <value>Img</value>
+  </data>
+  <data name="ImgUrl" xml:space="preserve">
+    <value>Blueprint</value>
+  </data>
+  <data name="InDiameter" xml:space="preserve">
+    <value>Inside Diameter(If had)</value>
+  </data>
+  <data name="Information" xml:space="preserve">
+    <value>Information</value>
+    <comment>ItemCard</comment>
+  </data>
+  <data name="InsertText" xml:space="preserve">
+    <value>Insert</value>
+  </data>
+  <data name="IsDeleted" xml:space="preserve">
+    <value>Deleted</value>
+  </data>
+  <data name="IsExpensive" xml:space="preserve">
+    <value>Hight &lt;/br&gt;Cost</value>
+  </data>
+  <data name="IsPlating" xml:space="preserve">
+    <value>Plating</value>
+  </data>
+  <data name="LinkAccount" xml:space="preserve">
+    <value>Link Account</value>
+  </data>
+  <data name="Lot" xml:space="preserve">
+    <value>Lot</value>
+  </data>
+  <data name="MachineRepair" xml:space="preserve">
+    <value>Repair</value>
+  </data>
+  <data name="MaterialClassifiedManagement" xml:space="preserve">
+    <value>Material-Classified Management</value>
+  </data>
+  <data name="MaterialClassifiedName" xml:space="preserve">
+    <value>Material-Classified Name</value>
+  </data>
+  <data name="MaterialCode" xml:space="preserve">
+    <value>Material Code</value>
+  </data>
+  <data name="MaterialDiameterType" xml:space="preserve">
+    <value>Material Diameter Type</value>
+  </data>
+  <data name="MaterialManagement" xml:space="preserve">
+    <value>Materials Management</value>
+    <comment>Materials Management</comment>
+  </data>
+  <data name="MaterialName" xml:space="preserve">
+    <value>Material Name</value>
+  </data>
+  <data name="MaterialQuoteBaseManagement" xml:space="preserve">
+    <value>Material-Quotes Management</value>
+    <comment>MaterialQuoteBaseManagement</comment>
+  </data>
+  <data name="MaterialShape" xml:space="preserve">
+    <value>Material Shape</value>
+  </data>
+  <data name="MaterialTypeManagement" xml:space="preserve">
+    <value>Material-Types Management</value>
+    <comment>MaterialTypeManagement</comment>
+  </data>
+  <data name="MaterialTypeName" xml:space="preserve">
+    <value>Material-Type Name</value>
+  </data>
+  <data name="ModifiedDate" xml:space="preserve">
+    <value>Modified-Date</value>
+  </data>
+  <data name="ModifiedUser" xml:space="preserve">
+    <value>Modified-User</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Name1" xml:space="preserve">
+    <value>Certificate</value>
+  </data>
+  <data name="NewText" xml:space="preserve">
+    <value>Create New</value>
+  </data>
+  <data name="Note" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="OutsideProcessManagement" xml:space="preserve">
+    <value>Outside-Process Management</value>
+    <comment>OutsideProcessManagement</comment>
+  </data>
+  <data name="PackagingType" xml:space="preserve">
+    <value>Packaging Type</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Price</value>
+  </data>
+  <data name="Price1" xml:space="preserve">
+    <value>Price (USD/kg)</value>
+  </data>
+  <data name="Print" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="Product" xml:space="preserve">
+    <value>Product</value>
+  </data>
+  <data name="ProductCode" xml:space="preserve">
+    <value>Product Code</value>
+  </data>
+  <data name="Production2" xml:space="preserve">
+    <value>Production2</value>
+  </data>
+  <data name="Production2B" xml:space="preserve">
+    <value>Production2B</value>
+  </data>
+  <data name="ProductionFactor" xml:space="preserve">
+    <value>Production-Factor</value>
+  </data>
+  <data name="ProductUsing" xml:space="preserve">
+    <value>Product Using</value>
+  </data>
+  <data name="Quantity" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="Refresh" xml:space="preserve">
+    <value>Find</value>
+  </data>
+  <data name="Sale" xml:space="preserve">
+    <value>Sale</value>
+  </data>
+  <data name="Shape" xml:space="preserve">
+    <value>Shape</value>
+  </data>
+  <data name="SystemManagement" xml:space="preserve">
+    <value>System Management</value>
+    <comment>Home</comment>
+  </data>
+  <data name="TaxFactor" xml:space="preserve">
+    <value>Tax-Factor</value>
+  </data>
+  <data name="ToolCode" xml:space="preserve">
+    <value>Tool Code</value>
+  </data>
+  <data name="ToolDesignNo1" xml:space="preserve">
+    <value>Tool Design</value>
+  </data>
+  <data name="ToolFullDesign" xml:space="preserve">
+    <value>Design Code</value>
+  </data>
+  <data name="ToolManagement" xml:space="preserve">
+    <value>Tools Management</value>
+    <comment>ToolManagement</comment>
+  </data>
+  <data name="ToolMaterial1" xml:space="preserve">
+    <value>Material</value>
+  </data>
+  <data name="ToolName" xml:space="preserve">
+    <value>Tool Name</value>
+  </data>
+  <data name="ToolProduction1" xml:space="preserve">
+    <value>Manufacturer</value>
+  </data>
+  <data name="ToolType" xml:space="preserve">
+    <value>Tool Type</value>
+  </data>
+  <data name="ToOutDiameter" xml:space="preserve">
+    <value>Max Diameter</value>
+  </data>
+  <data name="UnitMeasureCode" xml:space="preserve">
+    <value>Unit Measure Code</value>
+  </data>
+  <data name="UnitMeasureManagement" xml:space="preserve">
+    <value>Unit Measure Management</value>
+    <comment>UnitMeasureManagement</comment>
+  </data>
+  <data name="UnitMeasureName" xml:space="preserve">
+    <value>Unit Measure</value>
+  </data>
+  <data name="UnitPrice" xml:space="preserve">
+    <value>Unit Price</value>
+  </data>
+  <data name="UnitWeight" xml:space="preserve">
+    <value>Unit Weight</value>
+  </data>
+  <data name="UnitWeightByMaterial" xml:space="preserve">
+    <value>Unit Weight&lt;/br&gt;By Material(g)</value>
+  </data>
+  <data name="UpdateText" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="UsingType" xml:space="preserve">
+    <value>Using Type</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>Weight&lt;/br&gt; (kg/bar)</value>
+  </data>
+  <data name="WELCOME" xml:space="preserve">
+    <value>Welcome</value>
+    <comment>Home</comment>
+  </data>
+  <data name="ActivateWorkOrder" xml:space="preserve">
+    <value>Activate Work Order</value>
+    <comment>ActivateWorkOrder</comment>
+  </data>
+  <data name="Actual" xml:space="preserve">
+    <value>Actual</value>
+    <comment>WorkOrderManagement</comment>
+  </data>
+  <data name="ActualEndDate" xml:space="preserve">
+    <value>Actual&lt;/br&gt;End Date</value>
+    <comment>WorkOrderManagement</comment>
+  </data>
+  <data name="ActualStartDate" xml:space="preserve">
+    <value>Actual &lt;/br&gt;Start Date</value>
+    <comment>WorkOrderManagement</comment>
+  </data>
+  <data name="ActualTime" xml:space="preserve">
+    <value>Actual&lt;/br&gt;Time&lt;/br&gt;(h)</value>
+    <comment>WorkOrderManagement</comment>
+  </data>
+  <data name="AllMachine" xml:space="preserve">
+    <value>All Machine</value>
+    <comment>WorkOrderMaterialAssignment</comment>
+  </data>
+  <data name="AssignMaterial" xml:space="preserve">
+    <value>Assign Material</value>
+  </data>
+  <data name="Bar" xml:space="preserve">
+    <value>Bar</value>
+    <comment>ActivateWorkOrder</comment>
+  </data>
+  <data name="Barcode" xml:space="preserve">
+    <value>Barcode</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+    <comment>WorkOrderMaterialAssignment</comment>
+  </data>
+  <data name="CancelStage" xml:space="preserve">
+    <value>Cancel Stage</value>
+    <comment>ActivateWorkOrder</comment>
+  </data>
+  <data name="CancelWO" xml:space="preserve">
+    <value>Cancel &lt;/br&gt;WO</value>
+    <comment>WorkOrderManagement</comment>
+  </data>
+  <data name="CncWeight" xml:space="preserve">
+    <value>Cnc&lt;/br&gt;Weight</value>
+    <comment>ProductManagementInv</comment>
+  </data>
+  <data name="Customer" xml:space="preserve">
+    <value>Customer</value>
+    <comment>WorkOrderManagement</comment>
+  </data>
+  <data name="DataEntry" xml:space="preserve">
+    <value>Data Entry</value>
+    <comment>WorkOrderManagement</comment>
+  </data>
+  <data name="Defect" xml:space="preserve">
+    <value>DEF</value>
+    <comment>WorkOrderCard</comment>
+  </data>
+  <data name="DefectQuantity" xml:space="preserve">
+    <value>DEF &lt;/br&gt;(pcs)</value>
+    <comment>Defective Product (viết tắt: DEF):WorkOrderManagement</comment>
+  </data>
+  <data name="DefectQuantity1" xml:space="preserve">
+    <value>DEF Quantity&lt;/br&gt;(pcs)</value>
+    <comment>WorkOrderManagement</comment>
+  </data>
+  <data name="DefectWeight" xml:space="preserve">
+    <value>DEF&lt;/br&gt;(g)</value>
+    <comment>WorkOrderManagement</comment>
+  </data>
+  <data name="DefectWeight1" xml:space="preserve">
+    <value>DEF Weight&lt;/br&gt;(g)</value>
+    <comment>WorkOrderManagement</comment>
+  </data>
+  <data name="DeliveryDate" xml:space="preserve">
+    <value>Delivery Date</value>
+    <comment>ActivateWorkOrder</comment>
+  </data>
+  <data name="Describe" xml:space="preserve">
+    <value>Describe</value>
+    <comment>WorkOrderManagement</comment>
+  </data>
+  <data name="Diff" xml:space="preserve">
+    <value>Diff</value>
+    <comment>WorkOrderCard</comment>
+  </data>
+  <data name="DueDate1" xml:space="preserve">
+    <value>Due Date&lt;/br&gt; EST</value>
+    <comment>WorkOrderManagement</comment>
+  </data>
+  <data name="Employee" xml:space="preserve">
+    <value>Employee</value>
+    <comment>WorkOrderManagement</comment>
+  </data>
+  <data name="EndDate1" xml:space="preserve">
+    <value>End Date&lt;/br&gt; Actual</value>
+    <comment>WorkOrderManagement</comment>
+  </data>
+  <data name="GoodQuantity" xml:space="preserve">
+    <value>OK Quantity&lt;/br&gt;(pcs)</value>
+    <comment>WorkOrderManagement</comment>
+  </data>
+  <data name="GoodWeight" xml:space="preserve">
+    <value>OK Weight&lt;/br&gt;(g)</value>
+    <comment>WorkOrderManagement</comment>
+  </data>
+  <data name="HaveInventory" xml:space="preserve">
+    <value>Have Inventory</value>
+    <comment>WorkOrderMaterialAssignment</comment>
+  </data>
+  <data name="HaveWO" xml:space="preserve">
+    <value>Have WO</value>
+    <comment>WorkOrderMaterialAssignment</comment>
+  </data>
+  <data name="HeatTreatmentWeight" xml:space="preserve">
+    <value>Heat Treatment&lt;/br&gt;Weight</value>
+    <comment>ProductManagementInv</comment>
+  </data>
+  <data name="Index" xml:space="preserve">
+    <value>No.</value>
+    <comment>WorkOrderManagement</comment>
+  </data>
+  <data name="Machine" xml:space="preserve">
+    <value>Machine</value>
+    <comment>WorkOrderManagement</comment>
+  </data>
+  <data name="Material" xml:space="preserve">
+    <value>Material</value>
+    <comment>WorkOrderCard</comment>
+  </data>
+  <data name="MaterialUsed" xml:space="preserve">
+    <value>Material Used</value>
+  </data>
+  <data name="NGQuantity" xml:space="preserve">
+    <value>WFS Quantity&lt;/br&gt;(pcs)</value>
+    <comment>WC = Waiting for Sorting/ WorkOrderManagement</comment>
+  </data>
+  <data name="NGWeight" xml:space="preserve">
+    <value>WFS Weight&lt;/br&gt;(g)</value>
+    <comment>WorkOrderManagement</comment>
+  </data>
+  <data name="OrderNumber" xml:space="preserve">
+    <value>Order&lt;/br&gt; Numbers</value>
+    <comment>WorkOrderManagement</comment>
+  </data>
+  <data name="OrderQuantity" xml:space="preserve">
+    <value>Order Quantity</value>
+    <comment>ActivateWorkOrder</comment>
+  </data>
+  <data name="Planned" xml:space="preserve">
+    <value>Planned</value>
+    <comment>WorkOrderManagement</comment>
+  </data>
+  <data name="Planned1" xml:space="preserve">
+    <value>Planned</value>
+    <comment>WorkOrderCard</comment>
+  </data>
+  <data name="PlannedTime" xml:space="preserve">
+    <value>Planned&lt;/br&gt;Time&lt;/br&gt;(h)</value>
+    <comment>WorkOrderManagement</comment>
+  </data>
+  <data name="PlatingWeight" xml:space="preserve">
+    <value>PlatingWeight</value>
+    <comment>ProductManagementInv</comment>
+  </data>
+  <data name="Production2Weight" xml:space="preserve">
+    <value>Production2&lt;/br&gt;Weight</value>
+    <comment>ProductManagementInv</comment>
+  </data>
+  <data name="ProductionRate" xml:space="preserve">
+    <value>Production&lt;/br&gt;Rate (pcs/bar)</value>
+    <comment>ProductManagementInv</comment>
+  </data>
+  <data name="ProductionWeight" xml:space="preserve">
+    <value>Production&lt;/br&gt;Weight</value>
+    <comment>ProductManagementInv</comment>
+  </data>
+  <data name="ProductManagementInv" xml:space="preserve">
+    <value>Product Management (Warehouse)</value>
+    <comment>ProductManagementInv</comment>
+  </data>
+  <data name="QcWeight" xml:space="preserve">
+    <value>QcWeight</value>
+    <comment>ProductManagementInv</comment>
+  </data>
+  <data name="RoutingCount" xml:space="preserve">
+    <value>Routing&lt;/br&gt; Count</value>
+    <comment>WorkOrderManagement</comment>
+  </data>
+  <data name="RoutingName1" xml:space="preserve">
+    <value>Is In Stage</value>
+    <comment>WorkOrderManagement</comment>
+  </data>
+  <data name="RunningQuantity" xml:space="preserve">
+    <value>Running &lt;/br&gt;Quantity</value>
+    <comment>WorkOrderManagement</comment>
+  </data>
+  <data name="Select" xml:space="preserve">
+    <value>Select</value>
+    <comment>ActivateWorkOrder</comment>
+  </data>
+  <data name="SerialNumber" xml:space="preserve">
+    <value>Serial&lt;/br&gt; Numbers</value>
+    <comment>WorkOrderManagement</comment>
+  </data>
+  <data name="Stage" xml:space="preserve">
+    <value>Stage</value>
+    <comment>WorkOrderManagement</comment>
+  </data>
+  <data name="StartDate1" xml:space="preserve">
+    <value>Start Date&lt;/br&gt; EST</value>
+    <comment>WorkOrderManagement</comment>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+    <comment>WorkOrderManagement</comment>
+  </data>
+  <data name="SurfaceTreatmentWeight" xml:space="preserve">
+    <value>Surface Treatment&lt;/br&gt;Weight</value>
+    <comment>ProductManagementInv</comment>
+  </data>
+  <data name="TimeEST" xml:space="preserve">
+    <value>Time EST&lt;/br&gt;(h)</value>
+    <comment>ActivateWorkOrder</comment>
+  </data>
+  <data name="TotalInv" xml:space="preserve">
+    <value>Total Inv</value>
+    <comment>ActivateWorkOrder</comment>
+  </data>
+  <data name="Using" xml:space="preserve">
+    <value>Using</value>
+    <comment>WorkOrderManagement</comment>
+  </data>
+  <data name="WaitingPlatingWeight" xml:space="preserve">
+    <value>Before Plating&lt;/br&gt;Weight</value>
+    <comment>ProductManagementInv</comment>
+  </data>
+  <data name="WorkOrderCard" xml:space="preserve">
+    <value>Work Order Card</value>
+    <comment>WorkOrderCard</comment>
+  </data>
+  <data name="WorkOrderCount" xml:space="preserve">
+    <value>Work Order Count</value>
+    <comment>ActivateWorkOrder</comment>
+  </data>
+  <data name="WorkOrderInformation" xml:space="preserve">
+    <value>Work Order Information</value>
+    <comment>WorkOrderCard</comment>
+  </data>
+  <data name="WorkOrderManagement" xml:space="preserve">
+    <value>Work Orders Management</value>
+    <comment>WorkOrderManagement</comment>
+  </data>
+  <data name="WorkOrderMaterialAssignment" xml:space="preserve">
+    <value>Work Order Material Assignment</value>
+    <comment>WorkOrderMaterialAssignment</comment>
+  </data>
+  <data name="WorkOrderMaterialUsing" xml:space="preserve">
+    <value>Work Order Material-Using</value>
+    <comment>Work Order Material-Using</comment>
+  </data>
+  <data name="WorkOrderNumber" xml:space="preserve">
+    <value>Work Order Number</value>
+    <comment>WorkOrderCard</comment>
+  </data>
+  <data name="WorkOrderQuantity" xml:space="preserve">
+    <value>Work Order Quantity</value>
+    <comment>ActivateWorkOrder</comment>
+  </data>
+  <data name="AlreadyProduced" xml:space="preserve">
+    <value>Already Produced</value>
+    <comment>WorkOrderProductionProcess</comment>
+  </data>
+  <data name="Approved" xml:space="preserve">
+    <value>Approve</value>
+    <comment>WorkOrderProductionApprovement</comment>
+  </data>
+  <data name="Assign" xml:space="preserve">
+    <value>Assign</value>
+    <comment>WorkOrderProductionProcess</comment>
+  </data>
+  <data name="CancelInput" xml:space="preserve">
+    <value>CancelInput</value>
+    <comment>WorkOrderProductionProcess</comment>
+  </data>
+  <data name="Connect1" xml:space="preserve">
+    <value>Connect </value>
+    <comment>WorkOrderProductionProcess</comment>
+  </data>
+  <data name="DiffQuantity" xml:space="preserve">
+    <value>Diff&lt;/br&gt;ACT-EST</value>
+    <comment>WorkOrderProductionProcessManagement</comment>
+  </data>
+  <data name="DisConnect1" xml:space="preserve">
+    <value>Disconnect</value>
+    <comment>WorkOrderProductionProcess</comment>
+  </data>
+  <data name="EarlyQuantity" xml:space="preserve">
+    <value>Early Quantity</value>
+    <comment>WorkOrderMaterialUsing</comment>
+  </data>
+  <data name="EndDate" xml:space="preserve">
+    <value>End Date</value>
+    <comment>WorkOrderProductionManagement</comment>
+  </data>
+  <data name="ExcessEmbryo" xml:space="preserve">
+    <value>Excess Embryo</value>
+    <comment>WorkOrderProductionProcess</comment>
+  </data>
+  <data name="Finished" xml:space="preserve">
+    <value>Finished</value>
+    <comment>WorkOrderProductionManagement</comment>
+  </data>
+  <data name="Inventory" xml:space="preserve">
+    <value>Inventory</value>
+    <comment>WorkOrderMaterialScanCode</comment>
+  </data>
+  <data name="KnifeCut" xml:space="preserve">
+    <value>Knife Cut</value>
+    <comment>WorkOrderProductionProcess</comment>
+  </data>
+  <data name="LastQuantity" xml:space="preserve">
+    <value>Last Quantity</value>
+    <comment>WorkOrderMaterialUsing</comment>
+  </data>
+  <data name="LeftOver" xml:space="preserve">
+    <value>Left Over</value>
+    <comment>WorkOrderProductionProcess</comment>
+  </data>
+  <data name="MaterialAssign" xml:space="preserve">
+    <value>Assign Material</value>
+    <comment>WorkOrderProductionManagement</comment>
+  </data>
+  <data name="MaterialNumber" xml:space="preserve">
+    <value>Material Number</value>
+    <comment>WorkOrderMaterialScanCode</comment>
+  </data>
+  <data name="MaterialUsing" xml:space="preserve">
+    <value>Material Using</value>
+    <comment>WorkOrderProductionManagement</comment>
+  </data>
+  <data name="NeededProcessedQuantity" xml:space="preserve">
+    <value>Needed-Process&lt;/br&gt;Quantity</value>
+    <comment>WorkOrderCNCProcess</comment>
+  </data>
+  <data name="NextStage" xml:space="preserve">
+    <value>Next Stage</value>
+    <comment>WorkOrderMaterialScanCode</comment>
+  </data>
+  <data name="NGQuantity1" xml:space="preserve">
+    <value>WFS&lt;/br&gt;(pcs)</value>
+    <comment>WorkOrderProductionManagement</comment>
+  </data>
+  <data name="NGWeight1" xml:space="preserve">
+    <value>WFS&lt;/br&gt;(g)</value>
+    <comment>WorkOrderCNCManagement</comment>
+  </data>
+  <data name="Number" xml:space="preserve">
+    <value>Number</value>
+    <comment>WorkOrderMaterialScanCode</comment>
+  </data>
+  <data name="NumberWorkOrder" xml:space="preserve">
+    <value>Work Order Number</value>
+    <comment>WorkOrderMaterialScanCode</comment>
+  </data>
+  <data name="OkGoodsWeighing" xml:space="preserve">
+    <value>OK Goods Weighing</value>
+    <comment>WorkOrderProductionProcess</comment>
+  </data>
+  <data name="OrdersSheet" xml:space="preserve">
+    <value>Orders Sheet</value>
+    <comment>WorkOrderProductionApprovement</comment>
+  </data>
+  <data name="PackageWeight" xml:space="preserve">
+    <value>Package Weight</value>
+    <comment>WorkOrderProductionProcess</comment>
+  </data>
+  <data name="PreviousStageCompletedDate" xml:space="preserve">
+    <value>Previous Stage&lt;/br&gt;Completed Date</value>
+    <comment>WorkOrderCNCConfirmation</comment>
+  </data>
+  <data name="ProductionInformation" xml:space="preserve">
+    <value>Production Information</value>
+    <comment>WorkOrderProductionProcess</comment>
+  </data>
+  <data name="ProductionPlanned" xml:space="preserve">
+    <value>Production Planned</value>
+    <comment>WorkOrderProductionManagement</comment>
+  </data>
+  <data name="ProductionRate1" xml:space="preserve">
+    <value>Production Rate</value>
+    <comment>WorkOrderProductionProcess</comment>
+  </data>
+  <data name="Productivity" xml:space="preserve">
+    <value>Productivity</value>
+    <comment>WorkOrderProductionProcess</comment>
+  </data>
+  <data name="ProductWeight" xml:space="preserve">
+    <value>Product Weight</value>
+    <comment>WorkOrderProductionProcess</comment>
+  </data>
+  <data name="ReceivedProcessedQuantity" xml:space="preserve">
+    <value>Received-Process&lt;/br&gt;Quantity</value>
+    <comment>WorkOrderCNCProcess</comment>
+  </data>
+  <data name="RequestActual" xml:space="preserve">
+    <value>Request - Actual</value>
+    <comment>WorkOrderCNCProcess</comment>
+  </data>
+  <data name="RollBackWO" xml:space="preserve">
+    <value>Roll&lt;/br&gt;Back</value>
+    <comment>WorkOrderCNCConfirmation</comment>
+  </data>
+  <data name="SaveInput" xml:space="preserve">
+    <value>Save Input</value>
+    <comment>WorkOrderProductionProcess</comment>
+  </data>
+  <data name="SaveText" xml:space="preserve">
+    <value>Save</value>
+    <comment>WorkOrderCNCProcess</comment>
+  </data>
+  <data name="SerialNumber1" xml:space="preserve">
+    <value>Serial Number</value>
+    <comment>WorkOrderProductionProcess</comment>
+  </data>
+  <data name="Shift" xml:space="preserve">
+    <value>Shift</value>
+    <comment>WorkOrderProductionApprovement</comment>
+  </data>
+  <data name="Shift1" xml:space="preserve">
+    <value>Shift 1</value>
+    <comment>WorkOrderMaterialUsing</comment>
+  </data>
+  <data name="Shift2" xml:space="preserve">
+    <value>Shift 2</value>
+    <comment>WorkOrderMaterialUsing</comment>
+  </data>
+  <data name="StartDate" xml:space="preserve">
+    <value>Start Date</value>
+    <comment>WorkOrderProductionManagement</comment>
+  </data>
+  <data name="TotalQuantity1" xml:space="preserve">
+    <value>Total&lt;/br&gt;Quantity</value>
+    <comment>WorkOrderCNCApprovement</comment>
+  </data>
+  <data name="TotalWOAreProcessing" xml:space="preserve">
+    <value>Total WO Are Processing</value>
+    <comment>WorkOrderProductionManagement</comment>
+  </data>
+  <data name="TotalWOAreWaiting" xml:space="preserve">
+    <value>Total WO Are Waiting</value>
+    <comment>WorkOrderProductionManagement</comment>
+  </data>
+  <data name="WaitingApproved" xml:space="preserve">
+    <value>Waiting Approved</value>
+    <comment>WorkOrderProductionProcess</comment>
+  </data>
+  <data name="Weight1" xml:space="preserve">
+    <value>Weight</value>
+    <comment>WorkOrderCNCManagement</comment>
+  </data>
+  <data name="WorkOrderCNCApprovement" xml:space="preserve">
+    <value>CNC Approvement</value>
+    <comment>WorkOrderCNCApprovement</comment>
+  </data>
+  <data name="WorkOrderCNCConfirmation" xml:space="preserve">
+    <value>CNC Confirmation</value>
+    <comment>WorkOrderCNCConfirmation</comment>
+  </data>
+  <data name="WorkOrderCNCManagement" xml:space="preserve">
+    <value>CNC Orders Sheet</value>
+    <comment>WorkOrderCNCManagement</comment>
+  </data>
+  <data name="WorkOrderCNCProcess" xml:space="preserve">
+    <value>Input CNC Process</value>
+    <comment>WorkOrderCNCProcess</comment>
+  </data>
+  <data name="WorkOrderHeatManagement" xml:space="preserve">
+    <value>Heat-Treatment Management</value>
+    <comment>WorkOrderHeatManagement</comment>
+  </data>
+  <data name="WorkOrderMaterialScanCode" xml:space="preserve">
+    <value>Work Order Material Scan Code</value>
+    <comment>WorkOrderMaterialScanCode</comment>
+  </data>
+  <data name="WorkOrderProduction2Approvement" xml:space="preserve">
+    <value>Approvement Production2 </value>
+    <comment>WorkOrderProduction2Approvement</comment>
+  </data>
+  <data name="WorkOrderProduction2Confirmation" xml:space="preserve">
+    <value>Production2 Confirmation</value>
+    <comment>WorkOrderProduction2Confirmation</comment>
+  </data>
+  <data name="WorkOrderProduction2Management" xml:space="preserve">
+    <value>Production2 Order-Sheet </value>
+    <comment>WorkOrderProduction2Management</comment>
+  </data>
+  <data name="WorkOrderProduction2Process" xml:space="preserve">
+    <value>Input Production2 Process</value>
+    <comment>WorkOrderProduction2Process</comment>
+  </data>
+  <data name="WorkOrderProductionApprovement" xml:space="preserve">
+    <value>Approvement Production1</value>
+    <comment>WorkOrderProductionApprovement</comment>
+  </data>
+  <data name="WorkOrderProductionManagement" xml:space="preserve">
+    <value>Production-Process1-Order Sheet</value>
+    <comment>WorkOrderProductionManagement</comment>
+  </data>
+  <data name="WorkOrderProductionProcess" xml:space="preserve">
+    <value>Input Production-Process1</value>
+    <comment>WorkOrderProductionProcess</comment>
+  </data>
+  <data name="WorkOrderProductionProcessManagement" xml:space="preserve">
+    <value>Data-Entry Production-Process1 Management</value>
+    <comment>WorkOrderProductionProcessManagement</comment>
+  </data>
+  <data name="WorkOrderSerial" xml:space="preserve">
+    <value>WorkOrderSerial</value>
+    <comment>WorkOrderProductionProcessManagement</comment>
+  </data>
+  <data name="Addition" xml:space="preserve">
+    <value>Addition</value>
+    <comment>WorkOrderPackingManagement</comment>
+  </data>
+  <data name="Bag" xml:space="preserve">
+    <value>Bag</value>
+    <comment>WorkOrderPackingProcess</comment>
+  </data>
+  <data name="BuyMethod" xml:space="preserve">
+    <value>Buy &lt;/br&gt;Method</value>
+    <comment>MethodManagement</comment>
+  </data>
+  <data name="CancelExport" xml:space="preserve">
+    <value>Cancel Export</value>
+    <comment>WorkOrderPackingManagement</comment>
+  </data>
+  <data name="CheckingEmployeeList" xml:space="preserve">
+    <value>Checking Employee List</value>
+    <comment>WorkOrderQCProcess</comment>
+  </data>
+  <data name="CheckingEmployeeNote2" xml:space="preserve">
+    <value>Employee&lt;/br&gt;Note</value>
+    <comment>WorkOrderQCApprovement</comment>
+  </data>
+  <data name="ExchangeRate" xml:space="preserve">
+    <value>Exchange Rate</value>
+    <comment>WorkOrderPlatingExport</comment>
+  </data>
+  <data name="ExportDate" xml:space="preserve">
+    <value>Export Date</value>
+    <comment>WorkOrderPlatingExport</comment>
+  </data>
+  <data name="ExportQuantity2" xml:space="preserve">
+    <value>Export&lt;/br&gt;Quantity</value>
+    <comment>WorkOrderPlatingExport</comment>
+  </data>
+  <data name="ExportWeight2" xml:space="preserve">
+    <value>Export&lt;/br&gt;Weight</value>
+    <comment>WorkOrderPlatingExport</comment>
+  </data>
+  <data name="FlatingQuantity2" xml:space="preserve">
+    <value>Flating&lt;/br&gt; Quantity</value>
+    <comment>WorkOrderPlatingImport</comment>
+  </data>
+  <data name="FlatingWeight2" xml:space="preserve">
+    <value>Flating&lt;/br&gt;Weight</value>
+    <comment>WorkOrderPlatingImport</comment>
+  </data>
+  <data name="ImportDate" xml:space="preserve">
+    <value>Import Date</value>
+    <comment>WorkOrderPlatingImport</comment>
+  </data>
+  <data name="Input" xml:space="preserve">
+    <value>Input</value>
+    <comment>WorkOrderPackingProcess</comment>
+  </data>
+  <data name="InvQuantity3" xml:space="preserve">
+    <value>Inv&lt;/br&gt;Quantity</value>
+    <comment>WorkOrderPlatingExport</comment>
+  </data>
+  <data name="InvWeight3" xml:space="preserve">
+    <value>Inv&lt;/br&gt;Weight</value>
+    <comment>WorkOrderPlatingExport</comment>
+  </data>
+  <data name="MethodENGName" xml:space="preserve">
+    <value>English&lt;/br&gt; Method Name</value>
+    <comment>MethodManagement</comment>
+  </data>
+  <data name="MethodManagement" xml:space="preserve">
+    <value>Method Management</value>
+    <comment>MethodManagement</comment>
+  </data>
+  <data name="MethodType" xml:space="preserve">
+    <value>Method Type</value>
+    <comment>MethodManagement</comment>
+  </data>
+  <data name="MethodVIEName" xml:space="preserve">
+    <value>VietNamese &lt;/br&gt;Method Name</value>
+    <comment>MethodManagement</comment>
+  </data>
+  <data name="Packing" xml:space="preserve">
+    <value>Packing</value>
+    <comment>WorkOrderPackingProcess</comment>
+  </data>
+  <data name="PlatingCode1" xml:space="preserve">
+    <value>Plating&lt;/br&gt;Code</value>
+    <comment>WorkOrderPlatingExport</comment>
+  </data>
+  <data name="PlatingType" xml:space="preserve">
+    <value>Plating Type</value>
+    <comment>WorkOrderPlatingExport</comment>
+  </data>
+  <data name="ProductCode1" xml:space="preserve">
+    <value>Product&lt;/br&gt;Code</value>
+    <comment>WorkOrderPlatingExport</comment>
+  </data>
+  <data name="ProductSample2" xml:space="preserve">
+    <value>Product&lt;/br&gt;Sample</value>
+    <comment>WorkOrderPlatingExport</comment>
+  </data>
+  <data name="ProductWeight2" xml:space="preserve">
+    <value>Product&lt;/br&gt;Weight</value>
+    <comment>WorkOrderPlatingImport</comment>
+  </data>
+  <data name="Request" xml:space="preserve">
+    <value>Request</value>
+    <comment>WorkOrderPlatingExport</comment>
+  </data>
+  <data name="SaleMethod" xml:space="preserve">
+    <value>Sale&lt;/br&gt; Method</value>
+    <comment>MethodManagement</comment>
+  </data>
+  <data name="SaltSpray" xml:space="preserve">
+    <value>Salt Spray</value>
+    <comment>WorkOrderPlatingExport</comment>
+  </data>
+  <data name="SaveData" xml:space="preserve">
+    <value>Save Data</value>
+    <comment>WorkOrderPackingProcess</comment>
+  </data>
+  <data name="SelectSupplier1" xml:space="preserve">
+    <value>Select Supplier</value>
+    <comment>WorkOrderPlatingExport</comment>
+  </data>
+  <data name="Specifications" xml:space="preserve">
+    <value>Specifications</value>
+    <comment>WorkOrderPackingProcess</comment>
+  </data>
+  <data name="Supplier1" xml:space="preserve">
+    <value>Supplier</value>
+    <comment>WorkOrderPlatingApprovement</comment>
+  </data>
+  <data name="TestingEquipment2" xml:space="preserve">
+    <value>Testing&lt;/br&gt;Equipment</value>
+    <comment>WorkOrderPlatingExport</comment>
+  </data>
+  <data name="Thickness" xml:space="preserve">
+    <value>Thickness</value>
+    <comment>WorkOrderPlatingExport</comment>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
+    <comment>WorkOrderPlatingApprovement</comment>
+  </data>
+  <data name="UnitMeasureName1" xml:space="preserve">
+    <value>Unit&lt;/br&gt;Measure</value>
+    <comment>WorkOrderPlatingExport</comment>
+  </data>
+  <data name="Weighing" xml:space="preserve">
+    <value>Weighing</value>
+    <comment>WorkOrderPackingProcess</comment>
+  </data>
+  <data name="WorkOrderCleanApprovement" xml:space="preserve">
+    <value>Approvement Clean Process</value>
+    <comment>WorkOrderCleanApprovement</comment>
+  </data>
+  <data name="WorkOrderCleanConfirmation" xml:space="preserve">
+    <value>Clean Process Confirmation</value>
+    <comment>WorkOrderCleanConfirmation</comment>
+  </data>
+  <data name="WorkOrderCleanManagement" xml:space="preserve">
+    <value>Clean Process Management</value>
+    <comment>WorkOrderCleanManagement</comment>
+  </data>
+  <data name="WorkOrderCleanProcess" xml:space="preserve">
+    <value>Input Clean Process</value>
+    <comment>WorkOrderCleanProcess</comment>
+  </data>
+  <data name="WorkOrderFinishConfirmation" xml:space="preserve">
+    <value>Finished WO Confirmation</value>
+    <comment>WorkOrderFinishConfirmation</comment>
+  </data>
+  <data name="WorkOrderFinishManagement" xml:space="preserve">
+    <value>Finished WO Management</value>
+    <comment>WorkOrderFinishManagement</comment>
+  </data>
+  <data name="WorkOrderHeatApprovement" xml:space="preserve">
+    <value>Approvement Heat Treatment Process</value>
+    <comment>WorkOrderHeatApprovement</comment>
+  </data>
+  <data name="WorkOrderHeatConfirmation" xml:space="preserve">
+    <value>Heat Treatment Confirmation</value>
+    <comment>WorkOrderHeatConfirmation</comment>
+  </data>
+  <data name="WorkOrderHeatProcess" xml:space="preserve">
+    <value>Input Heat Treatment Process</value>
+    <comment>WorkOrderHeatProcess</comment>
+  </data>
+  <data name="WorkOrderNumber2" xml:space="preserve">
+    <value>Work Order&lt;/br&gt;Number</value>
+    <comment>WorkOrderPlatingImport</comment>
+  </data>
+  <data name="WorkOrderPackingApprovement" xml:space="preserve">
+    <value>Packing WO Approvement</value>
+    <comment>WorkOrderPackingApprovement</comment>
+  </data>
+  <data name="WorkOrderPackingConfirmation" xml:space="preserve">
+    <value>Packing WO Confirmation</value>
+    <comment>WorkOrderPackingConfirmation</comment>
+  </data>
+  <data name="WorkOrderPackingManagement" xml:space="preserve">
+    <value>Packing WO Management</value>
+    <comment>WorkOrderPackingManagement</comment>
+  </data>
+  <data name="WorkOrderPackingProcess" xml:space="preserve">
+    <value>Packing WO Process</value>
+    <comment>WorkOrderPackingProcess</comment>
+  </data>
+  <data name="WorkOrderPlatingApprovement" xml:space="preserve">
+    <value>Plating Approvement</value>
+    <comment>WorkOrderPlatingApprovement</comment>
+  </data>
+  <data name="WorkOrderPlatingConfirmation" xml:space="preserve">
+    <value>Plating Confirmation</value>
+    <comment>WorkOrderPlatingConfirmation</comment>
+  </data>
+  <data name="WorkOrderPlatingExport" xml:space="preserve">
+    <value>Export Plating</value>
+    <comment>WorkOrderPlatingExport</comment>
+  </data>
+  <data name="WorkOrderPlatingImport" xml:space="preserve">
+    <value>Import Plating</value>
+    <comment>WorkOrderPlatingImport</comment>
+  </data>
+  <data name="WorkOrderPlatingManagement" xml:space="preserve">
+    <value>Plating Management</value>
+    <comment>WorkOrderPlatingManagement</comment>
+  </data>
+  <data name="WorkOrderQCApprovement" xml:space="preserve">
+    <value>QC WO Approvement</value>
+    <comment>WorkOrderQCApprovement</comment>
+  </data>
+  <data name="WorkOrderQCConfirmation" xml:space="preserve">
+    <value>QC WO Confirmation</value>
+    <comment>WorkOrderQCConfirmation</comment>
+  </data>
+  <data name="WorkOrderQCManagement" xml:space="preserve">
+    <value>QC WO Management</value>
+    <comment>WorkOrderQCManagement</comment>
+  </data>
+  <data name="WorkOrderQCProcess" xml:space="preserve">
+    <value>Input QC WO Process</value>
+    <comment>WorkOrderQCProcess</comment>
+  </data>
+  <data name="ApprovedDate" xml:space="preserve">
+    <value>Approved Date</value>
+  </data>
+  <data name="ApprovedSupplier" xml:space="preserve">
+    <value>Approved&lt;/br&gt;Supplier</value>
+  </data>
+  <data name="ApprovedUser" xml:space="preserve">
+    <value>Approved User</value>
+  </data>
+  <data name="Blueprint" xml:space="preserve">
+    <value>Blueprint</value>
+  </data>
+  <data name="Certificate" xml:space="preserve">
+    <value>Certificate</value>
+  </data>
+  <data name="CompanyName" xml:space="preserve">
+    <value>Company Name</value>
+  </data>
+  <data name="CompetitivePoint" xml:space="preserve">
+    <value>Competitive&lt;/br&gt;(Point)</value>
+  </data>
+  <data name="ContactName" xml:space="preserve">
+    <value>Contact Name</value>
+  </data>
+  <data name="DeliveryPerformancePoint" xml:space="preserve">
+    <value>Delivery&lt;/br&gt;(Point)</value>
+  </data>
+  <data name="FromDate" xml:space="preserve">
+    <value>From Date</value>
+  </data>
+  <data name="Grade" xml:space="preserve">
+    <value>Grade</value>
+  </data>
+  <data name="MaterialClassified" xml:space="preserve">
+    <value>Material Classified</value>
+  </data>
+  <data name="NGNumberPoint" xml:space="preserve">
+    <value>NG Numbers&lt;/br&gt;(Point)</value>
+  </data>
+  <data name="NGTimePoint" xml:space="preserve">
+    <value>NG Times &lt;/br&gt;(Point)</value>
+  </data>
+  <data name="QuantitiesPerformancePoint" xml:space="preserve">
+    <value>Quantities&lt;/br&gt;(Point)</value>
+  </data>
+  <data name="SpecialInfo" xml:space="preserve">
+    <value>Special Info</value>
+  </data>
+  <data name="TechSpPoint" xml:space="preserve">
+    <value>Tech Support&lt;/br&gt;(Point)</value>
+  </data>
+  <data name="ToDate" xml:space="preserve">
+    <value>To Date</value>
+  </data>
+  <data name="VendorAddress" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="VendorBankAccount" xml:space="preserve">
+    <value>Bank Account</value>
+  </data>
+  <data name="VendorCode" xml:space="preserve">
+    <value>Vendor Code</value>
+  </data>
+  <data name="VendorEaddress" xml:space="preserve">
+    <value>Online Address</value>
+  </data>
+  <data name="VendorEmail" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="VendorEvaluation1" xml:space="preserve">
+    <value>Vendor Evaluation</value>
+  </data>
+  <data name="VendorFax" xml:space="preserve">
+    <value>Fax</value>
+  </data>
+  <data name="VendorManagement" xml:space="preserve">
+    <value>Vendor Management</value>
+    <comment>VendorManagement</comment>
+  </data>
+  <data name="VendorName" xml:space="preserve">
+    <value>Vendor Name</value>
+  </data>
+  <data name="VendorPhone" xml:space="preserve">
+    <value>Phone</value>
+  </data>
+  <data name="VendorShortName" xml:space="preserve">
+    <value>Vendor Short Name</value>
+  </data>
+  <data name="VendorTaxCode" xml:space="preserve">
+    <value>Tax Code</value>
+  </data>
+  <data name="Address" xml:space="preserve">
+    <value>Address</value>
+    <comment>VendorManagement</comment>
+  </data>
+  <data name="Classified" xml:space="preserve">
+    <value>Classified</value>
+    <comment>ShipMethodManagement</comment>
+  </data>
+  <data name="ComfirmDeliveryDate1" xml:space="preserve">
+    <value>Comfirm&lt;/br&gt;Delivery Date</value>
+    <comment>ShipMethodManagement</comment>
+  </data>
+  <data name="Confirmed" xml:space="preserve">
+    <value>Confirmed</value>
+    <comment>PurchasingProgress</comment>
+  </data>
+  <data name="Delivering" xml:space="preserve">
+    <value>Delivering</value>
+    <comment>PurchasingProgress</comment>
+  </data>
+  <data name="DeliveryAddressManagement" xml:space="preserve">
+    <value>Delivery Address Management</value>
+    <comment>VendorManagement</comment>
+  </data>
+  <data name="FinishedDelivery" xml:space="preserve">
+    <value>Finished Delivery</value>
+    <comment>PurchasingProgress</comment>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>Full Name</value>
+    <comment>VendorManagement</comment>
+  </data>
+  <data name="InquiryNumber" xml:space="preserve">
+    <value>Inquiry Number</value>
+    <comment>ShipMethodManagement</comment>
+  </data>
+  <data name="Inv" xml:space="preserve">
+    <value>Inv</value>
+    <comment>ShipMethodManagement</comment>
+  </data>
+  <data name="Ordered" xml:space="preserve">
+    <value>Ordered</value>
+    <comment>PurchasingProgress</comment>
+  </data>
+  <data name="Ordering" xml:space="preserve">
+    <value>Ordering</value>
+    <comment>PurchasingProgress</comment>
+  </data>
+  <data name="PartialDelivery" xml:space="preserve">
+    <value>Partial Delivery</value>
+    <comment>PurchasingProgress</comment>
+  </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>Phone Number</value>
+    <comment>VendorManagement</comment>
+  </data>
+  <data name="PONumber" xml:space="preserve">
+    <value>PO Number</value>
+    <comment>ShipMethodManagement</comment>
+  </data>
+  <data name="PurchasingProgress" xml:space="preserve">
+    <value>Purchasing Progress</value>
+    <comment>PurchasingProgress</comment>
+  </data>
+  <data name="Recipient" xml:space="preserve">
+    <value>Recipient</value>
+    <comment>VendorManagement</comment>
+  </data>
+  <data name="RequestDate2" xml:space="preserve">
+    <value>Request Date</value>
+    <comment>ShipMethodManagement</comment>
+  </data>
+  <data name="RevisionNumber2" xml:space="preserve">
+    <value>Revision Number</value>
+    <comment>ShipMethodManagement</comment>
+  </data>
+  <data name="ShippingMethodManagement" xml:space="preserve">
+    <value>Shipping Method Management</value>
+    <comment>Shipping Method Management</comment>
+  </data>
+  <data name="ShippingTypeName" xml:space="preserve">
+    <value>Shipping Type</value>
+    <comment>ShipMethodManagement</comment>
+  </data>
+  <data name="ShortName" xml:space="preserve">
+    <value>Short Name</value>
+    <comment>VendorManagement</comment>
+  </data>
+  <data name="Unit2" xml:space="preserve">
+    <value>Unit</value>
+    <comment>ShipMethodManagement</comment>
+  </data>
+  <data name="Vendor" xml:space="preserve">
+    <value>Vendors</value>
+    <comment>ShipMethodManagement</comment>
+  </data>
+  <data name="Vendor2" xml:space="preserve">
+    <value>Vendors</value>
+    <comment>ShipMethodManagement</comment>
+  </data>
+  <data name="ApprovedEvaluationForm" xml:space="preserve">
+    <value>Approvement Evaluation Form</value>
+    <comment>Approvement Evaluation Form</comment>
+  </data>
+  <data name="ConfirmDate" xml:space="preserve">
+    <value>Confirm Date</value>
+    <comment>Approvement Evaluation Form</comment>
+  </data>
+  <data name="DetailInformation" xml:space="preserve">
+    <value>Detail Infomation</value>
+    <comment>WorkOrderProductionProcessManagement</comment>
+  </data>
+  <data name="EvaluationForm" xml:space="preserve">
+    <value>Evaluation Form</value>
+    <comment>WorkOrderProductionProcessManagement</comment>
+  </data>
+  <data name="EvaluationFormManager" xml:space="preserve">
+    <value>Evaluation Form Management</value>
+    <comment>Evaluation Form Management</comment>
+  </data>
+  <data name="InquiryForm" xml:space="preserve">
+    <value>Inquiry Form</value>
+    <comment>InquiryPoManagement</comment>
+  </data>
+  <data name="InquiryPoApprove" xml:space="preserve">
+    <value>Approvement Inquiry Po</value>
+    <comment>InquiryPoApprove</comment>
+  </data>
+  <data name="InquiryPoCreate" xml:space="preserve">
+    <value>Create Inquiry Po</value>
+    <comment>InquiryPoManagement</comment>
+  </data>
+  <data name="InquiryPoManagement" xml:space="preserve">
+    <value>Inquiry Po Management</value>
+    <comment>InquiryPoManagement</comment>
+  </data>
+  <data name="Lated" xml:space="preserve">
+    <value>Lated</value>
+    <comment>Evaluation Form Management</comment>
+  </data>
+  <data name="ManagerConfirm" xml:space="preserve">
+    <value>Manager&lt;/br&gt; Confirm</value>
+    <comment>WorkOrderProductionProcessManagement</comment>
+  </data>
+  <data name="NGNumbers1" xml:space="preserve">
+    <value>NG&lt;/br&gt; Numbers</value>
+    <comment>Evaluation Form Management</comment>
+  </data>
+  <data name="OrderedDate" xml:space="preserve">
+    <value>Ordered Date</value>
+    <comment>Evaluation Form Management</comment>
+  </data>
+  <data name="OrderedQuantity2" xml:space="preserve">
+    <value>Ordered&lt;/br&gt;Quantity</value>
+    <comment>Evaluation Form Management</comment>
+  </data>
+  <data name="PrintForm1" xml:space="preserve">
+    <value>Print&lt;/br&gt;Form</value>
+    <comment>Approvement Evaluation Form</comment>
+  </data>
+  <data name="ReceivedQuantity2" xml:space="preserve">
+    <value>Received&lt;/br&gt;Quantity</value>
+    <comment>Evaluation Form Management</comment>
+  </data>
+  <data name="RemainingQuantity2" xml:space="preserve">
+    <value>Remaining&lt;/br&gt;Quantity</value>
+    <comment>Evaluation Form Management</comment>
+  </data>
+  <data name="Standard" xml:space="preserve">
+    <value>Standard</value>
+    <comment>InquiryPoManagement</comment>
+  </data>
+  <data name="TotalAmount" xml:space="preserve">
+    <value>Total Amount</value>
+    <comment>Approvement Evaluation Form</comment>
+  </data>
+  <data name="TransToPO" xml:space="preserve">
+    <value>Trans To PO</value>
+  </data>
+  <data name="Using3M" xml:space="preserve">
+    <value>Using In&lt;/br&gt;3Month</value>
+  </data>
+  <data name="WarehouseReceipt" xml:space="preserve">
+    <value>Warehouse Receipt</value>
+    <comment>Evaluation Form Management</comment>
+  </data>
+  <data name="AddressName" xml:space="preserve">
+    <value>Address</value>
+    <comment>ApprovePurchaseOrder</comment>
+  </data>
+  <data name="ApprovePlatingForm" xml:space="preserve">
+    <value>Approve Plating Form</value>
+    <comment>ApprovePlatingForm</comment>
+  </data>
+  <data name="ApprovePurchaseOrder" xml:space="preserve">
+    <value>Approvement Purchase Order</value>
+    <comment>ApprovePurchaseOrder</comment>
+  </data>
+  <data name="BillOfLanding" xml:space="preserve">
+    <value>BOL</value>
+    <comment>PurchaseOrderManagement</comment>
+  </data>
+  <data name="BillTo" xml:space="preserve">
+    <value>Bill To</value>
+    <comment>ApprovePurchaseOrder</comment>
+  </data>
+  <data name="CancelQualityPuchaseOrder" xml:space="preserve">
+    <value>Cancel Puchase Order Quality </value>
+    <comment>CancelQualityPuchaseOrder</comment>
+  </data>
+  <data name="ChangePlatingFormStatus" xml:space="preserve">
+    <value>Change Plating Form Status</value>
+    <comment>ChangePlatingFormStatus</comment>
+  </data>
+  <data name="ChangePurchaseOrderStatus" xml:space="preserve">
+    <value>Change Purchase Order Status</value>
+    <comment>ChangePurchaseOrderStatus</comment>
+  </data>
+  <data name="ContractNumber" xml:space="preserve">
+    <value>Contract Number</value>
+    <comment>ApprovePurchaseOrder</comment>
+  </data>
+  <data name="ContractNumber1" xml:space="preserve">
+    <value>Contract&lt;/br&gt;Number</value>
+    <comment>ApprovePurchaseOrder</comment>
+  </data>
+  <data name="CreateDate" xml:space="preserve">
+    <value>Created Date</value>
+    <comment>PlatingManagement</comment>
+  </data>
+  <data name="CreateMaterialPurchaseOrder" xml:space="preserve">
+    <value>Create Purchase Order</value>
+    <comment>CreateMaterialPurchaseOrder</comment>
+  </data>
+  <data name="CreatePlatingForm" xml:space="preserve">
+    <value>Create Plating Form</value>
+    <comment>CreatePlatingForm</comment>
+  </data>
+  <data name="CreateUser" xml:space="preserve">
+    <value>Created User</value>
+    <comment>PlatingManagement</comment>
+  </data>
+  <data name="Currency1" xml:space="preserve">
+    <value>Currency</value>
+    <comment>ImportPOManagement</comment>
+  </data>
+  <data name="DeductionQuantity" xml:space="preserve">
+    <value>Deduction Quantity</value>
+    <comment>CancelQualityPuchaseOrder</comment>
+  </data>
+  <data name="DeliveredQuantity1" xml:space="preserve">
+    <value>Delivered&lt;/br&gt;Quantity</value>
+    <comment>ImportPOManagement</comment>
+  </data>
+  <data name="DeliveryMethodName" xml:space="preserve">
+    <value>Delivery&lt;/br&gt;Method</value>
+    <comment>ApprovePurchaseOrder</comment>
+  </data>
+  <data name="DetailName" xml:space="preserve">
+    <value>Detail Name</value>
+    <comment>PurchaseOrderManagement</comment>
+  </data>
+  <data name="Employee1" xml:space="preserve">
+    <value>Employee</value>
+    <comment>PurchaseOrderManagement</comment>
+  </data>
+  <data name="ExportForm" xml:space="preserve">
+    <value>Export Form</value>
+    <comment>PlatingManagement</comment>
+  </data>
+  <data name="ExportMoney" xml:space="preserve">
+    <value>Export Money</value>
+    <comment>PlatingManagement</comment>
+  </data>
+  <data name="ExportQuantity" xml:space="preserve">
+    <value>Export Quantity</value>
+    <comment>PlatingManagement</comment>
+  </data>
+  <data name="FollowingPurchaseOrder" xml:space="preserve">
+    <value>Following Purchase Order</value>
+    <comment>PurchaseOrderManagement</comment>
+  </data>
+  <data name="Form" xml:space="preserve">
+    <value>Form</value>
+    <comment>PlatingManagement</comment>
+  </data>
+  <data name="FormInformation" xml:space="preserve">
+    <value>FormInformation</value>
+    <comment>ApprovePlatingForm</comment>
+  </data>
+  <data name="ImportForm" xml:space="preserve">
+    <value>Import Form</value>
+    <comment>PlatingManagement</comment>
+  </data>
+  <data name="ImportMoney" xml:space="preserve">
+    <value>Import Money</value>
+    <comment>PlatingManagement</comment>
+  </data>
+  <data name="ImportPOManagement" xml:space="preserve">
+    <value>Vendors Management</value>
+    <comment>ImportPOManagement</comment>
+  </data>
+  <data name="ImportQuantity" xml:space="preserve">
+    <value>Import Quantity</value>
+    <comment>PlatingManagement</comment>
+  </data>
+  <data name="InquiryNote" xml:space="preserve">
+    <value>Inquiry Note</value>
+    <comment>ApprovePurchaseOrder</comment>
+  </data>
+  <data name="InquiryNote1" xml:space="preserve">
+    <value>Inquiry&lt;/br&gt;Note</value>
+    <comment>ApprovePurchaseOrder</comment>
+  </data>
+  <data name="InternalNote" xml:space="preserve">
+    <value>Internal Note</value>
+    <comment>ApprovePurchaseOrder</comment>
+  </data>
+  <data name="InternalNote1" xml:space="preserve">
+    <value>Internal&lt;/br&gt;Note</value>
+    <comment>ApprovePurchaseOrder</comment>
+  </data>
+  <data name="LeftOverQuantity" xml:space="preserve">
+    <value>Left Over Quantity</value>
+    <comment>CancelQualityPuchaseOrder</comment>
+  </data>
+  <data name="ModifiedDate1" xml:space="preserve">
+    <value>Modified&lt;/br&gt;Date</value>
+    <comment>ApprovePurchaseOrder</comment>
+  </data>
+  <data name="ModifiedUser1" xml:space="preserve">
+    <value>Modified&lt;/br&gt;User</value>
+    <comment>ApprovePurchaseOrder</comment>
+  </data>
+  <data name="OrderedDate1" xml:space="preserve">
+    <value>Ordered&lt;/br&gt; Date</value>
+    <comment>ApprovePurchaseOrder</comment>
+  </data>
+  <data name="OrderedQuantity" xml:space="preserve">
+    <value>Ordered Quantity</value>
+    <comment>PurchaseOrderManagement</comment>
+  </data>
+  <data name="OrderedQuantity1" xml:space="preserve">
+    <value>Ordered &lt;/br&gt;Quanitty</value>
+    <comment>ImportPOManagement</comment>
+  </data>
+  <data name="Package" xml:space="preserve">
+    <value>Package</value>
+    <comment>PlatingManagement</comment>
+  </data>
+  <data name="PaymentMethodName" xml:space="preserve">
+    <value>Payment&lt;/br&gt;Method</value>
+    <comment>ApprovePurchaseOrder</comment>
+  </data>
+  <data name="PlatingCode" xml:space="preserve">
+    <value>Plating Code</value>
+    <comment>PlatingManagement</comment>
+  </data>
+  <data name="PlatingCodeB" xml:space="preserve">
+    <value>Plating Code</value>
+    <comment>PlatingManagement</comment>
+  </data>
+  <data name="PlatingFormNumber" xml:space="preserve">
+    <value>Plating Form Number</value>
+    <comment>ApprovePlatingForm</comment>
+  </data>
+  <data name="PlatingManagement" xml:space="preserve">
+    <value>Plating Management</value>
+    <comment>PlatingManagement</comment>
+  </data>
+  <data name="PrintReport" xml:space="preserve">
+    <value>Print Report</value>
+  </data>
+  <data name="ProductCode2" xml:space="preserve">
+    <value>Product Code</value>
+    <comment>PlatingManagement</comment>
+  </data>
+  <data name="ProductSample1" xml:space="preserve">
+    <value>Product Sample</value>
+    <comment>PlatingManagement</comment>
+  </data>
+  <data name="PurchaseOrderManagement" xml:space="preserve">
+    <value>Purchase Order Management</value>
+    <comment>PurchaseOrderManagement</comment>
+  </data>
+  <data name="Quality" xml:space="preserve">
+    <value>Quality</value>
+    <comment>ImportPOManagement</comment>
+  </data>
+  <data name="Quality1" xml:space="preserve">
+    <value>Quality</value>
+    <comment>ImportPOManagement</comment>
+  </data>
+  <data name="QuantityRequirement" xml:space="preserve">
+    <value>Quantity Requirement</value>
+    <comment>PlatingManagement</comment>
+  </data>
+  <data name="ReceiptedDate" xml:space="preserve">
+    <value>Receipted Date</value>
+  </data>
+  <data name="ReceivedQuantity" xml:space="preserve">
+    <value>Received Quantity</value>
+    <comment>PurchaseOrderManagement</comment>
+  </data>
+  <data name="RejectedQuantity" xml:space="preserve">
+    <value>Rejected Quantity</value>
+    <comment>PurchaseOrderManagement</comment>
+  </data>
+  <data name="RequestQuantity" xml:space="preserve">
+    <value>Request Quantity</value>
+  </data>
+  <data name="ShippingMethodName" xml:space="preserve">
+    <value>Shipping&lt;/br&gt;Method</value>
+    <comment>ApprovePurchaseOrder</comment>
+  </data>
+  <data name="SlipUpSelectedOrders" xml:space="preserve">
+    <value>Slip Up Selected Orders</value>
+    <comment>ApprovePurchaseOrder</comment>
+  </data>
+  <data name="SplitUp" xml:space="preserve">
+    <value>Split&lt;/br&gt;Up</value>
+    <comment>ApprovePurchaseOrder</comment>
+  </data>
+  <data name="TechnicalInformation" xml:space="preserve">
+    <value>Technical Information</value>
+    <comment>PlatingManagement</comment>
+  </data>
+  <data name="TestingEquipment1" xml:space="preserve">
+    <value>Testing Equipment</value>
+    <comment>PlatingManagement</comment>
+  </data>
+  <data name="Tolerances" xml:space="preserve">
+    <value>Tolerances</value>
+    <comment>PurchaseOrderManagement</comment>
+  </data>
+  <data name="Tolerances1" xml:space="preserve">
+    <value>Tolerances</value>
+    <comment>PurchaseOrderManagement</comment>
+  </data>
+  <data name="TotalExportMoney" xml:space="preserve">
+    <value>Total Export Money</value>
+  </data>
+  <data name="TotalImportMoney" xml:space="preserve">
+    <value>Total Import Money</value>
+  </data>
+  <data name="TotalQuantity" xml:space="preserve">
+    <value>Total Quantity</value>
+    <comment>ApprovePurchaseOrder</comment>
+  </data>
+  <data name="TotalWeight" xml:space="preserve">
+    <value>Total Weight</value>
+    <comment>PlatingManagement</comment>
+  </data>
+  <data name="TransactionCode" xml:space="preserve">
+    <value>Transaction Code</value>
+    <comment>PurchaseOrderManagement</comment>
+  </data>
+  <data name="TransactionCode1" xml:space="preserve">
+    <value>Transaction&lt;/br&gt;Code</value>
+    <comment>ImportPOManagement</comment>
+  </data>
+  <data name="UnitPrice1" xml:space="preserve">
+    <value>Unit&lt;/br&gt;Price</value>
+    <comment>PurchaseOrderManagement</comment>
+  </data>
+  <data name="WarehouseReceiptForm" xml:space="preserve">
+    <value>Warehouse Receipt Form</value>
+  </data>
+  <data name="WarehouseReleaseForm" xml:space="preserve">
+    <value>Warehouse Release Form</value>
+    <comment>PlatingManagement</comment>
+  </data>
+  <data name="ActualInformation" xml:space="preserve">
+    <value>Actual Information</value>
+  </data>
+  <data name="AddInvoiceDetail" xml:space="preserve">
+    <value>Add Invoice Detail</value>
+  </data>
+  <data name="AddTaxInvoiceProductDetail" xml:space="preserve">
+    <value>Add Tax-Invoice Detail</value>
+    <comment>AddTaxInvoiceProductDetail</comment>
+  </data>
+  <data name="After" xml:space="preserve">
+    <value>After</value>
+  </data>
+  <data name="AmountOfMoney" xml:space="preserve">
+    <value>Amount Money</value>
+  </data>
+  <data name="ApproveInvoicesForm" xml:space="preserve">
+    <value>Approvement Invoices Form</value>
+  </data>
+  <data name="ApproveTaxInvoiceForm" xml:space="preserve">
+    <value>Approvement Tax-Invoice</value>
+    <comment>ApproveTaxInvoiceForm</comment>
+  </data>
+  <data name="Barrel" xml:space="preserve">
+    <value>Barrel</value>
+  </data>
+  <data name="Before" xml:space="preserve">
+    <value>Before</value>
+  </data>
+  <data name="BillCreatedDate" xml:space="preserve">
+    <value>Bill Created Date</value>
+  </data>
+  <data name="CertificateAttached" xml:space="preserve">
+    <value>Certificate Attached</value>
+  </data>
+  <data name="CNCInv1" xml:space="preserve">
+    <value>CNC&lt;br&gt;Inv</value>
+  </data>
+  <data name="Coefficient" xml:space="preserve">
+    <value>Coefficient</value>
+    <comment>MOQTemplateManagement</comment>
+  </data>
+  <data name="CombinedRatio" xml:space="preserve">
+    <value>Combined Ratio</value>
+  </data>
+  <data name="ComebinesProduct" xml:space="preserve">
+    <value>Comebines Product</value>
+  </data>
+  <data name="ContractNumber2" xml:space="preserve">
+    <value>Contract Number</value>
+  </data>
+  <data name="Customer2" xml:space="preserve">
+    <value>Customer</value>
+  </data>
+  <data name="CustomerClassified" xml:space="preserve">
+    <value>Customer Classified</value>
+    <comment>CustomerClassified</comment>
+  </data>
+  <data name="CustomerCode2" xml:space="preserve">
+    <value>Customer Code</value>
+  </data>
+  <data name="CustomerPO2" xml:space="preserve">
+    <value>CustomerPO</value>
+  </data>
+  <data name="CustomerRequestDate2" xml:space="preserve">
+    <value>Customer Request Date</value>
+  </data>
+  <data name="CustomerType" xml:space="preserve">
+    <value>Customer Type</value>
+    <comment>CustomerTypeManagement</comment>
+  </data>
+  <data name="CustomerTypeManagement" xml:space="preserve">
+    <value>Customer Type Management</value>
+    <comment>CustomerTypeManagement</comment>
+  </data>
+  <data name="Day" xml:space="preserve">
+    <value>Day</value>
+  </data>
+  <data name="DeliveryDate1" xml:space="preserve">
+    <value>Delivery&lt;/br&gt;Date</value>
+  </data>
+  <data name="DeliveryEmployee" xml:space="preserve">
+    <value>Delivery Employee</value>
+  </data>
+  <data name="DeliveryEmployee2" xml:space="preserve">
+    <value>Delivery Employee</value>
+  </data>
+  <data name="Design" xml:space="preserve">
+    <value>Design</value>
+  </data>
+  <data name="DesignMachines" xml:space="preserve">
+    <value>Design Machine</value>
+  </data>
+  <data name="DesignMachines1" xml:space="preserve">
+    <value>Design&lt;/br&gt; Machine</value>
+  </data>
+  <data name="DesignMaterials" xml:space="preserve">
+    <value>Design Materials</value>
+  </data>
+  <data name="DesignMaterials1" xml:space="preserve">
+    <value>Design&lt;/br&gt;Materials</value>
+  </data>
+  <data name="DesignProductionRate" xml:space="preserve">
+    <value>Design Production Rate</value>
+  </data>
+  <data name="DesignProductionRate2" xml:space="preserve">
+    <value>Design Production Rate</value>
+  </data>
+  <data name="DesignProductivity" xml:space="preserve">
+    <value>Design Productivity</value>
+  </data>
+  <data name="DesignProductivity2" xml:space="preserve">
+    <value>Design Productivity</value>
+  </data>
+  <data name="DesignTools" xml:space="preserve">
+    <value>Design Tools</value>
+  </data>
+  <data name="Detail" xml:space="preserve">
+    <value>Detail</value>
+  </data>
+  <data name="DetailListRecipes" xml:space="preserve">
+    <value>Detail List of Recipes</value>
+  </data>
+  <data name="DetailOrder" xml:space="preserve">
+    <value>Detail Order</value>
+  </data>
+  <data name="EndDate2" xml:space="preserve">
+    <value>Finished Date</value>
+  </data>
+  <data name="EndDate3" xml:space="preserve">
+    <value>Finished&lt;/br&gt;Date</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="ExportSale" xml:space="preserve">
+    <value>Export Sale</value>
+  </data>
+  <data name="ExportWarehouse" xml:space="preserve">
+    <value>Warehouse Export</value>
+  </data>
+  <data name="ExternalInspection3" xml:space="preserve">
+    <value>External&lt;/br&gt;Inspection</value>
+  </data>
+  <data name="FinishedDate" xml:space="preserve">
+    <value>Finished Date</value>
+  </data>
+  <data name="FinishedDate1" xml:space="preserve">
+    <value>Finished&lt;/br&gt;Date</value>
+  </data>
+  <data name="FinishedInv1" xml:space="preserve">
+    <value>Finished&lt;/br&gt;Product Inv</value>
+  </data>
+  <data name="FinishedProduct" xml:space="preserve">
+    <value>Finished Product</value>
+  </data>
+  <data name="FinishedProduct1" xml:space="preserve">
+    <value>Finished&lt;/br&gt;Product</value>
+  </data>
+  <data name="FinishedProduct2" xml:space="preserve">
+    <value>FP</value>
+  </data>
+  <data name="FinishedProductWeight2" xml:space="preserve">
+    <value>Finished-Product-Weight </value>
+  </data>
+  <data name="FinishingInv" xml:space="preserve">
+    <value>Finishing Inv</value>
+  </data>
+  <data name="FinishingInv1" xml:space="preserve">
+    <value>Finishing&lt;/br&gt;Inv</value>
+  </data>
+  <data name="Forecast" xml:space="preserve">
+    <value>Forecast</value>
+  </data>
+  <data name="ForecastDate" xml:space="preserve">
+    <value>Forecast Date</value>
+  </data>
+  <data name="ForecastDate1" xml:space="preserve">
+    <value>Forecast&lt;/br&gt;Date</value>
+  </data>
+  <data name="ForecastDate2" xml:space="preserve">
+    <value>Forecast Date</value>
+  </data>
+  <data name="ForecastOrderApprove" xml:space="preserve">
+    <value>Approvement Forecast Order</value>
+    <comment>ForecastOrderApprove</comment>
+  </data>
+  <data name="ForecastOrderCnc" xml:space="preserve">
+    <value>Forecast Order(CNC)</value>
+    <comment>ForecastOrderCnc</comment>
+  </data>
+  <data name="ForecastOrderCreate" xml:space="preserve">
+    <value>Create Forecast Order</value>
+  </data>
+  <data name="ForecastOrderManagement" xml:space="preserve">
+    <value>Forecast Order Management</value>
+    <comment>ForecastOrderManagement</comment>
+  </data>
+  <data name="ForecastOrderPlating" xml:space="preserve">
+    <value>Forecast Order(Plating)</value>
+  </data>
+  <data name="ForecastOrderProduction" xml:space="preserve">
+    <value>Forecast Order(Production1)</value>
+    <comment>ForecastOrderProduction</comment>
+  </data>
+  <data name="ForecastOrderProduction2" xml:space="preserve">
+    <value>Forecast Order(Production2)</value>
+  </data>
+  <data name="ForecastOrderQc" xml:space="preserve">
+    <value>Forecast Order(Qc)</value>
+  </data>
+  <data name="ForecastOrderTotal" xml:space="preserve">
+    <value>Forecast (Total)</value>
+    <comment>ForecastOrderTotal</comment>
+  </data>
+  <data name="ForecastQuantity2" xml:space="preserve">
+    <value>Forecast Quantity</value>
+  </data>
+  <data name="Frequency" xml:space="preserve">
+    <value>Frequency</value>
+  </data>
+  <data name="From" xml:space="preserve">
+    <value>From</value>
+    <comment>MOQTemplateManagement</comment>
+  </data>
+  <data name="Function" xml:space="preserve">
+    <value>Function</value>
+  </data>
+  <data name="HeatTreatment" xml:space="preserve">
+    <value>Heat Treatment</value>
+  </data>
+  <data name="HeatTreatment1" xml:space="preserve">
+    <value>Heat&lt;/br&gt;Treatment</value>
+  </data>
+  <data name="Hisotry" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="Import" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="Imported" xml:space="preserve">
+    <value>Imported</value>
+  </data>
+  <data name="ImportWarehouse" xml:space="preserve">
+    <value>Warehouse Import</value>
+  </data>
+  <data name="InformationDetail" xml:space="preserve">
+    <value>Information Detail</value>
+  </data>
+  <data name="InMonthRequiredQuantity1" xml:space="preserve">
+    <value>Required Quantity&lt;br&gt;In Month</value>
+  </data>
+  <data name="InvAfterCNC1" xml:space="preserve">
+    <value>Inv After&lt;/br&gt;CNC</value>
+  </data>
+  <data name="InvAfterProduction23" xml:space="preserve">
+    <value>Inv After&lt;br&gt;Production2</value>
+  </data>
+  <data name="Invoice" xml:space="preserve">
+    <value>Invoice</value>
+  </data>
+  <data name="InvoiceCreatedDate2" xml:space="preserve">
+    <value>Invoice Created Date</value>
+  </data>
+  <data name="InvoiceNumber" xml:space="preserve">
+    <value>Invoice Number</value>
+  </data>
+  <data name="InvoiceNumber2" xml:space="preserve">
+    <value>Invoice</value>
+  </data>
+  <data name="InvoicesManagement" xml:space="preserve">
+    <value>Invoices Management</value>
+  </data>
+  <data name="InvoiceStatus" xml:space="preserve">
+    <value>Invoice Status</value>
+  </data>
+  <data name="InvQuantity2" xml:space="preserve">
+    <value>Inv Quantity</value>
+  </data>
+  <data name="IsAlert" xml:space="preserve">
+    <value>Alert ?</value>
+  </data>
+  <data name="IsNecessary" xml:space="preserve">
+    <value>Necessary ?</value>
+  </data>
+  <data name="KnifeLocation" xml:space="preserve">
+    <value>Knife Location</value>
+  </data>
+  <data name="LastDayUsingMaterial3" xml:space="preserve">
+    <value>Last Day&lt;br&gt;Using Material</value>
+  </data>
+  <data name="LastMonthForeCast" xml:space="preserve">
+    <value>Last Month Forecast</value>
+  </data>
+  <data name="LastMonthOrder" xml:space="preserve">
+    <value>Last Month Order</value>
+  </data>
+  <data name="LastMonthOrder1" xml:space="preserve">
+    <value>Last Month&lt;/br&gt;Order</value>
+  </data>
+  <data name="LastProductionQuantity" xml:space="preserve">
+    <value>Last Production Quantity</value>
+  </data>
+  <data name="LastProductionQuantity1" xml:space="preserve">
+    <value>Last Production &lt;/br&gt;Quantity</value>
+  </data>
+  <data name="LastYearAvgExport" xml:space="preserve">
+    <value>Avg Export Last Year</value>
+  </data>
+  <data name="LastYearAvgExport1" xml:space="preserve">
+    <value>Avg Export&lt;/br&gt;Last Year</value>
+  </data>
+  <data name="LastYearTotalExport1" xml:space="preserve">
+    <value>Total Export&lt;/br&gt;Last Year</value>
+  </data>
+  <data name="LeftoverOrder" xml:space="preserve">
+    <value>Leftover Order</value>
+  </data>
+  <data name="LeftoverOrder1" xml:space="preserve">
+    <value>Leftover&lt;/br&gt;Order</value>
+  </data>
+  <data name="Loss" xml:space="preserve">
+    <value>Loss</value>
+  </data>
+  <data name="MachineFunction" xml:space="preserve">
+    <value>Machine Function</value>
+  </data>
+  <data name="MachineFunction1" xml:space="preserve">
+    <value>Machine&lt;/br&gt;Function</value>
+  </data>
+  <data name="MachineName" xml:space="preserve">
+    <value>Machine Name</value>
+  </data>
+  <data name="MainStage" xml:space="preserve">
+    <value>Main Stage</value>
+  </data>
+  <data name="MaterialCertificate" xml:space="preserve">
+    <value>Material Certificate</value>
+  </data>
+  <data name="MaterialCode3" xml:space="preserve">
+    <value>Material&lt;/br&gt;Code</value>
+  </data>
+  <data name="MaterialImportDate2" xml:space="preserve">
+    <value>Material&lt;/br&gt;Import Date</value>
+  </data>
+  <data name="MaterialName3" xml:space="preserve">
+    <value>Material&lt;/br&gt;Name</value>
+  </data>
+  <data name="MaterialWeight1" xml:space="preserve">
+    <value>Material&lt;/br&gt;Weight</value>
+  </data>
+  <data name="MaxValue2" xml:space="preserve">
+    <value>Max Value</value>
+  </data>
+  <data name="Measurement" xml:space="preserve">
+    <value>Measurement</value>
+  </data>
+  <data name="MeasuringTool" xml:space="preserve">
+    <value>Measuring Tool</value>
+  </data>
+  <data name="MinProductivity2" xml:space="preserve">
+    <value>Min Productivity</value>
+  </data>
+  <data name="MinValue" xml:space="preserve">
+    <value>Min Value</value>
+  </data>
+  <data name="MinValue2" xml:space="preserve">
+    <value>Min Value</value>
+  </data>
+  <data name="Month" xml:space="preserve">
+    <value>Month</value>
+    <comment>ForecastOrderProgress</comment>
+  </data>
+  <data name="MonthExportSell" xml:space="preserve">
+    <value>Month Export Sell</value>
+  </data>
+  <data name="MonthExportSell1" xml:space="preserve">
+    <value>Month&lt;/br&gt;Export Sell</value>
+  </data>
+  <data name="MonthForecast" xml:space="preserve">
+    <value>Month Forecast</value>
+  </data>
+  <data name="MonthForecast1" xml:space="preserve">
+    <value>Month&lt;/br&gt;Forecast</value>
+  </data>
+  <data name="MOQTemplateManagement" xml:space="preserve">
+    <value>MOQ Management</value>
+    <comment>MOQTemplateManagement</comment>
+  </data>
+  <data name="NextMonthForecast" xml:space="preserve">
+    <value>Next Month Forecast</value>
+  </data>
+  <data name="NextMonthForecast1" xml:space="preserve">
+    <value>Next Month&lt;/br&gt;Forecast</value>
+  </data>
+  <data name="NextMonthOrder" xml:space="preserve">
+    <value>Next Month Order</value>
+  </data>
+  <data name="NextMonthOrder1" xml:space="preserve">
+    <value>NextMonth&lt;/br&gt;Order</value>
+  </data>
+  <data name="NextMonthRequiredQuantity1" xml:space="preserve">
+    <value>Next Month&lt;/br&gt;Required Quantity</value>
+  </data>
+  <data name="NotDeliveredOrder2" xml:space="preserve">
+    <value>Not-Delivered Order</value>
+  </data>
+  <data name="Official" xml:space="preserve">
+    <value>Official</value>
+  </data>
+  <data name="OrderBeforeForecast" xml:space="preserve">
+    <value>Order Before Forecast</value>
+  </data>
+  <data name="OrderNote" xml:space="preserve">
+    <value>Order Note</value>
+  </data>
+  <data name="OrderNote1" xml:space="preserve">
+    <value>Order&lt;/br&gt;Note</value>
+  </data>
+  <data name="Output" xml:space="preserve">
+    <value>Output</value>
+  </data>
+  <data name="Packing1" xml:space="preserve">
+    <value>Packing</value>
+  </data>
+  <data name="Payment" xml:space="preserve">
+    <value>Payment</value>
+  </data>
+  <data name="PlatingA" xml:space="preserve">
+    <value>Plating</value>
+  </data>
+  <data name="PlatingB" xml:space="preserve">
+    <value>Plating</value>
+  </data>
+  <data name="PlatingB2" xml:space="preserve">
+    <value>Platting</value>
+  </data>
+  <data name="PlatingPending" xml:space="preserve">
+    <value>Plating Pending</value>
+  </data>
+  <data name="PlatingPending1" xml:space="preserve">
+    <value>Plating&lt;/br&gt;Pending</value>
+  </data>
+  <data name="PODate" xml:space="preserve">
+    <value>PO Date</value>
+  </data>
+  <data name="Polishing" xml:space="preserve">
+    <value>Polishing</value>
+  </data>
+  <data name="Polishing1" xml:space="preserve">
+    <value>Polishing</value>
+  </data>
+  <data name="PresentInv1" xml:space="preserve">
+    <value>Present&lt;/br&gt;Inv</value>
+  </data>
+  <data name="Priority" xml:space="preserve">
+    <value>Priority</value>
+  </data>
+  <data name="Process" xml:space="preserve">
+    <value>Process</value>
+  </data>
+  <data name="Processing" xml:space="preserve">
+    <value>Processing</value>
+  </data>
+  <data name="ProcessingTimeEST1" xml:space="preserve">
+    <value>Processing Time&lt;/br&gt;EST</value>
+  </data>
+  <data name="ProcessNote" xml:space="preserve">
+    <value>Process Note</value>
+  </data>
+  <data name="ProcessNote1" xml:space="preserve">
+    <value>Process&lt;/br&gt;Note</value>
+  </data>
+  <data name="Product2" xml:space="preserve">
+    <value>Product</value>
+  </data>
+  <data name="ProductDifficulty" xml:space="preserve">
+    <value>Product Difficulty</value>
+  </data>
+  <data name="ProductDifficulty1" xml:space="preserve">
+    <value>Product&lt;/br&gt;Difficulty</value>
+  </data>
+  <data name="ProductImage2" xml:space="preserve">
+    <value>Product Image</value>
+  </data>
+  <data name="Production" xml:space="preserve">
+    <value>Production</value>
+  </data>
+  <data name="Production12" xml:space="preserve">
+    <value>Production1</value>
+  </data>
+  <data name="Production1History2" xml:space="preserve">
+    <value>Production1 History</value>
+  </data>
+  <data name="Production22" xml:space="preserve">
+    <value>Production2</value>
+  </data>
+  <data name="Production2Inv3" xml:space="preserve">
+    <value>Production2&lt;/br&gt;Inv</value>
+  </data>
+  <data name="ProductionA" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="ProductionDate2" xml:space="preserve">
+    <value>Production Date</value>
+  </data>
+  <data name="ProductionStage2" xml:space="preserve">
+    <value>Production Stage</value>
+  </data>
+  <data name="ProductionTime2" xml:space="preserve">
+    <value>Production Time</value>
+  </data>
+  <data name="ProductionWeight2" xml:space="preserve">
+    <value>Production Weight</value>
+  </data>
+  <data name="Productivity2" xml:space="preserve">
+    <value>Productivity</value>
+  </data>
+  <data name="ProductManagementProduction" xml:space="preserve">
+    <value>Product Management (Production)</value>
+  </data>
+  <data name="ProductStatus" xml:space="preserve">
+    <value>Product Status</value>
+  </data>
+  <data name="PurchaseOrder" xml:space="preserve">
+    <value>Purchase Order</value>
+  </data>
+  <data name="QCA" xml:space="preserve">
+    <value>QC/A</value>
+  </data>
+  <data name="QCB" xml:space="preserve">
+    <value>QC/B</value>
+  </data>
+  <data name="QCC" xml:space="preserve">
+    <value>QC/C</value>
+  </data>
+  <data name="QCInv1" xml:space="preserve">
+    <value>QC&lt;br&gt;Inv</value>
+  </data>
+  <data name="Quantity2" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="QuantityInOrder" xml:space="preserve">
+    <value>Quantity In Order</value>
+  </data>
+  <data name="RawMaterialWeight2" xml:space="preserve">
+    <value>Raw Material Weight</value>
+  </data>
+  <data name="RecieptEmployee" xml:space="preserve">
+    <value>Reciept Employee</value>
+  </data>
+  <data name="RecieptEmployee2" xml:space="preserve">
+    <value>Reciept Employee</value>
+  </data>
+  <data name="RecipeCode" xml:space="preserve">
+    <value>Recipe Code</value>
+  </data>
+  <data name="RecipeName" xml:space="preserve">
+    <value>Recipe Name</value>
+  </data>
+  <data name="ReProcessing" xml:space="preserve">
+    <value>ReProcessing</value>
+  </data>
+  <data name="ReProcessing3" xml:space="preserve">
+    <value>Re&lt;/br&gt;Processing</value>
+  </data>
+  <data name="RequiredQuantity" xml:space="preserve">
+    <value>Required Quantity</value>
+  </data>
+  <data name="RequiredQuantity1" xml:space="preserve">
+    <value>Required&lt;/br&gt;Quantity</value>
+  </data>
+  <data name="RockType" xml:space="preserve">
+    <value>Rock Type</value>
+  </data>
+  <data name="RoundsNumber" xml:space="preserve">
+    <value>Rounds Number</value>
+  </data>
+  <data name="SaleEmployee2" xml:space="preserve">
+    <value>Sale Employee</value>
+  </data>
+  <data name="SameQuarterLastYear" xml:space="preserve">
+    <value>Same Quarter Last Year</value>
+  </data>
+  <data name="SameQuarterLastYear1" xml:space="preserve">
+    <value>Same Quarter&lt;/br&gt;Last Year</value>
+  </data>
+  <data name="SaveChangesText" xml:space="preserve">
+    <value>Save Changes</value>
+  </data>
+  <data name="SaveDefaultText" xml:space="preserve">
+    <value>Save Default</value>
+  </data>
+  <data name="SelectAll" xml:space="preserve">
+    <value>Select All</value>
+    <comment>ForecastOrderTotal</comment>
+  </data>
+  <data name="SelectProduct" xml:space="preserve">
+    <value>Select Product</value>
+  </data>
+  <data name="SortingPending" xml:space="preserve">
+    <value>Sorting Pending</value>
+  </data>
+  <data name="SortingPending1" xml:space="preserve">
+    <value>Sorting&lt;/br&gt;Pending</value>
+  </data>
+  <data name="SplitOrder2" xml:space="preserve">
+    <value>Split Order</value>
+  </data>
+  <data name="SplitQuantity" xml:space="preserve">
+    <value>Split Quantity</value>
+  </data>
+  <data name="SplitQuantity2" xml:space="preserve">
+    <value>Split Quantity</value>
+  </data>
+  <data name="Splitted" xml:space="preserve">
+    <value>Splitted</value>
+  </data>
+  <data name="Stage2" xml:space="preserve">
+    <value>Stage</value>
+  </data>
+  <data name="StageFollowMachine" xml:space="preserve">
+    <value>Stage Follow Machine</value>
+  </data>
+  <data name="StageName" xml:space="preserve">
+    <value>Stage Name</value>
+  </data>
+  <data name="StageProcess" xml:space="preserve">
+    <value>Stage Process</value>
+  </data>
+  <data name="StatisticalDate" xml:space="preserve">
+    <value>Statistical Date</value>
+  </data>
+  <data name="Step" xml:space="preserve">
+    <value>Step</value>
+  </data>
+  <data name="Stiffness" xml:space="preserve">
+    <value>Stiffness</value>
+  </data>
+  <data name="Tax" xml:space="preserve">
+    <value>Tax</value>
+  </data>
+  <data name="TaxInvoiceNumber" xml:space="preserve">
+    <value>Tax-Invoice Number</value>
+  </data>
+  <data name="TaxInvoicesManagement" xml:space="preserve">
+    <value>Bill Management</value>
+    <comment>TaxInvoicesManagement</comment>
+  </data>
+  <data name="TechnicalBlueprint" xml:space="preserve">
+    <value>Technical Blueprint</value>
+  </data>
+  <data name="TechnicalSummaryList" xml:space="preserve">
+    <value>Technical Summary List</value>
+  </data>
+  <data name="Temperature" xml:space="preserve">
+    <value>Temperature</value>
+  </data>
+  <data name="ThreeMonthAvgExport" xml:space="preserve">
+    <value>Avg Export 3Month</value>
+  </data>
+  <data name="ThreeMonthAvgExport1" xml:space="preserve">
+    <value>Avg Export&lt;/br&gt; 3Month</value>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="Times" xml:space="preserve">
+    <value>Times</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>To</value>
+    <comment>MOQTemplateManagement</comment>
+  </data>
+  <data name="Tool" xml:space="preserve">
+    <value>Tool</value>
+  </data>
+  <data name="Tools" xml:space="preserve">
+    <value>Tools</value>
+  </data>
+  <data name="ToolsLife" xml:space="preserve">
+    <value>Tools Life</value>
+  </data>
+  <data name="ToolsName" xml:space="preserve">
+    <value>Tools Name</value>
+  </data>
+  <data name="Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="TotalExportLastYear" xml:space="preserve">
+    <value>Total Export Last Year</value>
+  </data>
+  <data name="TotalInv1" xml:space="preserve">
+    <value>Total &lt;/br&gt;Inv</value>
+  </data>
+  <data name="TotalInv2" xml:space="preserve">
+    <value>Total&lt;/br&gt;Inv</value>
+  </data>
+  <data name="TotalProduction2" xml:space="preserve">
+    <value>Total Production</value>
+  </data>
+  <data name="TotalProductionDay" xml:space="preserve">
+    <value>Total Production Day</value>
+  </data>
+  <data name="TotalProductionDay1" xml:space="preserve">
+    <value>Total&lt;/br&gt;Production Day</value>
+  </data>
+  <data name="TotalQuantity2" xml:space="preserve">
+    <value>Total Quantity</value>
+  </data>
+  <data name="TotalWeight1" xml:space="preserve">
+    <value>Total&lt;/br&gt;Weight </value>
+  </data>
+  <data name="TotalWeight2" xml:space="preserve">
+    <value>Total Weight</value>
+  </data>
+  <data name="TrackUpMachineInformation" xml:space="preserve">
+    <value>Track-Up Machine Information</value>
+  </data>
+  <data name="UpdateDate" xml:space="preserve">
+    <value>Update Date</value>
+  </data>
+  <data name="UpdateUser" xml:space="preserve">
+    <value>Update User</value>
+  </data>
+  <data name="UsesOf" xml:space="preserve">
+    <value>UsesOf</value>
+  </data>
+  <data name="UsingMaterial" xml:space="preserve">
+    <value>Using Material</value>
+  </data>
+  <data name="VendorCertificate3" xml:space="preserve">
+    <value>Vendor&lt;/br&gt;Certificate</value>
+  </data>
+  <data name="VFCertificate3" xml:space="preserve">
+    <value>VF&lt;br&gt;Certificate</value>
+  </data>
+  <data name="Warehouse" xml:space="preserve">
+    <value>Warehouse</value>
+  </data>
+  <data name="WarehouseInformation" xml:space="preserve">
+    <value>Warehouse Information</value>
+  </data>
+  <data name="WarehouseName" xml:space="preserve">
+    <value>Warehouse Name</value>
+  </data>
+  <data name="WarehouseProcess" xml:space="preserve">
+    <value>Warehouse Process</value>
+  </data>
+  <data name="Weight2" xml:space="preserve">
+    <value>Weight</value>
+  </data>
+  <data name="Working" xml:space="preserve">
+    <value>Working</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Year</value>
+    <comment>ForecastOrderProgress</comment>
+  </data>
+  <data name="BagWeight" xml:space="preserve">
+    <value>Bag Weight</value>
+  </data>
+  <data name="BagWeight1" xml:space="preserve">
+    <value>Bag&lt;/br&gt;Weight</value>
+  </data>
+  <data name="BagWeight2" xml:space="preserve">
+    <value>Bag Weight</value>
+  </data>
+  <data name="BarrelWeight" xml:space="preserve">
+    <value>Barrel Weight</value>
+  </data>
+  <data name="BarrelWeight1" xml:space="preserve">
+    <value>Barrel&lt;/br&gt;Weight</value>
+  </data>
+  <data name="BarrelWeight2" xml:space="preserve">
+    <value>Barrel Weight</value>
+  </data>
+  <data name="Costs" xml:space="preserve">
+    <value>Costs</value>
+  </data>
+  <data name="CustomerProductCode" xml:space="preserve">
+    <value>Customer Product Code</value>
+  </data>
+  <data name="CustomerProductCode1" xml:space="preserve">
+    <value>Customer&lt;/br&gt;Product Code</value>
+  </data>
+  <data name="CustomerProductCode2" xml:space="preserve">
+    <value>Customer Product Code</value>
+  </data>
+  <data name="CustomerProductName" xml:space="preserve">
+    <value>Customer Product Name</value>
+  </data>
+  <data name="CustomerProductName1" xml:space="preserve">
+    <value>Customer&lt;/br&gt;Product Name</value>
+  </data>
+  <data name="CustomerProductName2" xml:space="preserve">
+    <value>Customer Product Name</value>
+  </data>
+  <data name="DesignMachine1" xml:space="preserve">
+    <value>Design Machine</value>
+  </data>
+  <data name="DesignMaterials3" xml:space="preserve">
+    <value>Design&lt;/br&gt;Materials</value>
+  </data>
+  <data name="Difficulty" xml:space="preserve">
+    <value>Difficulty</value>
+  </data>
+  <data name="EST" xml:space="preserve">
+    <value>EST</value>
+  </data>
+  <data name="ExpensiveMaterial" xml:space="preserve">
+    <value>Expensive Material</value>
+  </data>
+  <data name="ExpensiveMaterial1" xml:space="preserve">
+    <value>Expensive&lt;/br&gt;Material</value>
+  </data>
+  <data name="ExpensiveMaterial2" xml:space="preserve">
+    <value>Expensive Material</value>
+  </data>
+  <data name="ExternalImage" xml:space="preserve">
+    <value>External Image</value>
+  </data>
+  <data name="History" xml:space="preserve">
+    <value>History</value>
+  </data>
+  <data name="HistoryCodeChanges" xml:space="preserve">
+    <value>History Code Changes</value>
+  </data>
+  <data name="IdentificationCode" xml:space="preserve">
+    <value>Identification Code</value>
+  </data>
+  <data name="IdentificationCode1" xml:space="preserve">
+    <value>Identification&lt;/br&gt;Code</value>
+  </data>
+  <data name="InsertDate" xml:space="preserve">
+    <value>Insert Date</value>
+  </data>
+  <data name="InserUser" xml:space="preserve">
+    <value>Inser User</value>
+  </data>
+  <data name="InspectionStandards" xml:space="preserve">
+    <value>Inspection Standards</value>
+  </data>
+  <data name="Location" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="Lock" xml:space="preserve">
+    <value>Lock</value>
+  </data>
+  <data name="Material2" xml:space="preserve">
+    <value>Material</value>
+  </data>
+  <data name="MaterialCode2" xml:space="preserve">
+    <value>Material Code</value>
+  </data>
+  <data name="MaterialPrice" xml:space="preserve">
+    <value>Material Price</value>
+  </data>
+  <data name="MaterialPrice1" xml:space="preserve">
+    <value>Material&lt;/br&gt;Price</value>
+  </data>
+  <data name="MaterialPrice2" xml:space="preserve">
+    <value>Material&lt;/br&gt;Price</value>
+  </data>
+  <data name="MaterialPrice3" xml:space="preserve">
+    <value>Material&lt;/br&gt;Price</value>
+  </data>
+  <data name="MaterialQuotation" xml:space="preserve">
+    <value>Material Quotation</value>
+  </data>
+  <data name="MaterialQuotation2" xml:space="preserve">
+    <value>Material Quotation</value>
+  </data>
+  <data name="MaterialType" xml:space="preserve">
+    <value>Material Type</value>
+  </data>
+  <data name="MaterialType1" xml:space="preserve">
+    <value>Material&lt;/br&gt;Type</value>
+  </data>
+  <data name="MaterialType2" xml:space="preserve">
+    <value>Material Type</value>
+  </data>
+  <data name="MillPrice" xml:space="preserve">
+    <value>Mill Price</value>
+  </data>
+  <data name="MillPrice1" xml:space="preserve">
+    <value>Mill&lt;/br&gt;Price</value>
+  </data>
+  <data name="NewName" xml:space="preserve">
+    <value>New Name</value>
+  </data>
+  <data name="NewPrice" xml:space="preserve">
+    <value>New Price</value>
+  </data>
+  <data name="OldName" xml:space="preserve">
+    <value>Old Name</value>
+  </data>
+  <data name="OldPrice" xml:space="preserve">
+    <value>Old Price</value>
+  </data>
+  <data name="OtherFees" xml:space="preserve">
+    <value>Other Fees</value>
+  </data>
+  <data name="OtherFees1" xml:space="preserve">
+    <value>Other&lt;/br&gt;Fees</value>
+  </data>
+  <data name="Packing2" xml:space="preserve">
+    <value>Packing</value>
+  </data>
+  <data name="Parameter" xml:space="preserve">
+    <value>Parameter</value>
+  </data>
+  <data name="PlatingPrice1A" xml:space="preserve">
+    <value>Plating&lt;/br&gt; Price</value>
+  </data>
+  <data name="PlatingPrice1B" xml:space="preserve">
+    <value>Plating&lt;/br&gt; Price</value>
+  </data>
+  <data name="PlatingPrice2A" xml:space="preserve">
+    <value>Plating Price</value>
+  </data>
+  <data name="PlatingPrice2B" xml:space="preserve">
+    <value>Plating Price</value>
+  </data>
+  <data name="PlatingPrice3A" xml:space="preserve">
+    <value>Plating Price</value>
+  </data>
+  <data name="PlatingPrice3B" xml:space="preserve">
+    <value>Plating Price</value>
+  </data>
+  <data name="PlatingPriceA" xml:space="preserve">
+    <value>Plating Price</value>
+  </data>
+  <data name="PlatingPriceB" xml:space="preserve">
+    <value>Plating Price</value>
+  </data>
+  <data name="PlatingPriceQuotation" xml:space="preserve">
+    <value>Plating Price Quotation</value>
+  </data>
+  <data name="Processing2" xml:space="preserve">
+    <value>Processing</value>
+  </data>
+  <data name="ProcessingPrice" xml:space="preserve">
+    <value>Processing Price</value>
+  </data>
+  <data name="ProcessingPrice1" xml:space="preserve">
+    <value>Processing&lt;/br&gt;Price</value>
+  </data>
+  <data name="ProcessingPrice3" xml:space="preserve">
+    <value>Processing&lt;/br&gt;Price</value>
+  </data>
+  <data name="ProductCode3" xml:space="preserve">
+    <value>Product&lt;/br&gt;Code</value>
+  </data>
+  <data name="ProductImage" xml:space="preserve">
+    <value>Product Image</value>
+  </data>
+  <data name="ProductivitySheet" xml:space="preserve">
+    <value>Productivity Sheet</value>
+  </data>
+  <data name="ProductManagementQc" xml:space="preserve">
+    <value>Product Management(Qc)</value>
+  </data>
+  <data name="ProductManagementQuote" xml:space="preserve">
+    <value>Product Management(Quote)</value>
+  </data>
+  <data name="ProductManagementSales" xml:space="preserve">
+    <value>Product Management(Sales)</value>
+  </data>
+  <data name="ProductName2" xml:space="preserve">
+    <value>Product Name</value>
+  </data>
+  <data name="ProductQuotation" xml:space="preserve">
+    <value>Product Quotation</value>
+  </data>
+  <data name="ProductQuotation1" xml:space="preserve">
+    <value>Product&lt;/br&gt;Quotation</value>
+  </data>
+  <data name="ProductQuotation2" xml:space="preserve">
+    <value>ProductQuotation</value>
+  </data>
+  <data name="ProductWeight1" xml:space="preserve">
+    <value>Product&lt;/br&gt;Weight</value>
+  </data>
+  <data name="Quotations" xml:space="preserve">
+    <value>Quotations</value>
+  </data>
+  <data name="ReceiptEmployee2" xml:space="preserve">
+    <value>Receipt Employee</value>
+  </data>
+  <data name="ShippingMethod" xml:space="preserve">
+    <value>Shipping Method</value>
+  </data>
+  <data name="ShippingMethod1" xml:space="preserve">
+    <value>Shipping&lt;br&gt;Method</value>
+  </data>
+  <data name="ShippingPrice" xml:space="preserve">
+    <value>Shipping Price</value>
+  </data>
+  <data name="ShippingPrice1" xml:space="preserve">
+    <value>Shipping&lt;/br&gt;Price</value>
+  </data>
+  <data name="ShippingPrice2" xml:space="preserve">
+    <value>Shipping Price</value>
+  </data>
+  <data name="ShippingPriceQuotation" xml:space="preserve">
+    <value>Shipping Price Quotation</value>
+  </data>
+  <data name="Stage1Quotation" xml:space="preserve">
+    <value>Stage1 Quotation</value>
+  </data>
+  <data name="Stage2Quotation" xml:space="preserve">
+    <value>Stage2 Quotation</value>
+  </data>
+  <data name="TotalAmount1" xml:space="preserve">
+    <value>Total&lt;/br&gt;Amount</value>
+  </data>
+  <data name="TypeMachine" xml:space="preserve">
+    <value>Type Machine</value>
+  </data>
+  <data name="UnitPriceNote" xml:space="preserve">
+    <value>Unit Price Note</value>
+  </data>
+  <data name="UnitPriceNote1" xml:space="preserve">
+    <value>Unit Price&lt;/br&gt;Note</value>
+  </data>
+  <data name="Unlock" xml:space="preserve">
+    <value>Unlock</value>
+  </data>
+  <data name="AdditionImport" xml:space="preserve">
+    <value>Addition Import</value>
+  </data>
+  <data name="AdditionImport1" xml:space="preserve">
+    <value>Addition&lt;/br&gt;Import</value>
+  </data>
+  <data name="AnnualForecast" xml:space="preserve">
+    <value>Annual Forecast</value>
+  </data>
+  <data name="AnnualForecast2" xml:space="preserve">
+    <value>Annual Forecast</value>
+  </data>
+  <data name="AnnualOrder" xml:space="preserve">
+    <value>Annual Order</value>
+  </data>
+  <data name="AnnualOrder2" xml:space="preserve">
+    <value>AnnualOrder</value>
+  </data>
+  <data name="Average" xml:space="preserve">
+    <value>Average</value>
+  </data>
+  <data name="Average1" xml:space="preserve">
+    <value>Average</value>
+  </data>
+  <data name="Average2" xml:space="preserve">
+    <value>Avg</value>
+  </data>
+  <data name="CamcesProduction" xml:space="preserve">
+    <value>Camces Production</value>
+  </data>
+  <data name="CamcesProduction2" xml:space="preserve">
+    <value>Camces Production</value>
+  </data>
+  <data name="CancelExport1" xml:space="preserve">
+    <value>Cancel&lt;/br&gt;Export</value>
+  </data>
+  <data name="CNCProduction" xml:space="preserve">
+    <value>CNC Production</value>
+  </data>
+  <data name="CNCProduction2" xml:space="preserve">
+    <value>CNC Production</value>
+  </data>
+  <data name="Cost" xml:space="preserve">
+    <value>Cost</value>
+  </data>
+  <data name="CustomerCode3" xml:space="preserve">
+    <value>Customer&lt;/br&gt;Code</value>
+  </data>
+  <data name="CustomerProductCode3" xml:space="preserve">
+    <value>Customer&lt;/br&gt;Product Code</value>
+  </data>
+  <data name="DayStartInv" xml:space="preserve">
+    <value>Day-Start Inv</value>
+  </data>
+  <data name="DayStartInv1" xml:space="preserve">
+    <value>Day-Start&lt;/br&gt;Inv</value>
+  </data>
+  <data name="DesignMaterial3" xml:space="preserve">
+    <value>Design&lt;/br&gt;Material</value>
+  </data>
+  <data name="ExportSale1" xml:space="preserve">
+    <value>Export&lt;/br&gt;Sale</value>
+  </data>
+  <data name="ICForCustomer" xml:space="preserve">
+    <value>Product Inventory Card (Customer)</value>
+  </data>
+  <data name="Instruction" xml:space="preserve">
+    <value>Instruction</value>
+  </data>
+  <data name="InternalExport" xml:space="preserve">
+    <value>Internal Export</value>
+  </data>
+  <data name="InternalExport1" xml:space="preserve">
+    <value>Internal&lt;/br&gt;Export</value>
+  </data>
+  <data name="InternalExport2" xml:space="preserve">
+    <value>Internal Export</value>
+  </data>
+  <data name="InternalExport3" xml:space="preserve">
+    <value>Internal&lt;/br&gt;Export</value>
+  </data>
+  <data name="InternalImport" xml:space="preserve">
+    <value>Internal Import</value>
+  </data>
+  <data name="InternalImport1" xml:space="preserve">
+    <value>Internal&lt;/br&gt;Import</value>
+  </data>
+  <data name="InventoryCard" xml:space="preserve">
+    <value>Product Inventory Card</value>
+  </data>
+  <data name="IssueInvoices" xml:space="preserve">
+    <value>Issue Invoices</value>
+  </data>
+  <data name="IssueInvoices1" xml:space="preserve">
+    <value>Issue&lt;/br&gt;Invoices</value>
+  </data>
+  <data name="IssueInvoices2" xml:space="preserve">
+    <value>Issue Invoices</value>
+  </data>
+  <data name="IssueInvoices3" xml:space="preserve">
+    <value>Issue&lt;/br&gt;Invoices</value>
+  </data>
+  <data name="Length" xml:space="preserve">
+    <value>Length</value>
+  </data>
+  <data name="Length2" xml:space="preserve">
+    <value>Length</value>
+  </data>
+  <data name="MachineType" xml:space="preserve">
+    <value>Machine Type</value>
+  </data>
+  <data name="MainStage3" xml:space="preserve">
+    <value>Main&lt;/br&gt;Stage</value>
+  </data>
+  <data name="MaterialDesign" xml:space="preserve">
+    <value>Material Design</value>
+  </data>
+  <data name="MaterialWeight2" xml:space="preserve">
+    <value>Material Weight</value>
+  </data>
+  <data name="MaterialWeight3" xml:space="preserve">
+    <value>Material&lt;/br&gt;Weight</value>
+  </data>
+  <data name="MeasurementSize" xml:space="preserve">
+    <value>Measurement Size</value>
+  </data>
+  <data name="MeasureTool" xml:space="preserve">
+    <value>Measure Tool</value>
+  </data>
+  <data name="MonthlyForecast" xml:space="preserve">
+    <value>Monthly Forecast</value>
+  </data>
+  <data name="MonthlyForecast1" xml:space="preserve">
+    <value>Monthly&lt;/br&gt;Forecast</value>
+  </data>
+  <data name="MonthlyForecast2" xml:space="preserve">
+    <value>Monthly Forecast</value>
+  </data>
+  <data name="MonthlyOrder" xml:space="preserve">
+    <value>Monthly Order</value>
+  </data>
+  <data name="MonthlyOrder1" xml:space="preserve">
+    <value>Monthly&lt;/br&gt;Order</value>
+  </data>
+  <data name="MonthlyOrder2" xml:space="preserve">
+    <value>Monthly Order</value>
+  </data>
+  <data name="MonthStartInv" xml:space="preserve">
+    <value>Month-Start Inv</value>
+  </data>
+  <data name="MonthStartInv1" xml:space="preserve">
+    <value>MonthStart&lt;/br&gt;Inv</value>
+  </data>
+  <data name="Packaging" xml:space="preserve">
+    <value>Packaging</value>
+  </data>
+  <data name="Pending2" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="PlatingAName" xml:space="preserve">
+    <value>Plating Name</value>
+  </data>
+  <data name="ProductComparePricing" xml:space="preserve">
+    <value>Product (Compare Pricing)</value>
+  </data>
+  <data name="Production2Employee" xml:space="preserve">
+    <value>Production 2 Employee</value>
+  </data>
+  <data name="ProductManagementCnc" xml:space="preserve">
+    <value>Product Management (Cnc)</value>
+  </data>
+  <data name="ProductManagementHeatTreatment" xml:space="preserve">
+    <value>Product Management (Heat Treatment)</value>
+  </data>
+  <data name="ProductManagementMaterial" xml:space="preserve">
+    <value>Produc tManagement(Material)</value>
+  </data>
+  <data name="ProductManagementPacking" xml:space="preserve">
+    <value>Product Management (Packing)</value>
+  </data>
+  <data name="ProductManagementPlating" xml:space="preserve">
+    <value>Product Management (Plating)</value>
+  </data>
+  <data name="ProductManagementPricing" xml:space="preserve">
+    <value>Product Management (Pricing)</value>
+  </data>
+  <data name="ProductManagementProduction2" xml:space="preserve">
+    <value>Product Management (Production2)</value>
+  </data>
+  <data name="ProductManagementSurfaceTreatment" xml:space="preserve">
+    <value>Product Management (Surface Treatment)</value>
+  </data>
+  <data name="ProductManagementTax" xml:space="preserve">
+    <value>Product Management (Accounting)</value>
+  </data>
+  <data name="ProductStatistics" xml:space="preserve">
+    <value>Product Statistics</value>
+  </data>
+  <data name="ProductWeight3" xml:space="preserve">
+    <value>Product&lt;/br&gt;Weight</value>
+  </data>
+  <data name="RawMaterial" xml:space="preserve">
+    <value>Raw Material</value>
+  </data>
+  <data name="SaleDiff" xml:space="preserve">
+    <value>Sale Diff</value>
+  </data>
+  <data name="SaleDiff1" xml:space="preserve">
+    <value>Sale&lt;/br&gt;Diff</value>
+  </data>
+  <data name="SaleExport" xml:space="preserve">
+    <value>Sale Export</value>
+  </data>
+  <data name="SaleExport1" xml:space="preserve">
+    <value>Sale&lt;/br&gt;Export</value>
+  </data>
+  <data name="SalePrice" xml:space="preserve">
+    <value>Sale Price</value>
+  </data>
+  <data name="SaleRate" xml:space="preserve">
+    <value>Sale Rate</value>
+  </data>
+  <data name="SaleRate1" xml:space="preserve">
+    <value>Sale&lt;/br&gt;Rate</value>
+  </data>
+  <data name="Saved" xml:space="preserve">
+    <value>Saved</value>
+  </data>
+  <data name="Scrap" xml:space="preserve">
+    <value>Scrap</value>
+  </data>
+  <data name="Scrap2" xml:space="preserve">
+    <value>Scrap</value>
+  </data>
+  <data name="ScrapExport" xml:space="preserve">
+    <value>Scrap Export</value>
+  </data>
+  <data name="ScrapExport1" xml:space="preserve">
+    <value>Scrap&lt;br&gt;Export</value>
+  </data>
+  <data name="ScrapExport2" xml:space="preserve">
+    <value>Scrap Export</value>
+  </data>
+  <data name="ScrapExport3" xml:space="preserve">
+    <value>Scrap&lt;/br&gt;Export</value>
+  </data>
+  <data name="ScrapPrice" xml:space="preserve">
+    <value>Scrap Price</value>
+  </data>
+  <data name="ScrapPrice1" xml:space="preserve">
+    <value>Scrap&lt;/br&gt;Price</value>
+  </data>
+  <data name="ScrapRate" xml:space="preserve">
+    <value>Scrap Rate</value>
+  </data>
+  <data name="ScrapRate1" xml:space="preserve">
+    <value>Scrap&lt;/br&gt;Rate</value>
+  </data>
+  <data name="ScrapRate2" xml:space="preserve">
+    <value>Scrap Rate</value>
+  </data>
+  <data name="SendBack" xml:space="preserve">
+    <value>Send Back</value>
+  </data>
+  <data name="StageStart" xml:space="preserve">
+    <value>Stage Start</value>
+  </data>
+  <data name="StageStart2" xml:space="preserve">
+    <value>Stage Start</value>
+  </data>
+  <data name="TaxCode" xml:space="preserve">
+    <value>Tax Code</value>
+  </data>
+  <data name="TeamD" xml:space="preserve">
+    <value>Team D</value>
+  </data>
+  <data name="Technical" xml:space="preserve">
+    <value>Technical</value>
+  </data>
+  <data name="TotalPending" xml:space="preserve">
+    <value>Total Pending</value>
+  </data>
+  <data name="TotalPending1" xml:space="preserve">
+    <value>Total&lt;/br&gt;Pending</value>
+  </data>
+  <data name="TotalPending2" xml:space="preserve">
+    <value>TotalPending</value>
+  </data>
+  <data name="TotalPending3" xml:space="preserve">
+    <value>Total&lt;/br&gt;Pending</value>
+  </data>
+  <data name="UsedQuantity" xml:space="preserve">
+    <value>Used Quantity</value>
+  </data>
+  <data name="UsedQuantity2" xml:space="preserve">
+    <value>Used Quantity</value>
+  </data>
+  <data name="VFProductCode2" xml:space="preserve">
+    <value>VF Product Code</value>
+  </data>
+  <data name="VFProductCode3" xml:space="preserve">
+    <value>VF Product&lt;/br&gt;Code</value>
+  </data>
+  <data name="YearStartInv" xml:space="preserve">
+    <value>Year-Start Inv</value>
+  </data>
+  <data name="YearStartInv1" xml:space="preserve">
+    <value>Year-Start&lt;/br&gt;Inv</value>
+  </data>
+  <data name="Actual2" xml:space="preserve">
+    <value>Actual</value>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="AllProductionReport" xml:space="preserve">
+    <value>Product Inventory Report</value>
+  </data>
+  <data name="AnnualReport" xml:space="preserve">
+    <value>Annual Report</value>
+  </data>
+  <data name="AverageUsing" xml:space="preserve">
+    <value>Average Using</value>
+  </data>
+  <data name="AverageUsing1" xml:space="preserve">
+    <value>Average&lt;/br&gt;Using</value>
+  </data>
+  <data name="AverageUsing2" xml:space="preserve">
+    <value>Average Using</value>
+  </data>
+  <data name="AverageUsing3" xml:space="preserve">
+    <value>Average&lt;/br&gt;Using</value>
+  </data>
+  <data name="BackUpMaterial" xml:space="preserve">
+    <value>Back-Up Material</value>
+  </data>
+  <data name="BackUpMaterial1" xml:space="preserve">
+    <value>Back-Up&lt;Br&gt;Material</value>
+  </data>
+  <data name="BackUpMaterial2" xml:space="preserve">
+    <value>Back-Up Material</value>
+  </data>
+  <data name="BackUpMaterial3" xml:space="preserve">
+    <value>Back-Up&lt;/br&gt;Material</value>
+  </data>
+  <data name="Begin" xml:space="preserve">
+    <value>Begin</value>
+  </data>
+  <data name="BeginOfTheYear" xml:space="preserve">
+    <value>Begin Of The Year</value>
+  </data>
+  <data name="CancelExportOnMachine" xml:space="preserve">
+    <value>Cancel Export On Machine</value>
+  </data>
+  <data name="CancelExportOnMachine1" xml:space="preserve">
+    <value>Cancel Export &lt;/br&gt;On Machine</value>
+  </data>
+  <data name="CancelOnMachine" xml:space="preserve">
+    <value>Cancel On Machine</value>
+  </data>
+  <data name="CancelOnMachine1" xml:space="preserve">
+    <value>Cancel On &lt;/br&gt;Machine</value>
+  </data>
+  <data name="CarNumber" xml:space="preserve">
+    <value>Car Number</value>
+  </data>
+  <data name="Certificate3" xml:space="preserve">
+    <value>Certificate</value>
+  </data>
+  <data name="Cumulative" xml:space="preserve">
+    <value>Cumulative</value>
+  </data>
+  <data name="Cumulative2" xml:space="preserve">
+    <value>Cumulative</value>
+  </data>
+  <data name="CumulativeExport" xml:space="preserve">
+    <value>Cumulative Export</value>
+  </data>
+  <data name="CumulativeExport1" xml:space="preserve">
+    <value>Cumulative&lt;/br&gt;Export</value>
+  </data>
+  <data name="CumulativeExport2" xml:space="preserve">
+    <value>Cumulative Export</value>
+  </data>
+  <data name="CumulativeExport3" xml:space="preserve">
+    <value>Cumulative&lt;/br&gt;Export</value>
+  </data>
+  <data name="CumulativeImport" xml:space="preserve">
+    <value>Cumulative Import</value>
+  </data>
+  <data name="CumulativeImport1" xml:space="preserve">
+    <value>Cumulative&lt;/br&gt;Import</value>
+  </data>
+  <data name="DailyScrap" xml:space="preserve">
+    <value>Daily Scrap</value>
+  </data>
+  <data name="DailyScrap2" xml:space="preserve">
+    <value>Daily Scrap</value>
+  </data>
+  <data name="DayNumber" xml:space="preserve">
+    <value>Day Number</value>
+  </data>
+  <data name="Decrease" xml:space="preserve">
+    <value>Decrease</value>
+  </data>
+  <data name="Decrease1" xml:space="preserve">
+    <value>Decrease</value>
+  </data>
+  <data name="Delivered" xml:space="preserve">
+    <value>Delivered</value>
+  </data>
+  <data name="DeliverySalesReport" xml:space="preserve">
+    <value>Delivery Report</value>
+  </data>
+  <data name="Diff1" xml:space="preserve">
+    <value>Diff</value>
+  </data>
+  <data name="Difference" xml:space="preserve">
+    <value>Difference</value>
+  </data>
+  <data name="DifferenceQuantity" xml:space="preserve">
+    <value>Difference Quantity</value>
+  </data>
+  <data name="DifferenceQuantity1" xml:space="preserve">
+    <value>Difference&lt;/br&gt;Quantity</value>
+  </data>
+  <data name="Different" xml:space="preserve">
+    <value>Different</value>
+  </data>
+  <data name="DiffImport" xml:space="preserve">
+    <value>Diff Import</value>
+  </data>
+  <data name="EarlyPrice" xml:space="preserve">
+    <value>Early Price</value>
+  </data>
+  <data name="EarlyQuantity1" xml:space="preserve">
+    <value>Early&lt;/br&gt;Quantity</value>
+  </data>
+  <data name="EarlyQuantityOnMachine" xml:space="preserve">
+    <value>Early Quantity On Machine</value>
+  </data>
+  <data name="EarlyQuantityOnMachine1" xml:space="preserve">
+    <value>Early Quantity&lt;/br&gt;On Machine</value>
+  </data>
+  <data name="EmptyMachine" xml:space="preserve">
+    <value>Empty Machine</value>
+  </data>
+  <data name="EndOfTheYear" xml:space="preserve">
+    <value>End Of The Year</value>
+  </data>
+  <data name="Expected" xml:space="preserve">
+    <value>Expected</value>
+  </data>
+  <data name="ExpectedMaterialPlan" xml:space="preserve">
+    <value>Expected Material-Order Plan</value>
+  </data>
+  <data name="ExpectedPlatingReport" xml:space="preserve">
+    <value>Plating Report</value>
+  </data>
+  <data name="ExpectedProduction2Plan" xml:space="preserve">
+    <value>Production2 Plan</value>
+  </data>
+  <data name="ExpectedProductionReport" xml:space="preserve">
+    <value>Work Progress</value>
+  </data>
+  <data name="ExpectedSalesReport" xml:space="preserve">
+    <value>Expected Order Report</value>
+  </data>
+  <data name="ExportValue" xml:space="preserve">
+    <value>Export Value</value>
+  </data>
+  <data name="ExportValue1" xml:space="preserve">
+    <value>Export&lt;/br&gt;Value</value>
+  </data>
+  <data name="ExportValue2" xml:space="preserve">
+    <value>Export Value</value>
+  </data>
+  <data name="FactoryProduction2ProcessReport" xml:space="preserve">
+    <value>Factory Production2 Process Report</value>
+  </data>
+  <data name="FactoryProductionProcessReport" xml:space="preserve">
+    <value>Factory Production Process Report</value>
+  </data>
+  <data name="First" xml:space="preserve">
+    <value>First</value>
+  </data>
+  <data name="FirstImport" xml:space="preserve">
+    <value>First Import</value>
+  </data>
+  <data name="Follow" xml:space="preserve">
+    <value>Follow</value>
+  </data>
+  <data name="Forecast2" xml:space="preserve">
+    <value>Forecast</value>
+  </data>
+  <data name="ForecastDate3" xml:space="preserve">
+    <value>Forecast&lt;/br&gt;Date</value>
+  </data>
+  <data name="ForecastOrderReport" xml:space="preserve">
+    <value>Order-Progress Report</value>
+  </data>
+  <data name="Friday" xml:space="preserve">
+    <value>Friday</value>
+  </data>
+  <data name="HaveInv" xml:space="preserve">
+    <value>Have Inv</value>
+  </data>
+  <data name="HaveOrderAndForecast" xml:space="preserve">
+    <value>Have Order &amp; Forecast</value>
+  </data>
+  <data name="HeatTreament2" xml:space="preserve">
+    <value>Heat Treament</value>
+  </data>
+  <data name="HeatTreatment2" xml:space="preserve">
+    <value>Heat Treatment</value>
+  </data>
+  <data name="HeatTreatmentPending" xml:space="preserve">
+    <value>Heat Treatment Pending</value>
+  </data>
+  <data name="HeatTreatmentPending1" xml:space="preserve">
+    <value>Heat Treatment&lt;/br&gt; Pending</value>
+  </data>
+  <data name="ImportExportProductionReport" xml:space="preserve">
+    <value>Finished Goods Inventory Report</value>
+  </data>
+  <data name="ImportValue" xml:space="preserve">
+    <value>Import Value</value>
+  </data>
+  <data name="ImportValue1" xml:space="preserve">
+    <value>Import&lt;/br&gt;Value</value>
+  </data>
+  <data name="ImportValue2" xml:space="preserve">
+    <value>Import Value</value>
+  </data>
+  <data name="Increase" xml:space="preserve">
+    <value>Increase</value>
+  </data>
+  <data name="Increase1" xml:space="preserve">
+    <value>Increase</value>
+  </data>
+  <data name="InMonth" xml:space="preserve">
+    <value>In Month</value>
+  </data>
+  <data name="Internal" xml:space="preserve">
+    <value>Internal</value>
+  </data>
+  <data name="Internal2" xml:space="preserve">
+    <value>Internal</value>
+  </data>
+  <data name="Inventory1" xml:space="preserve">
+    <value>Inventory</value>
+  </data>
+  <data name="Inventory2" xml:space="preserve">
+    <value>Inventory</value>
+  </data>
+  <data name="InvOnMachine" xml:space="preserve">
+    <value>Inv On Machine</value>
+  </data>
+  <data name="InvOnMachine1" xml:space="preserve">
+    <value>Inv On&lt;/br&gt;Machine</value>
+  </data>
+  <data name="InYear" xml:space="preserve">
+    <value>In Year</value>
+  </data>
+  <data name="Last" xml:space="preserve">
+    <value>Last</value>
+  </data>
+  <data name="LastActive" xml:space="preserve">
+    <value>Last Active</value>
+  </data>
+  <data name="LastActive1" xml:space="preserve">
+    <value>Last&lt;/br&gt;Active</value>
+  </data>
+  <data name="LastDate" xml:space="preserve">
+    <value>LastDate</value>
+  </data>
+  <data name="LastDeliveryDate" xml:space="preserve">
+    <value>Last Delivery Date</value>
+  </data>
+  <data name="LastDeliveryDate1" xml:space="preserve">
+    <value>Last Delivery&lt;/br&gt;Date</value>
+  </data>
+  <data name="LastFinishedProduct" xml:space="preserve">
+    <value>Last Finished Date</value>
+  </data>
+  <data name="LastFinishedProduct2" xml:space="preserve">
+    <value>Last Finished Date</value>
+  </data>
+  <data name="LastMonth" xml:space="preserve">
+    <value>Last Month</value>
+  </data>
+  <data name="LastMonthOrder3" xml:space="preserve">
+    <value>Last Month&lt;/br&gt;Order</value>
+  </data>
+  <data name="LastPrice" xml:space="preserve">
+    <value>LastPrice</value>
+  </data>
+  <data name="LastProductionDate" xml:space="preserve">
+    <value>Last Production Date</value>
+  </data>
+  <data name="LastProductionDate3" xml:space="preserve">
+    <value>Last Production &lt;/br&gt;Date</value>
+  </data>
+  <data name="LastQuantity1" xml:space="preserve">
+    <value>Last&lt;/br&gt;Quantity</value>
+  </data>
+  <data name="LastQuantityOnMachine" xml:space="preserve">
+    <value>Last Quantity On Machine</value>
+  </data>
+  <data name="LastQuantityOnMachine1" xml:space="preserve">
+    <value>Last Quantity&lt;/br&gt;On Machine</value>
+  </data>
+  <data name="LastWarehouse" xml:space="preserve">
+    <value>Last Warehouse</value>
+  </data>
+  <data name="LastWarehouseInv" xml:space="preserve">
+    <value>Last Warehouse Inv</value>
+  </data>
+  <data name="LastWarehouseInv1" xml:space="preserve">
+    <value>Last&lt;/br&gt; Warehouse Inv</value>
+  </data>
+  <data name="LastYear" xml:space="preserve">
+    <value>Last Year</value>
+  </data>
+  <data name="LatedOrder" xml:space="preserve">
+    <value>Lated Order</value>
+  </data>
+  <data name="MachineDiagram" xml:space="preserve">
+    <value>Machine Diagram</value>
+  </data>
+  <data name="MachineNumber" xml:space="preserve">
+    <value>Machine Number</value>
+  </data>
+  <data name="MachineNumber1" xml:space="preserve">
+    <value>Machine&lt;/br&gt;Number</value>
+  </data>
+  <data name="MachineSetupPlan" xml:space="preserve">
+    <value>Machine Set-Up Plan</value>
+  </data>
+  <data name="MaterialAssign2" xml:space="preserve">
+    <value>Material Assign</value>
+  </data>
+  <data name="MaterialDailyReport" xml:space="preserve">
+    <value>Material Usage Report</value>
+  </data>
+  <data name="MaterialExport" xml:space="preserve">
+    <value>Export Material</value>
+  </data>
+  <data name="MaterialExport1" xml:space="preserve">
+    <value>Export&lt;/br&gt;Material</value>
+  </data>
+  <data name="MaterialExport2" xml:space="preserve">
+    <value>Export-Material</value>
+  </data>
+  <data name="MaterialExport3" xml:space="preserve">
+    <value>Export&lt;/br&gt;Material</value>
+  </data>
+  <data name="MaterialImport1" xml:space="preserve">
+    <value>Material&lt;/br&gt;Import</value>
+  </data>
+  <data name="MaterialImport2" xml:space="preserve">
+    <value>Material-Import</value>
+  </data>
+  <data name="MaterialImport3" xml:space="preserve">
+    <value>Material&lt;/br&gt;Import</value>
+  </data>
+  <data name="MaterialInventoryCard" xml:space="preserve">
+    <value>Material Inventory Card</value>
+  </data>
+  <data name="MaterialMonthlyReport" xml:space="preserve">
+    <value>Material Summary Report</value>
+  </data>
+  <data name="MaterialName2" xml:space="preserve">
+    <value>Material Name</value>
+  </data>
+  <data name="MaterialProductionReport" xml:space="preserve">
+    <value>Production Material Report</value>
+  </data>
+  <data name="MaterialValue" xml:space="preserve">
+    <value>Material Value</value>
+  </data>
+  <data name="MaterialValue2" xml:space="preserve">
+    <value>Material Value</value>
+  </data>
+  <data name="MaterialYearlyReport" xml:space="preserve">
+    <value>Material Summary Report (Year)</value>
+  </data>
+  <data name="Max" xml:space="preserve">
+    <value>Max</value>
+  </data>
+  <data name="Mechanical" xml:space="preserve">
+    <value>Mechanical</value>
+  </data>
+  <data name="Min" xml:space="preserve">
+    <value>Min</value>
+  </data>
+  <data name="Monday" xml:space="preserve">
+    <value>Monday</value>
+  </data>
+  <data name="Month2" xml:space="preserve">
+    <value>M</value>
+  </data>
+  <data name="MonthlyScrap" xml:space="preserve">
+    <value>Monthly Scrap</value>
+  </data>
+  <data name="MonthlyScrap2" xml:space="preserve">
+    <value>Monthly Scrap</value>
+  </data>
+  <data name="Nearest" xml:space="preserve">
+    <value>Nearest</value>
+  </data>
+  <data name="NextMonth" xml:space="preserve">
+    <value>Next Month</value>
+  </data>
+  <data name="NextYear" xml:space="preserve">
+    <value>Next Year</value>
+  </data>
+  <data name="Order" xml:space="preserve">
+    <value>Order</value>
+  </data>
+  <data name="Order2" xml:space="preserve">
+    <value>Order</value>
+  </data>
+  <data name="OrderDate" xml:space="preserve">
+    <value>Order Date</value>
+  </data>
+  <data name="OrderDate1" xml:space="preserve">
+    <value>Order&lt;/br&gt; Date</value>
+  </data>
+  <data name="OrderDate2" xml:space="preserve">
+    <value>Order Date</value>
+  </data>
+  <data name="OrderDate3" xml:space="preserve">
+    <value>Order&lt;/br&gt; Date</value>
+  </data>
+  <data name="Ordered1" xml:space="preserve">
+    <value>Ordered</value>
+  </data>
+  <data name="OrderNotDelivered" xml:space="preserve">
+    <value>Order Not Delivered</value>
+  </data>
+  <data name="OrderNotDelivered1" xml:space="preserve">
+    <value>Order Not&lt;/br&gt; Delivered</value>
+  </data>
+  <data name="OutOfMaterialDate" xml:space="preserve">
+    <value>Out-Of-Material Date</value>
+  </data>
+  <data name="OutOfMaterialDate1" xml:space="preserve">
+    <value>Out-Of-Material&lt;/br&gt;Date</value>
+  </data>
+  <data name="OutOfMaterialDate3" xml:space="preserve">
+    <value>Out-Of-Material&lt;/br&gt;Date</value>
+  </data>
+  <data name="OutOfStock" xml:space="preserve">
+    <value>Out Of Stock</value>
+  </data>
+  <data name="Plan" xml:space="preserve">
+    <value>Plan</value>
+  </data>
+  <data name="Plan2" xml:space="preserve">
+    <value>Plan</value>
+  </data>
+  <data name="Point" xml:space="preserve">
+    <value>Point</value>
+  </data>
+  <data name="Polishing2" xml:space="preserve">
+    <value>Polishing</value>
+  </data>
+  <data name="PolishingPending" xml:space="preserve">
+    <value>Polishing Pending</value>
+  </data>
+  <data name="PolishingPending1" xml:space="preserve">
+    <value>Polishing&lt;/br&gt;Pending</value>
+  </data>
+  <data name="PresentInvInformation" xml:space="preserve">
+    <value>Present Inventory Information</value>
+  </data>
+  <data name="PrintMaterialInvReport" xml:space="preserve">
+    <value>Print Material-Inv Report</value>
+  </data>
+  <data name="ProcessingValue" xml:space="preserve">
+    <value>Processing Value</value>
+  </data>
+  <data name="ProcessingValue1" xml:space="preserve">
+    <value>Processing&lt;/br&gt;Value</value>
+  </data>
+  <data name="ProcessingValue2" xml:space="preserve">
+    <value>Processing Value</value>
+  </data>
+  <data name="ProcessingValue3" xml:space="preserve">
+    <value>Processing&lt;/br&gt;Value</value>
+  </data>
+  <data name="ProductCurrentReport" xml:space="preserve">
+    <value>Product Inventory Report</value>
+  </data>
+  <data name="ProductFunction" xml:space="preserve">
+    <value>Product Function</value>
+  </data>
+  <data name="ProductFunction1" xml:space="preserve">
+    <value>Product&lt;/br&gt;Function</value>
+  </data>
+  <data name="ProductFunction2" xml:space="preserve">
+    <value>Product Function</value>
+  </data>
+  <data name="ProductionDailyReport" xml:space="preserve">
+    <value>Daily-Production Report</value>
+  </data>
+  <data name="ProductionMachine" xml:space="preserve">
+    <value>Production Machine</value>
+  </data>
+  <data name="ProductionMachine1" xml:space="preserve">
+    <value>Production&lt;/br&gt;Machine</value>
+  </data>
+  <data name="ProductionMachine2" xml:space="preserve">
+    <value>Production-Machine</value>
+  </data>
+  <data name="ProductionMachine3" xml:space="preserve">
+    <value>Production&lt;/br&gt;Machine</value>
+  </data>
+  <data name="ProductionMaterial" xml:space="preserve">
+    <value>Production Material</value>
+  </data>
+  <data name="ProductionMaterial1" xml:space="preserve">
+    <value>Production&lt;/br&gt;Material</value>
+  </data>
+  <data name="ProductionMaterial2" xml:space="preserve">
+    <value>Production Material</value>
+  </data>
+  <data name="ProductionMaterialManagement" xml:space="preserve">
+    <value>Material-Orders EST</value>
+  </data>
+  <data name="ProductionPlanReport" xml:space="preserve">
+    <value>Production-Plan Report</value>
+  </data>
+  <data name="ProductionRate2" xml:space="preserve">
+    <value>ProductionRate</value>
+  </data>
+  <data name="ProductionRequest" xml:space="preserve">
+    <value>Production Request</value>
+  </data>
+  <data name="ProductionRequest1" xml:space="preserve">
+    <value>Production&lt;/br&gt;Request</value>
+  </data>
+  <data name="ProductionRequest2" xml:space="preserve">
+    <value>Production Request</value>
+  </data>
+  <data name="ProductionRequired" xml:space="preserve">
+    <value>Production Required</value>
+  </data>
+  <data name="ProductionRequired1" xml:space="preserve">
+    <value>Production&lt;/br&gt;Required</value>
+  </data>
+  <data name="ProductionRequired2" xml:space="preserve">
+    <value>Production Required</value>
+  </data>
+  <data name="ProductionTime" xml:space="preserve">
+    <value>Production Time</value>
+  </data>
+  <data name="ProductionTime1" xml:space="preserve">
+    <value>Production&lt;/br&gt;Time</value>
+  </data>
+  <data name="ProductionWeeklyReport" xml:space="preserve">
+    <value>Weekly-Production Report</value>
+  </data>
+  <data name="Production_QcInvBalancingPlan" xml:space="preserve">
+    <value>Work progress</value>
+  </data>
+  <data name="ProductMasterPlanReport" xml:space="preserve">
+    <value>Production Plan</value>
+  </data>
+  <data name="ProductMonthlyReport" xml:space="preserve">
+    <value>Product Summary Report</value>
+  </data>
+  <data name="ProductPrice" xml:space="preserve">
+    <value>Product Price</value>
+  </data>
+  <data name="ProductPrice1" xml:space="preserve">
+    <value>Product&lt;/br&gt;Price</value>
+  </data>
+  <data name="ProductPrice2" xml:space="preserve">
+    <value>Product Price</value>
+  </data>
+  <data name="ProductsLatedOrder" xml:space="preserve">
+    <value>Products Lated Orders</value>
+  </data>
+  <data name="ProductStatusReport" xml:space="preserve">
+    <value>Product Status Report</value>
+  </data>
+  <data name="ProductValue" xml:space="preserve">
+    <value>Product Value</value>
+  </data>
+  <data name="ProductValue2" xml:space="preserve">
+    <value>Product Value</value>
+  </data>
+  <data name="PurchaseImport" xml:space="preserve">
+    <value>Import Purchase</value>
+  </data>
+  <data name="PurchaseImport1" xml:space="preserve">
+    <value>Purchase&lt;/br&gt;Import</value>
+  </data>
+  <data name="Rate" xml:space="preserve">
+    <value>Rate</value>
+  </data>
+  <data name="RawMaterialWeight1" xml:space="preserve">
+    <value>Raw Material&lt;/br&gt;Weight</value>
+  </data>
+  <data name="Recall" xml:space="preserve">
+    <value>Recall</value>
+  </data>
+  <data name="ReportDate" xml:space="preserve">
+    <value>Report Date</value>
+  </data>
+  <data name="Request2" xml:space="preserve">
+    <value>Request</value>
+  </data>
+  <data name="RequestDate" xml:space="preserve">
+    <value>Request Date</value>
+  </data>
+  <data name="RequestDate1" xml:space="preserve">
+    <value>Request&lt;/br&gt;Date</value>
+  </data>
+  <data name="RequiredQuantity2" xml:space="preserve">
+    <value>Required Quantity</value>
+  </data>
+  <data name="Reserved" xml:space="preserve">
+    <value>Reserved</value>
+  </data>
+  <data name="RunningMachine" xml:space="preserve">
+    <value>Running Machine</value>
+  </data>
+  <data name="RunningTime" xml:space="preserve">
+    <value>Running Time</value>
+  </data>
+  <data name="RunningTime1" xml:space="preserve">
+    <value>Running&lt;/br&gt;Time</value>
+  </data>
+  <data name="RunningTime2" xml:space="preserve">
+    <value>Running Time</value>
+  </data>
+  <data name="RunningTime3" xml:space="preserve">
+    <value>Running&lt;/br&gt;Time</value>
+  </data>
+  <data name="Sale2" xml:space="preserve">
+    <value>Sale</value>
+  </data>
+  <data name="Saturday" xml:space="preserve">
+    <value>Saturday</value>
+  </data>
+  <data name="Scrap1" xml:space="preserve">
+    <value>Scrap</value>
+  </data>
+  <data name="Selling" xml:space="preserve">
+    <value>Selling</value>
+  </data>
+  <data name="Selling1" xml:space="preserve">
+    <value>Selling</value>
+  </data>
+  <data name="Selling2" xml:space="preserve">
+    <value>Selling</value>
+  </data>
+  <data name="SendBackImport" xml:space="preserve">
+    <value>Import Send Back</value>
+  </data>
+  <data name="SendBackImport1" xml:space="preserve">
+    <value>Send-Back&lt;/br&gt;Import</value>
+  </data>
+  <data name="SetupDate" xml:space="preserve">
+    <value>Set-up Date</value>
+  </data>
+  <data name="SetupDate1" xml:space="preserve">
+    <value>Set-up&lt;/br&gt; Date</value>
+  </data>
+  <data name="Shape2" xml:space="preserve">
+    <value>Shape</value>
+  </data>
+  <data name="StartDate3" xml:space="preserve">
+    <value>Start&lt;/br&gt;Date</value>
+  </data>
+  <data name="Status1" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="StopProductionDate" xml:space="preserve">
+    <value>Stop-Production Date</value>
+  </data>
+  <data name="StopProductionDate1" xml:space="preserve">
+    <value>Stop-Production &lt;/br&gt;Date</value>
+  </data>
+  <data name="StopProductionDate3" xml:space="preserve">
+    <value>Stop-Production &lt;/br&gt;Date</value>
+  </data>
+  <data name="TeamDPrice" xml:space="preserve">
+    <value>Team D Price</value>
+  </data>
+  <data name="TechnicalPrice" xml:space="preserve">
+    <value>Technical Price</value>
+  </data>
+  <data name="TechnicalPrice1" xml:space="preserve">
+    <value>Technical&lt;/br&gt;Price</value>
+  </data>
+  <data name="TechnicalPrice2" xml:space="preserve">
+    <value>Technical Price</value>
+  </data>
+  <data name="TechnicalValue1" xml:space="preserve">
+    <value>Technical Value</value>
+  </data>
+  <data name="TechnicalValue2" xml:space="preserve">
+    <value>Technical&lt;/br&gt;Value</value>
+  </data>
+  <data name="TechnicalValue3" xml:space="preserve">
+    <value>Technical Value</value>
+  </data>
+  <data name="Testing" xml:space="preserve">
+    <value>Testing</value>
+  </data>
+  <data name="TestingRequired" xml:space="preserve">
+    <value>Testing Required</value>
+  </data>
+  <data name="TestingRequired1" xml:space="preserve">
+    <value>Testing&lt;/br&gt;Required</value>
+  </data>
+  <data name="TestingRequired2" xml:space="preserve">
+    <value>Testing Required</value>
+  </data>
+  <data name="Thursday" xml:space="preserve">
+    <value>Thursday</value>
+  </data>
+  <data name="Tons" xml:space="preserve">
+    <value>Tons</value>
+  </data>
+  <data name="ToolInventoryCard" xml:space="preserve">
+    <value>Tool Inventory Card</value>
+  </data>
+  <data name="TrackUpMachine" xml:space="preserve">
+    <value>Track-Up-Machine</value>
+  </data>
+  <data name="TrackUpMachine1" xml:space="preserve">
+    <value>Track-Up&lt;/br&gt;Machine</value>
+  </data>
+  <data name="TrackUpMachine2" xml:space="preserve">
+    <value>Track-Up-Machine</value>
+  </data>
+  <data name="TransactionCodeB" xml:space="preserve">
+    <value>Transaction Code</value>
+  </data>
+  <data name="TransactionCodeB2" xml:space="preserve">
+    <value>Transaction Code</value>
+  </data>
+  <data name="TransactionDefectReport" xml:space="preserve">
+    <value>NG Statistics Report</value>
+  </data>
+  <data name="Transfer" xml:space="preserve">
+    <value>Transfer</value>
+  </data>
+  <data name="TransferDate" xml:space="preserve">
+    <value>Transfer Date</value>
+  </data>
+  <data name="TransportCompany" xml:space="preserve">
+    <value>Transport Company</value>
+  </data>
+  <data name="Transporter" xml:space="preserve">
+    <value>Transporter</value>
+  </data>
+  <data name="Tuesday" xml:space="preserve">
+    <value>Tuesday</value>
+  </data>
+  <data name="Unit" xml:space="preserve">
+    <value>Unit</value>
+  </data>
+  <data name="UnitPrice2" xml:space="preserve">
+    <value>Unit Price</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="Using1" xml:space="preserve">
+    <value>Using</value>
+  </data>
+  <data name="Value2" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="WarehouseCode" xml:space="preserve">
+    <value>Warehouse Code</value>
+  </data>
+  <data name="Wednesday" xml:space="preserve">
+    <value>Wednesday</value>
+  </data>
+  <data name="Week" xml:space="preserve">
+    <value>Week</value>
+  </data>
+  <data name="WorkingTime" xml:space="preserve">
+    <value>Working Time</value>
+  </data>
+  <data name="WorkingTime1" xml:space="preserve">
+    <value>Working&lt;/br&gt;Time</value>
+  </data>
+  <data name="WorkingTime2" xml:space="preserve">
+    <value>Working Time</value>
+  </data>
+  <data name="WorkpieceMaterialReport" xml:space="preserve">
+    <value>Raw Material Report</value>
+  </data>
+  <data name="And" xml:space="preserve">
+    <value>And</value>
+  </data>
+  <data name="Calculate" xml:space="preserve">
+    <value>Calculate</value>
+  </data>
+  <data name="ColumnName" xml:space="preserve">
+    <value>Column Name</value>
+  </data>
+  <data name="ColumnNumber" xml:space="preserve">
+    <value>Column Number</value>
+  </data>
+  <data name="Containing" xml:space="preserve">
+    <value>Containing</value>
+  </data>
+  <data name="Department" xml:space="preserve">
+    <value>Department</value>
+  </data>
+  <data name="Drawer" xml:space="preserve">
+    <value>Drawer</value>
+  </data>
+  <data name="Equitment" xml:space="preserve">
+    <value>Equitment</value>
+  </data>
+  <data name="ExcessEmbryoLength" xml:space="preserve">
+    <value>Excess Embryo Length</value>
+  </data>
+  <data name="ExcessEmbryoLength1" xml:space="preserve">
+    <value>Excess Embryo&lt;/br&gt;Length</value>
+  </data>
+  <data name="FixingTime" xml:space="preserve">
+    <value>Machine Fixing Time</value>
+  </data>
+  <data name="FixingTime1" xml:space="preserve">
+    <value>Machine&lt;/br&gt; Fixing Time</value>
+  </data>
+  <data name="FixingTime2" xml:space="preserve">
+    <value>Machine Fixing Time</value>
+  </data>
+  <data name="FixingTime3" xml:space="preserve">
+    <value>Machine&lt;/br&gt; Fixing Time</value>
+  </data>
+  <data name="FixingTimes" xml:space="preserve">
+    <value>Machine Fixing Times</value>
+  </data>
+  <data name="FixingTimes1" xml:space="preserve">
+    <value>Machine &lt;/br&gt;FixingTimes</value>
+  </data>
+  <data name="FunctionalConfiguration" xml:space="preserve">
+    <value>Functional Configuration</value>
+  </data>
+  <data name="Having" xml:space="preserve">
+    <value>Having</value>
+  </data>
+  <data name="ImportQuantity1" xml:space="preserve">
+    <value>Import &lt;/br&gt;Quantity</value>
+  </data>
+  <data name="ImportQuantity2" xml:space="preserve">
+    <value>Import Quantity</value>
+  </data>
+  <data name="ImportQuantity3" xml:space="preserve">
+    <value>Import &lt;/br&gt;Quantity</value>
+  </data>
+  <data name="InventoryShelfManagement" xml:space="preserve">
+    <value>Inventory Shelf Management</value>
+  </data>
+  <data name="Main" xml:space="preserve">
+    <value>Main</value>
+  </data>
+  <data name="MaterialLength" xml:space="preserve">
+    <value>Material Length</value>
+  </data>
+  <data name="MaterialLength1" xml:space="preserve">
+    <value>Material&lt;/br&gt;Length</value>
+  </data>
+  <data name="MaterialLength2" xml:space="preserve">
+    <value>Material Length</value>
+  </data>
+  <data name="MaterialLength3" xml:space="preserve">
+    <value>Material&lt;/br&gt;L</value>
+  </data>
+  <data name="MaterialType3" xml:space="preserve">
+    <value>Material&lt;/br&gt;Type</value>
+  </data>
+  <data name="Mil" xml:space="preserve">
+    <value>Mil</value>
+  </data>
+  <data name="Outsite" xml:space="preserve">
+    <value>Outsite</value>
+  </data>
+  <data name="Procedure" xml:space="preserve">
+    <value>Procedure</value>
+  </data>
+  <data name="ProcessConfiguration" xml:space="preserve">
+    <value>Process Configuration</value>
+  </data>
+  <data name="ProcessingPrice2" xml:space="preserve">
+    <value>Processing Price</value>
+  </data>
+  <data name="ProductionDate" xml:space="preserve">
+    <value>Prodution Date</value>
+  </data>
+  <data name="ProductionDate1" xml:space="preserve">
+    <value>Prodution&lt;/br&gt;Date</value>
+  </data>
+  <data name="ProductionDate3" xml:space="preserve">
+    <value>Prodution&lt;/br&gt;Date</value>
+  </data>
+  <data name="ProductionLockManagement" xml:space="preserve">
+    <value>Production Lock Management</value>
+  </data>
+  <data name="ProductionTestingDailyReport" xml:space="preserve">
+    <value>Production Testing Report</value>
+  </data>
+  <data name="PurchaseManagement" xml:space="preserve">
+    <value>Purchase Management</value>
+  </data>
+  <data name="PurchaseManagement1" xml:space="preserve">
+    <value>Purchase&lt;/br&gt; Management</value>
+  </data>
+  <data name="PurchaseManagement2" xml:space="preserve">
+    <value>Purchase Management</value>
+  </data>
+  <data name="Reprocess" xml:space="preserve">
+    <value>Reprocess</value>
+  </data>
+  <data name="RowName" xml:space="preserve">
+    <value>Row Name</value>
+  </data>
+  <data name="RowNumber" xml:space="preserve">
+    <value>Row Number</value>
+  </data>
+  <data name="ShelfName" xml:space="preserve">
+    <value>Shelf Name</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value>Mil</value>
+  </data>
+  <data name="TeamDValue" xml:space="preserve">
+    <value>TeamD Value</value>
+  </data>
+  <data name="TransactionCodeB1" xml:space="preserve">
+    <value>Transaction&lt;/br&gt;Code</value>
+  </data>
+  <data name="TransactionMaterialManagement" xml:space="preserve">
+    <value>Transaction Material Management</value>
+  </data>
+  <data name="TransactionProductManagement" xml:space="preserve">
+    <value>Product Transaction Management</value>
+  </data>
+  <data name="WarehouseManagement" xml:space="preserve">
+    <value>Warehouse Information Management</value>
+  </data>
+  <data name="Weighing1" xml:space="preserve">
+    <value>Weighing</value>
+  </data>
+  <data name="ApproveTransactionMaterial" xml:space="preserve">
+    <value>Approvement Transaction Material</value>
+  </data>
+  <data name="AssignMaterials" xml:space="preserve">
+    <value>Assign Materials</value>
+  </data>
+  <data name="CancelAll" xml:space="preserve">
+    <value>Cancel All</value>
+  </data>
+  <data name="Daily" xml:space="preserve">
+    <value>Daily</value>
+  </data>
+  <data name="Diagram" xml:space="preserve">
+    <value>Diagram</value>
+  </data>
+  <data name="EpxortImport" xml:space="preserve">
+    <value>Epxort Import</value>
+  </data>
+  <data name="ExportInternalTransactionMaterial" xml:space="preserve">
+    <value>Export Material (Internal)</value>
+  </data>
+  <data name="ExportMaterialInventory" xml:space="preserve">
+    <value>Cancel-Export Material</value>
+  </data>
+  <data name="ExportType" xml:space="preserve">
+    <value>Export Type</value>
+  </data>
+  <data name="Factory" xml:space="preserve">
+    <value>Factory</value>
+  </data>
+  <data name="ImportInternalTransactionMaterial" xml:space="preserve">
+    <value>Import Material</value>
+  </data>
+  <data name="ImportMaterialInventory" xml:space="preserve">
+    <value>Import Material Inventory</value>
+  </data>
+  <data name="ImportTransactionInformation" xml:space="preserve">
+    <value>Import Transaction Information</value>
+  </data>
+  <data name="ImportTransactionMaterial" xml:space="preserve">
+    <value>Import Transaction Material</value>
+  </data>
+  <data name="ImportType" xml:space="preserve">
+    <value>Import Type</value>
+  </data>
+  <data name="InternalImport2" xml:space="preserve">
+    <value>Internal Import</value>
+  </data>
+  <data name="InternalImport3" xml:space="preserve">
+    <value>Internal&lt;/br&gt;Import</value>
+  </data>
+  <data name="Limit" xml:space="preserve">
+    <value>Limit</value>
+  </data>
+  <data name="Limit1" xml:space="preserve">
+    <value>Limit</value>
+  </data>
+  <data name="Limit2" xml:space="preserve">
+    <value>Limit</value>
+  </data>
+  <data name="MachineInv" xml:space="preserve">
+    <value>Machine Inv</value>
+  </data>
+  <data name="Management" xml:space="preserve">
+    <value>Management</value>
+  </data>
+  <data name="ManagerConfirm1" xml:space="preserve">
+    <value>Manager&lt;/br&gt;Confirm</value>
+  </data>
+  <data name="MaterialInputOrderDetail" xml:space="preserve">
+    <value>Material Input-Order Detail</value>
+  </data>
+  <data name="MaterialInv" xml:space="preserve">
+    <value>Material Inv</value>
+  </data>
+  <data name="MaterialInvManagement" xml:space="preserve">
+    <value>Material Inv Management</value>
+  </data>
+  <data name="MaterialNeeded2" xml:space="preserve">
+    <value>Material Needed</value>
+  </data>
+  <data name="MaterialOnShelf" xml:space="preserve">
+    <value>Material On Shelf</value>
+  </data>
+  <data name="Method" xml:space="preserve">
+    <value>Method</value>
+  </data>
+  <data name="OnShelf" xml:space="preserve">
+    <value>On The Shelf</value>
+  </data>
+  <data name="ProductionCompleted" xml:space="preserve">
+    <value>Production Completed</value>
+  </data>
+  <data name="ProductionCompleted1" xml:space="preserve">
+    <value>Production&lt;/br&gt;Completed</value>
+  </data>
+  <data name="ProductionCompleted2" xml:space="preserve">
+    <value>Production Completed</value>
+  </data>
+  <data name="ProductUsingDate" xml:space="preserve">
+    <value>Product Using Date</value>
+  </data>
+  <data name="SaveAll" xml:space="preserve">
+    <value>Save All</value>
+  </data>
+  <data name="SelectMaterialIntoNet" xml:space="preserve">
+    <value>Select Material Into Net</value>
+  </data>
+  <data name="StartDate2" xml:space="preserve">
+    <value>Start Date</value>
+  </data>
+  <data name="Stockout" xml:space="preserve">
+    <value>Stockout</value>
+  </data>
+  <data name="ToolImportExportReport" xml:space="preserve">
+    <value>Tool (Import/Export) Report</value>
+  </data>
+  <data name="ToolYearlyReport" xml:space="preserve">
+    <value>Tool Annual Report</value>
+  </data>
+  <data name="TransactionInformation" xml:space="preserve">
+    <value>Transaction Information</value>
+  </data>
+  <data name="Used" xml:space="preserve">
+    <value>Used</value>
+  </data>
+  <data name="Used1" xml:space="preserve">
+    <value>Used</value>
+  </data>
+  <data name="Used2" xml:space="preserve">
+    <value>Used</value>
+  </data>
+  <data name="Using2" xml:space="preserve">
+    <value>Using</value>
+  </data>
+</root>

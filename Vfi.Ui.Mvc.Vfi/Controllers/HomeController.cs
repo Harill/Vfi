@@ -10,6 +10,7 @@ using Microsoft.Practices.Unity;
 using Vfi.Ui.Mvc.Vfi.Models;
 using Vfi.Ui.Mvc.Vfi.Utilities;
 using LogInUserModel = Vfi.Server.Core.DataModel.Models.System.LogInUserModel;
+using System.Threading;
 
 namespace Vfi.Ui.Mvc.Vfi.Controllers {
     public class HomeController : Controller {
@@ -27,12 +28,25 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers {
             }
             return ViewData;
         }
+
+        // 06/07/2026
+        [HttpPost]
+        public ActionResult SetLanguage(string lang) {
+            Session["CurrentCulture"] = lang;
+            return RedirectToAction("Index");
+        }
+
+        // 06/07/2026
         public ActionResult Index() {
             ViewData["Message"] = "Welcome to ASP.NET MVC!";
             ViewData = GetPageConfigData();
+            string culture = (string)Session["CurrentCulture"] ?? "vi-VN";
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(culture);
+            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
             //ViewData["BackgroundImage"] = Path.Combine(Server.MapPath("~/Content/Images"), "bg_body-2.jpg");
             return View();
         }
+
         [HttpPost]
         public ActionResult Index(LogInUserModel userModel, string startingDate, string returnUrl) {
             try {
@@ -61,6 +75,7 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers {
 
                         if (Request.IsAjaxRequest()) {
                             return Json(new LoginResultDto { Success = true, Message = "Successfully logged in" }, JsonRequestBehavior.DenyGet);
+
                         }
                         return Json(new LoginResultDto { Success = false, Message = "Error - Wrong Username or Password" });
                         //return View(userModel);

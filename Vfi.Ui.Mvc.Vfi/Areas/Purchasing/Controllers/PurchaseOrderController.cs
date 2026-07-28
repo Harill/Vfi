@@ -311,7 +311,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                         int lateDeliveryTimes = 0;
                         int deliveryLessThenOrder = 0;
                         int NGTimes = 0;
-                        int totalNGQuantity = 0;
+                        double totalNGQuantity = 0.0;
                         int totalRecied = 0;
 
                         switch (materialClassifiedId) {
@@ -480,7 +480,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                         };
 
                         // 4. So luong. NG
-                        double percentNG = (totalNGQuantity * 100) / totalRecied;
+                        double percentNG = Math.Round((totalNGQuantity * 100) / totalRecied,1);
                         if (totalNGQuantity == 0 || percentNG <= 2) {
                             entity.NGNumberPoint = 20;
                         }
@@ -598,12 +598,13 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                             int lateDeliveryTimes = 0;
                             int deliveryLessThenOrder = 0;
                             int NGTimes = 0;
-                            int totalNGQuantity = 0;
+                            double totalNGQuantity = 0.0;
                             int totalRecied = 0;
 
                             switch (materialClassified) {
                                 case 1:
                                     foreach (var poDetail in poDetailList) {
+                                        totalRecied += (int)poDetail.OrderQty;
                                         if (poDetail.ReceivedQty == 0) {
                                             lateDeliveryTimes++;
                                             deliveryLessThenOrder++;
@@ -640,14 +641,13 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                                 NGTimes++;
                                                 totalNGQuantity += (int)poDetail.OrderQty;
                                             }
-                                            //totalRecied += (int)poDetail.ReceivedQty;
-                                            totalRecied += (int)poDetail.OrderQty;
                                         }
                                     }
                                     break;
 
                                 case 2:
                                     foreach (var poDetail in poDetailList) {
+                                        totalRecied += (int)poDetail.OrderQty;
                                         if (poDetail.ReceivedQty == 0) {
                                             lateDeliveryTimes++;
                                             deliveryLessThenOrder++;
@@ -677,8 +677,6 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                                 NGTimes++;
                                                 totalNGQuantity += (int)poDetail.OrderQty;
                                             }
-                                            //totalRecied += (int)poDetail.ReceivedQty;
-                                            totalRecied += (int)poDetail.OrderQty;
                                         }
                                     }
                                     break;
@@ -686,6 +684,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
 
                                 case 3:
                                     foreach (var poDetail in poDetailList) {
+                                        totalRecied += (int)poDetail.OrderQty;
                                         if (poDetail.ReceivedQty == 0) {
                                             lateDeliveryTimes++;
                                             deliveryLessThenOrder++;
@@ -715,8 +714,6 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                                 NGTimes++;
                                                 totalNGQuantity += (int)poDetail.OrderQty;
                                             }
-                                            //totalRecied += (int)poDetail.ReceivedQty;
-                                            totalRecied += (int)poDetail.OrderQty;
                                         }
                                     }
                                     break;
@@ -770,7 +767,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                             };
 
                             // 4. So luong. NG
-                            double percentNG = (totalNGQuantity * 100 )/ totalRecied;
+                            double percentNG = Math.Round((totalNGQuantity * 100 )/ totalRecied,2);
                             if (totalNGQuantity == 0 || percentNG <= 2) {
                                 entity.NGNumberPoint = 20;
                             }
@@ -813,7 +810,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                 entity.Grade = "D";
                             }
                             else {
-                                if (entity.ZeroPointCount == 1) {
+                                if (entity.ZeroPointCount == 1|| entity.TotalPoint >= 70 && entity.TotalPoint < 80) {
                                     entity.Grade = "C";
                                 }
                                 else if (entity.ZeroPointCount == 0) {
@@ -1834,7 +1831,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
         // NG Quanitty
         [GridAction]
         public ActionResult SelectNGQuantity(int? vendorId, string fromDate, string toDate, int? materialClassifiedId) {
-            var model = new List<LogisticsModel>();
+            var model = new List<NGQuantityModel>();
             try {
                 model = GetNGQuantity(vendorId, fromDate, toDate, materialClassifiedId);
             }
@@ -1845,15 +1842,15 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
         }
 
 
-        List<LogisticsModel> GetNGQuantity(int? vendorId, string fromDate, string toDate, int? materialClassifiedId) {
-            var model = new List<LogisticsModel>();
+        List<NGQuantityModel> GetNGQuantity(int? vendorId, string fromDate, string toDate, int? materialClassifiedId) {
+            var model = new List<NGQuantityModel>();
             //var ManagementApproved = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name, MyUtilities.UserRole.ManagementApprovedPurchase);
             using (var vfi = new tammaContext()) {
                 try {
                     var fDate = MyUtilities.Function.ParseDate(fromDate);
                     var tDate = MyUtilities.Function.ParseDate(toDate);
 
-                    var entity = new LogisticsModel {
+                    var entity = new NGQuantityModel {
                     };
                     var poDetaiList = vfi.PurchaseOrderDetails.Where(t => t.PurchaseOrder.ShipDate >= fDate
                                                                      && t.PurchaseOrder.ShipDate <= tDate
@@ -1867,7 +1864,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                                                      }).ToList();
                     //var countNG = 0;
                     int totalOderquantity = 0;
-                    var NGQuantity = 0;
+                    double NGQuantity = 0.0;
 
                     switch (materialClassifiedId) {
                         case 1: {
@@ -1929,7 +1926,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                 break;
                             }
                     }
-                    double percent = (NGQuantity * 100 / totalOderquantity);
+                    double percent = Math.Round((NGQuantity * 100 / totalOderquantity),2);
                     if (percent < 2) {
                         entity.PlaceA = true;
                     }
@@ -1942,7 +1939,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                     else if (percent > 4) {
                         entity.PlaceD = true;
                     }
-                    entity.Count = (int)percent;
+                    entity.Count = percent;
 
                     model.Add(entity);
                 }
@@ -2014,7 +2011,8 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                             entity.PercentNGQuantity = 0;
                         }
                         else if (entity.NGQuantity != 0) {
-                            entity.PercentNGQuantity = (entity.NGQuantity * 100) / (double)entity.OrderQuantity;
+                            var percentNGQuantity = (double)((entity.NGQuantity * 100) / (double)entity.OrderQuantity);
+                            entity.PercentNGQuantity = Math.Round(percentNGQuantity, 1);
                         }
                         entity.VendorName = vfi.Vendors.Where(t => t.VendorId == entity.VendorId).Select(t => t.CompanyName).FirstOrDefault();
                         var detailList = vfi.PurchaseOrderDetails.Where(t => t.PurchaseOrder.ShipDate >= entity.FromDate
@@ -2160,73 +2158,73 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                         entity.NextYear = entity.ToDate.Year + 1;
 
 
-                        // Commitment
-                        var commitmentPerformance = vfi.VendorObjectives.Where(t => t.VendorId == entity.VendorId
-                                                                               && t.Year == entity.Year
-                                                                               ).Select(t => new {
-                                                                                   t.PricePoint,
-                                                                                   t.TechSpPoint,
+                        //// Commitment
+                        //var commitmentPerformance = vfi.VendorObjectives.Where(t => t.VendorId == entity.VendorId
+                        //                                                       && t.Year == entity.Year
+                        //                                                       ).Select(t => new {
+                        //                                                           t.PricePoint,
+                        //                                                           t.TechSpPoint,
 
-                                                                                   t.LateTimes,
-                                                                                   t.LessTimes,
-                                                                                   t.NGTimes,
-                                                                                   t.PercentNGNumber,
-                                                                                   t.TotalPoint,
-                                                                               }).FirstOrDefault();
-                        if (commitmentPerformance == null) {
-                            entity.CommitmentPricePoint = 0;
-                            entity.CommitmentTechSpPoint = 0;
+                        //                                                           t.LateTimes,
+                        //                                                           t.LessTimes,
+                        //                                                           t.NGTimes,
+                        //                                                           t.PercentNGNumber,
+                        //                                                           t.TotalPoint,
+                        //                                                       }).FirstOrDefault();
+                        //if (commitmentPerformance == null) {
+                        //    entity.CommitmentPricePoint = 0;
+                        //    entity.CommitmentTechSpPoint = 0;
 
-                            entity.CommitmentLateTimes = 0;
-                            entity.CommitmentLessTimes = 0;
-                            entity.CommitmentNGTimes = 0;
-                            entity.CommitmentPercentNGQuanity = 0;
-                            entity.CommitmentTotalPoint = 0;
-                        }
-                        else if (commitmentPerformance != null) {
-                            entity.CommitmentPricePoint = commitmentPerformance.PricePoint;
-                            entity.CommitmentTechSpPoint = commitmentPerformance.TechSpPoint;
+                        //    entity.CommitmentLateTimes = 0;
+                        //    entity.CommitmentLessTimes = 0;
+                        //    entity.CommitmentNGTimes = 0;
+                        //    entity.CommitmentPercentNGQuanity = 0;
+                        //    entity.CommitmentTotalPoint = 0;
+                        //}
+                        //else if (commitmentPerformance != null) {
+                        //    entity.CommitmentPricePoint = commitmentPerformance.PricePoint;
+                        //    entity.CommitmentTechSpPoint = commitmentPerformance.TechSpPoint;
 
-                            entity.CommitmentLateTimes = commitmentPerformance.LateTimes;
-                            entity.CommitmentLessTimes = commitmentPerformance.LessTimes;
-                            entity.CommitmentNGTimes = commitmentPerformance.NGTimes;
-                            entity.CommitmentPercentNGQuanity = commitmentPerformance.PercentNGNumber;
-                            entity.CommitmentTotalPoint = commitmentPerformance.TotalPoint;
-                        }
+                        //    entity.CommitmentLateTimes = commitmentPerformance.LateTimes;
+                        //    entity.CommitmentLessTimes = commitmentPerformance.LessTimes;
+                        //    entity.CommitmentNGTimes = commitmentPerformance.NGTimes;
+                        //    entity.CommitmentPercentNGQuanity = commitmentPerformance.PercentNGNumber;
+                        //    entity.CommitmentTotalPoint = commitmentPerformance.TotalPoint;
+                        //}
 
-                        // Objective
-                        var objectivePerformance = vfi.VendorObjectives.Where(t => t.VendorId == entity.VendorId
-                                                       && t.Year == entity.NextYear
-                                                       ).Select(t => new {
-                                                           t.PricePoint,
-                                                           t.TechSpPoint,
+                        //// Objective
+                        //var objectivePerformance = vfi.VendorObjectives.Where(t => t.VendorId == entity.VendorId
+                        //                               && t.Year == entity.NextYear
+                        //                               ).Select(t => new {
+                        //                                   t.PricePoint,
+                        //                                   t.TechSpPoint,
 
-                                                           t.LateTimes,
-                                                           t.LessTimes,
-                                                           t.NGTimes,
-                                                           t.PercentNGNumber,
-                                                           t.TotalPoint,
-                                                       }).FirstOrDefault();
-                        if (objectivePerformance == null) {
-                            entity.ObjectivePricePoint = 0;
-                            entity.ObjectiveTechSpPoint = 0;
+                        //                                   t.LateTimes,
+                        //                                   t.LessTimes,
+                        //                                   t.NGTimes,
+                        //                                   t.PercentNGNumber,
+                        //                                   t.TotalPoint,
+                        //                               }).FirstOrDefault();
+                        //if (objectivePerformance == null) {
+                        //    entity.ObjectivePricePoint = 0;
+                        //    entity.ObjectiveTechSpPoint = 0;
 
-                            entity.ObjectiveLateTimes = 0;
-                            entity.ObjectiveLessTimes = 0;
-                            entity.ObjectiveNGTimes = 0;
-                            entity.ObjectivePercentNGQuanity = 0;
-                            entity.ObjectiveTotalPoint = 0;
-                        }
-                        else if (objectivePerformance != null) {
-                            entity.ObjectivePricePoint = objectivePerformance.PricePoint;
-                            entity.ObjectiveTechSpPoint = objectivePerformance.TechSpPoint;
+                        //    entity.ObjectiveLateTimes = 0;
+                        //    entity.ObjectiveLessTimes = 0;
+                        //    entity.ObjectiveNGTimes = 0;
+                        //    entity.ObjectivePercentNGQuanity = 0;
+                        //    entity.ObjectiveTotalPoint = 0;
+                        //}
+                        //else if (objectivePerformance != null) {
+                        //    entity.ObjectivePricePoint = objectivePerformance.PricePoint;
+                        //    entity.ObjectiveTechSpPoint = objectivePerformance.TechSpPoint;
 
-                            entity.ObjectiveLateTimes = objectivePerformance.LateTimes;
-                            entity.ObjectiveLessTimes = objectivePerformance.LessTimes;
-                            entity.ObjectiveNGTimes = objectivePerformance.NGTimes;
-                            entity.ObjectivePercentNGQuanity = objectivePerformance.PercentNGNumber;
-                            entity.ObjectiveTotalPoint = objectivePerformance.TotalPoint;
-                        }
+                        //    entity.ObjectiveLateTimes = objectivePerformance.LateTimes;
+                        //    entity.ObjectiveLessTimes = objectivePerformance.LessTimes;
+                        //    entity.ObjectiveNGTimes = objectivePerformance.NGTimes;
+                        //    entity.ObjectivePercentNGQuanity = objectivePerformance.PercentNGNumber;
+                        //    entity.ObjectiveTotalPoint = objectivePerformance.TotalPoint;
+                        //}
 
                         model.Add(entity);
                     }
@@ -2508,9 +2506,6 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                     entity.BillToAddress = billToList.Address;
                     entity.ReceiptBill = billToList.Recipient;
                     entity.ReceiptBillPhoneNumber = billToList.Telephone;
-                    
-                    
-
 
                     if (!string.IsNullOrWhiteSpace(po.EmployeeName)) {
                         entity.EmployeeName = po.EmployeeName.ToUpper();
@@ -2571,6 +2566,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                 RejectedQty = poDetail.RejectedQty,
                                 DueDate = poDetail.DueDate,
                                 Unit = poDetail.Unit,
+                                Status = purchaseOrder.Status,
                                 VendorCode = purchaseOrder.Vendor.VendorCode,
                                 VendorName = purchaseOrder.Vendor.ShortName,
                                 CurrencyCode = purchaseOrder.CurrencyCode.Trim(),
@@ -2822,6 +2818,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                     var poDetail =
                         vfi.PurchaseOrderDetails.FirstOrDefault(
                             pod => pod.PurchaseOrderDetailId == update.PurchaseOrderDetailId);
+                    var checkUser = HttpContext.User.Identity.Name;
                     if (poDetail == null)
                         throw new AggregateException("Lỗi! Không tìm thấy chi tiết cần sửa");
                     update.PurchaseOrderId = poDetail.PurchaseOrderId;
@@ -2891,13 +2888,23 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                     }
 
                     if (poDetail.Standard != update.Standard && update.Standard != null) {
-                        poDetail.Standard = update.Standard;
+                        if (checkUser == "admin") {
+                            poDetail.Standard = update.Standard;
+                        }
+                        else {
+                            throw new AggregateException("Account của bạn không có quyền chỉnh sửa 'Tiêu chuẩn'");
+                        }
                     }
                     //if (update.Note != poDetail.Note && update.Note != null) {
                     //    poDetail.Note = update.Note;
                     //}
                     if (update.OrderQty != poDetail.OrderQty && update.OrderQty != 0) {
-                        poDetail.OrderQty = update.OrderQty;
+                        if (checkUser == "admin") {
+                            poDetail.OrderQty = update.OrderQty;
+                        }
+                        else {
+                            throw new AggregateException("Account của bạn không có quyền chỉnh sửa 'SL đặt'");
+                        }
                     }
 
                     if (update.ManagerNote != poDetail.ManagerNote && update.ManagerNote != null) {
@@ -2917,7 +2924,10 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
 
         [HttpPost]
         [GridAction]
-        public ActionResult UpdateApprovePurchaseOrder(int purchaseOrderId, string shipDate, string addressName,string billTo, string contractNumber, int? paymentMethodId, int? shipMethodId, int? deliveryMethodId, string note, string employeeName) {
+        public ActionResult UpdateApprovePurchaseOrder(int purchaseOrderId, string shipDate, string addressName,string billTo, 
+            string contractNumber, int? paymentMethodId, int? shipMethodId, int? deliveryMethodId,
+            string note, string employeeName, PurchaseOrderModel update) {
+
             if (!Request.IsAuthenticated) {
                 ModelState.AddModelError("UpdateApprovePurchaseOrder",
                                          "Bạn đã bị mất quyền đăng nhập. " +
@@ -2945,6 +2955,18 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
 
                         if (!string.IsNullOrWhiteSpace(note)){
                             po.Note = note;
+                        }
+
+                        string newCodeName = update.VendorCodeName.Split(new[] { "--" }, StringSplitOptions.None)[0];
+                        int vendorId;
+                        if (int.TryParse(newCodeName.Trim(), out vendorId)) {
+                            po.VendorId = vendorId;
+                        }
+
+
+                        
+                        if (po.CurrencyCode != update.CurrencyCode) {
+                            po.CurrencyCode = update.CurrencyCode;
                         }
 
                         if (!string.IsNullOrWhiteSpace(employeeName)){
@@ -3051,6 +3073,14 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                             Tolerance = purchaseOrder.Tolerance,
                             Note = purchaseOrder.Note,
                             CurrencyCode = purchaseOrder.CurrencyCode,
+                            MaterialClassifiedId = purchaseOrder.MaterialClassifiedId,
+
+                            AddressId = purchaseOrder.AddressId,
+                            BillToId = purchaseOrder.BillToId,
+                            PaymentId = purchaseOrder.PaymentId,
+                            ConditionDeliveryId = purchaseOrder.ConditionDeliveryId,
+                            DeliveryById = purchaseOrder.DeliveryById,
+
                         };
                         vfi.PurchaseOrders.Add(newPO);
                         vfi.SaveChanges();
@@ -3062,8 +3092,8 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                     return Json(1);
                 }
             }
-            catch (Exception) {
-                return Json(0);
+            catch (Exception ex) {
+                return Json(new { result = 0, error = ex.Message });
             }
         }
 
@@ -4256,6 +4286,9 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                                      TaxInvoiceDate = x.PoReferenceDetailId != null
                                                                      ? x.PoTaxInvoiceReferenceDetail.PoTaxInvoiceReference.PoTaxInvoice.PoDate
                                                                      : DateTime.Today,
+                                                     InquiryNumber = vfi.InquiryPoes.Where(t => t.PoDetailId == x.PoDetailId)
+                                                                                    .Select(t => t.InquiryNumber)
+                                                                                    .FirstOrDefault(),
                                                  }).ToList();
 
                             var poIds = importDetails.Select(x => x.PoId).Distinct().ToList();
@@ -4267,10 +4300,12 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                 //if (detail.FptId == null) {
                                 //    continue;
                                 //}
+
                                 var purchaseDetail = purchaseDetails.FirstOrDefault(
                                         pod => pod.PurchaseOrderId == detail.PoId
                                                && pod.ReferenceId == detail.FptId);
                                 detail.FptDesignNo = detail.FptCode.Replace(detail.FptName, "");
+
 
                                 if (purchaseDetail != null) {
                                     detail.DeliveryDate = purchaseDetail.ShipDate;
@@ -4328,6 +4363,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                                  TaxInvoiceDate = x.PoReferenceDetailId != null
                                                                  ? x.PoTaxInvoiceReferenceDetail.PoTaxInvoiceReference.PoTaxInvoice.PoDate
                                                                  : DateTime.Today,
+                                                 InquiryNumber = vfi.InquiryPoes.Where(t => t.PoDetailId == x.PoDetailId).Select(t => t.InquiryNumber).FirstOrDefault(),
                                              }).ToList();
 
                         var poIds = importDetails.Select(x => x.PoId).Distinct().ToList();
@@ -4418,6 +4454,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                                  TaxInvoiceDate = x.PoReferenceDetailId != null
                                                                  ? x.PoTaxInvoiceReferenceDetail.PoTaxInvoiceReference.PoTaxInvoice.PoDate
                                                                  : DateTime.Today,
+                                                 InquiryNumber = vfi.InquiryPoes.Where(t => t.PoDetailId == x.PoDetailId).Select(t => t.InquiryNumber).FirstOrDefault(),
 
                                              }).ToList();
 
@@ -4454,6 +4491,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                 detail.PoCode = purchaseDetail.RevisionNumber;
                                 detail.VendorDeliveryOnDate = purchaseDetail.ShipDate.HasValue && detail.TransactionDate > purchaseDetail.ShipDate.Value;
                                 detail.OrderQuantity = purchaseDetail.OrderQty;
+                               
                             }
                             detail.Price = detail.Quantity * detail.UnitPrice * detail.ExchangeRate;
                             var item = items.FirstOrDefault(m => m.Id == detail.FptId);
@@ -7164,7 +7202,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
             var fDate = MyUtilities.Function.ParseDate(fromDate);
             var tDate = MyUtilities.Function.ParseDate(toDate);
 
-            var ManagementApproved = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name, MyUtilities.UserRole.ManagementApprovedPurchase);
+            var ManagementApproved = MyUtilities.UserRole.CheckRole2(HttpContext.User.Identity.Name, MyUtilities.UserRole.ManagementApprovedPurchase2);
             using (var vfi = new tammaContext()) {
                 var todayMonth = DateTime.Now.Month;
                 var threeMonthBefor = DateTime.Now.AddMonths(-3).Month;
@@ -7212,12 +7250,51 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                         PurchasingSignatureType = 1,
                         Total3MonthsUsed = 0,
                         Standard = ip.Standard,
-                        ManagerConfirm = ip.ManagerConfirm,
                         DateConfirm = ip.DateConfirm,
-                        ApprovedPo = ip.ApprovedPo,
                         DateApproved = ip.DateApproved,
 
                     };
+                    // nguoi xac nhan
+                    if (ip.ManagerConfirm != null) {
+                        var checkManagerConfirm = vfi.Employees.Where(t => t.User.Username == ip.ManagerConfirm).Select(t => t.EmployeeName).FirstOrDefault();
+                        if (checkManagerConfirm == null) {
+                            entity.ManagerConfirm = "Tài khoản: '" + ip.ManagerConfirm + "' chưa được liên kết trong 'quản lý nhân viên'";
+                        }
+                        else if (checkManagerConfirm != null) {
+                            entity.ManagerConfirm = checkManagerConfirm;
+                        }
+                    }
+                    else if(ip.ManagerConfirm == null) {
+                        entity.ManagerConfirm = "";
+                    }
+
+                    // nguoi duyet
+                    if (ip.ApprovedPo != null) {
+                        var checkApprovedPerson = vfi.Employees.Where(t => t.User.Username == ip.ApprovedPo).Select(t => t.EmployeeName).FirstOrDefault();
+                        if (checkApprovedPerson == null) {
+                            entity.ApprovedPo = "Tài khoản: '" + ip.ApprovedPo + "' chưa được liên kết trong 'quản lý nhân viên'";
+                        }
+                        else if (checkApprovedPerson != null) {
+                            entity.ApprovedPo = checkApprovedPerson;
+                        }
+                    }
+                    else if (ip.ApprovedPo == null) {
+                        entity.ApprovedPo = "";
+                    }
+
+
+                    // Modified user
+                    //entity.CreaterName = "";
+                    var checkModifiedUser = vfi.Employees.Where(t => t.User.Username == ip.ModifiedUser).Select(t => t.EmployeeName).FirstOrDefault();
+                    if (checkModifiedUser == null) {
+                        entity.CreaterName = "Tài khoản: '" + ip.ModifiedUser + "' chưa được liên kết trong 'quản lý nhân viên'";
+                    }
+                    else if (checkModifiedUser != null) {
+                        entity.CreaterName = checkModifiedUser;
+                    }
+
+
+
                     if (ip.VendorId != null) {
                         entity.VendorId = ip.VendorId.Value;
                         entity.VendorCode = ip.Vendor.VendorName;
@@ -7512,13 +7589,19 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
         public ActionResult CancelInquiryPo(InquiryPoModel update, int classified, int type, int vendorId) {
             try {
                 using (var vfi = new tammaContext()) {
+                    var checkRole = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name, MyUtilities.UserRole.PurchasingManagement);
                     var inquiry = vfi.InquiryPoes.FirstOrDefault(ip => ip.InquiryId == update.InquiryId);
                     if (inquiry == null)
                         throw new AggregateException("Không tìm thấy yêu cầu");
-                    inquiry.Status = (byte)MyUtilities.PurchaseOrder.InquiryEnum.Cancel;
-                    inquiry.DateApproved = DateTime.Now;
-                    inquiry.ApprovedPo = HttpContext.User.Identity.Name;
-                    vfi.SaveChanges();
+                    if (checkRole) {
+                        inquiry.Status = (byte)MyUtilities.PurchaseOrder.InquiryEnum.Cancel;
+                        inquiry.DateApproved = DateTime.Now;
+                        inquiry.ApprovedPo = HttpContext.User.Identity.Name;
+                        vfi.SaveChanges();
+                    }
+                    else if(!checkRole){
+                        throw new AggregateException("Account hiện tại không có quyền xóa 'Phiếu yêu cầu'.");
+                    }
                 }
             }
             catch (Exception ex) {
@@ -7571,8 +7654,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                     var inquiryId = checkedRecords.FirstOrDefault();
 
                     var import = vfi.InquiryPoes.FirstOrDefault(t => t.InquiryId == inquiryId);
-                    var approvedPo = HttpContext.User.Identity.Name;
-                    import.ApprovedPo = vfi.Users.Where(t => t.Username == approvedPo).Select(t => t.FullName).FirstOrDefault();
+                    import.ApprovedPo = HttpContext.User.Identity.Name;
                     import.DateApproved = DateTime.Now;
                     
 
@@ -7699,6 +7781,25 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                             entity.VendorId = ip.VendorId.Value;
                             entity.VendorCode = ip.Vendor.VendorName;
                         }
+
+                        var createrName = vfi.Employees.Where(t => t.User.Username == entity.ModifiedUser).Select(t => t.EmployeeName).FirstOrDefault();
+                        if (createrName != null) {
+                            entity.CreaterName = createrName;
+                        }
+                        else if (createrName == null) {
+                            entity.CreaterName = "Account: '" + entity.ModifiedUser + "' chưa được liên kết";
+                        }
+                        if (ip.ManagerConfirm != null) {
+                            var confirmName = vfi.Employees.Where(t => t.User.Username == ip.ManagerConfirm).Select(t => t.EmployeeName).FirstOrDefault();
+                            if (confirmName != null) {
+                                entity.ConfirmName = confirmName;
+                            }
+                            else if (confirmName == null) {
+                                entity.ConfirmName = "Account: '" + ip.ManagerConfirm + "' chưa được liên kết";
+                            }
+                        }
+
+
 
                         switch (entity.ClassifiedId) {
                             case 1:

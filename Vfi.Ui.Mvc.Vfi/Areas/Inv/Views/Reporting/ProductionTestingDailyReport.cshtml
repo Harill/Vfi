@@ -105,7 +105,10 @@
 
 }
 
-<div class="title">Đo kiểm sản xuất</div>
+<div class="title">
+    @*Đo kiểm sản xuất*@
+    @HttpContext.GetGlobalResourceObject("Resource", "ProductionTestingDailyReport")
+</div>
 <div class="clear"></div>
 <br />
 
@@ -113,10 +116,14 @@
     <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px;">
 
         <fieldset>
-            <legend>Tiêu chí trích lọc</legend>
+            <legend>
+                @*Tiêu chí trích lọc*@
+                @HttpContext.GetGlobalResourceObject("Resource", "Filter")
+            </legend>
             
             <div class="grid_1">
-                Ca
+                @*Ca*@
+                @HttpContext.GetGlobalResourceObject("Resource", "Shift")
             </div>
             <div class="grid_1">
                 @{
@@ -138,7 +145,8 @@
             </div>
             
             <div class="grid_2">
-                Sản phẩm
+                @*Sản phẩm*@
+                @HttpContext.GetGlobalResourceObject("Resource", "Product")
             </div>
             <div class="grid_4">
                  @{
@@ -148,12 +156,13 @@
                         .HtmlAttributes(new {style = "width: 100%"})
                         .DropDownHtmlAttributes(new {style = "width: 275px"})
                         .AutoFill(true)
-                        .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                        .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                         .Render();
                 }
             </div>
             <div class="grid_1">
-                Máy
+                @*Máy*@
+                @HttpContext.GetGlobalResourceObject("Resource", "Machine")
             </div>
             <div class="grid_3">
                 @{
@@ -162,21 +171,26 @@
                         .DataBinding(binding => binding.Ajax().Select("SelectComboBoxMachine", "Machine", new { area = "Factory" }))
                         .HtmlAttributes(new { style = "width: 100%" })
                         .AutoFill(true)
-                        .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                        .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                         .Render();
                 }
             </div>
             <div class="grid_3 prefix_1">
                 <button id="btnRefesh" class="t-button" onclick=" return RefreshGrid2('grid'); ">
                     <span class='t-icon t-insert'></span>
-                    Làm mới
+                    @*Làm mới*@
+                    @HttpContext.GetGlobalResourceObject("Resource", "Refresh")
                     <span class="loadButton"></span>
                 </button>
             </div>
             <div class="grid_4">
                 <button id="btnReport" class="t-button" onclick=" return printMachineProductionOnTest(); ">
                     <span class='t-icon t-insert'></span>
-                    In đo kiểm<br /> (máy và sản phẩm)
+                    In đo kiểm
+                    @*@HttpContext.GetGlobalResourceObject("Resource", "")*@
+                    <br /> 
+                    @*(máy và sản phẩm)*@
+                   (@HttpContext.GetGlobalResourceObject("Resource", "Machine") @HttpContext.GetGlobalResourceObject("Resource", "And") @HttpContext.GetGlobalResourceObject("Resource", "Product"))
 		            <span class="loadButton"></span>
                 </button>
             </div>
@@ -200,59 +214,85 @@
                                                                  })
                 )
                 .Columns(columns => {
-                    columns.Bound(f => f.ProductId).Width(40)
-                           .ClientTemplate("<#= ++index #>")
-                           .HeaderTemplate("<strong>STT</strong>");
-                    columns.Bound(f => f.DisplayName).Width(120).Title("Máy - Sản phẩm")
-                           .HtmlAttributes(new { style = "text-align: center;" })
-                           .Aggregate(agg => agg.Count())
-                           .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>")
-                           .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>")
-                           .FooterHtmlAttributes(new { style = "text-align: center;" });
-                    columns.Bound(f => f.TestCode).Width(40).Title("Mục")
-                           .HtmlAttributes(new { style = "text-align: center;" });
-                    columns.Bound(f => f.TestName).Width(100).Title("Quy cách")
-                           .HtmlAttributes(new { style = "text-align: center;" });
-                    columns.Bound(f => f.MachineTypeName).Width(100).Title("Thiết bị")
-                           .HtmlAttributes(new { style = "text-align: center;" });
-                    columns.Bound(f => f.FromWarehouseName).Width(100).Title("Bộ phận")
-                           .HtmlAttributes(new { style = "text-align: center;" });
+                    columns.Bound(f => f.ProductId).Width(40) 
+                        .ClientTemplate("<#= ++index #>")
+                        //.HeaderTemplate("<strong>STT</strong>")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Index").ToString());
+                
+                    columns.Bound(f => f.DisplayName).Width(120)
+                        //.Title("Máy - Sản phẩm")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Product").ToString())
+                        .HtmlAttributes(new { style = "text-align: center;" })
+                        .Aggregate(agg => agg.Count())
+                        .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>")
+                        .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>")
+                        .FooterHtmlAttributes(new { style = "text-align: center;" });
+                
+                    columns.Bound(f => f.TestCode).Width(40)
+                        .Title("Mục")
+                        //.Title(@HttpContext.GetGlobalResourceObject("Resource", "").ToString())
+                        .HtmlAttributes(new { style = "text-align: center;" });
+                    
+                    columns.Bound(f => f.TestName).Width(100)
+                        //.Title("Quy cách")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Specifications").ToString())
+                        .HtmlAttributes(new { style = "text-align: center;" });
+                    
+                    columns.Bound(f => f.MachineTypeName).Width(100)
+                        //.Title("Thiết bị")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Equitment").ToString())
+                        .HtmlAttributes(new { style = "text-align: center;" });
+                    
+                    columns.Bound(f => f.FromWarehouseName).Width(100)
+                        //.Title("Bộ phận")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Department").ToString())
+                        .HtmlAttributes(new { style = "text-align: center;" });
 
                     // so lieu
-
                     columns.Bound(f => f.Details[0].Number).Width(55)
                            .HeaderTemplate("<span id='Col1'>0</span>")
                            .HtmlAttributes(new { style = "text-align: right;" });
+                    
                     columns.Bound(f => f.Details[1].Number).Width(55)
                            .HeaderTemplate("<span id='Col2'>0</span>")
                            .HtmlAttributes(new { style = "text-align: right;" });
+                    
                     columns.Bound(f => f.Details[2].Number).Width(55)
                            .HeaderTemplate("<span id='Col3'>0</span>")
                            .HtmlAttributes(new { style = "text-align: right;" });
+                    
                     columns.Bound(f => f.Details[3].Number).Width(55)
                            .HeaderTemplate("<span id='Col4'>0</span>")
                            .HtmlAttributes(new { style = "text-align: right;" });
+                    
                     columns.Bound(f => f.Details[4].Number).Width(55)
                            .HeaderTemplate("<span id='Col5'>0</span>")
                            .HtmlAttributes(new { style = "text-align: right;" });
+                    
                     columns.Bound(f => f.Details[5].Number).Width(55)
                            .HeaderTemplate("<span id='Col6'>0</span>")
                            .HtmlAttributes(new { style = "text-align: right;" });
+                    
                     columns.Bound(f => f.Details[6].Number).Width(55)
                            .HeaderTemplate("<span id='Col7'>0</span>")
                            .HtmlAttributes(new { style = "text-align: right;" });
+                    
                     columns.Bound(f => f.Details[7].Number).Width(55)
                            .HeaderTemplate("<span id='Col8'>0</span>")
                            .HtmlAttributes(new { style = "text-align: right;" });
+                    
                     columns.Bound(f => f.Details[8].Number).Width(55)
-                           .HeaderTemplate("<span id='Col9'>0</span>")
+                        .HeaderTemplate("<span id='Col9'>0</span>")
                            .HtmlAttributes(new { style = "text-align: right;" });
+                    
                     columns.Bound(f => f.Details[9].Number).Width(55)
                            .HeaderTemplate("<span id='Col10'>0</span>")
                            .HtmlAttributes(new { style = "text-align: right;" });
+                    
                     columns.Bound(f => f.Details[10].Number).Width(55)
                            .HeaderTemplate("<span id='Col11'>0</span>")
                            .HtmlAttributes(new { style = "text-align: right;" });
+                    
                     columns.Bound(f => f.Details[11].Number).Width(55)
                            .HeaderTemplate("<span id='Col12'>0</span>")
                            .HtmlAttributes(new { style = "text-align: right;" });
@@ -273,14 +313,30 @@
                                     toDateTimeStr = "<#= ToDateTimeStr #>"
                                 }))
                         .Columns(columns => {
-                            columns.Bound(f => f.TestDate).Width(100).Title("Thời gian")
+                            columns.Bound(f => f.TestDate).Width(100)
+                                //.Title("Thời gian")
+                                .Title(@HttpContext.GetGlobalResourceObject("Resource", "Time").ToString())
                                 .Format("{0:HH:mm}");
-                            columns.Bound(f => f.TestEmployeeName).Width(150).Title("Nhân viên");
-                            columns.Bound(f => f.TestNumber).Width(100).Title("Số đo");
-                            columns.Bound(f => f.MachineName).Width(100).Title("Máy đo");
+                    
+                            columns.Bound(f => f.TestEmployeeName).Width(150)
+                                //.Title("Nhân viên")
+                                .Title(@HttpContext.GetGlobalResourceObject("Resource", "Employee").ToString());
                             
-                            columns.Bound(f => f.ModifiedUser).Width(100).Title("Người làm");
-                            columns.Bound(f => f.ModifiedDate).Width(150).Title("Ngày làm")
+                            columns.Bound(f => f.TestNumber).Width(100)
+                                //.Title("Số đo")
+                                .Title(@HttpContext.GetGlobalResourceObject("Resource", "Measurement").ToString());
+                            
+                            //columns.Bound(f => f.MachineName).Width(100)
+                            //    //.Title("Máy đo")
+                            //    .Title(@HttpContext.GetGlobalResourceObject("Resource", "").ToString());
+                            
+                            columns.Bound(f => f.ModifiedUser).Width(100)
+                                //.Title("Người làm")
+                                .Title(@HttpContext.GetGlobalResourceObject("Resource", "ModifiedUser").ToString());
+                            
+                            columns.Bound(f => f.ModifiedDate).Width(150)
+                                //.Title("Ngày làm")
+                                .Title(@HttpContext.GetGlobalResourceObject("Resource", "ModifiedDate").ToString())
                                 .Format("{0:dd/MM/yyyy HH:mm}");
                         })
                         .ClientEvents(events => events.OnError("grid_OnError"))

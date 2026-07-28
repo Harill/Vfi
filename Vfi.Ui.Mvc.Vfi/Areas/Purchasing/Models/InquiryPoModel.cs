@@ -101,5 +101,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
         public string ApprovedPo { get; set; }
         public DateTime? DateApproved { get; set; }
 
+        public string CreaterName { get; set; }
+        public string ConfirmName { get; set; }
     }
 }

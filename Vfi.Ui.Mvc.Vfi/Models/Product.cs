@@ -137,6 +137,8 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public Nullable<int> ProcessClassifiedId { get; set; }
         public Nullable<bool> IsCalculateLock { get; set; }
         public Nullable<int> ProductionLossRate { get; set; }
+
+
         public virtual ICollection<ProductionPlan> ProductionPlans { get; set; }
         public virtual ICollection<DefectTransactionDetail> DefectTransactionDetails { get; set; }
         public virtual ICollection<MachineAppraisal> MachineAppraisals { get; set; }

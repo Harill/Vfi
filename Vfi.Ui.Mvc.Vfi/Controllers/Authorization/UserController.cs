@@ -4096,15 +4096,18 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers.Authorization {
 
             try {
                 using (var vfi = new tammaContext()) {
-
-                    var periods = vfi.SelectProductInventoryAndPeriods.Where(p => p.TotalPeriod != p.TotalInv &&
-                        (customerId == 0 || p.CustomerId == customerId))
-                        .OrderBy(p => p.CustomerCode)
-                        .ThenBy(p => p.ProductCode)
-                        .ThenBy(p => p.WarehouseName)
+                    var productIds = !string.IsNullOrWhiteSpace(productCode)
+                        ? vfi.Products.Where(x => x.ProductCode.Contains(productCode)).Select(x => x.ProductId).ToList()
+                        : new List<int>();
+                    var periods = vfi.SelectProductInventoryAndPeriods.Where(p =>
+                        (customerId == 0 || p.CustomerId == customerId) &&
+                        (!productIds.Any() || productIds.Contains(p.ProductId)))
+                        //.OrderBy(p => p.CustomerCode)
+                        //.ThenBy(p => p.ProductCode)
+                        //.ThenBy(p => p.WarehouseName)
                         .ToList();
-                    if (!string.IsNullOrWhiteSpace(productCode))
-                        periods = periods.Where(p => p.ProductCode.Contains(productCode)).ToList();
+                    //if (!string.IsNullOrWhiteSpace(productCode))
+                    //    periods = periods.Where(p => p.ProductCode.Contains(productCode)).ToList();
                     foreach (var period in periods) {
                         var entity = new ProductInventoryModel {
                             CustomerCode = period.CustomerCode,
@@ -4114,6 +4117,7 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers.Authorization {
                             WarehouseName = period.WarehouseName,
                             TotalQty = period.TotalInv ?? 0,
                             AvailableQty = period.TotalPeriod ?? 0,
+                            LotNumber = period.LotNumber
                         };
                         entity.Quantity = Math.Round(entity.TotalQty - entity.AvailableQty, 0);
                         if (entity.Quantity != 0)
@@ -4125,7 +4129,11 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers.Authorization {
                 ModelState.AddModelError("SelectTestingProductInv", ex.Message);
             }
 
-            return View(new GridModel(model));
+            return View(new GridModel(model
+                        .OrderBy(p => p.CustomerCode)
+                        .ThenBy(p => p.ProductCode)
+                        .ThenBy(p => p.WarehouseName)
+                        ));
         }
 
         [GridAction]
@@ -4224,9 +4232,7 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers.Authorization {
                     if (period.TotalPeriod < 0)
                         return Json(8);
 
-                    var productInvs = vfi.ProductInventories.Where(pi => pi.WarehouseId == warehouseId &&
-                        pi.ProductId == productId &&
-                        pi.TotalQty > 0);
+                    var productInvs = vfi.ProductInventories.Where(pi => pi.ProductInventoryId == period.ProductInventoryId);
                     if (!productInvs.Any()) {
                         productInvs = vfi.ProductInventories.Where(pi => pi.WarehouseId == warehouseId &&
                             pi.ProductId == productId).Take(1);
@@ -4254,6 +4260,8 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers.Authorization {
             }
             return Json(a);
         }
+
+
 
         [GridAction]
         public ActionResult SelectTestingMaterialInv() {

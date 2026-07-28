@@ -29,6 +29,9 @@ namespace Vfi.Ui.Mvc.Vfi.Models.Mapping
             this.Property(t => t.CustomerCode)
                 .HasMaxLength(50);
 
+            this.Property(t => t.LotNumber)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+
             // Table & Column Mappings
             this.ToTable("SelectProductInventoryAndPeriod");
             this.Property(t => t.ProductId).HasColumnName("ProductId");
@@ -39,6 +42,8 @@ namespace Vfi.Ui.Mvc.Vfi.Models.Mapping
             this.Property(t => t.CustomerCode).HasColumnName("CustomerCode");
             this.Property(t => t.TotalInv).HasColumnName("TotalInv");
             this.Property(t => t.TotalPeriod).HasColumnName("TotalPeriod");
+            this.Property(t => t.LotNumber).HasColumnName("LotNumber");
+            this.Property(t => t.ProductInventoryId).HasColumnName("ProductInventoryId");
         }
     }
 }

@@ -114,7 +114,7 @@
             columns.Command(command =>
                 command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText)
             ).Width(98).Title("Commands").HtmlAttributes(new { style = "text-align:center" });
-            columns.Bound(f => f.Priority).Width(55).Title("Nhà cung cấp được duyệt ")
+            columns.Bound(f => f.Priority).Width(80).Title("NCC được </br>duyệt ")
                 .ClientTemplate("<input type='checkbox' disabled='disabled' name='Priority' <#=Priority? checked='checked' : '' #> />")
                 .HtmlAttributes(new { style = "text-align:center" });
             columns.Bound(f => f.MaterialClassifiedName).Width(125);
@@ -261,6 +261,81 @@
                                                    .OnRowDataBound("gridVendorImg_OnRowDataBound")
                                                    )
                                                .ToHtmlString());
+
+                    items.Add().Text("Objectinve").Content(
+                       Html.Telerik().Grid<Vfi.Ui.Mvc.Vfi.Models.VendorObjectiveModel>()
+                           .Name("gridVendorObjective_<#= VendorId #>")
+                           .DataKeys(key => key.Add(f => f.ObjectiveId).RouteKey("objectiveId"))
+                           .ToolBar(
+                               toolbar =>
+                               toolbar.Insert().Text("Thêm mới").ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
+                           .DataBinding(
+                               dataBinding => dataBinding.Ajax()
+                                                         .Select("SelectVendorObjective", "Vendor", new { area = "", vendorId = "<#= VendorId #>" })
+                                                         .Insert("InsertVendorObjective", "Vendor", new { area = "", vendorId = "<#= VendorId #>" })
+                                                         .Update("UpdateVendorObjective", "Vendor", new { area = "", vendorId = "<#= VendorId #>" })
+                           )
+                           .Columns(columns => {
+                               columns.Command(command =>
+                                               command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
+                                   ).Width(60).Title("").HtmlAttributes(new { style = "text-align:center" });
+                               columns.Bound(f => f.Year).Title("Year")
+                                   .Width(80).ReadOnly(true)
+                                   .HtmlAttributes(new { style = "text-align:center" });
+
+                               columns.Bound(f => f.LateTimes).Title("Late </br>(Times)")
+                                   .Width(80).HtmlAttributes(new { style = "text-align:center" });
+                               columns.Bound(f => f.LessTimes).Title("Less </br>(Times)")
+                                   .Width(80)
+                                   .HtmlAttributes(new { style = "text-align:center" });
+                               columns.Bound(f => f.NGTimes).Title("NG </br>(Times)")
+                                   .Width(80)
+                                   .HtmlAttributes(new { style = "text-align:center" });
+                               columns.Bound(f => f.PercentNGNumber).Title("NG Quantity</br>(%)")
+                                   .Width(80)
+                                   .HtmlAttributes(new { style = "text-align:center" });
+
+
+
+                               columns.Bound(f => f.PricePoint).Title("Competitivity </br>(Point)")
+                                   .Width(90)
+                                   .HtmlAttributes(new { style = "text-align:center; border-left:2px black solid" });
+                               columns.Bound(f => f.TechSpPoint).Title("Technical Support </br>(Point)")
+                                   .Width(90)
+                                   .HtmlAttributes(new { style = "text-align:center" });
+
+                               columns.Bound(f => f.LogisticsPoint).Title("Logistics </br>(Point)")
+                                   .Width(90).ReadOnly(true)
+                                   .HtmlAttributes(new { style = "text-align:center" });
+                               columns.Bound(f => f.QuantityDeliveryPoint).Title("Quantity</br>(Point)")
+                                   .Width(90).ReadOnly(true)
+                                   .HtmlAttributes(new { style = "text-align:center" });
+                               columns.Bound(f => f.NGTimesPoint).Title("NG Times</br> (Point)")
+                                   .Width(90).ReadOnly(true)
+                                   .HtmlAttributes(new { style = "text-align:center" });
+                               columns.Bound(f => f.NGNumberPoint).Title("Quality</br>(Point)")
+                                   .Width(90).ReadOnly(true)
+                                   .HtmlAttributes(new { style = "text-align:center" });
+
+                               columns.Bound(f => f.TotalPoint).Title("Total</br>(Point)")
+                                   .Width(90).ReadOnly(true)
+                                   .HtmlAttributes(new { style = "text-align:center; border-left:2px black solid" });
+                               
+                               columns.Bound(f => f.Note).Title("Note")
+                                   .HtmlAttributes(new { style = "text-align:left; border-left:2px black solid" });
+
+
+                               columns.Bound(f => f.ModifiedUser).Title("Create User").ReadOnly(true).Width(100);
+                               columns.Bound(f => f.ModifiedDate).Title("Create Date").ReadOnly(true).Width(150)
+                                   .HtmlAttributes(new { style = "text-align:center" })
+                                   .Format("{0:HH:mm - dd/MM/yyyy }")
+                                   .HtmlAttributes(new { style = "text-align:center" });
+                           })
+                           .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
+                           .ClientEvents(e => e.OnError("grid_OnError")
+
+                               )
+                           .ToHtmlString());
                 })
                 .ToHtmlString()
         ))

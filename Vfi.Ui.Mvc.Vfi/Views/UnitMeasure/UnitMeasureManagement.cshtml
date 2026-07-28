@@ -23,7 +23,7 @@
 </script>
 }
 
-<div class="title">Quản lý thông tin loại tiền tệ</div>
+<div class="title">@HttpContext.GetGlobalResourceObject("Resource", "UnitMeasureManagement")</div>
 
 <div class="cover-div">
 @{
@@ -32,7 +32,7 @@
         .DataKeys(key => key.Add(f => f.UnitId).RouteKey("unitId"))
         .ToolBar(
             toolbar =>
-            toolbar.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new {style = "margin-left:0"}))
+            toolbar.Insert().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new {style = "margin-left:0"}))
         .DataBinding(
             dataBinding => dataBinding.Ajax()
                                       .Select("SelectUnitMeasure", "UnitMeasure")
@@ -40,19 +40,19 @@
                                       .Update("UpdateUnitMeasure", "UnitMeasure"))
         .Columns(columns =>
             {
-                columns.Command(command => command.Edit().ButtonType(GridButtonType.Image)
+                columns.Command(command => command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
                     ).Width(98).Title("").HtmlAttributes(new {style = "text-align:center"});
-                columns.Bound(f => f.UnitMeasureCode).Width(150);
-                columns.Bound(f => f.UnitMeasureName);
+                columns.Bound(f => f.UnitMeasureCode).Width(150).Title(@HttpContext.GetGlobalResourceObject("Resource", "UnitMeasureCode").ToString());
+                columns.Bound(f => f.UnitMeasureName).Title(@HttpContext.GetGlobalResourceObject("Resource", "UnitMeasureName").ToString());
                 //columns.Bound(f => f.Active).Width(45)
                 //    .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=Active? checked='checked' : '' #> />")
                 //    .HtmlAttributes(new { style = "text-align:center" });
-                columns.Bound(f => f.IsPlatingUnit).Width(45)
+                columns.Bound(f => f.IsPlatingUnit).Width(45).Title(@HttpContext.GetGlobalResourceObject("Resource", "IsPlating").ToString())
                        .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsPlatingUnit' <#=IsPlatingUnit? checked='checked' : '' #> />")
                        .HtmlAttributes(new {style = "text-align:center"});
             })
         //.ClientEvents(events => events.OnEdit("gridUnitMeasure_onEdit"))
-        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
         .Pageable(page => page.PageSize(15))
         .Sortable()
         .Render();

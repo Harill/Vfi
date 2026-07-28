@@ -214,6 +214,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
             ViewData = GetPageConfigData();
             return View();
         }
+
         public ActionResult ToolYearlyReport() {
             if (!Request.IsAuthenticated) {
                 return RedirectToAction("Index", "Home", new { area = "" });
@@ -221,6 +222,15 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
             ViewData = GetPageConfigData();
             return View();
         }
+
+        public ActionResult ToolImportExportReport() {
+            if (!Request.IsAuthenticated) {
+                return RedirectToAction("Index", "Home", new { area = "" });
+            }
+            ViewData = GetPageConfigData();
+            return View();
+        }
+
         public ActionResult MaterialProductionReport() {
             if (!Request.IsAuthenticated) {
                 return RedirectToAction("Index", "Home", new { area = "" });

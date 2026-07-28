@@ -31,7 +31,10 @@
     }
     </script>
 }
-<div class="title">Quản lý phương thức</div>
+<div class="title">
+    @*Quản lý phương thức*@
+    @HttpContext.GetGlobalResourceObject("Resource", "MethodManagement")
+</div>
 <div class="cover-div">
 @{
     Html.Telerik().Grid<MethodModel>()
@@ -39,7 +42,9 @@
         .DataKeys(keys => keys.Add(f => f.MethodId).RouteKey("methodId"))
         .ToolBar(
             toolbar =>
-            toolbar.Insert().Text("Thêm PT mới").ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new {style = "margin-left:0"}))
+            toolbar.Insert()
+                .Text(@HttpContext.GetGlobalResourceObject("Resource", "NewText").ToString())
+                .ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
         .DataBinding(dataBindings => dataBindings.Ajax()
                                                  .Select("SelectAllMethod", "Method")
                                                  .Insert("InsertMethod", "Method")
@@ -47,18 +52,34 @@
         )
         .Columns(columns =>
             {
-                columns.Bound(f => f.TypeName).Width(200).Title("Loại PT");
-                columns.Bound(f => f.MethodName).Title("Tên PT");
-                columns.Bound(f => f.MethodName_EN).Width(110).Title("Tên PT(EN)");
-                columns.Bound(f => f.SaleMethod).Width(45).Title("PT Bán")
-                       .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=SaleMethod? checked='checked' : '' #> />")
-                       .HtmlAttributes(new { style = "text-align:center" });
-                columns.Bound(f => f.BuyMethod).Width(45).Title("PT Mua")
-                       .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=BuyMethod? checked='checked' : '' #> />")
-                       .HtmlAttributes(new { style = "text-align:center" });
-                columns.Bound(f => f.Active).Width(45)
-                       .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=Active? checked='checked' : '' #> />")
-                       .HtmlAttributes(new { style = "text-align:center" });
+                columns.Bound(f => f.TypeName).Width(200)
+                    //.Title("Loại PT")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "MethodType").ToString());
+                
+                columns.Bound(f => f.MethodName)
+                    //.Title("Tên PT")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "MethodVIEName").ToString());
+                
+                columns.Bound(f => f.MethodName_EN).Width(110)
+                    //.Title("Tên PT(EN)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "MethodENGName").ToString());
+                
+                columns.Bound(f => f.SaleMethod).Width(55)
+                    //.Title("PT Bán")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "SaleMethod").ToString())
+                    .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=SaleMethod? checked='checked' : '' #> />")
+                    .HtmlAttributes(new { style = "text-align:center" });
+                
+                columns.Bound(f => f.BuyMethod).Width(55)
+                    //.Title("PT Mua")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "BuyMethod").ToString())
+                    .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=BuyMethod? checked='checked' : '' #> />")
+                    .HtmlAttributes(new { style = "text-align:center" });
+                
+                columns.Bound(f => f.Active).Width(55)
+                    .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=Active? checked='checked' : '' #> />")
+                    .HtmlAttributes(new { style = "text-align:center" });
+                
                 columns.Command(command =>
                                 command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText)
                     ).Width(98).Title("Commands").HtmlAttributes(new {style = "text-align:center"});

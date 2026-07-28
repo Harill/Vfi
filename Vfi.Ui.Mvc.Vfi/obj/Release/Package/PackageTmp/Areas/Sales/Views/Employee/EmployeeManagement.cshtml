@@ -32,7 +32,7 @@
         .DataKeys(keys => keys.Add(f => f.EmployeeId).RouteKey("employeeId"))
         .ToolBar(
             toolbar =>
-            toolbar.Insert().Text("Thêm NV mới").ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
+            toolbar.Insert().Text("Thêm NV mới").ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
         .DataBinding(dataBindings=>dataBindings.Ajax()
             .Select("SelectEmployee","Employee")
             .Insert("InsertEmployee","Employee")
@@ -41,7 +41,7 @@
         .Columns(columns=>
         {
             columns.Command(command =>
-                command.Edit().ButtonType(GridButtonType.Image).UpdateText("Sửa").CancelText("Hủy")
+                command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image).UpdateText("Sửa").CancelText("Hủy")
             ).Width(98).Title("").HtmlAttributes(new { style = "text-align:center" });
             columns.Bound(f => f.EmployeeCode).Width(125);
             columns.Bound(f => f.EmployeeName).Width(200);

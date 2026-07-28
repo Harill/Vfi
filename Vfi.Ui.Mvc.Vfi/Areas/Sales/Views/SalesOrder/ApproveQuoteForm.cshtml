@@ -242,7 +242,7 @@
                                     .Columns(columns =>
                                         {
                                             columns.Command(command =>
-                                                            command.Edit().ButtonType(GridButtonType.Image).UpdateText("Duyệt").CancelText("Trở lại")
+                                                            command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image).UpdateText("Duyệt").CancelText("Trở lại")
                                                 ).Width(50).Title("Duyệt").HtmlAttributes(new {style = "text-align:center"});
 
 
@@ -266,7 +266,9 @@
                                                    .ClientTemplate("<#= QuotationCost == null ? 0 : $.telerik.formatString('{0:n4}', QuotationCost) #>");
                                             columns.Bound(f => f.Note).Width(75).Title("Ghi chú");
                                         })
-                                    .ClientEvents(e => e.OnSave("gridDetail_OnSave").OnError("grid_OnError"))
+                                    .ClientEvents(e => e
+                                        //.OnSave("gridDetail_OnSave")
+                                        .OnError("grid_OnError"))
                                     .ToHtmlString());
                             items.Add().Text("Thông tin chi tiết").Content(
                                 Html.Telerik().Grid<ProductQuotationModel>()
@@ -286,12 +288,13 @@
                         })
                     .ToHtmlString()))
             .Selectable()
-            .Editable(editing => editing.Mode(GridEditMode.InLine))
+            .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
             .ClientEvents(events => events.OnError("grid_OnError")
-                                          .OnEdit("gridProduct_onEdit")
+                                          //.OnEdit("gridProduct_onEdit")
                                           .OnRowSelect("grid_OnRowSelect")
-                                          .OnSave("Grid_OnSave")
-                                          .OnDataBinding("Grid_OnDataBinding"))
+                                          //.OnSave("Grid_OnSave")
+                                          //.OnDataBinding("Grid_OnDataBinding")
+                                          )
             .Pageable(page => page.PageSize(7))
             .Scrollable(f => f.Height("auto"))
             //.HtmlAttributes(new {style = "width: 950px;"})

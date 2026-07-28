@@ -206,17 +206,35 @@
     </script>
 
 
-<div class="title">Theo dõi quy trình mua hàng</div>
+<div class="title">
+    @*Theo dõi quy trình mua hàng*@
+     @HttpContext.GetGlobalResourceObject("Resource", "PurchasingProgress")
+</div>
 <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px;">
 
     <fieldset>
-        <legend>Tiêu chí trích  lọc</legend>
+        <legend>
+            @*Tiêu chí trích  lọc*@
+             @HttpContext.GetGlobalResourceObject("Resource", "Filter")
+        </legend>
 
-        <div class="grid_5">@Html.Label("Phân loại")</div>
-        <div class="grid_6">@Html.Label("Nhà cung cấp")</div>
+        <div class="grid_5">@Html.Label(
+        //"Phân loại"
+        @HttpContext.GetGlobalResourceObject("Resource", "Type").ToString()
+        )</div>
+        <div class="grid_6">@Html.Label(
+        //"Nhà cung cấp"
+        @HttpContext.GetGlobalResourceObject("Resource", "Vendor").ToString()
+        )</div>
 @*        <div class="grid_5">Tình trạng</div>*@
-        <div class="grid_4">Số yêu cầu </div>
-        <div class="grid_3">Số đơn </div>
+        <div class="grid_4">
+            @*Số yêu cầu*@ 
+            @HttpContext.GetGlobalResourceObject("Resource", "InquiryNumber")
+        </div>
+        <div class="grid_3">
+            @*Số đơn*@ 
+            @HttpContext.GetGlobalResourceObject("Resource", "PONumber")
+        </div>
 
 
         <div class="clear"></div>
@@ -305,12 +323,20 @@
 
         <div class="grid_1">
             <button class="t-button" id="btnGridRefresh" name="btnPickupMaterialId" onclick=" RefreshGrid('grid') ">
-                <span class='t-icon t-refresh'>Làm mới</span>
+                <span class='t-icon t-refresh'>
+                    @*Làm mới*@
+                    @HttpContext.GetGlobalResourceObject("Resource", "Refresh")
+                </span>
             </button>
         </div>
 
         <div class ="TLHH grid_30">
-             Note: (1) Đã xác nhận / (2) Đang đặt hàng / (3) Đã đặt hàng / (4) Đang giao / (5) Đã giao 1 phần / (6) Hoàn tất giao hàng
+             Note: (1)@* Đã xác nhận*@  @HttpContext.GetGlobalResourceObject("Resource", "Confirmed")
+            / (2) @*Đang đặt hàng *@ @HttpContext.GetGlobalResourceObject("Resource", "Ordering")
+            / (3) @*Đã đặt hàng*@   @HttpContext.GetGlobalResourceObject("Resource", "Ordered")
+            / (4)@* Đang giao*@     @HttpContext.GetGlobalResourceObject("Resource", "Delivering")
+            / (5) @*Đã giao 1 phần *@   @HttpContext.GetGlobalResourceObject("Resource", "PartialDelivery")
+            / (6) @*Hoàn tất giao hàng*@    @HttpContext.GetGlobalResourceObject("Resource", "FinishedDelivery")
         </div>
 
 @*        <div class="grid_6">
@@ -346,41 +372,66 @@
                     })
                 )
                 .Columns(columns => {
-                    columns.Bound(f => f.index).Width(35).Title("STT").ReadOnly(true)
-                         .HtmlAttributes(new { style = "border-bottom:1px black solid; text-align: center;" })
-                         .Aggregate(agg => agg.Count())
-                         .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>")
-                         .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>")
-                         .FooterHtmlAttributes(new { style = "text-align: center; font-weight:bold; " });
+                    columns.Bound(f => f.index).Width(35)
+                        //.Title("STT")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Index").ToString())
+                        .ReadOnly(true)
+                        .HtmlAttributes(new { style = "border-bottom:1px black solid; text-align: center;" })
+                        .Aggregate(agg => agg.Count())
+                        .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>")
+                        .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>")
+                        .FooterHtmlAttributes(new { style = "text-align: center; font-weight:bold; " });
                     
-                    columns.Bound(f => f.InquiryNumber).Width(90).Title("Số yêu cầu").ReadOnly(true)
-                         .HtmlAttributes(new { style = "font-weight:bold; border-bottom:1px black solid; " });
+                    columns.Bound(f => f.InquiryNumber).Width(90)
+                        //.Title("Số yêu cầu")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "InquiryNumber").ToString())
+                        .ReadOnly(true)
+                        .HtmlAttributes(new { style = "font-weight:bold; border-bottom:1px black solid; " });
                     
-                    columns.Bound(f => f.ClassifiedName).Width(80).Title("Phân loại").ReadOnly(true)
-                         .HtmlAttributes(new { style = "border-bottom:1px black solid; " });
+                    columns.Bound(f => f.ClassifiedName).Width(80)
+                        //.Title("Phân loại")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Classified").ToString())
+                        .ReadOnly(true)
+                        .HtmlAttributes(new { style = "border-bottom:1px black solid; " });
 
                     //columns.Bound(f => f.TypeName).Width(90).Title("Loại").ReadOnly(true)
                     //     .HtmlAttributes(new { style = "border-bottom:1px black solid; " });
                     
-                    columns.Bound(f => f.ReferenceName).Width(100).Title("Tên").ReadOnly(true)
-                         .HtmlAttributes(new { style = "border-bottom:1px black solid; " });
+                    columns.Bound(f => f.ReferenceName).Width(100)
+                        //.Title("Tên")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Name").ToString())
+                        .ReadOnly(true)
+                        .HtmlAttributes(new { style = "border-bottom:1px black solid; " });
                     
-                    columns.Bound(f => f.ReferenceCode).Width(170).Title("Mã").ReadOnly(true)
-                         .HtmlAttributes(new { style = "border-bottom:1px black solid; " });
+                    columns.Bound(f => f.ReferenceCode).Width(170)
+                        //.Title("Mã")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Code").ToString())
+                        .ReadOnly(true)
+                        .HtmlAttributes(new { style = "border-bottom:1px black solid; " });
 
-                    columns.Bound(f => f.TotalInv).Width(60).Title("Tồn kho").ReadOnly(true)
-                         .HtmlAttributes(new { style = "text-align: right; border-bottom:1px black solid" })
-                         .Format("{0:n2}");
+                    columns.Bound(f => f.TotalInv).Width(60)
+                        //.Title("Tồn kho")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Inv").ToString())
+                        .ReadOnly(true)
+                        .HtmlAttributes(new { style = "text-align: right; border-bottom:1px black solid" })
+                        .Format("{0:n2}");
                     
-                    columns.Bound(f => f.Unit).Width(40).Title("ĐVT")
-                         .HtmlAttributes(new { style = "border-bottom:1px black solid; border-right:1px black solid;" });
+                    columns.Bound(f => f.Unit).Width(40)
+                        //.Title("ĐVT")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Unit2").ToString())
+                        .HtmlAttributes(new { style = "border-bottom:1px black solid; border-right:1px black solid;" });
 
                     
                     // Y/C
-                    columns.Bound(f => f.VendorCode).Width(75).Title("NCC")
-                         .HtmlAttributes(new { style = "border-bottom:1px black solid; border-left:1px black solid;" });
+                    columns.Bound(f => f.VendorCode).Width(75)
+                        //.Title("NCC")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Vendor2").ToString())
+                        .HtmlAttributes(new { style = "border-bottom:1px black solid; border-left:1px black solid;" });
                 
-                    columns.Bound(f => f.OrderQty).Width(60).Title("SL").ReadOnly(true)
+                    columns.Bound(f => f.OrderQty).Width(60)
+                        //.Title("SL")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Quantity").ToString())
+                        .ReadOnly(true)
                         .HtmlAttributes(new { style = "border-bottom:1px black solid; text-align: right;" })
                         .Format("{0:n2}")
                         .Aggregate(agg => agg.Sum())
@@ -404,20 +455,26 @@
                     //    .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                     //    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>");
 
-                    columns.Bound(f => f.DueDate).Width(75).Title("Ngày YC")
+                    columns.Bound(f => f.DueDate).Width(75)
+                        //.Title("Ngày YC")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "RequestDate2").ToString())
                         .HtmlAttributes(new { style = "border-bottom:1px black solid; border-right:1px black solid; " })
                         .ClientTemplate("<#= DueDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', DueDate) #>");
 
                     
                     
                     // MH
-                    columns.Bound(f => f.RevisionNumber).Width(85).Title("Số đơn")
+                    columns.Bound(f => f.RevisionNumber).Width(85)
+                        //.Title("Số đơn mua")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "PONumber").ToString())
                         .HtmlAttributes(new { style = "border-bottom:1px black solid; font-weight:bold; border-left:1px black solid;" });
 
                     //columns.Bound(f => f.PurchaseDetailId).Width(85).Title("Id")
                     //    .HtmlAttributes(new { style = "border-bottom:1px black solid; font-weight:bold; border-left:1px black solid;" });
 
-                    columns.Bound(f => f.DeliveryDate).Width(70).Title("Ngày xác nhận</br>giao hàng")
+                    columns.Bound(f => f.DeliveryDate).Width(70)
+                        //.Title("Xác nhận</br>Ngày giao hàng")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "ComfirmDeliveryDate1").ToString())
                         .ClientTemplate("<#= DeliveryDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', DeliveryDate) #>")
                         .HtmlAttributes(new { style = "border-bottom:1px black solid;  border-right:1px black solid; " });
                     

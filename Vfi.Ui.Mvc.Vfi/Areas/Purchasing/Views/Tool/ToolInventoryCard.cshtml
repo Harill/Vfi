@@ -63,15 +63,22 @@
     </script>
 }
 
-<div class="title">Thẻ kho công cụ</div>
+<div class="title">
+    @*Thẻ kho công cụ*@
+    @HttpContext.GetGlobalResourceObject("Resource", "ToolInventoryCard")
+</div>
 <div class="clear"></div>
 <br/>
 <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px; width: 1000px;">
     <fieldset>
-        <legend>Tiêu chí trích lọc</legend>
+        <legend>
+            @*Tiêu chí trích lọc*@
+            @HttpContext.GetGlobalResourceObject("Resource", "Filter")
+        </legend>
         <div class="grid_12">
         <div class="grid_2">
-            Sản phẩm
+            @*Sản phẩm*@
+            @HttpContext.GetGlobalResourceObject("Resource", "Product")
         </div>
         <div class="grid_6">
              @{
@@ -90,7 +97,8 @@
     <div class="grid_2 prefix_1">
         <button id="btnRefesh" class="t-button" onclick=" return RefreshGrids(); ">
             <span class='t-icon t-insert'></span>
-            Tìm
+            @*Tìm*@
+            @HttpContext.GetGlobalResourceObject("Resource", "Refresh")
              <span class="twoToneButton"></span>
         </button>
     </div>
@@ -107,11 +115,22 @@
                     )
                     .Columns(columns =>
                         {
-                            columns.Bound(f => f.VendorName).Width(150).Title("NCC");
-                            columns.Bound(f => f.LotNumber).Width(40).ReadOnly(true).Title("Lô");
-                            columns.Bound(f => f.UnitMeasure).Width(70).Title("ĐVT").ReadOnly(true);
+                            columns.Bound(f => f.VendorName).Width(150)
+                                //.Title("NCC")
+                                .Title(@HttpContext.GetGlobalResourceObject("Resource", "Supplier2").ToString());
+                            
+                            columns.Bound(f => f.LotNumber).Width(40).ReadOnly(true)
+                                //.Title("Lô")
+                                .Title(@HttpContext.GetGlobalResourceObject("Resource", "Lot").ToString());
+                            
+                            columns.Bound(f => f.UnitMeasure).Width(70)
+                                //.Title("ĐVT")
+                                .Title(@HttpContext.GetGlobalResourceObject("Resource", "Unit2").ToString())
+                                .ReadOnly(true);
+                            
                             columns.Bound(f => f.TotalInv).Width(70)
-                                .HeaderTemplate("Tồn kho")
+                                //.HeaderTemplate("Tồn kho")
+                                .Title(@HttpContext.GetGlobalResourceObject("Resource", "Inv").ToString())
                                 .Format("{0:n0}")
                                 .HtmlAttributes(new { style = "text-align:right" });
                         })

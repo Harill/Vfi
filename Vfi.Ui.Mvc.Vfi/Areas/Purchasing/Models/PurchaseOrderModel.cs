@@ -11,7 +11,6 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
         // Vendor
         public int VendorId { get; set; }
 
-        [UIHint("_VendorEditTemplate")]
         [DisplayName("Tên nhà cung cấp")]
         public virtual string VendorName { get; set; }
         [DisplayName("Mã nhà cung cấp")]
@@ -119,6 +118,8 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
         [DisplayName("Tổng số lượng")]
         public double? TotalQuality { get; set; }
         [DisplayName("Tiền tệ")]
+
+        [DataType("_CurrencyEditTemplate")]
         public string CurrencyCode { get; set; }
         [DisplayName("Số hợp đồng")]
         public string ContractNumber { get; set; }

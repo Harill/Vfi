@@ -50,14 +50,21 @@
     </script>
 }
 
-<div class="title">Lên kệ nguyên liệu</div>
+<div class="title">
+    @*Lên kệ nguyên liệu*@
+    @HttpContext.GetGlobalResourceObject("Resource", "MaterialOnShelf")
+</div>
 <div id="pnlInvPeriod">
     <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px;">
 
         <fieldset>
-            <legend>Tiêu chí trích lọc</legend>
+            <legend>
+                @*Tiêu chí trích lọc*@
+                @HttpContext.GetGlobalResourceObject("Resource", "Filter")
+            </legend>
             <div class="grid_1">
-                Ngày
+                @*Ngày*@
+                @HttpContext.GetGlobalResourceObject("Resource", "Date")
             </div>
             <div class="grid_3">
                 @{
@@ -79,7 +86,8 @@
             </div>
             <button id="btnRefresh" class='t-button' onclick=" return RefreshGrid('gridLock'); ">
                 <span class='t-icon t-insert'></span>
-                Làm mới
+                @*Làm mới*@
+                @HttpContext.GetGlobalResourceObject("Resource", "Refresh")
             </button>
         </fieldset>
     </div>
@@ -91,7 +99,9 @@
             .DataKeys(key => key.Add(f => f.OnShelfId).RouteKey("onShelfId"))
             .ToolBar(
                 toolbar =>
-                toolbar.Insert().Text("Thêm mới").ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
+                toolbar.Insert()
+                    .Text(@HttpContext.GetGlobalResourceObject("Resource", "NewText").ToString())
+                    .ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
             .DataBinding(
                 dataBinding => dataBinding.Ajax()
                                           .Select("SelectInventoryOnShelf", "Inv", new { classifiedId = 1, fromDate = "", toDate = "", drawerId = 0 })
@@ -99,21 +109,61 @@
                                           .Update("UpdateInventoryOnShelf", "Inv", new { classifiedId = 1, fromDate = "", toDate = "" }))
             .Columns(columns => {
                 columns.Command(command =>
-                                command.Edit().ButtonType(GridButtonType.Image).UpdateText("Cập nhật").CancelText("Hủy").Text("Sửa")
+                                command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
+                                    .UpdateText(@HttpContext.GetGlobalResourceObject("Resource", "UpdateText").ToString())
+                                    .CancelText(@HttpContext.GetGlobalResourceObject("Resource", "CancelText").ToString())
+                                    .Text(@HttpContext.GetGlobalResourceObject("Resource", "EditText").ToString())
+                                    
                     ).Width(50).Title("").HtmlAttributes(new { style = "text-align:center" });
 
-                columns.Bound(f => f.OnDate).Width(100).Title("Ngày")
+                columns.Bound(f => f.OnDate).Width(100)
+                    //.Title("Ngày")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Date").ToString())
                     .ClientTemplate("<#= OnDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', OnDate) #>");
-                columns.Bound(f => f.DrawerCode).Width(70).Title("Vị trí");
-                columns.Bound(f => f.ReferenceInvCode).Width(150).Title("Nguyên liệu");
-                columns.Bound(f => f.LotNumber).Title("Lô").Width(100).ReadOnly(true);
-                columns.Bound(f => f.OwnerName).Title("NCC").Width(100).ReadOnly(true);
-                columns.Bound(f => f.Quantity).Title("Số tồn").Format("{0:n}").Width(100).ReadOnly(true);
-                columns.Bound(f => f.Unit).Title("ĐVT").Width(50).ReadOnly(true);
-                columns.Bound(f => f.UnitWeight).Title("TL").Width(70).ReadOnly(true);
-                columns.Bound(f => f.ModifiedDate).Title("Ngày làm").Width(120).ReadOnly(true)
+         
+                columns.Bound(f => f.DrawerCode).Width(70)
+                    //.Title("Vị trí")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Location").ToString());
+                
+                columns.Bound(f => f.ReferenceInvCode).Width(150)
+                    //.Title("Nguyên liệu")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Material").ToString());
+                
+                columns.Bound(f => f.LotNumber)
+                    //.Title("Lô")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Lot").ToString())
+                    .Width(100).ReadOnly(true);
+                
+                columns.Bound(f => f.OwnerName)
+                    //.Title("NCC")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Vendor2").ToString())
+                    .Width(100).ReadOnly(true);
+                
+                columns.Bound(f => f.Quantity)
+                    //.Title("Số tồn")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Inventory").ToString())
+                    .Format("{0:n}").Width(100).ReadOnly(true);
+                
+                columns.Bound(f => f.Unit)
+                    //.Title("ĐVT")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Unit2").ToString())
+                    .Width(50).ReadOnly(true);
+                
+                columns.Bound(f => f.UnitWeight)
+                    //.Title("TL")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Weight2").ToString())
+                    .Width(70).ReadOnly(true);
+                
+                columns.Bound(f => f.ModifiedDate)
+                    //.Title("Ngày làm")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "ModifiedDate").ToString())
+                    .Width(120).ReadOnly(true)
                     .Format("{0:dd/MM/yyyy HH:mm}");
-                columns.Bound(f => f.ModifiedUser).Title("Người làm").Width(80).ReadOnly(true);
+                
+                columns.Bound(f => f.ModifiedUser)
+                    //.Title("Người làm")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "ModifiedUser").ToString())
+                    .Width(80).ReadOnly(true);
             })
             .ClientEvents(events => events.OnDataBinding("grid_OnDataBinding")
                                           .OnError("grid_OnError"))

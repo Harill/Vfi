@@ -23,7 +23,7 @@
 </script>
 }
 
-<div class="title">Quản lý thông tin loại tiền tệ</div>
+<div class="title">@HttpContext.GetGlobalResourceObject("Resource", "CurrencyManagement")</div>
 
 <div class="cover-div">
 
@@ -33,7 +33,7 @@
         .DataKeys(key => key.Add(f => f.CurrencyCode).RouteKey("currencyCode"))
         .ToolBar(
             toolbar =>
-            toolbar.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new {style = "margin-left:0"}))
+            toolbar.Insert().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new {style = "margin-left:0"}))
         .DataBinding(
             dataBinding => dataBinding.Ajax()
                 .Select("SelectCurrency", "Currency")
@@ -41,17 +41,17 @@
                 .Update("UpdateCurrency", "Currency"))
         .Columns(columns => 
         {
-            columns.Bound(f => f.CurrencyCode).Width(150);
-            columns.Bound(f => f.CurrencyName);
-            columns.Bound(f => f.Active).Width(45)
+            columns.Bound(f => f.CurrencyCode).Title(@HttpContext.GetGlobalResourceObject("Resource", "CurrencyCode").ToString()).Width(150);
+            columns.Bound(f => f.CurrencyName).Title(@HttpContext.GetGlobalResourceObject("Resource", "Currency").ToString());
+            columns.Bound(f => f.Active).Title(@HttpContext.GetGlobalResourceObject("Resource", "Active").ToString()).Width(45)
                 .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=Active? checked='checked' : '' #> />")
                 .HtmlAttributes(new { style = "text-align:center" });
             columns.Command(command => 
-                command.Edit().ButtonType(GridButtonType.ImageAndText)
+                command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText)
             ).Width(98).Title("Commands").HtmlAttributes(new { style = "text-align:center" });
         })
         .ClientEvents(events => events.OnEdit("gridCurrency_onEdit").OnError("grid_OnError"))
-        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
         .Pageable(page => page.PageSize(15))
         .Sortable()
         .Render();

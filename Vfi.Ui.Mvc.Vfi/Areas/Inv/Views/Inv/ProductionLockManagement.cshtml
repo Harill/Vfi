@@ -26,14 +26,21 @@
     </script>
 }
 
-<div class="title">Quản lý khoá SX</div>
+<div class="title">
+    @*Quản lý khoá SX*@
+    @HttpContext.GetGlobalResourceObject("Resource", "ProductionLockManagement")
+</div>
 <div id="pnlInvPeriod">
     <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px;">
     
         <fieldset>
-            <legend>Tiêu chí trích lọc</legend>
+            <legend>
+                @*Tiêu chí trích lọc*@
+                @HttpContext.GetGlobalResourceObject("Resource", "Filter")
+            </legend>
             <div class="grid_1">
-                Ngày
+                @*Ngày*@
+                @HttpContext.GetGlobalResourceObject("Resource", "Date")
             </div>
             <div class="grid_3">
                 @{
@@ -55,7 +62,8 @@
             </div>
               <button id="btnRefresh" class='t-button' onclick=" return RefreshGrid('gridLock'); ">
                     <span class='t-icon t-insert'></span>
-                   Làm mới
+                   @*Làm mới*@
+                  @HttpContext.GetGlobalResourceObject("Resource", "Refresh")
                 </button>
         </fieldset>
     </div>
@@ -67,7 +75,9 @@
             .DataKeys(key => key.Add(f => f.LockDate).RouteKey("lockDate"))
             .ToolBar(
                 toolbar =>
-                toolbar.Insert().Text("Thêm mới").ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
+                toolbar.Insert()
+                    .Text(@HttpContext.GetGlobalResourceObject("Resource", "NewText").ToString())
+                    .ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
             .DataBinding(
                 dataBinding => dataBinding.Ajax()
                                           .Select("SelectProductionLock", "Inv", new { fromDate = "", toDate = "" })
@@ -76,25 +86,63 @@
             .Columns(columns =>
                 {
                     columns.Command(command =>
-                                    command.Edit().ButtonType(GridButtonType.Image).UpdateText("Cập nhật").CancelText("Hủy").Text("Sửa")
+                                    command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
+                                        .UpdateText(@HttpContext.GetGlobalResourceObject("Resource", "UpdateText").ToString())
+                                        .CancelText(@HttpContext.GetGlobalResourceObject("Resource", "CancelText").ToString())
+                                        .Text(@HttpContext.GetGlobalResourceObject("Resource", "EditText").ToString())
+                                        
                         ).Width(50).Title("").HtmlAttributes(new {style = "text-align:center"});
 
-                    columns.Bound(f => f.LockDate).Width(50).Title("Ngày")
+                    columns.Bound(f => f.LockDate).Width(50)
+                        //.Title("Ngày")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Date").ToString())
                         .ClientTemplate("<#= LockDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', LockDate) #>");
-                    columns.Bound(f => f.Shift1Name).Width(50).Title("Ca 1");
-                    columns.Bound(f => f.Shift2Name).Width(50).Title("Ca 2");
-                    columns.Bound(f => f.Production1Lock).Width(30).Title("Khoá SX1")
+            
+                    columns.Bound(f => f.Shift1Name).Width(50)
+                        //.Title("Ca 1")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Shift1").ToString());
+                    
+                    columns.Bound(f => f.Shift2Name).Width(50)
+                        //.Title("Ca 2")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Shift2").ToString());
+                    
+                    columns.Bound(f => f.Production1Lock).Width(30)
+                        //.Title("Khoá SX1")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Lock").ToString()
+                            + " "
+                            + @HttpContext.GetGlobalResourceObject("Resource", "Production12").ToString()
+                        )
                         .ClientTemplate("<input type='checkbox' disabled='disabled' name='Production1Lock' <#=Production1Lock? checked='checked' : '' #> />")
                         .HtmlAttributes(new { style = "text-align:center" });
-                    columns.Bound(f => f.CNCLock).Width(30).Title("Khoá Phay")
+                    
+                    columns.Bound(f => f.CNCLock).Width(30)
+                        //.Title("Khoá Phay")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Lock").ToString()
+                            + " "
+                            + @HttpContext.GetGlobalResourceObject("Resource", "Mil").ToString()
+                        )
                         .ClientTemplate("<input type='checkbox' disabled='disabled' name='CNCLock' <#=CNCLock? checked='checked' : '' #> />")
                         .HtmlAttributes(new { style = "text-align:center" });
-                    columns.Bound(f => f.Production2Lock).Width(30).Title("Khoá SX2")
+                    
+                    columns.Bound(f => f.Production2Lock).Width(30)
+                        //.Title("Khoá SX2")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Lock").ToString()
+                            + " "
+                            + @HttpContext.GetGlobalResourceObject("Resource", "Production22").ToString()
+                        )
                         .ClientTemplate("<input type='checkbox' disabled='disabled' name='Production2Lock' <#=Production2Lock? checked='checked' : '' #> />")
                         .HtmlAttributes(new { style = "text-align:center" });
-                    columns.Bound(f => f.ModifiedDate).Width(50).Title("Ngày sửa").ReadOnly(true)
+                    
+                    columns.Bound(f => f.ModifiedDate).Width(50)
+                        //.Title("Ngày sửa")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "ModifiedDate").ToString())
+                        .ReadOnly(true)
                         .ClientTemplate("<#= ModifiedDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy hh:mm}', ModifiedDate) #>");
-                    columns.Bound(f => f.ModifiedUser).Width(50).Title("Người sửa").ReadOnly(true);
+                    
+                    columns.Bound(f => f.ModifiedUser).Width(50)
+                        //.Title("Người sửa")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "ModifiedUser").ToString())
+                        .ReadOnly(true);
                 })
             .ClientEvents(events => events.OnDataBinding("gridLock_OnDataBinding")
                                           .OnError("grid_OnError"))

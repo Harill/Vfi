@@ -275,9 +275,9 @@
     </script>
 }
 
-<div class="title">Phát nguyên liệu Work Order</div>
+<div class="title">@HttpContext.GetGlobalResourceObject("Resource", "WorkOrderMaterialScanCode")</div>
 
-<div class="grid_2">Nhân viên</div>
+<div class="grid_2">@HttpContext.GetGlobalResourceObject("Resource", "Employee")</div>
 <div class="grid_4">
     @{
         Html.Telerik().ComboBox()
@@ -285,7 +285,7 @@
             //.DataBinding(binding => binding.Ajax().Select("SelectComboBoxEmployeeLogin", "Employee", new { area = "Sales" }).Delay(350))
             .HtmlAttributes(new { style = "width: 100%" })
             //.DropDownHtmlAttributes(new { style = "width: 150px" })
-            .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+            .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
             .HighlightFirstMatch(true)
             .AutoFill(true)
             .Render();
@@ -296,9 +296,9 @@
 
 <div class="t-info-sha fieldheader fieldheader1">
     <fieldset>
-        <legend>Thông tin Work Order</legend>
-        <div class="grid_2_5">
-            Số Work Order
+        <legend>@HttpContext.GetGlobalResourceObject("Resource", "Information") Work Order</legend>
+        <div class="grid_3_5">
+            @HttpContext.GetGlobalResourceObject("Resource", "WorkOrderNumber") 
         </div>
         <div class="grid_6">
             @Html.TextBoxFor(f => f.RoutingSerial, new { style = "color: maroon;", @onchange = "workOrderOnChange();" })
@@ -312,7 +312,7 @@
         <div class="clear"></div>
         <div class="grid_12">
             <div class="grid_2">
-                Sản phẩm
+                @HttpContext.GetGlobalResourceObject("Resource", "Product")
             </div>
             <div class="grid_4" style="font-size: large;">
                 <span id="ProductCode">~~</span>
@@ -321,13 +321,13 @@
             <br />
 
             <div class="grid_2">
-                Công đoạn
+                @HttpContext.GetGlobalResourceObject("Resource", "Stage")
             </div>
             <div class="grid_3">
                 <span id="RoutingName">~~</span>
             </div>
             <div class="grid_2">
-                CĐ kế
+                @HttpContext.GetGlobalResourceObject("Resource", "NextStage")
             </div>
             <div class="grid_3">
                 <span id="NextRouteName">~~</span>
@@ -336,10 +336,10 @@
             <br />
 
             <div class="grid_2">
-                Kế hoạch:
+                @HttpContext.GetGlobalResourceObject("Resource", "Planned"):
             </div>
             <div class="grid_3" style="font-size: large;">
-                <span id="WorkOrderQuantity">0</span> (cây)
+                <span id="WorkOrderQuantity">0</span> @HttpContext.GetGlobalResourceObject("Resource", "Bar")
             </div>
             <div class="clear"></div>
             <br />
@@ -350,8 +350,8 @@
 
 <div class="t-info-sha fieldheader fieldheader3">
     <fieldset>
-        <legend>Thông tin nguyên liệu</legend>
-        <div class="grid_2_5">Số nguyên liệu</div>
+        <legend>@HttpContext.GetGlobalResourceObject("Resource", "Information") @HttpContext.GetGlobalResourceObject("Resource", "Material")</legend>
+        <div class="grid_3">@HttpContext.GetGlobalResourceObject("Resource", "MaterialNumber") </div>
         <div class="grid_4">
             @Html.TextBoxFor(f => f.MaterialInvCode, new { style = "color: maroon;", @onchange = "materialInvOnChange();" })
         </div>
@@ -359,7 +359,7 @@
         <div class="clear"></div>
         <br />
         <div class="grid_2">
-            Nguyên liệu
+            @HttpContext.GetGlobalResourceObject("Resource", "Material")
         </div>
         <div class="grid_8" style="font-size: large;">
             <span id="MaterialCode">~~</span>
@@ -367,7 +367,8 @@
         <div class="clear"></div>
         <br />
         <div class="grid_2">
-            Lô
+            @HttpContext.GetGlobalResourceObject("Resource", "Lot")
+            @*Lô*@
         </div>
         <div class="grid_8" style="font-size: large;">
             <span id="MaterialLot">~~</span>
@@ -375,10 +376,11 @@
         <div class="clear"></div>
         <br />
         <div class="grid_2">
-            Tồn kho
+            @HttpContext.GetGlobalResourceObject("Resource", "Inventory"):
+            @*Tồn kho*@
         </div>
         <div class="grid_8" style="font-size: large;">
-            <span id="MaterialInvQuantity">0</span> cây | 
+            <span id="MaterialInvQuantity">0</span>  @HttpContext.GetGlobalResourceObject("Resource", "Bar") | 
             <span id="MaterialInvKg">0</span> kg
         </div>
         <br />

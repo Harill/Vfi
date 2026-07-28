@@ -29,8 +29,8 @@
                 isAll: isAll,
             });
             index = 0;
-            $("#ForecastByMonthHeader")[0].innerText = (monthCount + " tháng");
-            $("#RequireByMonthHeader")[0].innerText = (monthCount + " tháng");
+            $("#ForecastByMonthHeader")[0].innerText = (monthCount + " Months");
+            $("#RequireByMonthHeader")[0].innerText = (monthCount + " Months");
         }
         var index = 0;
         function grid_OnRowDataBound(e) {
@@ -59,20 +59,27 @@
 
         function gridDetail_OnLoad(e) {
             var monthCount = $("#MonthCount").val();
-            e.target.getElementsByClassName("ForecastByMonthHeaderDetail")[0].innerText = (monthCount + " tháng");
+            e.target.getElementsByClassName("ForecastByMonthHeaderDetail")[0].innerText = (monthCount + " Months");
         }
 
     </script>
 }
 
-<div class="title">Dự kiến đặt hàng nguyên liệu</div>
+<div class="title">
+    @*Dự kiến đặt hàng nguyên liệu*@
+    @HttpContext.GetGlobalResourceObject("Resource", "ExpectedMaterialPlan")
+</div>
 <div class="clear"></div>
 <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px; width: 1000px;">
     <fieldset>
-        <legend>Tiêu chí trích lọc</legend>
+        <legend>
+            @*Tiêu chí trích lọc*@
+            @HttpContext.GetGlobalResourceObject("Resource", "Filter")
+        </legend>
 
         <div class="grid_2">
-            Nguyên liệu
+            @*Nguyên liệu*@
+            @HttpContext.GetGlobalResourceObject("Resource", "Material")
         </div>
         <div class="grid_4">
             @{
@@ -89,7 +96,8 @@
         </div>
 
         <div class="grid_2">
-            @Html.Label("Kế hoạch")
+            @*@Html.Label("Kế hoạch")*@
+            @HttpContext.GetGlobalResourceObject("Resource", "Plan")
         </div>
         <div class="grid_1">
             @{
@@ -104,11 +112,13 @@
             }
         </div>
         <div class="grid_2">
-            @Html.Label("Tháng")  | 
+            @*@Html.Label("Tháng")   |*@
+             @HttpContext.GetGlobalResourceObject("Resource", "Month")  |
         </div>
 
         <div class="grid_1">
-            @Html.Label("Tháng")
+            @*@Html.Label("Tháng")*@
+            @HttpContext.GetGlobalResourceObject("Resource", "Month")
         </div>
         <div class="grid_1">
             @{
@@ -124,7 +134,8 @@
         </div>
 
         <div class="grid_1">
-            @Html.Label("Năm")
+            @*@Html.Label("Năm")*@
+            @HttpContext.GetGlobalResourceObject("Resource", "Year")
         </div>
         <div class="grid_1_5">
 
@@ -139,13 +150,15 @@
         <div class="grid_2_5">
             <label>
                 <input type="checkbox" id="chkAll" name="chkAll" />
-                Xem tất cả
+                @*Xem tất cả*@
+                @HttpContext.GetGlobalResourceObject("Resource", "Select All")
             </label>
         </div>
         <div class="grid_3 prefix_1">
             <button id="btnRefesh" class="t-button" onclick=" return RefreshGrid('gridPlan'); ">
                 <span class='t-icon t-insert'></span>
-                Làm mới
+                @*Làm mới*@
+                @HttpContext.GetGlobalResourceObject("Resource", "Refresh")
             </button>
         </div>
     </fieldset>
@@ -161,99 +174,195 @@
             .DataBinding(dataBindings => dataBindings.Ajax()
                                                      .Select("SelectExpectedMaterialPlan", "Reporting"))
             .Columns(columns => {
-                columns.Bound(f => f.Index).Title("STT").Width(30)
-                       .ClientTemplate("<#= ++index #>")
-                       .HtmlAttributes(new { style = "font-weight: center" });
-                columns.Bound(f => f.MaterialTypeName).Title("Loại").Width(50)
-                       .HtmlAttributes(new { style = "font-weight: center" });
-                columns.Bound(f => f.MaterialCode).Title("Mã KH").Width(110)
-                       .HeaderTemplate("Mã <br/>nguyên liệu")
-                       .Aggregate(agg => agg.Count())
-                       .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>")
-                       .FooterHtmlAttributes(new { style = "text-align: right;" })
-                       .HtmlAttributes(new { style = "text-align: left;;font-weight: bold" });
-                columns.Bound(f => f.TotalInvKg)
-                       .HeaderTemplate("Tồn<br/>kho<br/>(kg)").Width(50)
-                       .Aggregate(agg => agg.Sum())
-                       .Format("{0:n2}")
-                       .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
-                       .FooterHtmlAttributes(new { style = "text-align: right;" })
-                       .HtmlAttributes(new { style = "text-align: right;" });
+                columns.Bound(f => f.Index)
+                    //.Title("STT")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Index").ToString())
+                    .Width(30)
+                    .ClientTemplate("<#= ++index #>")
+                    .HtmlAttributes(new { style = "font-weight: center" });
+                
+                columns.Bound(f => f.MaterialTypeName)
+                    //.Title("Loại")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Type").ToString())
+                    .Width(50)
+                    .HtmlAttributes(new { style = "font-weight: center" });
+
+                columns.Bound(f => f.MaterialCode).Width(110)
+                    //.Title("Mã KH")
+                    //.HeaderTemplate("Mã <br/>nguyên liệu")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "MaterialCode2").ToString())
+                    .Aggregate(agg => agg.Count())
+                    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>")
+                    .FooterHtmlAttributes(new { style = "text-align: right;" })
+                    .HtmlAttributes(new { style = "text-align: left;;font-weight: bold" });
+
+                columns.Bound(f => f.TotalInvKg).Width(50)
+                    //.HeaderTemplate("Tồn<br/>kho<br/>(kg)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Inventory1").ToString()
+                        + "</br>(kg)"
+                    )
+                    .Aggregate(agg => agg.Sum())
+                    .Format("{0:n2}")
+                    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
+                    .FooterHtmlAttributes(new { style = "text-align: right;" })
+                    .HtmlAttributes(new { style = "text-align: right;" });
+                
                 // so lieu
                 columns.Bound(f => f.OrderLastYearKg).Width(50)
-                       .HeaderTemplate("Đơn hàng<br/>năm trước</br>(kg)")
-                       .Format("{0:n2}")
-                       .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
-                       .FooterHtmlAttributes(new { style = "text-align: right;" })
-                       .HtmlAttributes(new { style = "text-align: right;" });
+                    //.HeaderTemplate("Đơn hàng<br/>năm trước</br>(kg)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Order").ToString()
+                        + "</br>"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "LastYear").ToString()
+                        + "</br>(kg)"
+                    )
+                    .Format("{0:n2}")
+                    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
+                    .FooterHtmlAttributes(new { style = "text-align: right;" })
+                    .HtmlAttributes(new { style = "text-align: right;" });
+                
                 columns.Bound(f => f.ForecastInYearKg).Width(50)
-                       .HeaderTemplate("Dự báo<br/>trong năm</br>(kg)")
-                       .Format("{0:n2}")
-                       .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
-                       .FooterHtmlAttributes(new { style = "text-align: right;" })
-                       .HtmlAttributes(new { style = "text-align: right;" });
+                    //.HeaderTemplate("Dự báo<br/>trong năm</br>(kg)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Forecast").ToString()
+                        + "</br>"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "InYear").ToString()
+                        + "</br>(kg)"
+                    )
+                    .Format("{0:n2}")
+                    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
+                    .FooterHtmlAttributes(new { style = "text-align: right;" })
+                    .HtmlAttributes(new { style = "text-align: right;" });
+                
                 columns.Bound(f => f.ForecastByMonthKg).Width(50)
-                       .HeaderTemplate("Dự báo</br><span id='ForecastByMonthHeader'>theo tháng</span></br>(kg)")
-                       .Format("{0:n2}")
-                       .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
-                       .FooterHtmlAttributes(new { style = "text-align: right;" })
-                       .HtmlAttributes(new { style = "text-align: right;" });
+                    .HeaderTemplate(@HttpContext.GetGlobalResourceObject("Resource", "Forecast").ToString()
+                           + "</br>"
+                           + "<span id='ForecastByMonthHeader'>theo tháng"
+                           + "</span>"
+                           + "</br>(kg)"
+                           )
+                    //.Title(@HttpContext.GetGlobalResourceObject("Resource", "Forecast").ToString()
+                    //    + "</br>"
+                    //    + @HttpContext.GetGlobalResourceObject("Resource", "Follow").ToString()
+                    //    + " "
+                    //    + @HttpContext.GetGlobalResourceObject("Resource", "Month").ToString()
+                    //    + "</br>(kg)"
+                    //)
+                    .Format("{0:n2}")
+                    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
+                    .FooterHtmlAttributes(new { style = "text-align: right;" })
+                    .HtmlAttributes(new { style = "text-align: right;" });
+                
                 columns.Bound(f => f.OrderRemainingKg).Width(50)
-                       .HeaderTemplate("Đơn hàng<br/>còn lại</br>(kg)")
-                       .Aggregate(agg => agg.Sum())
-                       .Format("{0:n2}")
-                       .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
-                       .FooterHtmlAttributes(new { style = "text-align: right;" })
-                       .HtmlAttributes(new { style = "text-align: right;" });
+                    //.HeaderTemplate("Đơn hàng<br/>còn lại</br>(kg)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Order").ToString()
+                        + "</br>"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "LeftOver").ToString()
+                        + "</br>(kg)"
+                    )
+                    .Aggregate(agg => agg.Sum())
+                    .Format("{0:n2}")
+                    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
+                    .FooterHtmlAttributes(new { style = "text-align: right;" })
+                    .HtmlAttributes(new { style = "text-align: right;" });
+                
                 columns.Bound(f => f.ForecastInMonthKg).Width(50)
-                       .HeaderTemplate("Dự báo<br/>trong tháng</br>(kg)")
-                       .Aggregate(agg => agg.Sum())
-                       .Format("{0:n2}")
-                       .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
-                       .FooterHtmlAttributes(new { style = "text-align: right;" })
-                       .HtmlAttributes(new { style = "text-align: right;" });
+                    //.HeaderTemplate("Dự báo<br/>trong tháng</br>(kg)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Forecast").ToString()
+                        + "</br>"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "InMonth").ToString()
+                        + "</br>(kg)"
+                    )
+                    .Aggregate(agg => agg.Sum())
+                    .Format("{0:n2}")
+                    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
+                    .FooterHtmlAttributes(new { style = "text-align: right;" })
+                    .HtmlAttributes(new { style = "text-align: right;" });
+                
                 columns.Bound(f => f.ForecastNextMonthKg).Width(50)
-                       .HeaderTemplate("Dự báo<br/>tháng kế</br>(kg)")
-                       .Aggregate(agg => agg.Sum())
-                       .Format("{0:n2}")
-                       .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
-                       .FooterHtmlAttributes(new { style = "text-align: right;" })
-                       .HtmlAttributes(new { style = "text-align: right;" });
+                    //.HeaderTemplate("Dự báo<br/>tháng kế</br>(kg)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Forecast").ToString()
+                        + "</br>"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "NextMonth").ToString()
+                        + "</br>(kg)"
+                    )
+                    .Aggregate(agg => agg.Sum())
+                    .Format("{0:n2}")
+                    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
+                    .FooterHtmlAttributes(new { style = "text-align: right;" })
+                    .HtmlAttributes(new { style = "text-align: right;" });
+                
                 columns.Bound(f => f.RequireByMonthKg).Width(50)
-                       .HeaderTemplate("Yêu cầu</br><span id='RequireByMonthHeader'>theo tháng</span></br>(kg)")
-                       .Aggregate(agg => agg.Sum())
-                       .Format("{0:n2}")
-                       .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
-                       .FooterHtmlAttributes(new { style = "text-align: right;" })
-                       .HtmlAttributes(new { style = "text-align: right;" });
+                    .HeaderTemplate(@HttpContext.GetGlobalResourceObject("Resource", "Request").ToString()
+                            + "</br>"
+                            + "<span id='RequireByMonthHeader'>"
+                            + "theo tháng </span>"
+                            + "</br>(kg)")
+                    //.Title(@HttpContext.GetGlobalResourceObject("Resource", "Request").ToString()
+                    //    + "</br>"
+                    //    + @HttpContext.GetGlobalResourceObject("Resource", "Follow").ToString()
+                    //    + " "
+                    //    + @HttpContext.GetGlobalResourceObject("Resource", "Month").ToString()
+                    //    + "</br>(kg)"
+                    //)
+                    .Aggregate(agg => agg.Sum())
+                    .Format("{0:n2}")
+                    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
+                    .FooterHtmlAttributes(new { style = "text-align: right;" })
+                    .HtmlAttributes(new { style = "text-align: right;" });
+                
                 columns.Bound(f => f.OnPurchaseQuantity).Width(50)
-                       .HeaderTemplate("Đã đặt<br/>hàng</br>(kg)")
-                       .Aggregate(agg => agg.Sum())
-                       .Format("{0:n2}")
-                       .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
-                       .FooterHtmlAttributes(new { style = "text-align: right;" })
-                       .HtmlAttributes(new { style = "text-align: right;" });
+                    //.HeaderTemplate("Đã đặt<br/>hàng</br>(kg)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Ordered1").ToString()
+                        + "</br>(kg)"
+                    )
+                    .Aggregate(agg => agg.Sum())
+                    .Format("{0:n2}")
+                    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
+                    .FooterHtmlAttributes(new { style = "text-align: right;" })
+                    .HtmlAttributes(new { style = "text-align: right;" });
+                
                 columns.Bound(f => f.UseInMonthKg).Width(50)
-                       .HeaderTemplate("Sử dụng<br/>trong tháng</br>(kg/tháng)")
-                       .Aggregate(agg => agg.Sum())
-                       .Format("{0:n2}")
-                       .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
-                       .FooterHtmlAttributes(new { style = "text-align: right;" })
-                       .HtmlAttributes(new { style = "text-align: right;" });
+                    //.HeaderTemplate("Sử dụng<br/>trong tháng</br>(kg/tháng)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Using").ToString()
+                        + "</br>"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "InMonth").ToString()
+                        + "</br>(kg/"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Month").ToString()
+                        + ")"
+                    )
+                    .Aggregate(agg => agg.Sum())
+                    .Format("{0:n2}")
+                    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
+                    .FooterHtmlAttributes(new { style = "text-align: right;" })
+                    .HtmlAttributes(new { style = "text-align: right;" });
+                
                 columns.Bound(f => f.UseAvgInYearKg).Width(50)
-                       .HeaderTemplate("TB sử dụng<br/>trong năm</br>(kg/tháng)")
-                       .Aggregate(agg => agg.Sum())
-                       .Format("{0:n2}")
-                       .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
-                       .FooterHtmlAttributes(new { style = "text-align: right;" })
-                       .HtmlAttributes(new { style = "text-align: right;" });
+                    //.HeaderTemplate("TB sử dụng<br/>trong năm</br>(kg/tháng)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Average2").ToString()
+                        + " "
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Using1").ToString()
+                        + "</br>(kg/"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Month").ToString()
+                        + ")"
+                    )
+                    .Aggregate(agg => agg.Sum())
+                    .Format("{0:n2}")
+                    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
+                    .FooterHtmlAttributes(new { style = "text-align: right;" })
+                    .HtmlAttributes(new { style = "text-align: right;" });
+                
                 columns.Bound(f => f.ExpectedProductionDay).Width(50)
-                       .HeaderTemplate("Dự kiến<br/>sản xuất</br>(ngày)")
-                       .Aggregate(agg => agg.Sum())
-                       .Format("{0:n0}")
-                       .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                       .FooterHtmlAttributes(new { style = "text-align: right;" })
-                       .HtmlAttributes(new { style = "text-align: right;" });
+                    //.HeaderTemplate("Dự kiến<br/>sản xuất</br>(ngày)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Expected").ToString()
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Production").ToString()
+                        + "</br>("
+                        +@HttpContext.GetGlobalResourceObject("Resource", "Day").ToString()
+                        + ")"
+                    )
+                    .Aggregate(agg => agg.Sum())
+                    .Format("{0:n0}")
+                    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                    .FooterHtmlAttributes(new { style = "text-align: right;" })
+                    .HtmlAttributes(new { style = "text-align: right;" });
                 //columns.Bound(f => f.RequireInYearKg).Width(50)
                 //       .HeaderTemplate("Yêu cầu<br/>NL năm")
                 //       .Aggregate(agg => agg.Sum())
@@ -282,7 +391,10 @@
                     .Name("TabOrder_<#= MaterialId #>")
                     .SelectedIndex(0)
                     .Items(items =>
-                           items.Add().Text("Thông tin chi tiết").Content(
+                           items.Add().Text(
+                                //"Thông tin chi tiết"
+                                @HttpContext.GetGlobalResourceObject("Resource", "DetailInformation").ToString()
+                           ).Content(
                                Html.Telerik().Grid<ExpectedProductionMaterialPlanModel>()
                                    .Name("gridDetail_<#= MaterialId #>")
                                    .DataBinding(dataDindings => dataDindings.Ajax()
@@ -290,61 +402,149 @@
                                                                                     new { materialId = "<#= MaterialId #>" }))
                                    .Columns(columns => {
                                        columns.Bound(f => f.ProductCode).Width(100)
-                                              .HeaderTemplate("Mã SP");
+                                           //.HeaderTemplate("Mã SP")
+                                           .Title(@HttpContext.GetGlobalResourceObject("Resource", "ProductCode2").ToString());
+                                       
                                        columns.Bound(f => f.UnitWeightByMaterial).Width(70)
-                                              .HeaderTemplate("Trọng lượng</br>phoi SP</br>(g/pc)")
-                                              .Format("{0:n3}")
-                                              .HtmlAttributes(new { style = "text-align: right;" });
+                                           //.HeaderTemplate("Trọng lượng</br>phoi SP</br>(g/pc)")
+                                           .Title(@HttpContext.GetGlobalResourceObject("Resource", "RawMaterialWeight1").ToString()
+                                                + "</br>(g/pc)"
+                                           )
+                                           .Format("{0:n3}")
+                                           .HtmlAttributes(new { style = "text-align: right;" });
+                                       
                                        columns.Bound(f => f.TotalInv).Width(70)
-                                              .HeaderTemplate("Tồn</br>tổng</br>(pcs)")
-                                              .Format("{0:n0}")
-                                              .HtmlAttributes(new { style = "text-align: right;" });
+                                           //.HeaderTemplate("Tồn</br>tổng</br>(pcs)")
+                                           .Title(@HttpContext.GetGlobalResourceObject("Resource", "TotalInv1").ToString()
+                                                + "</br>(pcs)"
+                                           )
+                                           .Format("{0:n0}")
+                                           .HtmlAttributes(new { style = "text-align: right;" });
+                                       
                                        columns.Bound(f => f.OrderLastYear).Width(70)
-                                              .HeaderTemplate("Đơn hàng<br/>năm trước</br>(pcs)")
-                                              .Format("{0:n0}")
-                                              .HtmlAttributes(new { style = "text-align: right;" });
+                                           //.HeaderTemplate("Đơn hàng<br/>năm trước</br>(pcs)")
+                                           .Title(@HttpContext.GetGlobalResourceObject("Resource", "Order").ToString()
+                                                + "</br>"
+                                                + @HttpContext.GetGlobalResourceObject("Resource", "LastYear").ToString()
+                                                + "</br>(pcs)"
+                                           )
+                                           .Format("{0:n0}")
+                                           .HtmlAttributes(new { style = "text-align: right;" });
+                                       
                                        columns.Bound(f => f.ForecastInYear).Width(70)
-                                              .HeaderTemplate("Dự báo</br>năm</br>(pcs)")
-                                              .Format("{0:n0}")
-                                              .HtmlAttributes(new { style = "text-align: right;" });
+                                           //.HeaderTemplate("Dự báo</br>năm</br>(pcs)")
+                                           .Title(@HttpContext.GetGlobalResourceObject("Resource", "Forecast").ToString()
+                                                + "</br>"
+                                                + @HttpContext.GetGlobalResourceObject("Resource", "Year").ToString()
+                                                + "</br>(pcs)"
+                                           )
+                                           .Format("{0:n0}")
+                                           .HtmlAttributes(new { style = "text-align: right;" });
+                                       
                                        columns.Bound(f => f.ForecastByMonth).Width(70)
                                            //.HeaderTemplate("Dự báo</br>theo tháng (pcs)")
-                                              .HeaderTemplate("Dự báo</br><span class='ForecastByMonthHeaderDetail'>theo tháng</span></br>(pcs)")
-                                              .Format("{0:n0}")
-                                              .HtmlAttributes(new { style = "text-align: right;" });
+                                           .HeaderTemplate(@HttpContext.GetGlobalResourceObject("Resource", "Forecast").ToString()
+                                                + "</br>"
+                                                + "<span class='ForecastByMonthHeaderDetail'>theo tháng</span></br>(pcs)")
+                                           //.Title(@HttpContext.GetGlobalResourceObject("Resource", "Forecast").ToString()
+                                           //     + "</br>"
+                                           //     + @HttpContext.GetGlobalResourceObject("Resource", "Follow").ToString()
+                                           //     + " "
+                                           //     + @HttpContext.GetGlobalResourceObject("Resource", "Month").ToString()
+                                           //     + "</br>(pcs)"
+                                           //)
+                                           .Format("{0:n0}")
+                                           .HtmlAttributes(new { style = "text-align: right;" });
+                                       
                                        columns.Bound(f => f.SaleInMonth).Width(70)
-                                              .HeaderTemplate("Xuất bán</br>(pcs)")
-                                              .Format("{0:n0}")
-                                              .HtmlAttributes(new { style = "text-align: right;" });
+                                           //.HeaderTemplate("Xuất bán</br>(pcs)")
+                                           .Title(@HttpContext.GetGlobalResourceObject("Resource", "SaleExport").ToString()
+                                                + "</br>(pcs)"
+                                           )
+                                           .Format("{0:n0}")
+                                           .HtmlAttributes(new { style = "text-align: right;" });
+                                       
                                        
                                        columns.Bound(f => f.OrderRemaining).Width(70)
-                                              .HeaderTemplate("Đơn hàng<br/>còn lại</br>(pcs)")
-                                              .Format("{0:n0}")
-                                              .HtmlAttributes(new { style = "text-align: right;" });
+                                           //.HeaderTemplate("Đơn hàng<br/>còn lại</br>(pcs)")
+                                           .Title(@HttpContext.GetGlobalResourceObject("Resource", "Order").ToString()
+                                                + "</br>"
+                                                + @HttpContext.GetGlobalResourceObject("Resource", "LeftOver").ToString()
+                                                + "</br>(pcs)"
+                                           )
+                                           .Format("{0:n0}")
+                                           .HtmlAttributes(new { style = "text-align: right;" });
+                                       
                                        columns.Bound(f => f.ForecastInMonth).Width(70)
-                                              .HeaderTemplate("Dự báo<br/>trong tháng</br>(pcs)")
-                                              .Format("{0:n0}")
-                                              .HtmlAttributes(new { style = "text-align: right;" });
+                                           //.HeaderTemplate("Dự báo<br/>trong tháng</br>(pcs)")
+                                           .Title(@HttpContext.GetGlobalResourceObject("Resource", "Forecast").ToString()
+                                                + "</br>"
+                                                + @HttpContext.GetGlobalResourceObject("Resource", "InMonth").ToString()
+                                                + "</br>(pcs)"
+                                           )
+                                           .Format("{0:n0}")
+                                           .HtmlAttributes(new { style = "text-align: right;" });
+                                       
                                        columns.Bound(f => f.ForecastNextMonth).Width(70)
-                                              .HeaderTemplate("Dự báo<br/>tháng kế</br>(pcs)")
-                                              .Format("{0:n0}")
-                                              .HtmlAttributes(new { style = "text-align: right;" });
+                                           //.HeaderTemplate("Dự báo<br/>tháng kế</br>(pcs)")
+                                           .Title(@HttpContext.GetGlobalResourceObject("Resource", "Forecast").ToString()
+                                                + "</br>"
+                                                + @HttpContext.GetGlobalResourceObject("Resource", "NextMonth").ToString()
+                                                + "</br>(pcs)"
+                                           )
+                                           .Format("{0:n0}")
+                                           .HtmlAttributes(new { style = "text-align: right;" });
+                                       
                                        columns.Bound(f => f.RequireByMonthKg).Width(70)
-                                              .HeaderTemplate("Yêu cầu<br/>NL</br>(Tấn)")
-                                              .Format("{0:n2}")
-                                              .HtmlAttributes(new { style = "text-align: right;" });
+                                           //.HeaderTemplate("Yêu cầu<br/>NL</br>(Tấn)")
+                                           .Title(@HttpContext.GetGlobalResourceObject("Resource", "Request").ToString()
+                                                + "</br>"
+                                                + @HttpContext.GetGlobalResourceObject("Resource", "Material2").ToString()
+                                                + "</br>"
+                                                + @HttpContext.GetGlobalResourceObject("Resource", "Tons").ToString()
+                                                + ")"
+                                           )
+                                           .Format("{0:n2}")
+                                           .HtmlAttributes(new { style = "text-align: right;" });
+                                       
                                        columns.Bound(f => f.UseInMonthKg).Width(70)
-                                              .HeaderTemplate("NL Sử dụng<br/>trong tháng</br>(kg/tháng)")
-                                              .Format("{0:n2}")
-                                              .HtmlAttributes(new { style = "text-align: right;" });
+                                           //.HeaderTemplate("NL Sử dụng<br/>trong tháng</br>(kg/tháng)")
+                                           .Title(@HttpContext.GetGlobalResourceObject("Resource", "MaterialUsing").ToString()
+                                                + "</br>"
+                                                + @HttpContext.GetGlobalResourceObject("Resource", "InMonth").ToString()
+                                                + "</br>(kg/"
+                                                +@HttpContext.GetGlobalResourceObject("Resource", "Month").ToString()
+                                                + ")"
+                                           )
+                                           .Format("{0:n2}")
+                                           .HtmlAttributes(new { style = "text-align: right;" });
+                                       
                                        columns.Bound(f => f.UseAvgInYearKg).Width(70)
-                                              .HeaderTemplate("TB SD NL<br/>trong năm</br>(kg/tháng)")
-                                              .Format("{0:n2}")
-                                              .HtmlAttributes(new { style = "text-align: right;" });
+                                           //.HeaderTemplate("TB SD NL<br/>trong năm</br>(kg/tháng)")
+                                           .Title(@HttpContext.GetGlobalResourceObject("Resource", "Average2").ToString()
+                                                + " "
+                                                + @HttpContext.GetGlobalResourceObject("Resource", "MaterialUsing").ToString()
+                                                + "</br>"
+                                                + @HttpContext.GetGlobalResourceObject("Resource", "InYear").ToString()
+                                                + "</br>(kg/"
+                                                + @HttpContext.GetGlobalResourceObject("Resource", "Month").ToString()
+                                                + ")"
+                                           )
+                                           .Format("{0:n2}")
+                                           .HtmlAttributes(new { style = "text-align: right;" });
+                                       
                                        columns.Bound(f => f.MaxUseInMonthKg).Width(70)
-                                              .HeaderTemplate("MAX SD NL<br/>trong tháng</br>(kg/ngày)")
-                                              .Format("{0:n2}")
-                                              .HtmlAttributes(new { style = "text-align: right;" });
+                                           //.HeaderTemplate("MAX SD NL<br/>trong tháng</br>(kg/ngày)")
+                                           .Title("MAX "
+                                                +@HttpContext.GetGlobalResourceObject("Resource", "MaterialUsing").ToString()
+                                                + "</br>"
+                                                + @HttpContext.GetGlobalResourceObject("Resource", "InMonth").ToString()
+                                                + "</br>(kg/"
+                                                + @HttpContext.GetGlobalResourceObject("Resource", "Day").ToString()
+                                                + ")"
+                                           )
+                                           .Format("{0:n2}")
+                                           .HtmlAttributes(new { style = "text-align: right;" });
                                        //columns.Bound(f => f.RequireNextMonth).Width(70)
                                        //       .HeaderTemplate("Yêu cầu</br>tháng kế")
                                        //       .Format("{0:n0}")

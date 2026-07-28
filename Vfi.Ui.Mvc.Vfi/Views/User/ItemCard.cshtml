@@ -87,9 +87,9 @@
     <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px; width: 1000px;">
 
         <fieldset>
-            <legend>Thông tin item card</legend>
+            <legend>@HttpContext.GetGlobalResourceObject("Resource", "Information")</legend>
             <div class="grid_10">
-                <div class="grid_2">Sản phẩm</div>
+                <div class="grid_2">@HttpContext.GetGlobalResourceObject("Resource", "Product")</div>
                  <div class="grid_4">
              @{
                 Html.Telerik().ComboBox()
@@ -98,7 +98,7 @@
                     .HtmlAttributes(new {style = "width: 100%"})
                     .DropDownHtmlAttributes(new {style = "width: 275px"})
                     .AutoFill(true)
-                    .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                    .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                     .ClientEvents(e=> e.OnChange("product_OnChange"))
                     .Render();
             }
@@ -106,31 +106,31 @@
         </div>
                 <div class="clear"></div>
                 <br />
-                <div class="grid_2">Mã</div>
+                <div class="grid_2">@HttpContext.GetGlobalResourceObject("Resource", "Code")</div>
                 <div class="grid_5">
                     @Html.TextBoxFor(f => f.ProductCustomerCode)
                 </div>
                 <div class="clear"></div>
                 <br />
-                <div class="grid_2">Tên</div>
+                <div class="grid_2">@HttpContext.GetGlobalResourceObject("Resource", "Name")</div>
                 <div class="grid_5">
                     @Html.TextBoxFor(f => f.ProductName)
                 </div>
                 <div class="clear"></div>
                 <br />
-                <div class="grid_2">Số lượng</div>
+                <div class="grid_2">@HttpContext.GetGlobalResourceObject("Resource", "Quantity")</div>
                 <div class="grid_5">
                     @Html.Telerik().NumericTextBox().DecimalDigits(0).Name("Quantity").Value(0).MinValue(0)
                 </div>
                 <div class="clear"></div>
                 <br />
-                <div class="grid_2">Lô</div>
+                <div class="grid_2">@HttpContext.GetGlobalResourceObject("Resource", "Lot")</div>
                 <div class="grid_5">
                     @Html.TextBoxFor(f => f.Lot)
                 </div>
             </div>
             <div class="grid_10">
-                  <div class="grid_2">Loại bao</div>
+                  <div class="grid_2">@HttpContext.GetGlobalResourceObject("Resource", "PackagingType")</div>
                  <div class="grid_4">
              @{
                 Html.Telerik().ComboBox()
@@ -139,14 +139,14 @@
                     .HtmlAttributes(new {style = "width: 100%"})
                     .DropDownHtmlAttributes(new {style = "width: 275px"})
                     .AutoFill(true)
-                    .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                    .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                     .Render();
             }
           
         </div>
                 <div class="clear"></div>
                 <br />
-                <div class="grid_2">Ngày </div>
+                <div class="grid_2">@HttpContext.GetGlobalResourceObject("Resource", "Date")</div>
                 <div class="grid_5">
                     @{
                         Html.Telerik().DatePicker()
@@ -158,19 +158,19 @@
                 </div>
                 <div class="clear"></div>
                 <br />
-                <div class="grid_2">NV Kiểm tra</div>
+                <div class="grid_2">@HttpContext.GetGlobalResourceObject("Resource", "CheckingEmployee")</div>
                 <div class="grid_5">
                     @Html.TextBoxFor(f => f.EmployeeName)
                 </div>
 
                 <div class="clear"></div>
                 <br />
-                <div class="grid_2">Ghi chú</div>
+                <div class="grid_2">@HttpContext.GetGlobalResourceObject("Resource", "Note")</div>
                 <div class="grid_7">@Html.TextAreaFor(f => f.Note, new { @class = "multi-line" })</div>
             </div>
             <button id="btnRefresh" class='t-button' onclick=" return Print(); ">
                 <span class='t-icon t-insert'></span>
-                In
+                @HttpContext.GetGlobalResourceObject("Resource", "Print")
             </button>
         </fieldset>
     </div>

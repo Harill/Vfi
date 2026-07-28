@@ -140,9 +140,15 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
         public bool Active { get; set; }
         public string ActiveString {
             get {
-                return Active == true ? "(APPROVED)" : "(PENDING)";
+                return Active == false
+                    ? "(PENDING)"
+                    : Active == true && Status == 3
+                        ? "(CANCELED)"
+                        : "(APPROVED)";
             }
         }
+
+        public int Status { get; set; }
 
         public DateTime OrderDateCheck {
             get {

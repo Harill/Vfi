@@ -63,7 +63,7 @@
                         .DropDownHtmlAttributes(new { style = "width: 250px" })
                         //.ClientEvents(events => events.OnChange("customer_onChange"))
                         .AutoFill(true)
-                        .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                        .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                         .Render();
                 }
             </div>
@@ -104,6 +104,7 @@
                     columns.Bound(f => f.CustomerCode).Width(100).ReadOnly(true).Title("Khách hàng");
                     columns.Bound(f => f.ProductCode).Width(150).ReadOnly(true).Title("Sản phẩm");
                     columns.Bound(f => f.WarehouseName).Width(150).ReadOnly(true).Title("Kho");
+                    columns.Bound(f => f.LotNumber).Width(100).ReadOnly(true).Title("Lô");
                     columns.Bound(f => f.TotalQty).Width(70)
                            .HeaderTemplate("Tồn kho thực tế")
                            .Format("{0:n0}")
@@ -136,7 +137,7 @@
                             columns.Bound(f => f.Early).Width(75).Title("Số đầu");
                             columns.Bound(f => f.Period).Width(75).Title("Số lượng chuyển");
                             columns.Bound(f => f.Last).Width(75).Title("Số cuối");
-                            columns.Command(command => command.Delete().ButtonType(GridButtonType.Image))
+                            columns.Command(command => command.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image))
                                    .Width(50).Title("Xoá").HtmlAttributes(new { style = "text-align:center;color:red" });
                         })
                         .ClientEvents(events => events.OnError("grid_OnError"))

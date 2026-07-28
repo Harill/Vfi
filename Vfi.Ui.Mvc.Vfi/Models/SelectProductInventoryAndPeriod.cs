@@ -13,5 +13,8 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public string CustomerCode { get; set; }
         public Nullable<double> TotalInv { get; set; }
         public Nullable<double> TotalPeriod { get; set; }
+
+        public string LotNumber { get; set; }
+        public int ProductInventoryId { get; set; }
     }
 }

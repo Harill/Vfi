@@ -552,7 +552,7 @@
 <div class="clear"></div>
 <div class="cover-div">
     @{
-        Html.Telerik().Grid<LogisticsModel>()
+        Html.Telerik().Grid<NGQuantityModel>()
             .Name("grid6")
             .DataKeys(keys => keys.Add(f => f.Count).RouteKey("count"))
             .DataBinding(dataBindings => dataBindings.Ajax()

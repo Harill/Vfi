@@ -4429,39 +4429,38 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers.Production {
 
 
         #region Qc Img
-        //[GridAction]
-        //public ActionResult SelectQcImgById2(int productId, int type) {
-        //    var model = new List<QcImgModel>();
-        //    try {
-        //        model = GetQcImgById2(productId, type);
-        //    }
-        //    catch (Exception ex) {
-        //        ModelState.AddModelError("SelectQcImgById", ex.Message);
-        //    }
-        //    return View(new GridModel(model));
-        //}
+        [GridAction]
+        public ActionResult SelectQcImgById2(int productId, int type) {
+            var model = new List<QcImgModel>();
+            try {
+                model = GetQcImgById2(productId, type);
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("SelectQcImgById", ex.Message);
+            }
+            return View(new GridModel(model));
+        }
 
-        //   List<QcImgModel> GetQcImgById2(int productId, int type) {
-        //    var model = new List<QcImgModel>();
+        List<QcImgModel> GetQcImgById2(int productId, int type) {
+            var model = new List<QcImgModel>();
 
-        //    using (var vfi = new tammaContext()) {
-        //        var qcImgs = vfi.QcImgs.Where(t => t.ProductId == productId && t.Type == type && t.Active == true).OrderBy(t => t.ImgId);
-        //        foreach (var qcImg in qcImgs) {
-        //            var entity = new QcImgModel {
-        //                ImgId = qcImg.ImgId,
-        //                ImgUrl = qcImg.ImgUrl,
-        //                ModifiedDate = qcImg.ModifiedDate,
-        //                ModifiedUser = qcImg.ModifiedUser,
-        //                Name = qcImg.Name,
-        //                ProductId = productId,
-        //                Type = type,
-        //            };
-        //            model.Add(entity);
-        //        }
-
-        //    }
-        //    return model;
-        //}
+            using (var vfi = new tammaContext()) {
+                var qcImgs = vfi.QcImgs.Where(t => t.ProductId == productId && t.Type == type && t.Active == true).OrderBy(t => t.ImgId);
+                foreach (var qcImg in qcImgs) {
+                    var entity = new QcImgModel {
+                        ImgId = qcImg.ImgId,
+                        ImgUrl = qcImg.ImgUrl,
+                        ModifiedDate = qcImg.ModifiedDate,
+                        ModifiedUser = qcImg.ModifiedUser,
+                        Name = qcImg.Name,
+                        ProductId = productId,
+                        Type = type,
+                    };
+                    model.Add(entity);
+                }
+            }
+            return model;
+        }
 
 
 

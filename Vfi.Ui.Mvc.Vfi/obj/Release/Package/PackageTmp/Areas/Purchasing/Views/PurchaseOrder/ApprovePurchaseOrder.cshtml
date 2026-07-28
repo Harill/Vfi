@@ -264,12 +264,21 @@
     <div id="result"></div>
     </text>
 )
-        //.ClientEvents(e => e.OnLoad("Window_onLoad"));
+        .ClientEvents(e => e.OnOpen("window_onopen"))
         .Visible(false)
         .Width(960)
         .Render();
 }
-
+<script>
+    function window_onopen(e) {
+        $("#rptvPagePrintPurchaseOrderDetailEN_ReportToolbar_ExportGr_FormatList_DropDownList option[value='CSV']").remove();
+        $("#rptvPagePrintPurchaseOrderDetailEN_ReportToolbar_ExportGr_FormatList_DropDownList option[value='XLS']").remove();
+        $("#rptvPagePrintPurchaseOrderDetailEN_ReportToolbar_ExportGr_FormatList_DropDownList option[value='RTF']").remove();
+        $("#rptvPagePrintPurchaseOrderDetailEN_ReportToolbar_ExportGr_FormatList_DropDownList option[value='IMAGE']").remove();
+        $("#rptvPagePrintPurchaseOrderDetailEN_ReportToolbar_ExportGr_FormatList_DropDownList option[value='MHTML']").remove();
+        $("#rptvPagePrintPurchaseOrderDetailEN_ReportToolbar_ExportGr_FormatList_DropDownList option[value='XPS']").remove();
+    }
+</script>
 <style type="text/css">
     #windowReport {
         /*

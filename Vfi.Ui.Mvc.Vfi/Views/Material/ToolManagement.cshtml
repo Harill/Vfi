@@ -213,7 +213,7 @@
 </script>
 }
 
-<div class="title">Quản lý thông tin công cụ</div>
+<div class="title">@HttpContext.GetGlobalResourceObject("Resource", "ToolManagement")</div>
 
 <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px; width: 1120px;">
     <fieldset>
@@ -231,8 +231,8 @@
             </ul>
         </fieldset>
     <fieldset>
-        <legend>Tiêu chí trích lọc</legend>
-        <div class="grid_2_5">Loại công cụ</div>
+        <legend>@HttpContext.GetGlobalResourceObject("Resource", "Filter")</legend>
+        <div class="grid_2_5">@HttpContext.GetGlobalResourceObject("Resource", "ToolType")</div>
         <div class="grid_6">
             @{
                 Html.Telerik().ComboBox()
@@ -241,11 +241,11 @@
                     .HtmlAttributes(new {style = "width: 100%"})
                     //.DropDownHtmlAttributes(new { style = "width: 100%" })
                     .AutoFill(true)
-                    .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                    .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                     .Render();
             }
         </div>
-        <div class="grid_2_5">Loại sử dụng</div>
+        <div class="grid_2_5">@HttpContext.GetGlobalResourceObject("Resource", "UsingType")</div>
         <div class="grid_6">
             @{
                 Html.Telerik().ComboBox()
@@ -254,11 +254,11 @@
                     .HtmlAttributes(new {style = "width: 100%"})
                     //.DropDownHtmlAttributes(new { style = "width: 100%" })
                     .AutoFill(true)
-                    .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                    .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                     .Render();
             }
         </div>
-        <div class="grid_2_5">Tên công cụ</div>
+        <div class="grid_2_5">@HttpContext.GetGlobalResourceObject("Resource", "ToolName")</div>
         <div class="grid_4">
             @{
                 Html.Telerik().AutoComplete()
@@ -270,7 +270,7 @@
         <div class="grid_2_5">
             <button id="btnRefesh" class="t-button" onclick=" return RefreshGrid('gridTooll'); ">
                 <span class='t-icon t-insert'></span>
-                Làm mới
+               @HttpContext.GetGlobalResourceObject("Resource", "Refresh")
             </button>
         </div>
     </fieldset>
@@ -283,7 +283,7 @@
         .DataKeys(key => key.Add(f => f.ToolId).RouteKey("ToolId"))
         .ToolBar(
             toolbar =>
-                toolbar.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new {style = "margin-left:0px;"}))
+                toolbar.Insert().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new {style = "margin-left:0px;"}))
         .DataBinding(
             dataBinding => dataBinding.Ajax()
                 .Select("SelectAllTool", "Material", new { toolTypeId = 0, useType = 0, toolName =""})
@@ -292,49 +292,80 @@
         .Columns(columns =>
         {
             columns.Command(command =>
-                command.Edit().ButtonType(GridButtonType.Image).UpdateText("Cập nhập").InsertText("Thêm").CancelText("Hủy").Text("Sửa")
+                command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
+                    //.UpdateText("Cập nhập").InsertText("Thêm").CancelText("Hủy").Text("Sửa")
+                      .UpdateText(@HttpContext.GetGlobalResourceObject("Resource", "UpdateText").ToString())
+                      .InsertText(@HttpContext.GetGlobalResourceObject("Resource", "InsertText").ToString())
+                      .CancelText(@HttpContext.GetGlobalResourceObject("Resource", "CancelText").ToString())
+                      .Text(@HttpContext.GetGlobalResourceObject("Resource", "EditText").ToString())
                 ).Width(50).Title("").HtmlAttributes(new {style = "text-align:center"});
             //columns.Bound(f => f.VendorCodeName).Width(150)
             //       .ClientTemplate("<strong><#= VendorCodeName #></strong>");
             //columns.Bound(f => f.MaterialTypeName).Width(125)
             //       .ClientTemplate("<strong><#= MaterialTypeName #></strong>");
-            columns.Bound(f => f.Img).Width(40).Title("Hình")
+            columns.Bound(f => f.Img).Width(40)
+                //.Title("Hình")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "Img").ToString())
                 .ClientTemplate("<a id='<#=ToolId#>' href='" + Url.Content("~/Content/FileUpload/ToolImg/") + "<#=Img#>?<#=UploadDate#>' class='highslide' onclick='return hs.expand(this)'>" +
                                 "<img src='" + Url.Content("~/Content/FileUpload/ToolImg/") + "<#=Img#>?<#=UploadDate#>' height='40' width='40' title='Mở lớn'/>" +
                                 "</a><div class='highslide-caption'><#= ToolFullCode #></div>");
                     
             columns.Bound(f => f.MaterialTypeName).Width(150)
-                .HeaderTemplate("Loại</br>công cụ")
+                //.HeaderTemplate("Loại</br>công cụ")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "ToolType").ToString())
                 .ClientTemplate("<strong><#= MaterialTypeName #></strong>")
                 .Aggregate(agg => agg.Count())
                 .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>")
                 .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>");
             columns.Bound(f => f.ToolTypeName).Width(150)
-                .HeaderTemplate("Loại</br>công cụ")
+                //.HeaderTemplate("Loại</br>công cụ")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "UsingType").ToString())
                 .ClientTemplate("<strong><#= ToolTypeName #></strong>");
-            columns.Bound(f => f.ToolName).Width(120).Title("Tên công cụ");
-            columns.Bound(f => f.ToolCode).Width(100).Title("Mã công cụ")
+            columns.Bound(f => f.ToolName).Width(120)
+                //.Title("Tên công cụ")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "ToolName").ToString());
+            columns.Bound(f => f.ToolCode).Width(100)
+                //.Title("Mã công cụ")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "ToolCode").ToString())
                 .HtmlAttributes(new { style = "font-weight:bold;" });
-            columns.Bound(f => f.ToolFullDesign).Width(225).Title("Mã thiết kế").ReadOnly(true)
+            columns.Bound(f => f.ToolFullDesign).Width(225)
+                //.Title("Mã thiết kế")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "ToolFullDesign").ToString())
+                .ReadOnly(true)
                 .HtmlAttributes(new {style = "font-weight:bold;"});
-            columns.Bound(f => f.ToolDesignNo).Width(150).Title("Quy cách")
-                .HtmlAttributes(new { style = "font-weight:bold;" });
-            columns.Bound(f => f.ToolMaterial).Width(100).Title("Nguyên liệu")
-                .HtmlAttributes(new { style = "font-weight:bold;" });
-            columns.Bound(f => f.ToolProduction).Width(100).Title("Nhà SX")
-                .HtmlAttributes(new { style = "font-weight:bold;" });
-            columns.Bound(f => f.Description).Width(100).Title("Mô tả");
+            columns.Bound(f => f.ToolDesignNo).Width(150)
+                //.Title("Quy cách")
+                .HtmlAttributes(new { style = "font-weight:bold;" })
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "ToolDesignNo1").ToString());
+            columns.Bound(f => f.ToolMaterial).Width(100)
+                //.Title("Nguyên liệu")
+                .HtmlAttributes(new { style = "font-weight:bold;" })
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "ToolMaterial1").ToString());
+            columns.Bound(f => f.ToolProduction).Width(100)
+                //.Title("Nhà SX")
+                .HtmlAttributes(new { style = "font-weight:bold;" })
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "ToolProduction1").ToString());
+            columns.Bound(f => f.Description).Width(100)
+                //.Title("Mô tả")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "Description").ToString());
             columns.Bound(f => f.Active).Width(50)
                 .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=Active? checked='checked' : '' #> />")
-                .HtmlAttributes(new { style = "text-align:center" });
+                .HtmlAttributes(new { style = "text-align:center" })
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "Active").ToString());
             columns.Bound(f => f.IsDeleted).Width(50)
                 .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsDeleted' <#=IsDeleted? checked='checked' : '' #> />")
-                .HtmlAttributes(new { style = "text-align:center" });
+                .HtmlAttributes(new { style = "text-align:center" })
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "IsDeleted").ToString());
 
-            columns.Bound(f => f.ModifiedUser).Width(75).Title("Người làm").ReadOnly(true);
-            columns.Bound(f => f.ModifiedDate).Width(100).Title("Ngày làm").ReadOnly(true);
+            columns.Bound(f => f.ModifiedUser).Width(75)
+                //.Title("Người làm")
+                .ReadOnly(true).Title(@HttpContext.GetGlobalResourceObject("Resource", "ModifiedUser").ToString());
+            columns.Bound(f => f.ModifiedDate).Width(100)
+                //.Title("Ngày làm")
+                .ReadOnly(true)
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "ModifiedDate").ToString());
         })
-        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
         .ClientEvents(events => events.OnError("grid_OnError")
             .OnSave("grid_OnSave")
             .OnDataBinding("grid_OnDataBinding"))

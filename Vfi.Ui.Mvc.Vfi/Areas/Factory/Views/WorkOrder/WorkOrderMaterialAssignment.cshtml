@@ -176,11 +176,11 @@
     </script>
 }
 
-<div class="title">Phát nguyên liệu cho Work Order</div>
+<div class="title">@HttpContext.GetGlobalResourceObject("Resource", "WorkOrderMaterialAssignment")</div>
 
 <div class="t-info-sha" style="padding-left: 15px;padding-right: 15px;">
     
-        <div class="grid_2">Ngày</div>
+        <div class="grid_1">@HttpContext.GetGlobalResourceObject("Resource", "Date")</div>
         <div class="grid_3">
             @{
                 Html.Telerik().DatePicker()
@@ -192,39 +192,42 @@
         </div>
         <button id="btnPrintAssign" class="t-button" onclick="printWOAssignMaterial();">
             <span class='t-icon t-insert'></span>
-            In Phát nguyên liệu
+            @*In Phát nguyên liệu*@
+             @HttpContext.GetGlobalResourceObject("Resource", "Print") @HttpContext.GetGlobalResourceObject("Resource", "AssignMaterial")
             <span class="loadButton"></span>
         </button>
         <label>
             <input type="checkbox" id="chkAll" name="chkAll" />
-            Tất cả máy
+            @HttpContext.GetGlobalResourceObject("Resource", "AllMachine")
         </label>
         <label>
             <input type="checkbox" id="chkInventory" name="chkInventory" checked />
-            Còn tồn kho
+            @HttpContext.GetGlobalResourceObject("Resource", "HaveInventory")
         </label>
         <label>
             <input type="checkbox" id="chkWorkOrder" name="chkWorkOrder" checked />
-            Có Work Order
+            @HttpContext.GetGlobalResourceObject("Resource", "HaveWO")
         </label>
         <div class="clear"></div><br />
     
         
         <button id="btnPrintUsing" class="t-button" onclick="printWOMaterialUse();">
             <span class='t-icon t-insert'></span>
-            In sử dụng nguyên liệu
+            @*In nguyên liệu sử dụng*@
+            @HttpContext.GetGlobalResourceObject("Resource", "Print") @HttpContext.GetGlobalResourceObject("Resource", "MaterialUsed")
             <span class="loadButton"></span>
         </button>
         <button id="btnPrintBarcode" class="t-button" onclick="printBarcode();">
             <span class='t-icon t-insert'></span>
-            In barcode
+            @*In barcode*@
+             @HttpContext.GetGlobalResourceObject("Resource", "Print") barcode
             <span class="loadButton"></span>
         </button>
         <div class="clear"></div><br />
 
     <fieldset>
-        <legend>Thông tin phiếu</legend> 
-        <div class="grid_4">Nhân viên</div>
+        <legend>@HttpContext.GetGlobalResourceObject("Resource", "Information")</legend> 
+        <div class="grid_2">@HttpContext.GetGlobalResourceObject("Resource", "Employee")</div>
         <div class="grid_4">
             @{
                     Html.Telerik().ComboBox()
@@ -232,7 +235,7 @@
                         //.DataBinding(binding => binding.Ajax().Select("SelectComboBoxEmployee", "Employee", new { area = "Sales" }).Delay(350))
                         .HtmlAttributes(new { style = "width: 100%" })
                         //.DropDownHtmlAttributes(new { style = "width: 150px" })
-                        .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                        .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                         .HighlightFirstMatch(true)
                         .AutoFill(true)
                         .Render();
@@ -257,27 +260,59 @@
                 //       .Width(50).Title("")
                 //       .HtmlAttributes(new { style = "text-align:center" });
 
-                columns.Bound(f => f.RoutingId).Title("Chọn").Width(75)
-                    .HeaderTemplate("<button class='t-button' onclick='CreateWorkOrderMaterialAssignment()'>Tạo phiếu</button>"
-                                    + "<span class='processButton'></span>")
+                columns.Bound(f => f.RoutingId)
+                    //.Title("Chọn")
+                    .Width(75)
+                    .HeaderTemplate(
+                        "<button class='t-button' onclick='CreateWorkOrderMaterialAssignment()'>"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "NewText").ToString()
+                        + "</button>"
+                        + "<span class='processButton'></span>"
+                    )
                     .ClientTemplate("<input type='checkbox' name='chkIds' class='chkId' value='<#= RoutingId #>' />")
-                    .HtmlAttributes(new { style = "text-align:center" });
+                    .HtmlAttributes(new { style = "text-align:center" })
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Select").ToString());
 
                 //columns.Bound(f => f.RoutingId).Title("STT").Width(30).ReadOnly(true)
                 //    .ClientTemplate("<#= ++index #>")
                 //       .HeaderHtmlAttributes(new { style = "font-weight: bold" })
                 //       .HtmlAttributes(new { style = "font-weight: center;" });
                 columns.Bound(f => f.SerialNumber).Title("Work Order").Width(100).ReadOnly(true);
-                columns.Bound(f => f.MachineName).Title("Máy").Width(100).ReadOnly(true);
-                columns.Bound(f => f.ProductCode).Title("Sản phẩm").Width(150).ReadOnly(true);
-                columns.Bound(f => f.MaterialInvCode).Title("Nguyên liệu").Width(270).ReadOnly(true);
-                columns.Bound(f => f.PlannedCost).Title("Số lượng</br>(cây)").Width(70).ReadOnly(true);
-                columns.Bound(f => f.MoreInfo).Title("Ghi chú").ReadOnly(true);
+                columns.Bound(f => f.MachineName)
+                    //.Title("Máy")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Machine").ToString())
+                    .Width(100)
+                    .ReadOnly(true);
+                
+                columns.Bound(f => f.ProductCode)
+                    //.Title("Sản phẩm")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Product").ToString())
+                    .Width(150).ReadOnly(true);
+                
+                columns.Bound(f => f.MaterialInvCode)
+                    //.Title("Nguyên liệu")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Material").ToString())
+                    .Width(270).ReadOnly(true);
+                
+                columns.Bound(f => f.PlannedCost)
+                    //.Title("Số lượng</br>(cây)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Quantity").ToString() 
+                        + "<br>"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Bar").ToString()
+                        )
+                    .Width(70).ReadOnly(true);
+                columns.Bound(f => f.MoreInfo)
+                    //.Title("Ghi chú")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Note").ToString())
+                    .ReadOnly(true);
 
-                columns.Command(c => c.Delete().ButtonType(GridButtonType.Image)).Title("Hủy").Width(50);
+                columns.Command(c => c.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image))
+                    //.Title("Hủy")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Cancel").ToString())
+                    .Width(50);
             })
             .Selectable()
-            .Editable(editing => editing.Mode(GridEditMode.InLine))
+            .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
             .ClientEvents(e => e.OnError("grid_OnError"))
             .Scrollable(f => f.Height("auto"))
             .Sortable()

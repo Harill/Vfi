@@ -40,9 +40,15 @@
     </script>
 }
 
-<div class="title">Duyệt phiếu xuất nhập nguyên liệu</div>
+<div class="title">
+    @*Duyệt phiếu xuất nhập xi mạ *@
+    @HttpContext.GetGlobalResourceObject("Resource", "ApprovePlatingForm")
+</div>
 
-<div class="t-info-sha" style="padding-left: 15px; width: 250px; color: Maroon;">Sổ lệnh</div>
+<div class="t-info-sha" style="padding-left: 15px; width: 250px; color: Maroon;">
+    @*Sổ lệnh*@
+    @HttpContext.GetGlobalResourceObject("Resource", "OrdersSheet")
+</div>
 <div class="cover-div">
     @{
         Html.Telerik().Grid<PlatingFormModel>()
@@ -53,7 +59,8 @@
                      <div class="grid_7">
                          <button class="t-button" id="btnApprove" name="btnApprove" onclick=" Approve() ">
                              <span class='t-icon t-insert'></span>
-                             Duyệt các sổ lệnh
+                             @*Duyệt các sổ lệnh*@
+                             @HttpContext.GetGlobalResourceObject("Resource", "Approved")
                          </button>
                      </div>
                      <div class="clear"></div>
@@ -66,33 +73,79 @@
             )
             .Columns(columns =>
                 {
-                    columns.Bound(f => f.FormId).Title("Chọn").Width(35)
-                           .ClientTemplate("<input type='radio' name='chkIds' value='<#= FormId #>' />")
-                           .HtmlAttributes(new {style = "text-align:center"});
-                    columns.Bound(f => f.VendorCodeName).Width(100).Title("NCC");
-                    columns.Bound(f => f.PlatingTypeName).Width(50).Title("Loại");
-                    columns.Bound(f => f.CreateDate).Width(75).Title("Ngày nhập")
-                           .ClientTemplate("<strong><#= CreateDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', CreateDate) #></strong>");
-                    columns.Bound(f => f.PlatingFormNumber).Width(100).Title("Số phiếu");
-                    columns.Bound(f => f.CurrencyCode).Width(65).Title("Tiền tệ");
-                    columns.Bound(f => f.ExchangeRate).Width(65).Title("Tỉ giá");
-                    columns.Bound(f => f.TotalQuantityRequirement).Width(65).Title("Tổng SL(pcs)")
-                           .ClientTemplate("<#= TotalQuantityRequirement == null ? 0 : $.telerik.formatString('{0:n0}', TotalQuantityRequirement) #>");
-                    columns.Bound(f => f.TotalPrice).Width(75).Title("Tổng tiền")
-                           .ClientTemplate("<#= TotalPrice == null ? 0 : $.telerik.formatString('{0:n2}', TotalPrice) #>");
-                    columns.Bound(f => f.CreateUser).Width(75).Title("Người tạo");
-                    columns.Bound(f => f.Note).Width(95).Title("Ghi chú");
+                    columns.Bound(f => f.FormId)
+                        //.Title("Chọn")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Select").ToString())
+                        .Width(35)
+                        .ClientTemplate("<input type='radio' name='chkIds' value='<#= FormId #>' />")
+                        .HtmlAttributes(new {style = "text-align:center"});
+                   
+                    columns.Bound(f => f.VendorCodeName).Width(100)
+                        //.Title("NCC")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Vendor2").ToString())
+                        ;
+                  
+                    columns.Bound(f => f.PlatingTypeName).Width(50)
+                        //.Title("Loại")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Type").ToString())
+                        ;
+                 
+                    columns.Bound(f => f.CreateDate).Width(75)
+                        //.Title("Ngày nhập")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "ImportDate").ToString())
+                        .ClientTemplate("<strong><#= CreateDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', CreateDate) #></strong>");
+                 
+                    columns.Bound(f => f.PlatingFormNumber).Width(100)
+                        //.Title("Số phiếu")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "PlatingFormNumber").ToString())
+                        ;
+                 
+                    columns.Bound(f => f.CurrencyCode).Width(65)
+                        //.Title("Tiền tệ")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Currency").ToString())
+                        ;
+               
+                    columns.Bound(f => f.ExchangeRate).Width(65)
+                        //.Title("Tỉ giá")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "ExchangeRate").ToString())
+                        ;
+                   
+                    columns.Bound(f => f.TotalQuantityRequirement).Width(65)
+                        //.Title("Tổng SL(pcs)")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "TotalQuantity").ToString()
+                            + " (pcs)"
+                        )
+                        .ClientTemplate("<#= TotalQuantityRequirement == null ? 0 : $.telerik.formatString('{0:n0}', TotalQuantityRequirement) #>");
+                   
+                    columns.Bound(f => f.TotalPrice).Width(75)
+                        //.Title("Tổng tiền")
+                          .Title(@HttpContext.GetGlobalResourceObject("Resource", "TotalAmount").ToString())
+                        .ClientTemplate("<#= TotalPrice == null ? 0 : $.telerik.formatString('{0:n2}', TotalPrice) #>");
+                  
+                    columns.Bound(f => f.CreateUser).Width(75)
+                        //.Title("Người tạo")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "CreateUser").ToString())
+                        ;
+                  
+                    columns.Bound(f => f.Note).Width(95)
+                        //.Title("Ghi chú")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Note").ToString())
+                        ;
                     //columns.Bound(f => f.FormId).Title("In").Width(45)
                     //       .ClientTemplate("<input type='button' id='id_<#= FormId #>' value='In' class='t-button' onclick=PrintForm(<#= TransactionId #>) />")
                     //       .HtmlAttributes(new {style = "text-align:center"});
-                    columns.Command(c => c.Delete().ButtonType(GridButtonType.Image)).Width(50);
+               
+                    columns.Command(c => c.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(50);
                 })
             .DetailView(details => details.ClientTemplate(
                 Html.Telerik().TabStrip()
                     .Name("TabStrip_<#= FormId #>")
                     .SelectedIndex(0)
                     .Items(items =>
-                           items.Add().Text("Thông tin chi tiết").Content(
+                           items.Add().Text(
+                                //"Thông tin chi tiết"
+                                @HttpContext.GetGlobalResourceObject("Resource", "DetailInformation").ToString()
+                           ).Content(
                                Html.Telerik().Grid<PlatingDetailModel>()
                                    .Name("gridDetail_<#= FormId #>")
                                    .DataBinding(dataDindings => dataDindings.Ajax()
@@ -100,30 +153,76 @@
                                                                                     new {formId = "<#= FormId #>"}))
                                    .Columns(columns =>
                                        {
-                                           columns.Bound(f => f.ProductCode).Width(70).Title("Mã SP");
-                                           columns.Bound(f => f.PlatingCode).Width(100).Title("Mã xi mạ");
+                                           columns.Bound(f => f.ProductCode).Width(70)
+                                               //.Title("Mã SP")
+                                               .Title(@HttpContext.GetGlobalResourceObject("Resource", "ProductCode").ToString())
+                                               ;
+                                           
+                                           columns.Bound(f => f.PlatingCode).Width(100)
+                                               //.Title("Mã xi mạ")
+                                               .Title(@HttpContext.GetGlobalResourceObject("Resource", "PlatingCodeB").ToString())
+                                               ;
 
-                                           columns.Bound(f => f.Thickness).Width(70)
-                                                  .HeaderTemplate("Độ dày</br>(µm)");
-                                           columns.Bound(f => f.SaltSprayTime).Width(70)
-                                                  .HeaderTemplate("Phun muối</br>(h)");
-                                           columns.Bound(f => f.SpecialRequest).Width(100).Title("Yêu cầu");
-                                           columns.Bound(f => f.Sample).Width(70).Title("Mẫu SP");
-                                           columns.Bound(f => f.TestingEquipment).Width(70).Title("Thiết bị KT");
+                                           columns.Bound(f => f.Thickness)
+                                               .Width(70)
+                                               //.HeaderTemplate("Độ dày</br>(µm)")
+                                               .Title(@HttpContext.GetGlobalResourceObject("Resource", "Thickness").ToString()
+                                                    + " </br>(µm)"
+                                               )
+                                               ;
+                                       
+                                           columns.Bound(f => f.SaltSprayTime)
+                                               .Width(70)
+                                               //.HeaderTemplate("Phun muối</br>(h)")
+                                               .Title(@HttpContext.GetGlobalResourceObject("Resource", "SaltSpray").ToString()
+                                                    + "</br>(h)"
+                                               )
+                                               ;
+                                       
+                                           columns.Bound(f => f.SpecialRequest).Width(100)
+                                               //.Title("Yêu cầu")
+                                               .Title(@HttpContext.GetGlobalResourceObject("Resource", "Request").ToString())
+                                               ;
+                                        
+                                           columns.Bound(f => f.Sample).Width(70)
+                                               //.Title("Mẫu SP")
+                                               .Title(@HttpContext.GetGlobalResourceObject("Resource", "ProductSample1").ToString())
+                                               ;
+                                        
+                                           columns.Bound(f => f.TestingEquipment).Width(70)
+                                               //.Title("Thiết bị KT")
+                                               .Title(@HttpContext.GetGlobalResourceObject("Resource", "TestingEquipment1").ToString())
+                                               ;
 
-                                           columns.Bound(f => f.Unit).Width(50).Title("ĐVT");
-                                           columns.Bound(f => f.UnitPrice).Width(65).Title("Đơn giá")
-                                                  .ClientTemplate("<#= UnitPrice == null ? 0 : $.telerik.formatString('{0:n}', UnitPrice) #>");
-                                           columns.Bound(f => f.QuantityRequirement).Width(65).Title("SL")
-                                                  .ClientTemplate("<#= QuantityRequirement == null ? 0 : $.telerik.formatString('{0:n0}', QuantityRequirement) #>");
+                                           columns.Bound(f => f.Unit).Width(50)
+                                               //.Title("ĐVT")
+                                               .Title(@HttpContext.GetGlobalResourceObject("Resource", "Unit2").ToString())
+                                               ;
+                                       
+                                           columns.Bound(f => f.UnitPrice).Width(65)
+                                               //.Title("Đơn giá")
+                                                .Title(@HttpContext.GetGlobalResourceObject("Resource", "UnitPrice").ToString())
+                                               .ClientTemplate("<#= UnitPrice == null ? 0 : $.telerik.formatString('{0:n}', UnitPrice) #>");
+                                       
+                                           columns.Bound(f => f.QuantityRequirement).Width(65)
+                                               //.Title("SL")
+                                                  .Title(@HttpContext.GetGlobalResourceObject("Resource", "Quantity").ToString())
+                                               .ClientTemplate("<#= QuantityRequirement == null ? 0 : $.telerik.formatString('{0:n0}', QuantityRequirement) #>");
 
-                                           columns.Bound(f => f.ExportDateRequirement).Width(80).Title("Ngày xuất")
-                                                  .ClientTemplate("<#= ExportDateRequirement == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', ExportDateRequirement) #>");
+                                           columns.Bound(f => f.ExportDateRequirement).Width(80)
+                                               //.Title("Ngày xuất")
+                                                 .Title(@HttpContext.GetGlobalResourceObject("Resource", "ExportDate").ToString())
+                                               .ClientTemplate("<#= ExportDateRequirement == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', ExportDateRequirement) #>");
 
-                                           columns.Bound(f => f.ImportDateRequirement).Width(80).Title("Ngày giao")
-                                                  .ClientTemplate("<#= ImportDateRequirement == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', ImportDateRequirement) #>");
+                                           columns.Bound(f => f.ImportDateRequirement).Width(80)
+                                               //.Title("Ngày giao")
+                                               .Title(@HttpContext.GetGlobalResourceObject("Resource", "DeliveryDate").ToString())
+                                               .ClientTemplate("<#= ImportDateRequirement == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', ImportDateRequirement) #>");
 
-                                           columns.Bound(f => f.Note).Width(90).Title("Ghi chú");
+                                           columns.Bound(f => f.Note).Width(90)
+                                               //.Title("Ghi chú")
+                                               .Title(@HttpContext.GetGlobalResourceObject("Resource", "Note").ToString())
+                                               ;
                                        })
                                    .ClientEvents(events => events.OnError("grid_OnError"))
                                    .ToHtmlString()

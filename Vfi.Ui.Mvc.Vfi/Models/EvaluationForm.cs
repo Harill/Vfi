@@ -28,7 +28,7 @@ namespace Vfi.Ui.Mvc.Vfi.Models {
         public Nullable<int> TotalPoint { get; set; }
         public Nullable<int> ZeroPointCount { get; set; }
         public string Grade { get; set; }
-        public Nullable<int> NGQuantity { get; set; }
+        public Nullable<double> NGQuantity { get; set; }
         public Nullable<int> OrderQuantity { get; set; }
 
         public virtual Vendor Vendor { get; set; }

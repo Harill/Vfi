@@ -56,9 +56,15 @@
 
 }
 
-<div class="title">Duyệt làm sạch</div>
+<div class="title">
+    @*Duyệt làm sạch*@
+    @HttpContext.GetGlobalResourceObject("Resource", "WorkOrderCleanApprovement")
+</div>
 
-<div class="t-info-sha" style="padding-left: 15px; width: 550px; color: Maroon;">Danh sách lệnh<span class="processButton"></span></div>
+<div class="t-info-sha" style="padding-left: 15px; width: 550px; color: Maroon;">
+    @*Danh sách lệnh*@
+    @HttpContext.GetGlobalResourceObject("Resource", "OrdersSheet")
+    <span class="processButton"></span></div>
 <div class="cover-div">
     @{
         Html.Telerik().Grid<WorkOrderProcessModel>()
@@ -69,7 +75,8 @@
         <div class="grid_9">
             <button class="t-button" id="btnApproveTransaction" name="btnApproveTransaction" onclick=" ApproveTransaction() ">
                 <span class='t-icon t-insert'></span>
-                Duyệt các sổ lệnh
+                @*Duyệt các sổ lệnh*@
+                @HttpContext.GetGlobalResourceObject("Resource", "Approved")
                 <span class="processButton"></span>
             </button>
         </div>
@@ -82,56 +89,124 @@
                 .Delete("CancelWorkOrderCleanProcess", "WorkOrder", new { area = "Factory" })
     )
             .Columns(columns => {
-                columns.Bound(f => f.ProcessId).Title("Chọn").Width(50).ReadOnly(true)
+                columns.Bound(f => f.ProcessId)
+                    //.Title("Chọn")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Select").ToString())
+                    .Width(50).ReadOnly(true)
                     .ClientTemplate("<input type='checkbox' name='chkIds' value='<#= ProcessId #>' />")
                     .HtmlAttributes(new { style = "text-align:center" });
-                columns.Command(command => command.Edit().ButtonType(GridButtonType.Image)).Width(50).Title("Sửa")
+              
+                columns.Command(command => command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(50)
+                    //.Title("Sửa")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "EditText").ToString())
                     .HtmlAttributes(new { style = "text-align:center" });
-                columns.Bound(f => f.WorkOrderSerial).Title("Số WO").Width(80).ReadOnly(true)
+              
+                columns.Bound(f => f.WorkOrderSerial)
+                    //.Title("Số WO")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "WorkOrderNumber").ToString())
+                    .Width(80).ReadOnly(true)
                     .HtmlAttributes(new { style = "text-align: center;" });
-                columns.Bound(f => f.Date).Title("Ngày").Width(70).ReadOnly(true)
+                
+                columns.Bound(f => f.Date)
+                    //.Title("Ngày")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Date").ToString())
+                    .Width(70).ReadOnly(true)
                     .Format("{0:dd/MM/yyyy HH:mm}")
                     .HtmlAttributes(new { style = "text-align: center;" });
-                columns.Bound(f => f.MachineName).Title("Máy").Width(70).ReadOnly(true)
+               
+                columns.Bound(f => f.MachineName)
+                    //.Title("Máy")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Machine").ToString())
+                    .Width(70).ReadOnly(true)
                     .HtmlAttributes(new { style = "text-align: center;" });
-                columns.Bound(f => f.ProductCode).Title("Sản phẩm").Width(120).ReadOnly(true)
+               
+                columns.Bound(f => f.ProductCode)
+                    //.Title("Sản phẩm")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Product").ToString())
+                    .Width(120).ReadOnly(true)
                     .HtmlAttributes(new { style = "text-align: center;" });
 
-                columns.Bound(f => f.UsingQuantity).Title("Tổng SL</br>(pcs)").ReadOnly(true).Width(50)
+              
+                columns.Bound(f => f.UsingQuantity)
+                    //.Title("Tổng SL</br>(pcs)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "TotalQuantity1").ToString()
+                        + "</br>(pcs)"
+                    )
+                    .ReadOnly(true).Width(50)
                     .Format("{0:n0}")
                     .HtmlAttributes(new { style = "text-align: center;border-right:1px solid black;" });
-                columns.Bound(f => f.GoodQuantity).Title("SL OK</br>(pcs)").Width(70)
+             
+                columns.Bound(f => f.GoodQuantity)
+                    //.Title("SL OK</br>(pcs)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "GoodQuantity").ToString())
+                    .Width(70)
                     .HeaderHtmlAttributes(new { @class = "good-column" })
                     .Format("{0:n0}")
                     .HtmlAttributes(new { style = "text-align: right;" });
-                columns.Bound(f => f.GoodWeight).Title("TL OK</br>(g)").ReadOnly(true).Width(70)
+              
+                columns.Bound(f => f.GoodWeight)
+                    //.Title("TL OK</br>(g)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "GoodWeight").ToString())
+                    .ReadOnly(true).Width(70)
                     .HeaderHtmlAttributes(new { @class = "good-column" })
                     .Format("{0:n0}")
                     .HtmlAttributes(new { style = "text-align: right;border-right:1px solid black;" });
-                columns.Bound(f => f.NGQuantity).Title("SL CPL</br>(pcs)").Width(70)
+               
+                columns.Bound(f => f.NGQuantity)
+                    //.Title("SL CPL</br>(pcs)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "NGQuantity").ToString())
+                    .Width(70)
                     .HeaderHtmlAttributes(new { @class = "ng-column" })
                     .Format("{0:n0}")
                     .HtmlAttributes(new { style = "text-align: right;" });
-                columns.Bound(f => f.NGWeight).Title("TL CPL</br>(g)").ReadOnly(true).Width(70)
+              
+                columns.Bound(f => f.NGWeight)
+                    //.Title("TL CPL</br>(g)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "NGWeight").ToString())
+                    .ReadOnly(true).Width(70)
                     .HeaderHtmlAttributes(new { @class = "ng-column" })
                     .Format("{0:n0}")
                     .HtmlAttributes(new { style = "text-align: right;border-right:1px solid black;" });
-                columns.Bound(f => f.DefectQuantity).Title("SL PP</br>(pcs)").Width(70)
+              
+                columns.Bound(f => f.DefectQuantity)
+                    //.Title("SL PP</br>(pcs)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "DefectQuantity1").ToString())
+                    .Width(70)
                     .HeaderHtmlAttributes(new { @class = "defect-column" })
                     .Format("{0:n0}")
                     .HtmlAttributes(new { style = "text-align: right;" });
-                columns.Bound(f => f.DefectWeight).Title("TL PP</br>(g)").ReadOnly(true).Width(70)
+              
+                columns.Bound(f => f.DefectWeight)
+                    //.Title("TL PP</br>(g)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "DefectWeight1").ToString())
+                    .ReadOnly(true).Width(70)
                     .HeaderHtmlAttributes(new { @class = "defect-column" })
                     .Format("{0:n0}")
                     .HtmlAttributes(new { style = "text-align: right;border-right:1px solid black;" });
 
                 //columns.Bound(f => f.EoIName).ReadOnly(true);
-                columns.Bound(f => f.EmployeeName).Title("Nhân viên").Width(100).ReadOnly(true)
+              
+                columns.Bound(f => f.EmployeeName)
+                    //.Title("Nhân viên")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Employee").ToString())
+                    .Width(100).ReadOnly(true)
                     .HtmlAttributes(new { style = "text-align: center;" });
-                columns.Bound(f => f.MaterialInvCode).Title("Nguyên liệu").Width(100).ReadOnly(true)
+              
+                columns.Bound(f => f.MaterialInvCode)
+                    //.Title("Nguyên liệu")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Material").ToString())
+                    .Width(100).ReadOnly(true)
                     .HtmlAttributes(new { style = "text-align: center;" });
-                columns.Command(c => c.Delete().ButtonType(GridButtonType.Image)).Title("Hủy").Width(50);
-                columns.Bound(f => f.ModifiedUser).Title("Người làm").Width(100).ReadOnly(true)
+              
+                columns.Command(c => c.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image))
+                    //.Title("Hủy")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "CancelText").ToString())
+                    .Width(50);
+              
+                columns.Bound(f => f.ModifiedUser)
+                    //.Title("Người làm")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "ModifiedUser").ToString())
+                    .Width(100).ReadOnly(true)
                     .HtmlAttributes(new { style = "text-align: center;" });
             })
             //.DetailView(details => details.ClientTemplate(

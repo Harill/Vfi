@@ -301,7 +301,24 @@ namespace Vfi.Ui.Mvc.Vfi.Utilities {
             /// </summary>
             public static int ManagementApprovedPurchase = 383;
 
+            public static string ManagementApprovedPurchase2 = "Duyệt Yêu cầu mua hàng";
 
+
+            public static bool CheckRole2(string userName, string functionName) {
+                if (string.IsNullOrWhiteSpace(userName)) 
+                    return false;
+                var check = false;
+                using (var vfi = new vfiContext()){
+                    var user = vfi.Users.FirstOrDefault(t => t.Username.Equals(userName));
+                    var permission = vfi.Permissions.FirstOrDefault(t => t.UserID == user.UserId && t.Function.FunctionName == functionName);
+                    if (permission != null){
+                        if (permission.Execution ?? false) {
+                            check = true;
+                        }
+                    }
+                }
+                return check;
+            }
 
             public static bool CheckRole(string userName, int type) {
                 if (string.IsNullOrWhiteSpace(userName)) return false;

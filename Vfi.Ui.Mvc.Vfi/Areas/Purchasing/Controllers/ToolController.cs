@@ -15,7 +15,6 @@ using Vfi.Ui.Mvc.Vfi.Utilities;
 
 namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
     public class ToolController : Controller {
-        private Product ToolInv;
         //
         // GET: /Purchasing/Tool/
         #region view
@@ -26,6 +25,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
             }
             return ViewData;
         }
+
         public ActionResult ToolTransactionManagement() {
             if (!Request.IsAuthenticated) {
                 return RedirectToAction("Index", "Home", new { area = "" });
@@ -122,6 +122,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
             ViewData = GetPageConfigData();
             return View();
         }
+
         public ActionResult ToolImportExportReport() {
             if (!Request.IsAuthenticated) {
                 return RedirectToAction("Index", "Home", new { area = "" });
@@ -129,6 +130,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
             ViewData = GetPageConfigData();
             return View();
         }
+
         public ActionResult ChestManagement() {
             if (!Request.IsAuthenticated) {
                 return RedirectToAction("Index", "Home", new { area = "" });
@@ -917,7 +919,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                             TransactionFpt = transaction,
                             TransactionId = transaction.TransactionId,
                             VendorId = vendor,
-                            PoDetailId = detailModel.PoDetailId
+                            PoDetailId = detailModel.PoDetailId,
                         };
                         //if (purchaseOrder != null)
                         //{

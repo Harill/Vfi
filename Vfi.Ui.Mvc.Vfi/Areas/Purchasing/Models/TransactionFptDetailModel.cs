@@ -228,5 +228,6 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
             }
         }
 
+        public string InquiryNumber { get; set; }
     }
 }
