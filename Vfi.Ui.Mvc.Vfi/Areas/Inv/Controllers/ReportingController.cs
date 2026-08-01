@@ -4854,6 +4854,9 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                                                 ProductionTechnicalPrice = sx.Product.ProductionPricings.Any()
                                                                 ? sx.Product.ProductionPricings.FirstOrDefault().ProductionTechnicalPricing
                                                                 : 0,
+                                                // 31/07/2026
+                                                sx.Machine1.Active,
+
                                             }).ToList();
 
                     ////var startMonthly = monthly.AddMonths(-1);
@@ -5063,12 +5066,12 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                                 Math.Round((i.Number1) * i.UnitPrice / 1000000, MyUtilities.Product.ProductionDecimalPoint) +
                                 Math.Round((i.Number2) * i.UnitPrice / 1000000, MyUtilities.Product.ProductionDecimalPoint));
                         cnc2InMonth =
-                            importSx1Details.Where(i => i.MachineName.Contains("VF2"))
+                            importSx1Details.Where(i => i.MachineName.Contains("VF2") && i.Active == true)
                                             .Sum(i =>
                                 Math.Round((i.Number1) * i.UnitPrice / 1000000, MyUtilities.Product.ProductionDecimalPoint) +
                                 Math.Round((i.Number2) * i.UnitPrice / 1000000, MyUtilities.Product.ProductionDecimalPoint));
                         cnc2InWeek =
-                            sx1InWeek.Where(i => i.MachineName.Contains("VF2"))
+                            sx1InWeek.Where(i => i.MachineName.Contains("VF2") && i.Active == true)
                                             .Sum(i =>
                                 Math.Round((i.Number1) * i.UnitPrice / 1000000, MyUtilities.Product.ProductionDecimalPoint) +
                                 Math.Round((i.Number2) * i.UnitPrice / 1000000, MyUtilities.Product.ProductionDecimalPoint));
@@ -5488,7 +5491,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
                                           Math.Round((i.Number2) * i.UnitPrice / 1000000, MyUtilities.Product.ProductionDecimalPoint));
                             sp.Cnc2DailyPoint =
                                 sxKho1.Where(
-                                    p => p.ProductId == product.ProductId && p.MachineName.Contains("VF2"))
+                                    p => p.ProductId == product.ProductId && p.MachineName.Contains("VF2") && p.Active == true)
                                       .Sum(
                                           i =>
                                           Math.Round((i.Number1) * i.UnitPrice / 1000000, MyUtilities.Product.ProductionDecimalPoint) +

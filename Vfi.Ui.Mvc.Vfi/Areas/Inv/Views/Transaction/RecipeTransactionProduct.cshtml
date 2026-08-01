@@ -463,14 +463,23 @@
         return false;
     }
 </script>
-<div class="title">Tiến hoá sản phẩm</div>
+<div class="title">
+    @*Tiến hoá sản phẩm*@
+    @HttpContext.GetGlobalResourceObject("Resource", "RecipeTransactionProduct")
+</div>
 
 <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px; width: 920px;">
 
     <fieldset>
-        <legend>Thông tin phiếu lệnh nhập</legend>
+        <legend>
+            @*Thông tin phiếu lệnh nhập*@
+            @HttpContext.GetGlobalResourceObject("Resource", "ImportFormInformation")
+        </legend>
 
-        <div class="grid_2">Kho ghép:</div>
+        <div class="grid_2">
+            @*Kho ghép:*@
+            @HttpContext.GetGlobalResourceObject("Resource", "Warehouse") @HttpContext.GetGlobalResourceObject("Resource", "Combine")
+        </div>
         <div class="grid_4">
             @{
                 Html.Telerik().DropDownList()
@@ -496,13 +505,17 @@
         <div class="grid_3">
             <button id="btnRefesh" class="t-button" onclick=" return RefreshGrid('gridProduct'); ">
                 <span class='t-icon t-insert'></span>
-                Làm mới
+                @*Làm mới*@ 
+                @HttpContext.GetGlobalResourceObject("Resource", "Refresh")
             </button>
         </div>
         <div class="clear"></div>
         <br />
 
-        <div class="grid_2">Sản phẩm:</div>
+        <div class="grid_2">
+            @*Sản phẩm:*@
+            @HttpContext.GetGlobalResourceObject("Resource", "Product")
+        </div>
         <div class="grid_4">
             @{
                 Html.Telerik().AutoComplete()
@@ -519,7 +532,10 @@
                     .Render();
             }
         </div>
-        <div class="grid_2">Khách hàng:</div>
+        <div class="grid_2">
+            @*Khách hàng:*@
+            @HttpContext.GetGlobalResourceObject("Resource", "Customer")
+        </div>
         <div class="grid_7">
             @{
                 Html.Telerik().ComboBox()
@@ -529,7 +545,7 @@
                     .DropDownHtmlAttributes(new { style = "min-width: 375px" })
                     .ClientEvents(events => events.OnChange("customer_onChange"))
                     .AutoFill(true)
-                    .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                    .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                     .Render();
             }
         </div>
@@ -546,7 +562,8 @@
         <div class="grid_7">
             <button class="t-button" id="btnPickupId" name="btnPickupId" onclick=" PickupId() ">
                 <span class='t-icon t-insert'></span>
-                Chọn các sản phẩm vào lưới
+                @*Chọn các sản phẩm vào lưới*@
+                @HttpContext.GetGlobalResourceObject("Resource", "SelectProductIntoNet")
             </button>
         </div>
         <div class="clear"></div>
@@ -556,7 +573,10 @@
             .DataBinding(dataBindings => dataBindings.Ajax()
                 .Select("SelectProductRecipeById", "Inv", new { customerId = 0, warehouseId = 0, productCode = "" }))
             .Columns(columns => {
-                columns.Bound(f => f.RecipeId).Title("Chọn").Width(75)
+                columns.Bound(f => f.RecipeId)
+                    //.Title("Chọn")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Select").ToString())
+                    .Width(75)
                     .ClientTemplate("<input type='radio' name='chkIds' value='<#= RecipeId #>' />")
                     .HtmlAttributes(new { style = "text-align:center" });
 
@@ -564,18 +584,40 @@
                 //       .ClientTemplate("<a id='<#= RecipeId #>' href='" + Url.Content("~/Content/FileUpload/Drawing/") + "<#=ProductImg#>?<#=UploadDate#>' class='highslide' onclick='return hs.expand(this)'>" +
                 //                       "<img src='" + Url.Content("~/Content/FileUpload/Drawing/") + "<#=ProductImg#>?<#=UploadDate#>' height='40' width='40' title='Mở lớn'/>" +
                 //                       "</a><div class='highslide-caption'><#= ProductCode #></div>");
-                columns.Bound(f => f.ProductCode).Title("Mã SP").Width(120);
-                columns.Bound(f => f.RecipeCode).Width(100).Title("Mã ghép");
-                columns.Bound(f => f.RecipeName).Width(150).Title("Tên");
+             
+                columns.Bound(f => f.ProductCode)
+                    //.Title("Mã SP")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "ProductCode2").ToString())
+                    .Width(120);
+                
+                columns.Bound(f => f.RecipeCode).Width(100)
+                    //.Title("Mã ghép")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "CombineCode").ToString());
+                
+                columns.Bound(f => f.RecipeName).Width(150)
+                    //.Title("Tên")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Name").ToString());
+                
                 columns.Bound(f => f.InvQuantity).Width(70)
-                    .HeaderTemplate("Đang </br>tồn kho")
+                    //.HeaderTemplate("Đang </br>tồn kho")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Inventory").ToString())
                     .Format("{0:n0}")
                     .HtmlAttributes(new { style = "text-align: right;border-right: 1px black solid;" });
+                
                 columns.Bound(f => f.AvailableQuantity).Width(70)
-                    .HeaderTemplate("SL có thế</br>ghép")
+                    //.HeaderTemplate("SL có thế</br>ghép")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Quantity2").ToString()
+                        + " "
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Available").ToString()
+                        + "</br>"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Combine").ToString()
+                    )
                     .Format("{0:n0}")
                     .HtmlAttributes(new { style = "text-align: right;border-right: 1px black solid;" });
-                columns.Bound(f => f.DetailDescription).Title("Mô tả ghép");
+                
+                columns.Bound(f => f.DetailDescription)
+                    //.Title("Mô tả ghép")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Describe").ToString());
             })
             .Scrollable(f => f.Height(100))
             .Resizable(f => f.Columns(true))
@@ -590,12 +632,17 @@
 <div class="clear"></div>
 <br />
 
-<div class="t-info-sha" style="padding-left: 15px; width: 250px; color: Maroon;">Chi tiết lệnh xuất nhập sản phẩm</div>
+<div class="t-info-sha" style="padding-left: 15px; width: 250px; color: Maroon;">
+    @*Chi tiết lệnh xuất nhập sản phẩm*@
+    @HttpContext.GetGlobalResourceObject("Resource", "ProductInputOrderDetail")
+</div>
 <div class="cover-div">
     @{
         Html.Telerik().Grid<ProductCombinationRecipeModel>()
             .Name("gridProductPicked")
-            .ToolBar(bar => bar.SubmitChanges().ButtonType(GridButtonType.ImageAndText).SaveText("Lưu lại").CancelText("Huỷ bỏ"))
+            .ToolBar(bar => bar.SubmitChanges().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText)
+                .SaveText(@HttpContext.GetGlobalResourceObject("Resource", "SaveText").ToString())
+                .CancelText(@HttpContext.GetGlobalResourceObject("Resource", "CancelText").ToString()))
             .DataKeys(keys => keys.Add(f => f.RecipeId).RouteKey("recipeId"))
             .DataBinding(dataBindings => dataBindings.Ajax()
                 .Select("SelectProductRecipePicked", "Inv", new { productIds = "", warehouseId = 0 })
@@ -604,21 +651,47 @@
                 //columns.Bound(f => f.ProductId).Width(30).ReadOnly(true)
                 //       .ClientTemplate("<#= ++index #>")
                 //       .HeaderTemplate("<strong>STT</strong>");
-                columns.Bound(f => f.CustomerCode).Width(70).HeaderTemplate("Khách</br>hàng").ReadOnly(true);
-                columns.Bound(f => f.ProductCode).Width(120).Title("Mã SP").ReadOnly(true);
-                columns.Bound(f => f.LotNumber).Width(150).Title("Lô");
+            
+                columns.Bound(f => f.CustomerCode).Width(70)
+                    //.HeaderTemplate("Khách</br>hàng")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Customer").ToString())
+                    .ReadOnly(true);
+                
+                columns.Bound(f => f.ProductCode).Width(120)
+                    //.Title("Mã SP")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "ProductCode2").ToString())
+                    .ReadOnly(true);
+                
+                columns.Bound(f => f.LotNumber).Width(150)
+                    //.Title("Lô")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Lot").ToString());
+                
                 columns.Bound(f => f.ProductWeight).Width(70).ReadOnly(true)
-                    .HeaderTemplate("TL</br>(g/pc)")
+                    //.HeaderTemplate("TL</br>(g/pc)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Weight2").ToString()
+                        + "</br>(g/pc)"
+                    )
                     .Format("{0:n3}")
                     .HtmlAttributes(new { style = "text-align: right;border-right: 1px black solid;" });
+                
                 columns.Bound(f => f.InvQuantity).ReadOnly(true).Width(70)
-                    .HeaderTemplate("Đang </br>tồn kho")
+                    //.HeaderTemplate("Đang </br>tồn kho")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Inventory").ToString())
                     .Format("{0:n0}")
                     .HtmlAttributes(new { style = "text-align: right;border-right: 1px black solid;" });
+                
                 columns.Bound(f => f.AvailableQuantity).Width(70).ReadOnly(true)
-                    .HeaderTemplate("SL có thể</br>ghép (pcs)")
+                    //.HeaderTemplate("SL có thể</br>ghép (pcs)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Quantity2").ToString()
+                        + " "
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Available").ToString()
+                        + "</br>"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Combine").ToString()
+                        + " (pcs)"
+                    )
                     .Format("{0:n0}")
                     .HtmlAttributes(new { style = "text-align: right;border-right: 1px black solid;" });
+                
                 //columns.Bound(f => f.IsRotateAll).Width(50).Title("All")
                 //    .HeaderHtmlAttributes(new { @class = "edit-column" })
                 //    .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsRotateAll_<#= ProductInventoryIssueId #>' class='IsRotateAll_<#= ProductInventoryIssueId #>' <#=IsRotateAll? checked='checked' : '' #> />")
@@ -630,7 +703,13 @@
                 //    .HtmlAttributes(new { style = "text-align: right;" })
                 //    .FooterTemplate("<span id='TotalQuantityKg'></span>")
                 //    .FooterHtmlAttributes(new { style = "text-align: right;" });
-                columns.Bound(f => f.Quantity).Width(90).HeaderTemplate("SL ghép</br>(pcs)")
+
+                columns.Bound(f => f.Quantity).Width(90)
+                    //.HeaderTemplate("SL ghép</br>(pcs)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Quantity2").ToString()
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Combine").ToString()
+                        + "</br>(pcs)"
+                    )
                     .HeaderHtmlAttributes(new { @class = "edit-column" })
                     .ClientGroupFooterTemplate("<div style='text-align: right; width: 100%;'><span id='GroupQuantity_<#= groupIndex++ #>'>0</span></div>")
                     .ClientTemplate("<span name='Quantity' class='Quantity'><#= Quantity == null ? 0 : $.telerik.formatString('{0:n0}', Quantity) #></span>")
@@ -642,8 +721,13 @@
                 //    .HtmlAttributes(new { style = "border-left: 1px black solid;" });
                 //columns.Bound(f => f.Note).Title("Ghi Chú")
                 //    .HtmlAttributes(new { style = "border-left: 1px black solid;" });
-                columns.Bound(f => f.DetailDescription).Title("Mô tả ghép").ReadOnly(true);
-                columns.Command(commands => commands.Delete().ButtonType(GridButtonType.Image).Text("")).Width(50).Title("");
+                
+                columns.Bound(f => f.DetailDescription)
+                    //.Title("Mô tả ghép")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Describe").ToString())
+                    .ReadOnly(true);
+                
+                columns.Command(commands => commands.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image).Text("")).Width(50).Title("");
             })
             .ClientEvents(events => events
                 .OnDataBinding("gridProductPicked_OnDataBinding")
@@ -651,7 +735,7 @@
                 .OnSubmitChanges("gridProductPicked_onSubmitChanges")
                 .OnError("grid_OnError")
             )
-            .Editable(editing => editing.Mode(GridEditMode.InCell))
+            .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InCell))
             .KeyboardNavigation()
             .Groupable(group => group.Groups(g => g.Add(model => model.ProductCode)))
             .Render();   

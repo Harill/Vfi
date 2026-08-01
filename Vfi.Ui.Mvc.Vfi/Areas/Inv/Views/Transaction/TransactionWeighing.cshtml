@@ -279,16 +279,23 @@
     </script>
 }
 
-<div class="title">Cân hàng</div>
+<div class="title">
+    @*Cân hàng*@
+    @HttpContext.GetGlobalResourceObject("Resource", "Weighing")
+</div>
 <div class="clear"></div>
 <br />
 
 <div class="t-info-sha fieldheader fieldheader1">
     <fieldset>
-        <legend>Thông tin sản phẩm</legend>
+        <legend>
+            @*Thông tin sản phẩm*@
+            @HttpContext.GetGlobalResourceObject("Resource", "ProductInformation")
+        </legend>
         <div class="grid_6">
             <div class="grid_1_5">
-                Kho
+                @*Kho*@
+                @HttpContext.GetGlobalResourceObject("Resource", "Warehouse")
             </div>
             <div class="grid_4">
                 @{
@@ -297,7 +304,7 @@
                         .DataBinding(binding => binding.Ajax().Select("SelectComboBoxWeighingWarehouse", "Warehouse", new { area = "Inv" }).Delay(350))
                         .HtmlAttributes(new { style = "width: 100%" })
                         .DropDownHtmlAttributes(new { style = "width: 250px" })
-                        .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                        .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                         .HighlightFirstMatch(true)
                         .AutoFill(true)
                         //.ClientEvents(events => events.OnChange("warehouse_OnChange"))
@@ -308,7 +315,8 @@
             <br />
 
             <div class="grid_1_5">
-                Sản phẩm
+                @*Sản phẩm*@
+                @HttpContext.GetGlobalResourceObject("Resource", "Product")
             </div>
             <div class="grid_4">
                 @{
@@ -318,7 +326,7 @@
                         .HtmlAttributes(new { style = "width: 100%" })
                         .DropDownHtmlAttributes(new { style = "width: 275px" })
                         .AutoFill(true)
-                        .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                        .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                         .ClientEvents(events => { events.OnChange("product_OnChange"); })
                         .Render();
                 }
@@ -327,7 +335,8 @@
             <div class="clear"></div>
             <br />
             <div class="grid_1_5">
-                TL SP
+                @*TL SP*@
+                @HttpContext.GetGlobalResourceObject("Resource", "ProductWeight")
             </div>
             <div class="grid_2">
                 @{
@@ -348,24 +357,30 @@
         <div class="grid_3">
             <button class="t-button" id="btnAddData" name="btnAddData" onclick=" AddData() ">
                 <span class='t-icon t-insert'></span>
-                Nạp liệu
+                @*Nạp liệu*@
+                @HttpContext.GetGlobalResourceObject("Resource", "Input")
             </button>
             <span class="twoToneButton"></span>
             <div class="clear"></div>
             <br />
             <div class="grid_3_5">
-                TK (pcs): <span id="InventoryQuantity">0</span>
+                @*TK (pcs):*@
+                @HttpContext.GetGlobalResourceObject("Resource", "Inv") (pcs):
+                 <span id="InventoryQuantity">0</span>
             </div>
             <div class="clear"></div>
             <br />
 
             <div class="grid_3_5">
-                TK (g): <span id="InventoryWeight">0</span>
+                @*TK (g):*@ 
+                @HttpContext.GetGlobalResourceObject("Resource", "Inv") (g):
+                <span id="InventoryWeight">0</span>
             </div>
         </div>
         <br />
         <div class="grid_2">
-            TL BB
+            @*TL BB*@
+            @HttpContext.GetGlobalResourceObject("Resource", "PackagingWeight2")
         </div>
         <div class="grid_1_5">
             @{
@@ -389,7 +404,10 @@
 
 <div class="t-info-sha fieldheader fieldheader2">
     <fieldset>
-        <legend>Cân hàng</legend>
+        <legend>
+            @*Cân hàng*@
+            @HttpContext.GetGlobalResourceObject("Resource", "Weighing")
+        </legend>
         <div style="text-align: center; width: 100%;  font-size: xxx-large;">
             <span id="WeighValue">~</span>
             kg
@@ -405,9 +423,13 @@
 
 <div class="t-info-sha fieldheader fieldheader3">
     <fieldset>
-        <legend>Cấu hình đóng gói</legend>
+        <legend>
+            @*Cấu hình đóng gói*@
+            @HttpContext.GetGlobalResourceObject("Resource", "PackingConfiguration")
+        </legend>
         <div class="grid_2_5">
-            Tự động nạp
+            @*Tự động nạp*@
+            @HttpContext.GetGlobalResourceObject("Resource", "AutoReload")
         </div>
         <div class="grid_1">
             <label>
@@ -427,11 +449,13 @@
                     .Render();
             }
         </div>
-        giây
+        @*giây*@
+        @HttpContext.GetGlobalResourceObject("Resource", "Seconds")
         <div class="clear"></div>
         <br />
         <div class="grid_2_5">
-            Dung sai SL
+             @*Dung sai SL*@
+            @HttpContext.GetGlobalResourceObject("Resource", "QuantityTolerances2")
         </div>
         <div class="grid_1">
             @{
@@ -466,13 +490,15 @@
         <div class="grid_3">
             <button class="t-button" id="btnConnect" name="btnConnect" onclick=" Connect() ">
                 <span class='t-icon t-insert'></span>
-                Kết nối cân
+                @*Kết nối cân*@
+                @HttpContext.GetGlobalResourceObject("Resource", "Connect1")
             </button> | 
         </div>
         <div class="grid_3">
             <button class="t-button" id="btnDisConnect" name="btnDisConnect" onclick=" DisConnect() ">
                 <span class='t-icon t-delete'></span>
-                Ngắt kết nối
+                @*Ngắt kết nối*@
+                @HttpContext.GetGlobalResourceObject("Resource", "DisConnect1")
             </button>
         </div>
         <div class="clear"></div>
@@ -498,13 +524,17 @@
 
 <div class="clear"></div>
 
-<div class="t-info-sha" style="padding-left: 15px; width: 250px; color: Maroon;">Chi tiết lệnh xuất nhập sản phẩm</div>
+<div class="t-info-sha" style="padding-left: 15px; width: 250px; color: Maroon;">
+    @*Chi tiết lệnh xuất nhập sản phẩm*@
+    @HttpContext.GetGlobalResourceObject("Resource", "OrderDetail")
+</div>
 <div class="cover-div">
     @{
         Html.Telerik().Grid<ProductInventoryRotateModel>()
             .Name("gridTransactionDetail")
             .ToolBar(bar => {
-                    bar.Custom().ButtonType(GridButtonType.Text).Text("Lưu dữ liệu cân").Name("A")
+                    bar.Custom().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Text)
+                            .Text(@HttpContext.GetGlobalResourceObject("Resource", "SaveText").ToString()).Name("A")
                        .HtmlAttributes(new { onclick = "SaveWeighingData()", href = "#" });
                     //bar.SubmitChanges().ButtonType(GridButtonType.ImageAndText).SaveText("Lưu thay đổi").CancelText("Huỷ tất cả");
                 })
@@ -516,22 +546,45 @@
                 )
             .Columns(columns => {
                 columns.Bound(f => f.ProductId).Width(30).ReadOnly(true)
-                       .ClientTemplate("<#= ++index #>")
-                       .HeaderTemplate("<strong>STT</strong>");
-                columns.Bound(f => f.CustomerCode).Width(70).HeaderTemplate("Khách hàng").ReadOnly(true);
-                columns.Bound(f => f.ProductCode).Width(120).Title("Mã SP").ReadOnly(true);
+                    .ClientTemplate("<#= ++index #>")
+                    //.HeaderTemplate("<strong>STT</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Index").ToString());
+             
+                columns.Bound(f => f.CustomerCode).Width(70)
+                    //.HeaderTemplate("Khách hàng")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Customer").ToString())
+                    .ReadOnly(true);
+                
+                columns.Bound(f => f.ProductCode).Width(120)
+                    //.Title("Mã SP")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "ProductCode2").ToString())
+                    .ReadOnly(true);
+                
                 columns.Bound(f => f.ProductWeight).Width(70).ReadOnly(true)
-                    .HeaderTemplate("TL SP (g/pc)")
+                    //.HeaderTemplate("TL SP (g/pc)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "ProductWeight").ToString()
+                        + " (g/pc)" 
+                    )
                     .Format("{0:n3}")
                     .HtmlAttributes(new { style = "text-align: right;border-right: 1px black solid;" });
                 
-                columns.Bound(f => f.QuantityKg).Width(90).HeaderTemplate("Trọng lượng (kg)")
+                columns.Bound(f => f.QuantityKg).Width(90)
+                    //.HeaderTemplate("Trọng lượng (kg)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "UnitWeight").ToString()
+                        + " (kg)"
+                    )
                     .Format("{0:n2}")
                     .HtmlAttributes(new { style = "text-align: right;" });
-                columns.Bound(f => f.Quantity).Width(90).HeaderTemplate("Số lượng (pcs)")
+                
+                columns.Bound(f => f.Quantity).Width(90)
+                    //.HeaderTemplate("Số lượng (pcs)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Quantity").ToString()
+                        + " (pcs)"
+                    )
                     .Format("{0:n0}")
                     .HtmlAttributes(new { style = "text-align: right;" });
-                columns.Command(commands => commands.Delete().ButtonType(GridButtonType.Image).Text("")).Width(50).Title("");
+                
+                columns.Command(commands => commands.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image).Text("")).Width(50).Title("");
             })
             .ClientEvents(events => events
                 .OnDataBinding("grid_OnDataBinding")

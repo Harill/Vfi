@@ -108,13 +108,22 @@
 
 }
 
-<div class="title">Phân đơn hàng xuất kho</div>
+<div class="title">
+    @*Phân đơn hàng xuất kho*@
+    @HttpContext.GetGlobalResourceObject("Resource", "AddTransactionDetail")
+</div>
 
 <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px; width: 920px;">
 
     <fieldset>
-        <legend>Thông tin phiếu xuất</legend>
-        <div class="grid_2">Số phiếu</div>
+        <legend>
+            @*Thông tin phiếu xuất*@
+            @HttpContext.GetGlobalResourceObject("Resource", "TransactionInformation")
+        </legend>
+        <div class="grid_2">
+            @*Số phiếu*@
+            @HttpContext.GetGlobalResourceObject("Resource", "TransactionNumber")
+        </div>
         <div class="grid_6">
             @{
                 Html.Telerik().ComboBox()
@@ -139,9 +148,12 @@
             .Name("grid")
             .ToolBar(bar =>
                 {
-                    bar.Custom().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Text).Text("Lưu mặc định").Name("A")
+                    bar.Custom().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Text)
+                            .Text(@HttpContext.GetGlobalResourceObject("Resource", "SaveDefaultText").ToString()).Name("A")
                        .HtmlAttributes(new { onclick = "AddDefault()", href = "#" });
-                    bar.SubmitChanges().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).SaveText("Lưu thay đổi").CancelText("Huỷ tất cả");
+                    bar.SubmitChanges().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText)
+                        .SaveText(@HttpContext.GetGlobalResourceObject("Resource", "SaveChangesText").ToString())
+                        .CancelText(@HttpContext.GetGlobalResourceObject("Resource", "CancelAll").ToString());
                 })
             .DataKeys(keys => keys.Add(f => f.ProductInvId).RouteKey("productInvId"))
             .DataBinding(dataBindings => dataBindings.Ajax()
@@ -151,46 +163,76 @@
             {
                 columns.Bound(f => f.ProductId).Width(40)
                     .ClientTemplate("<#= ++index #>")
-                    .HeaderTemplate("<strong>STT</strong>")
+                    //.HeaderTemplate("<strong>STT</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Index").ToString())
                     .HtmlAttributes(new { style = "text-align: center;" });
-                columns.Bound(f => f.ProductCode).Width(120).ReadOnly(true).HeaderTemplate("<strong>Mã SP</strong>")
+                
+                columns.Bound(f => f.ProductCode).Width(120).ReadOnly(true)
+                    //.HeaderTemplate("<strong>Mã SP</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "ProductCode2").ToString())
                     .Aggregate(agg => agg.Count())
                     .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>")
                     .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>");
-                columns.Bound(f => f.ProductInvLot).Width(150).Title("Lô").ReadOnly(true);
+                
+                columns.Bound(f => f.ProductInvLot).Width(150)
+                    //.Title("Lô")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Lot").ToString())
+                    .ReadOnly(true);
+                
                 columns.Bound(f => f.ProductWeight).Width(90).ReadOnly(true)
-                    .HeaderTemplate("TL SP</br>(g/pc)")
+                    //.HeaderTemplate("TL SP</br>(g/pc)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "ProductWeight").ToString()
+                        + "</br>(g/pc)"
+                    )
                     .Format("{0:n3}")
                     .HtmlAttributes(new {style = "text-align: right;"});
+                
                 columns.Bound(f => f.ProductInvQuantity).ReadOnly(true).Width(90)
-                    .HeaderTemplate("Tồn kho</br>(pcs)")
+                    //.HeaderTemplate("Tồn kho</br>(pcs)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Inventory").ToString()
+                        + "</br>(pcs)"
+                    )
                     .Format("{0:n0}")
                     .HtmlAttributes(new {style = "text-align: right;"});
+                
                 columns.Bound(f => f.TransactionProductQuantity).ReadOnly(true).Width(90)
-                    .HeaderTemplate("SL cần</br>(pcs)")
+                    //.HeaderTemplate("SL cần</br>(pcs)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "RequiredQuantity2").ToString()
+                        + "</br>(pcs)"
+                    )
                     .ClientTemplate("<#= TransactionProductQuantity == 0 ? '' : $.telerik.formatString('{0:n0}', TransactionProductQuantity) #>")
                     .Aggregate(agg => agg.Sum())
                     .HtmlAttributes(new {style = "text-align: right;"})
                     .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                     .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                     .FooterHtmlAttributes(new {style = "text-align: right;"});
+                
                 columns.Bound(f => f.ProductInvAvailable).ReadOnly(true).Width(95)
-                    .HeaderTemplate("Có thể</br>chuyển(pcs)")
+                    //.HeaderTemplate("Có thể</br>chuyển(pcs)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "AvailableTransfer1").ToString()
+                        + "</br>(pcs)"
+                    )
                     .Format("{0:n0}")
                     .HtmlAttributes(new {style = "text-align: right;"});
-                columns.Bound(f => f.Quantity).Width(90).HeaderTemplate("SL xuất</br>(pcs)")
+                
+                columns.Bound(f => f.Quantity).Width(90)
+                    //.HeaderTemplate("SL xuất</br>(pcs)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "ExportQuantity2").ToString()
+                        + "</br>(pcs)"
+                    )
                     //.Format("{0:n0}")
                     .HtmlAttributes(new {style = "text-align: right;"})
                     .ClientTemplate("<span name='Quantity' class='Quantity'><#= $.telerik.formatString('{0:n0}', Quantity) #></span>")
-                    
                     .Aggregate(agg => agg.Sum())
                     //.ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                     .ClientGroupFooterTemplate("<div style='text-align: right; width: 100%;'><span id='GroupQuantity_<#= ++groupIndex #>'><#= $.telerik.formatString('{0:n0}', Sum) #></span></div>")
-                    
                     //.ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                     .ClientFooterTemplate("<span id='TotalQuantity'><#= $.telerik.formatString('{0:n0}', Sum) #></span>")
                     .FooterHtmlAttributes(new {style = "text-align: right;"});
-                columns.Bound(f => f.Note).Title("Ghi chú");
+                
+                columns.Bound(f => f.Note)
+                    //.Title("Ghi chú")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Note").ToString());
             })
             .Resizable(f => f.Columns(true))
             .ClientEvents(events => events.OnDataBinding("grid_OnDataBinding")

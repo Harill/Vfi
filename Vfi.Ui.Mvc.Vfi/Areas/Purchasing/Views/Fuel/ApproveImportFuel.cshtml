@@ -115,9 +115,15 @@
     
 }
 
-<div class="title">Duyệt phiếu xuất nhập nhiên liệu</div>
+<div class="title">
+    @*Duyệt phiếu xuất nhập nhiên liệu*@
+    @HttpContext.GetGlobalResourceObject("Resource", "ApproveImportFuel")
+</div>
 
-<div class="t-info-sha" style="padding-left: 15px; width: 250px; color: Maroon;">Sổ lệnh</div>
+<div class="t-info-sha" style="padding-left: 15px; width: 250px; color: Maroon;">
+    @*Sổ lệnh*@
+    @HttpContext.GetGlobalResourceObject("Resource", "OrdersSheet")
+</div>
 <div class="cover-div">
     @{
         Html.Telerik().Grid<TransactionFptModel>()
@@ -128,7 +134,8 @@
                      <div class="grid_7">
                          <button class="t-button" id="btnApproveTransaction" name="btnApproveTransaction" onclick=" ApproveTransaction() ">
                              <span class='t-icon t-insert'></span>
-                             Duyệt các sổ lệnh
+                             @*Duyệt các sổ lệnh*@
+                             @HttpContext.GetGlobalResourceObject("Resource", "Approved")
                          </button>
                      </div>
                      <div class="clear"></div>
@@ -141,41 +148,83 @@
             )
             .Columns(columns =>
                 {
-                    columns.Bound(f => f.TransactionId).Title("Chọn").Width(35)
-                           .ClientTemplate("<input type='radio' name='chkTransactionIds' class='chkCheck'  value='<#= TransactionId #>' />")
-                           .HtmlAttributes(new {style = "text-align:center"});
-                    columns.Bound(f => f.TransactionDate).Width(85).Title("Ngày nhập")
-                           .ClientTemplate("<strong><#= TransactionDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', TransactionDate) #></strong>");
-                    columns.Bound(f => f.PoCode).Width(100).Title("Phiếu mua");
-                    columns.Bound(f => f.TransactionCode).Width(100).Title("Số phiếu");
+                    columns.Bound(f => f.TransactionId)
+                        //.Title("Chọn")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Select").ToString())
+                        .Width(35)
+                        .ClientTemplate("<input type='radio' name='chkTransactionIds' class='chkCheck'  value='<#= TransactionId #>' />")
+                        .HtmlAttributes(new {style = "text-align:center"});
+           
+                    columns.Bound(f => f.TransactionDate).Width(85)
+                        //.Title("Ngày nhập")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "ImportDate").ToString())
+                        .ClientTemplate("<strong><#= TransactionDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', TransactionDate) #></strong>");
+              
+                    columns.Bound(f => f.PoCode).Width(100)
+                        //.Title("Phiếu mua")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "PONumber").ToString());
+                    
+                    columns.Bound(f => f.TransactionCode).Width(100)
+                        //.Title("Số phiếu")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "TransactionNumber").ToString());
+                    
                     columns.Bound(f => f.EoIName).Width(60)
-                           .HeaderTemplate("<span style='text-decoration:underline'>Nhập</span></br>Xuất")
-                           .HtmlAttributes(new {style = "text-align:center;"});
+                        .HeaderTemplate("<span style='text-decoration:underline'>"
+                            + @HttpContext.GetGlobalResourceObject("Resource", "Import").ToString()
+                            + "</span></br>"
+                            + @HttpContext.GetGlobalResourceObject("Resource", "Export").ToString())
+                        .HtmlAttributes(new {style = "text-align:center;"});
+                    
                     //columns.Bound(f => f.FptName).Width(100).Title("Loại");
-                    columns.Bound(f => f.TotalQuantity).Width(65).Title("Tổng SL")
-                           .HtmlAttributes(new {style = "text-align:right;"})
-                           .ClientTemplate("<#= TotalQuantity == null ? 0 : $.telerik.formatString('{0:n2}', TotalQuantity) #>");
+                    
+                    columns.Bound(f => f.TotalQuantity).Width(65)
+                        //.Title("Tổng SL")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "TotalQuantity2").ToString())
+                        .HtmlAttributes(new {style = "text-align:right;"})
+                        .ClientTemplate("<#= TotalQuantity == null ? 0 : $.telerik.formatString('{0:n2}', TotalQuantity) #>");
+                    
                     columns.Bound(f => f.TotalPrice).Width(85)
-                           .HeaderTemplate("Tổng tiền</br>(VNĐ)")
-                           .HtmlAttributes(new {style = "text-align:right;"})
-                           .ClientTemplate("<#= TotalPrice == null ? 0 : $.telerik.formatString('{0:n0}', TotalPrice) #>");
-                    columns.Bound(f => f.ModifiedUser).Width(85).Title("Người lập");
-                    columns.Bound(f => f.ModifiedDate).Width(85).Title("Ngày lập")
-                           .ClientTemplate("<#= ModifiedDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy HH:mm:ss}', ModifiedDate) #>");
-                    columns.Bound(f => f.TransactionId).Title("In").Width(45)
-                           .ClientTemplate("<input type='button' id='id_<#= TransactionId #>' value='In' class='t-button' onclick=PrintForm(<#= TransactionId #>) />")
-                           .HtmlAttributes(new {style = "text-align:center"});
-                    columns.Command(c => c.Delete().ButtonType(GridButtonType.Image)).Width(50);
-                    columns.Bound(f => f.TransactionId).Title("QL duyệt")
-                           .ClientTemplate("<button class='t-button purchasing' id='QLM_<#= TransactionId #>' onclick=FuelSignature(<#= TransactionId #>,1) ><span class='t-icon t-insert'></span></button>")
-                           .HtmlAttributes(new {style = "text-align:center"});
+                        //.HeaderTemplate("Tổng tiền</br>(VNĐ)")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "TotalAmount").ToString()
+                            + " (VND)"
+                        )
+                        .HtmlAttributes(new {style = "text-align:right;"})
+                        .ClientTemplate("<#= TotalPrice == null ? 0 : $.telerik.formatString('{0:n0}', TotalPrice) #>");
+                    
+                    columns.Bound(f => f.ModifiedUser).Width(85)
+                        //.Title("Người lập")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "ModifiedUser").ToString());
+                    
+                    columns.Bound(f => f.ModifiedDate).Width(85)
+                        //.Title("Ngày lập")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "ModifiedDate").ToString())
+                        .ClientTemplate("<#= ModifiedDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy HH:mm:ss}', ModifiedDate) #>");
+                    
+                    columns.Bound(f => f.TransactionId)
+                        //.Title("In")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Print").ToString())
+                        .Width(45)
+                        .ClientTemplate("<input type='button' id='id_<#= TransactionId #>' value='In' class='t-button' onclick=PrintForm(<#= TransactionId #>) />")
+                        .HtmlAttributes(new {style = "text-align:center"});
+                    
+                    columns.Command(c => c.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(50);
+                    
+                    columns.Bound(f => f.TransactionId)
+                        //.Title("QL duyệt")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "ApproveManager2").ToString()
+                        )
+                        .ClientTemplate("<button class='t-button purchasing' id='QLM_<#= TransactionId #>' onclick=FuelSignature(<#= TransactionId #>,1) ><span class='t-icon t-insert'></span></button>")
+                        .HtmlAttributes(new {style = "text-align:center"});
                 })
             .DetailView(details => details.ClientTemplate(
                 Html.Telerik().TabStrip()
                     .Name("TabStrip_<#= TransactionId #>")
                     .SelectedIndex(0)
                     .Items(items =>
-                           items.Add().Text("Thông tin chi tiết").Content(
+                           items.Add().Text(
+                            //"Thông tin chi tiết"
+                            @HttpContext.GetGlobalResourceObject("Resource", "DetailInformation").ToString()
+                           ).Content(
                                Html.Telerik().Grid<TransactionFptDetailModel>()
                                    .Name("gridTransactionDetail_<#= TransactionId #>")
                                    .DataBinding(dataDindings => dataDindings.Ajax()
@@ -183,25 +232,61 @@
                                                                                     new { transactionId = "<#= TransactionId #>" }))
                                    .Columns(columns =>
                                        {
-                                           columns.Bound(f => f.VendorName).Title("NCC").Width(100);
-                                           columns.Bound(f => f.FuelName).Title("Tên chi tiết").Width(100);
-                                           columns.Bound(f => f.FuelDesignNo).Title("Quy cách").Width(200);
-                                           columns.Bound(f => f.LotNumber).Width(75).Title("Lô")
-                                                  .HtmlAttributes(new {style = "text-align: right;"});
-                                           columns.Bound(f => f.TotalInv).Width(75).Title("Tồn kho")
-                                                  .Format("{0:n1}")
-                                                  .HtmlAttributes(new {style = "text-align: right;"});
-                                           columns.Bound(f => f.Quantity).Width(75).Title("SL")
-                                                  .Format("{0:n1}")
-                                                  .HtmlAttributes(new {style = "text-align: right;"});
-                                           columns.Bound(f => f.UnitPrice).Width(75).Title("Đơn giá (VNĐ)")
-                                                  .Format("{0:n2}")
-                                                  .HtmlAttributes(new {style = "text-align: right;"});
-                                           columns.Bound(f => f.Price).Width(75).Title("Thành tiền (VNĐ)")
-                                                  .Format("{0:n2}")
-                                                  .HtmlAttributes(new {style = "text-align: right;"});
-                                           columns.Bound(f => f.UnitMeasure).Width(100).Title("ĐVT");
-                                           columns.Bound(f => f.Note).Title("Ghi chú");
+                                           columns.Bound(f => f.VendorName)
+                                               //.Title("NCC")
+                                               .Title(@HttpContext.GetGlobalResourceObject("Resource", "Vendor2").ToString())
+                                               .Width(100);
+
+                                           columns.Bound(f => f.FuelName)
+                                               //.Title("Tên chi tiết")
+                                               .Title(@HttpContext.GetGlobalResourceObject("Resource", "DetailName").ToString())
+                                               .Width(100);
+                                           
+                                           columns.Bound(f => f.FuelDesignNo)
+                                               //.Title("Quy cách")
+                                               .Title(@HttpContext.GetGlobalResourceObject("Resource", "FuelDesignNo").ToString())
+                                               .Width(200);
+                                           
+                                           columns.Bound(f => f.LotNumber).Width(75)
+                                               //.Title("Lô")
+                                               .Title(@HttpContext.GetGlobalResourceObject("Resource", "Lot").ToString())
+                                               .HtmlAttributes(new {style = "text-align: right;"});
+                                           
+                                           columns.Bound(f => f.TotalInv).Width(75)
+                                               //.Title("Tồn kho")
+                                               .Title(@HttpContext.GetGlobalResourceObject("Resource", "Inventory").ToString())
+                                               .Format("{0:n1}")
+                                               .HtmlAttributes(new {style = "text-align: right;"});
+                                           
+                                           columns.Bound(f => f.Quantity).Width(75)
+                                               //.Title("SL")
+                                               .Title(@HttpContext.GetGlobalResourceObject("Resource", "Quantity2").ToString())
+                                               .Format("{0:n1}")
+                                               .HtmlAttributes(new {style = "text-align: right;"});
+                                           
+                                           columns.Bound(f => f.UnitPrice).Width(75)
+                                               //.Title("Đơn giá (VNĐ)")
+                                               .Title(@HttpContext.GetGlobalResourceObject("Resource", "UnitPrice").ToString()
+                                                + " (VND)"
+                                               )
+                                               .Format("{0:n2}")
+                                               .HtmlAttributes(new {style = "text-align: right;"});
+                                           
+                                           columns.Bound(f => f.Price).Width(75)
+                                               //.Title("Thành tiền (VNĐ)")
+                                               .Title(@HttpContext.GetGlobalResourceObject("Resource", "TotalAmount").ToString()
+                                                + " (VND)" 
+                                               )
+                                               .Format("{0:n2}")
+                                               .HtmlAttributes(new {style = "text-align: right;"});
+                                           
+                                           columns.Bound(f => f.UnitMeasure).Width(100)
+                                               //.Title("ĐVT")
+                                               .Title(@HttpContext.GetGlobalResourceObject("Resource", "Unit2").ToString());
+                                           
+                                           columns.Bound(f => f.Note)
+                                               //.Title("Ghi chú")
+                                               .Title(@HttpContext.GetGlobalResourceObject("Resource", "Note").ToString());
                                        })
             .ClientEvents(events => events.OnError("grid_OnError"))
                                    .ToHtmlString()

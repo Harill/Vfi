@@ -149,14 +149,21 @@
 
 }
 
-<div class="title">Phân lô cân hàng</div>
+<div class="title">
+    @*Phân lô cân hàng*@
+    @HttpContext.GetGlobalResourceObject("Resource", "TransactionWeighingAddDetail")
+</div>
 
 <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px; width: 920px;">
 
     <fieldset>
-        <legend>Thông tin phiếu xuất</legend>
+        <legend>
+            @*Thông tin phiếu xuất*@
+            @HttpContext.GetGlobalResourceObject("Resource", "TransactionInformation")
+        </legend>
         <div class="grid_2">
-            Kho
+            @*Kho*@
+            @HttpContext.GetGlobalResourceObject("Resource", "Warehouse")
         </div>
         <div class="grid_4">
             @{
@@ -165,7 +172,7 @@
                     .DataBinding(binding => binding.Ajax().Select("SelectComboBoxImportWarehouse", "Warehouse"))
                     .HtmlAttributes(new { style = "width: 100%" })
                     .DropDownHtmlAttributes(new { style = "width: 250px" })
-                    .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                    .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                     .HighlightFirstMatch(true)
                     .AutoFill(true)
                     .ClientEvents(events => events.OnChange("warehouseIssue_onChange"))
@@ -174,7 +181,8 @@
         </div>
 
         <div class="grid_2">
-            Kho nhận
+            @*Kho nhận*@
+            @HttpContext.GetGlobalResourceObject("Resource", "ReceiptWarehouse")
         </div>
         <div class="grid_4">
             @{
@@ -199,7 +207,9 @@
 </div>
 <div class="clear"></div>
 
-<div class="t-info-sha" style="padding-left: 15px; width: 250px; color: Maroon;">Danh sách sản phẩm cân hàng
+<div class="t-info-sha" style="padding-left: 15px; width: 250px; color: Maroon;">
+    @*Danh sách sản phẩm cân hàng*@
+    @HttpContext.GetGlobalResourceObject("Resource", "ProductsSheet")
     <button class="t-button" id="btnRefresh" name="btnPickupMaterialId" onclick=" RefreshGrid2('gridTransactionDetail')">
         <span class='t-icon t-refresh'></span>
     </button>
@@ -214,7 +224,8 @@
         <div class="grid_8">
             <button class="t-button" id="btnPickupProductId" name="btnPickupProductId" onclick=" PickupProductId() ">
                 <span class='t-icon t-insert'></span>
-                Tạo phiếu luân chuyển kho
+                @*Tạo phiếu luân chuyển kho*@
+                @HttpContext.GetGlobalResourceObject("Resource", "CreateTransferWarehouseForm")
                 <span class="twoToneButton"></span>
             </button>
         </div>
@@ -227,30 +238,61 @@
                 )
             .Columns(columns => {
                 columns.Bound(f => f.ProductId).Width(30).ReadOnly(true)
-                       .ClientTemplate("<#= ++index #>")
-                       .HeaderTemplate("<strong>STT</strong>");
-                columns.Bound(f => f.IdentityWeighing).Title("Chọn").Width(75)
+                    .ClientTemplate("<#= ++index #>")
+                    //.HeaderTemplate("<strong>STT</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Index").ToString());
+              
+                columns.Bound(f => f.IdentityWeighing)
+                    //.Title("Chọn")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Select").ToString())
+                    .Width(75)
                     .ClientTemplate("<input type='checkbox' name='chkIds' value='<#= IdentityWeighing #>' checkName='w_<#= WeighingId #>' />")
                     .HtmlAttributes(new { style = "text-align:center" });
-                columns.Bound(f => f.CustomerCode).Width(70).HeaderTemplate("Khách hàng").ReadOnly(true);
-                columns.Bound(f => f.ProductCode).Width(120).Title("Mã SP").ReadOnly(true)
+               
+                columns.Bound(f => f.CustomerCode).Width(70)
+                    //.HeaderTemplate("Khách hàng")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Customer").ToString())
+                    .ReadOnly(true);
+               
+                columns.Bound(f => f.ProductCode).Width(120)
+                    //.Title("Mã SP")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "ProductCode2").ToString())
+                    .ReadOnly(true)
                     .Aggregate(agg => agg.Count())
                     .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>")
                     .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>")
                     .FooterHtmlAttributes(new { style = "text-align: center;" });
+               
                 columns.Bound(f => f.UnitWeight).Width(70).ReadOnly(true)
-                    .HeaderTemplate("TL SP (g/pc)")
+                    //.HeaderTemplate("TL SP (g/pc)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "ProductWeight").ToString()
+                        + " (g/pc)"
+                    )
                     .Format("{0:n3}")
                     .HtmlAttributes(new { style = "text-align: right;border-right: 1px black solid;" });
 
-                columns.Bound(f => f.Weight).Width(90).HeaderTemplate("Trọng lượng cân(kg)").ReadOnly(true)
+                columns.Bound(f => f.Weight).Width(90)
+                    //.HeaderTemplate("Trọng lượng cân(kg)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "UnitWeight").ToString()
+                        + " "
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Weighing").ToString()
+                        + "(kg)"
+                    )
+                    .ReadOnly(true)
                     .Format("{0:n2}")
                     .HtmlAttributes(new { style = "text-align: right;" });
                     //.Aggregate(agg => agg.Sum())
                     //.ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
                     //.ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
                     //.FooterHtmlAttributes(new { style = "text-align: right;" });
-                columns.Bound(f => f.Quantity).Width(90).HeaderTemplate("Số lượng cân(pcs)").ReadOnly(true)
+              
+                columns.Bound(f => f.Quantity).Width(90)
+                    //.HeaderTemplate("Số lượng cân(pcs)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Quantity").ToString()
+                        + " "
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Weighing").ToString()
+                        + "(pcs)"
+                    ).ReadOnly(true)
                     .Format("{0:n0}")
                     .HtmlAttributes(new { style = "text-align: right;" });
                     //.Aggregate(agg => agg.Sum())
@@ -258,21 +300,44 @@
                     //.ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                     //.FooterHtmlAttributes(new { style = "text-align: right;" });
 
-                columns.Bound(f => f.LotNumber).Width(70).HeaderTemplate("Lô tồn kho").ReadOnly(true);
-                columns.Bound(f => f.InvWeight).Width(90).HeaderTemplate("Trọng lượng tồn(kg)").ReadOnly(true)
+                columns.Bound(f => f.LotNumber).Width(70)
+                    //.HeaderTemplate("Lô tồn kho")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Lot").ToString()
+                        + " "
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Inventory").ToString()
+                    )
+                    .ReadOnly(true);
+               
+                columns.Bound(f => f.InvWeight).Width(90)
+                    //.HeaderTemplate("Trọng lượng tồn(kg)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "UnitWeight").ToString()
+                        + " "
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Inv").ToString()
+                        + "(kg)"
+                    )
+                    .ReadOnly(true)
                     .Format("{0:n2}")
                     .HtmlAttributes(new { style = "text-align: right;border-right: 1px black solid;" })
                     .Aggregate(agg => agg.Sum())
                     .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
                     .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
                     .FooterHtmlAttributes(new { style = "text-align: right;" });
-                columns.Bound(f => f.InvQuantity).Width(90).HeaderTemplate("Số lượng tồn(pcs)").ReadOnly(true)
+            
+                columns.Bound(f => f.InvQuantity).Width(90)
+                    //.HeaderTemplate("Số lượng tồn(pcs)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Quantity").ToString()
+                        + " "
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Inv").ToString()
+                        + "(pcs)"
+                    )
+                    .ReadOnly(true)
                     .Format("{0:n0}")
                     .HtmlAttributes(new { style = "text-align: right;" })
                     .Aggregate(agg => agg.Sum())
                     .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                     .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                     .FooterHtmlAttributes(new { style = "text-align: right;" });
+               
                 columns.Bound(f => f.WeighingId).Width(120).ReadOnly(true).Width(1).Title("").ClientTemplate(" ")
                     .ClientGroupHeaderTemplate("<input type='checkbox' name='chkGroups' value='0' onChange='checkAll(<#= Key #>)' />");
             })

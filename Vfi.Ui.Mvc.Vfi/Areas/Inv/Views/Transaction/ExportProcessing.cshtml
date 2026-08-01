@@ -61,13 +61,20 @@
     </script>
 
 
-<div class="title">Tạo gia công sản xuất 2</div>
+<div class="title">
+    @*Tạo gia công sản xuất 2*@
+    @HttpContext.GetGlobalResourceObject("Resource", "ExportProcessing")
+</div>
 <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px; width: 920px;">
 
     <fieldset>
-        <legend>Thông tin phiếu</legend>
+        <legend>
+            @*Thông tin phiếu*@
+            @HttpContext.GetGlobalResourceObject("Resource", "FormInformation")
+        </legend>
         <div class="grid_2">
-            @Html.LabelFor(f => f.WarehouseIssueName)
+            @*@Html.LabelFor(f => f.WarehouseIssueName)*@
+            @HttpContext.GetGlobalResourceObject("Resource", "ExportWarehouse")
         </div>
         <div class="grid_4">
             @{
@@ -98,8 +105,11 @@
             .DataKeys(keys => keys.Add(f => f.ProductId).RouteKey("productId"))
             .ToolBar(bar =>
                 {
-                    bar.Insert().ButtonType(GridButtonType.ImageAndText).Text("Thêm mới");
-                    bar.SubmitChanges().ButtonType(GridButtonType.ImageAndText).SaveText("Lưu tất cả").CancelText("Hủy");
+                    bar.Insert().ButtonType(GridButtonType.ImageAndText)
+                        .Text(@HttpContext.GetGlobalResourceObject("Resource", "NewText").ToString());
+                    bar.SubmitChanges().ButtonType(GridButtonType.ImageAndText)
+                        .SaveText(@HttpContext.GetGlobalResourceObject("Resource", "SaveAll").ToString())
+                        .CancelText(@HttpContext.GetGlobalResourceObject("Resource", "Cancel").ToString());
                 })
             .DataBinding(dataBindings => dataBindings.Ajax()
                                                      .Select("SelectExportProcessing", "Transaction")
@@ -107,16 +117,26 @@
             )
             .Columns(columns =>
                 {
-                    columns.Bound(f => f.ProductCode).Width(150).Title("Mã SP")
-                           .HtmlAttributes(new { style = "border-bottom:black 1px dotted;" });
-                    columns.Bound(f => f.ErrorName).Width(200).Title("Lỗi")
-                           .HtmlAttributes(new { style = "border-bottom:black 1px dotted;" });
+                    columns.Bound(f => f.ProductCode).Width(150)
+                        //.Title("Mã SP")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "ProductCode2").ToString())
+                        .HtmlAttributes(new { style = "border-bottom:black 1px dotted;" });
+                    
+                    columns.Bound(f => f.ErrorName).Width(200)
+                        //.Title("Lỗi")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Error").ToString())
+                        .HtmlAttributes(new { style = "border-bottom:black 1px dotted;" });
+                  
                     columns.Bound(f => f.Quantity).Width(65)
-                        .HeaderTemplate("Số lượng")
+                        //.HeaderTemplate("Số lượng")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Quantity").ToString()                        )
                         .HtmlAttributes(new { style = "text-align:right;border-bottom:black 1px dotted;" })
-                           .Format("{0:n3}");
-                    columns.Bound(f => f.Note).Title("Ghi chú")
-                           .HtmlAttributes(new { style = "border-bottom:black 1px dotted;" });
+                        .Format("{0:n3}");
+                    
+                    columns.Bound(f => f.Note)
+                        //.Title("Ghi chú")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Note").ToString())
+                        .HtmlAttributes(new { style = "border-bottom:black 1px dotted;" });
 
                     columns.Command(commands => commands.Delete().Text("").ButtonType(GridButtonType.Image)).Width(50).Title("");
                 })

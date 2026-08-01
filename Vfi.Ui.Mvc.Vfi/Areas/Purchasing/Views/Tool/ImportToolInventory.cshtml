@@ -78,12 +78,21 @@
     </script>
 }
 
-    <div class="title">Nhập kho công cụ</div>
+    <div class="title">
+        @*Nhập kho công cụ*@
+        @HttpContext.GetGlobalResourceObject("Resource", "ImportToolInventory")
+    </div>
 <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px; width: 920px;">
 
     <fieldset>
-        <legend>Thông tin phiếu nhập</legend> 
-        <div class="grid_3">Nhà cung ứng:</div>
+        <legend>
+            @*Thông tin phiếu nhập*@
+            @HttpContext.GetGlobalResourceObject("Resource", "ImportFormInformation")
+        </legend> 
+        <div class="grid_3">
+            @*Nhà cung ứng:*@
+            @HttpContext.GetGlobalResourceObject("Resource", "Vendor")
+        </div>
         <div class="grid_7">
             @{
                 Html.Telerik().ComboBox()
@@ -92,11 +101,14 @@
                     .HtmlAttributes(new { style = "width: 250px" })
                     .DropDownHtmlAttributes(new { style = "width: 325px" })
                     .AutoFill(true)
-                    .Filterable(f=>f.FilterMode(AutoCompleteFilterMode.Contains))
+                    .Filterable(f=>f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                     .Render();
             }
         </div>
-        <div class="grid_3">Ngày nhập kho</div>
+        <div class="grid_3">
+            @*Ngày nhập kho*@
+            @HttpContext.GetGlobalResourceObject("Resource", "ImportDate")
+        </div>
         <div class="grid_4">
             @{
                 Html.Telerik().DatePicker()
@@ -116,8 +128,11 @@
             .DataKeys(keys => keys.Add(f => f.FptId).RouteKey("fptId"))
             .ToolBar(bar =>
                 {
-                    bar.Insert().ButtonType(GridButtonType.ImageAndText).Text("Thêm mới");
-                    bar.SubmitChanges().ButtonType(GridButtonType.ImageAndText).SaveText("Lưu tất cả").CancelText("Hủy");
+                    bar.Insert().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText)
+                        .Text(@HttpContext.GetGlobalResourceObject("Resource", "NewText").ToString());
+                    bar.SubmitChanges().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText)
+                        .SaveText(@HttpContext.GetGlobalResourceObject("Resource", "SaveAll").ToString())
+                        .CancelText(@HttpContext.GetGlobalResourceObject("Resource", "Cancel").ToString());
 
                 })
             .DataBinding(dataBindings => dataBindings.Ajax()
@@ -126,29 +141,49 @@
             )
             .Columns(columns =>
                 {
-                    columns.Bound(f => f.ToolFullCodeName).Width(250).Title("Mã")
-                           .FooterTemplate("<span id='CountFuel'></span>");
+                    columns.Bound(f => f.ToolFullCodeName).Width(250)
+                        //.Title("Mã")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Code").ToString())
+                        .FooterTemplate("<span id='CountFuel'></span>");
+                  
                     //columns.Bound(f => f.LotNumber).Width(70).Title("Lô");
-                    columns.Bound(f => f.Quantity).Width(100).Title("Số lượng")
-                           .ClientTemplate("<span name='Quantity'><#= Quantity == null ? 0 : $.telerik.formatString('{0:n1}', Quantity) #></span>")
-                           .FooterTemplate("<span id='TotalQuantity'></span>");
+                  
+                    columns.Bound(f => f.Quantity).Width(100)
+                        //.Title("Số lượng")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Quantity").ToString())
+                        .ClientTemplate("<span name='Quantity'><#= Quantity == null ? 0 : $.telerik.formatString('{0:n1}', Quantity) #></span>")
+                        .FooterTemplate("<span id='TotalQuantity'></span>");
 
-                    columns.Bound(f => f.UnitPrice).Width(100).Title("Đơn giá (VNĐ)")
-                           .ClientTemplate("<span name='UnitPrice'><#= UnitPrice == null ? 0 : $.telerik.formatString('{0:n0}', UnitPrice) #></span>");
+                    columns.Bound(f => f.UnitPrice).Width(100)
+                        //.Title("Đơn giá (VNĐ)")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "UnitPrice").ToString()
+                            + " (VND)"
+                        )
+                        .ClientTemplate("<span name='UnitPrice'><#= UnitPrice == null ? 0 : $.telerik.formatString('{0:n0}', UnitPrice) #></span>");
 
-                    columns.Bound(f => f.UnitMeasure).Width(120).Title("ĐVT");
+                    columns.Bound(f => f.UnitMeasure).Width(120)
+                        //.Title("ĐVT")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Unit2").ToString());
 
-                    columns.Bound(f => f.LotNumber).Width(70).Title("Lô")
-                                   .HtmlAttributes(new { style = "text-align:right" });
-                    columns.Bound(f => f.Note).Title("Ghi chú");
-                    columns.Command(commands => commands.Delete().ButtonType(GridButtonType.Image)).Width(50).Title("Xóa");
+                    columns.Bound(f => f.LotNumber).Width(70)
+                        //.Title("Lô")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Note").ToString())
+                        .HtmlAttributes(new { style = "text-align:right" });
+                   
+                    columns.Bound(f => f.Note)
+                        //.Title("Ghi chú")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Note").ToString());
+                  
+                    columns.Command(commands => commands.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(50)
+                        //.Title("Xóa")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Delete1").ToString());
                 })
             .ClientEvents(events => events
                                         .OnSave("grid_onSave")
                                         .OnSubmitChanges("grid_onSubmitChanges")
                                         .OnError("grid_OnError")
             )
-            .Editable(editing => editing.Mode(GridEditMode.InCell))
+            .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InCell))
             .KeyboardNavigation()
             //.Footer(false)
             .Render();

@@ -181,7 +181,7 @@
     <value>Tên nhân viên</value>
   </data>
   <data name="Factor" xml:space="preserve">
-    <value>Hệ số nguyên liệu</value>
+    <value>Hệ số</value>
   </data>
   <data name="Filter" xml:space="preserve">
     <value>Tiêu chí trích lọc</value>
@@ -708,7 +708,7 @@
     <value>Cân hàng OK</value>
   </data>
   <data name="OrdersSheet" xml:space="preserve">
-    <value>Danh sách lệnh</value>
+    <value>Sổ lệnh</value>
   </data>
   <data name="PackageWeight" xml:space="preserve">
     <value>TL BB</value>
@@ -841,7 +841,7 @@
     <value>Số lượng&lt;/br&gt;xuất</value>
   </data>
   <data name="ExportWeight2" xml:space="preserve">
-    <value>Trọng lượng&lt;/br&gt;xuất</value>
+    <value>TL&lt;/br&gt;xuất</value>
   </data>
   <data name="FlatingQuantity2" xml:space="preserve">
     <value>Số lượng&lt;/br&gt;gia công</value>
@@ -1381,7 +1381,7 @@
     <value>Số lượng trả lại</value>
   </data>
   <data name="RequestQuantity" xml:space="preserve">
-    <value>SL yêu cầu</value>
+    <value>Số lượng yêu cầu</value>
   </data>
   <data name="ShippingMethodName" xml:space="preserve">
     <value>HT&lt;/br&gt;vận chuyển</value>
@@ -3861,5 +3861,536 @@ Thông tin phiếu lệnh</value>
   </data>
   <data name="Weighing1" xml:space="preserve">
     <value>Cân&lt;/br&gt;hàng</value>
+  </data>
+  <data name="AddTransactionDetail" xml:space="preserve">
+    <value>Phân đơn hàng xuất kho</value>
+  </data>
+  <data name="ApproveMaterialUse" xml:space="preserve">
+    <value>Duyệt phiếu sử dụng nguyên liệu</value>
+  </data>
+  <data name="ApproveWaiting" xml:space="preserve">
+    <value>Chờ duyệt</value>
+  </data>
+  <data name="AssignNew" xml:space="preserve">
+    <value>Cấp mới</value>
+  </data>
+  <data name="AutoReload" xml:space="preserve">
+    <value>Tự động nạp</value>
+  </data>
+  <data name="Available" xml:space="preserve">
+    <value>Có thể</value>
+  </data>
+  <data name="AvailableTransfer" xml:space="preserve">
+    <value>Có thể chuyển</value>
+  </data>
+  <data name="AvailableTransfer1" xml:space="preserve">
+    <value>Có thể&lt;/br&gt;chuyển</value>
+  </data>
+  <data name="ChangeQuantity" xml:space="preserve">
+    <value>Chỉnh số</value>
+  </data>
+  <data name="CreateCncForm" xml:space="preserve">
+    <value>Tạo phiếu nhập sản xuất phay CNC</value>
+  </data>
+  <data name="CreateExportGCN_NCU" xml:space="preserve">
+    <value>Xuất kho gia công ngoài</value>
+  </data>
+  <data name="CreateExportTP" xml:space="preserve">
+    <value>Phiếu xuất kho thành phẩm</value>
+  </data>
+  <data name="CreateImportNCU_QCB" xml:space="preserve">
+    <value>Nhập kho gia công ngoài</value>
+  </data>
+  <data name="CreateImportSX1" xml:space="preserve">
+    <value>Tạo phiếu nhập sản xuất 1</value>
+  </data>
+  <data name="CreateTransferWarehouseForm" xml:space="preserve">
+    <value>Tạo phiếu luân chuyển kho</value>
+  </data>
+  <data name="EndShift" xml:space="preserve">
+    <value>Cuối ca</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Lỗi</value>
+  </data>
+  <data name="ExportFormInformation" xml:space="preserve">
+    <value>Thông tin phiếu xuất</value>
+  </data>
+  <data name="ExportFormNumber" xml:space="preserve">
+    <value>Số phiếu xuất</value>
+  </data>
+  <data name="ExportProcessing" xml:space="preserve">
+    <value>Tạo gia công sản xuất 2</value>
+  </data>
+  <data name="ExportWorkpieceMaterial" xml:space="preserve">
+    <value>Xuất kho phôi</value>
+  </data>
+  <data name="ImportFormInformation" xml:space="preserve">
+    <value>Thông tin phiếu nhập</value>
+  </data>
+  <data name="ImportFormNumber" xml:space="preserve">
+    <value>Số phiếu nhập</value>
+  </data>
+  <data name="ImportTransactionProduct" xml:space="preserve">
+    <value>Nhập sản phẩm</value>
+  </data>
+  <data name="ImportWorkpieceMaterial" xml:space="preserve">
+    <value>Nhập thêm kho phôi</value>
+  </data>
+  <data name="ImportWorkpieceMaterialAdd" xml:space="preserve">
+    <value>Phân phôi sản phẩm</value>
+  </data>
+  <data name="MachineTransfer" xml:space="preserve">
+    <value>Chuyển máy</value>
+  </data>
+  <data name="ManageExportForm" xml:space="preserve">
+    <value>Quản lý biểu mẫu xuất nhập</value>
+  </data>
+  <data name="MaterialInv1" xml:space="preserve">
+    <value>Tồn &lt;/br&gt;nguyên liệu</value>
+  </data>
+  <data name="MaterialInv2" xml:space="preserve">
+    <value>Tồn NL</value>
+  </data>
+  <data name="MaterialOnMachineManagement" xml:space="preserve">
+    <value>Báo cáo xuất nguyên liệu trên máy</value>
+  </data>
+  <data name="MaterialProductRate" xml:space="preserve">
+    <value>Định mức theo nguyên liệu</value>
+  </data>
+  <data name="MaterialProductRate2" xml:space="preserve">
+    <value>Định mức theo NL</value>
+  </data>
+  <data name="MaterialUseByShift" xml:space="preserve">
+    <value>Tạo phiếu sử dụng nguyên liệu</value>
+  </data>
+  <data name="MaterialUseManagement" xml:space="preserve">
+    <value>Hồ sơ thông tin lệnh giao dịch nguyên liệu trên máy</value>
+  </data>
+  <data name="MoreProduction" xml:space="preserve">
+    <value>Thêm sản xuất</value>
+  </data>
+  <data name="Normal" xml:space="preserve">
+    <value>Bình thường</value>
+  </data>
+  <data name="OrderDetail" xml:space="preserve">
+    <value>Chi tiết lệnh</value>
+  </data>
+  <data name="PackagingWeight" xml:space="preserve">
+    <value>Trọng lượng bao bì</value>
+  </data>
+  <data name="PackagingWeight1" xml:space="preserve">
+    <value>Trọng lượng&lt;/br&gt; bao bì</value>
+  </data>
+  <data name="PackagingWeight2" xml:space="preserve">
+    <value>TL BB</value>
+  </data>
+  <data name="PackingConfiguration" xml:space="preserve">
+    <value>Cấu hình đóng gói</value>
+  </data>
+  <data name="ProductInformation" xml:space="preserve">
+    <value>Thông tin sản phẩm</value>
+  </data>
+  <data name="Producting" xml:space="preserve">
+    <value>Đang sản xuất</value>
+  </data>
+  <data name="ProductInputOrderDetail" xml:space="preserve">
+    <value>Chi tiết lệnh nhập sản phẩm</value>
+  </data>
+  <data name="Production12Form" xml:space="preserve">
+    <value>Phiếu SX1</value>
+  </data>
+  <data name="ProductsSheet" xml:space="preserve">
+    <value>Danh sách sản phẩm</value>
+  </data>
+  <data name="PurchaseTransactionProduct" xml:space="preserve">
+    <value>Phiếu nhập sản phẩm</value>
+  </data>
+  <data name="QuantityTolerances" xml:space="preserve">
+    <value>Dung sai số lượng</value>
+  </data>
+  <data name="QuantityTolerances2" xml:space="preserve">
+    <value>Dung sai SL</value>
+  </data>
+  <data name="RecallDate" xml:space="preserve">
+    <value>Ngày thu hồi</value>
+  </data>
+  <data name="ReceiptWarehouse" xml:space="preserve">
+    <value>Kho nhận</value>
+  </data>
+  <data name="RequestNumber" xml:space="preserve">
+    <value>Số yêu cầu</value>
+  </data>
+  <data name="RetrieveMaterial" xml:space="preserve">
+    <value>Tạo phiếu thu hồi nguyên liệu</value>
+  </data>
+  <data name="Seconds" xml:space="preserve">
+    <value>Giây</value>
+  </data>
+  <data name="SelectProductIntoNet" xml:space="preserve">
+    <value>Chọn các sản phẩm vào lưới</value>
+  </data>
+  <data name="SendBackMaterial" xml:space="preserve">
+    <value>Trả Nguyên liệu</value>
+  </data>
+  <data name="SendBackMaterial1" xml:space="preserve">
+    <value>Trả &lt;/br&gt;Nguyên liệu</value>
+  </data>
+  <data name="SendBackMaterial2" xml:space="preserve">
+    <value>Trả NL</value>
+  </data>
+  <data name="StartShift" xml:space="preserve">
+    <value>Đầu ca</value>
+  </data>
+  <data name="TotalBarrel" xml:space="preserve">
+    <value>Tổng số thùng</value>
+  </data>
+  <data name="TrackUpMaterialInv" xml:space="preserve">
+    <value>Lô nguyên liệu sản xuất</value>
+  </data>
+  <data name="TransactionNumber" xml:space="preserve">
+    <value>Số phiếu</value>
+  </data>
+  <data name="TransactionWeighingAddDetail" xml:space="preserve">
+    <value>Phân lô cân hàng</value>
+  </data>
+  <data name="TransactionWeighingManagement" xml:space="preserve">
+    <value>Phân lô cân hàng</value>
+  </data>
+  <data name="TransferQuantity" xml:space="preserve">
+    <value>Số lượng chuyển</value>
+  </data>
+  <data name="TransferQuantity1" xml:space="preserve">
+    <value>Số lượng&lt;/br&gt; chuyển</value>
+  </data>
+  <data name="TransferQuantity2" xml:space="preserve">
+    <value>SL chuyển</value>
+  </data>
+  <data name="TransferQuantity3" xml:space="preserve">
+    <value>SL &lt;/br&gt;chuyển</value>
+  </data>
+  <data name="TransferWeight" xml:space="preserve">
+    <value>Trọng lượng chuyển</value>
+  </data>
+  <data name="TransferWeight1" xml:space="preserve">
+    <value>Trọng lượng &lt;/br&gt;chuyển</value>
+  </data>
+  <data name="TransferWeight2" xml:space="preserve">
+    <value>TL chuyển</value>
+  </data>
+  <data name="TransferWeight3" xml:space="preserve">
+    <value>TL&lt;/br&gt;chuyển</value>
+  </data>
+  <data name="TransportDate" xml:space="preserve">
+    <value>Ngày chuyển</value>
+  </data>
+  <data name="UpdateImportSX1" xml:space="preserve">
+    <value>Chỉnh phiếu nhập sản xuất 1</value>
+  </data>
+  <data name="UsingDate" xml:space="preserve">
+    <value>Ngày sử dụng</value>
+  </data>
+  <data name="VehiclePlate" xml:space="preserve">
+    <value>Biển số xe</value>
+  </data>
+  <data name="WeightCorrespondingToQuantity" xml:space="preserve">
+    <value>Trọng lượng tương ứng với SL</value>
+  </data>
+  <data name="ApproveTransactionProduct" xml:space="preserve">
+    <value>Duyệt phiếu xuất nhập kho</value>
+  </data>
+  <data name="CancelOrders" xml:space="preserve">
+    <value>Hủy số lệnh</value>
+  </data>
+  <data name="CancelTransactionProduct" xml:space="preserve">
+    <value>Hủy lệnh thành phẩm</value>
+  </data>
+  <data name="CncInvManagement" xml:space="preserve">
+    <value>Báo cáo xuất nhập tồn kho CNC</value>
+  </data>
+  <data name="Combine" xml:space="preserve">
+    <value>Ghép</value>
+  </data>
+  <data name="CombineCode" xml:space="preserve">
+    <value>Mã ghép</value>
+  </data>
+  <data name="CumulativeImport2" xml:space="preserve">
+    <value>LK nhập</value>
+  </data>
+  <data name="CumulativeProduction" xml:space="preserve">
+    <value>Lũy kế sản xuất</value>
+  </data>
+  <data name="CumulativeProduction1" xml:space="preserve">
+    <value>Lũy kế &lt;/br&gt;sản xuất</value>
+  </data>
+  <data name="CumulativeProduction2" xml:space="preserve">
+    <value>Lũy kế SX</value>
+  </data>
+  <data name="CumulativeProduction3" xml:space="preserve">
+    <value>Lũy kế &lt;/br&gt;SX</value>
+  </data>
+  <data name="DefectInvManagement" xml:space="preserve">
+    <value>Báo cáo xuất nhập tồn kho PP</value>
+  </data>
+  <data name="ExportInternalTransactionProduct" xml:space="preserve">
+    <value>Xuất kho nội bộ</value>
+  </data>
+  <data name="ExportWeight" xml:space="preserve">
+    <value>Trọng lượng xuất</value>
+  </data>
+  <data name="ExportWeight1" xml:space="preserve">
+    <value>Trọng lượng &lt;/br&gt;xuất</value>
+  </data>
+  <data name="FinishInvManagement" xml:space="preserve">
+    <value>Báo cáo xuất nhập tồn kho thành phẩm</value>
+  </data>
+  <data name="HeatTreatmentInvManagement" xml:space="preserve">
+    <value>Báo cáo xuất nhập tồn kho nhiệt luyện</value>
+  </data>
+  <data name="ImportInternalTransactionProduct" xml:space="preserve">
+    <value>Nhập kho nội bộ</value>
+  </data>
+  <data name="ImportWeight" xml:space="preserve">
+    <value>Trọng lượng nhập</value>
+  </data>
+  <data name="ImportWeight1" xml:space="preserve">
+    <value>Trọng lượng &lt;/br&gt;nhập</value>
+  </data>
+  <data name="ImportWeight2" xml:space="preserve">
+    <value>TL nhập</value>
+  </data>
+  <data name="MergeData" xml:space="preserve">
+    <value>Gộp số liệu</value>
+  </data>
+  <data name="PackingInvManagement" xml:space="preserve">
+    <value>Báo cáo xuất nhập tồn kho đóng gói</value>
+  </data>
+  <data name="Pending" xml:space="preserve">
+    <value>Chờ xử lý</value>
+  </data>
+  <data name="Pending1" xml:space="preserve">
+    <value>Chờ &lt;/br&gt;xử lý</value>
+  </data>
+  <data name="PlatingInvManagement" xml:space="preserve">
+    <value>Báo cáo xuất nhập tồn kho NCU</value>
+  </data>
+  <data name="ProcessingInvManagement" xml:space="preserve">
+    <value>Báo cáo tồn kho Chờ Xử Lý</value>
+  </data>
+  <data name="ProductInvManagement" xml:space="preserve">
+    <value>Thông tin tồn kho sản phẩm</value>
+  </data>
+  <data name="ProductInvStatistic" xml:space="preserve">
+    <value>Thống kê xuất nhập tồn kho</value>
+  </data>
+  <data name="Production2InvManagement" xml:space="preserve">
+    <value>Báo cáo xuất nhập tồn kho Sản Xuất 2</value>
+  </data>
+  <data name="Production2InvManagementSplit" xml:space="preserve">
+    <value>Báo cáo xuất nhập tồn kho Sản Xuất 2 (gia công)</value>
+  </data>
+  <data name="QcInvManagement" xml:space="preserve">
+    <value>Báo cáo xuất nhập tồn kho QC</value>
+  </data>
+  <data name="RecipeTransactionProduct" xml:space="preserve">
+    <value>Tiến hóa sản phẩm</value>
+  </data>
+  <data name="RotateTransactionProduct" xml:space="preserve">
+    <value>Luân chuyển kho</value>
+  </data>
+  <data name="SurfaceTreatmentInvManagement" xml:space="preserve">
+    <value>Báo cáo xuất nhập tồn kho Rung bóng</value>
+  </data>
+  <data name="UnitWeight1" xml:space="preserve">
+    <value>Trọng&lt;/br&gt; lượng</value>
+  </data>
+  <data name="WaitingPlatingInvManagement" xml:space="preserve">
+    <value>Báo cáo xuất nhập tồn kho GCN</value>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>Tất cả</value>
+  </data>
+  <data name="ApproveImportFuel" xml:space="preserve">
+    <value>Duyệt phiếu xuất nhập nhiên liệu</value>
+  </data>
+  <data name="ApproveManager" xml:space="preserve">
+    <value>Quản lý duyệt</value>
+  </data>
+  <data name="ApproveManager1" xml:space="preserve">
+    <value>Quản lý &lt;/br&gt;duyệt</value>
+  </data>
+  <data name="ApproveManager2" xml:space="preserve">
+    <value>QL duyệt</value>
+  </data>
+  <data name="ApproveTransactionTool" xml:space="preserve">
+    <value>Duyệt phiếu xuất nhập công cụ</value>
+  </data>
+  <data name="AssignFuel" xml:space="preserve">
+    <value>Tạo Phiếu Phát Nguyên Liệu</value>
+  </data>
+  <data name="AssignQuantity" xml:space="preserve">
+    <value>Số lượng phát</value>
+  </data>
+  <data name="AssignQuantity1" xml:space="preserve">
+    <value>Số lượng&lt;/br&gt; phát</value>
+  </data>
+  <data name="AssignQuantity2" xml:space="preserve">
+    <value>SL phát</value>
+  </data>
+  <data name="AssignTool" xml:space="preserve">
+    <value>Xuất công cụ Sx1</value>
+  </data>
+  <data name="AssignToolProduction2" xml:space="preserve">
+    <value>Xuất công cụ Sx2</value>
+  </data>
+  <data name="CancelQuantity" xml:space="preserve">
+    <value>Số lượng hủy</value>
+  </data>
+  <data name="CancelQuantity1" xml:space="preserve">
+    <value>Số lượng &lt;/br&gt;hủy</value>
+  </data>
+  <data name="CancelQuantity2" xml:space="preserve">
+    <value>SL hủy</value>
+  </data>
+  <data name="DetailExportOrder" xml:space="preserve">
+    <value>Chi tiết lệnh xuất</value>
+  </data>
+  <data name="DetailImportOrder" xml:space="preserve">
+    <value>Chi tiết lệnh nhập</value>
+  </data>
+  <data name="ExportFuelInventory" xml:space="preserve">
+    <value>Xuất hủy nhiên liệu</value>
+  </data>
+  <data name="ExportInternalTransactionFuel" xml:space="preserve">
+    <value>Xuất hủy nhiên liệu (Nội bộ)</value>
+  </data>
+  <data name="ExportInternalTransactionTool" xml:space="preserve">
+    <value>Xuất kho công cụ (NB)</value>
+  </data>
+  <data name="ExportToolInventory" xml:space="preserve">
+    <value>Xuất hủy công cụ</value>
+  </data>
+  <data name="Fuel" xml:space="preserve">
+    <value>Nhiên liệu</value>
+  </data>
+  <data name="FuelInputOrderDetail" xml:space="preserve">
+    <value>Chi tiết lệnh nhập nhiên liệu </value>
+  </data>
+  <data name="FuelTransactionManagement" xml:space="preserve">
+    <value>Quản lý thông tin nhập hàng nhiên liệu &amp; bao bì &amp; hóa chất</value>
+  </data>
+  <data name="ImportFuelInventory" xml:space="preserve">
+    <value>Nhập kho nhiên liệu &amp; bao bì &amp; hóa chất</value>
+  </data>
+  <data name="ImportInternalTransactionFuel" xml:space="preserve">
+    <value>Nhập kho nhiên liệu &amp; bao bì &amp; hóa chất (Nội bộ)</value>
+  </data>
+  <data name="ImportInternalTransactionTool" xml:space="preserve">
+    <value>Nhập kho công cụ (NB)</value>
+  </data>
+  <data name="ImportToolInventory" xml:space="preserve">
+    <value>Nhập kho công cụ</value>
+  </data>
+  <data name="ImportToolInventoryB" xml:space="preserve">
+    <value>Nhập kho công cụ (loại B)</value>
+  </data>
+  <data name="ImportTransactionTool" xml:space="preserve">
+    <value>Phiếu nhập công cụ</value>
+  </data>
+  <data name="LeftOverQuantity1" xml:space="preserve">
+    <value>Số lượng &lt;/br&gt;còn lại</value>
+  </data>
+  <data name="LeftOverQuantity2" xml:space="preserve">
+    <value>SL còn lại</value>
+  </data>
+  <data name="ProposedDepartment" xml:space="preserve">
+    <value>Bộ phận đè xuất</value>
+  </data>
+  <data name="ProposedDepartment1" xml:space="preserve">
+    <value>Bộ phận&lt;/br&gt; đè xuất</value>
+  </data>
+  <data name="ProposedDepartment2" xml:space="preserve">
+    <value>BP đề xuất</value>
+  </data>
+  <data name="PurchaseManager" xml:space="preserve">
+    <value>Quản lý mua</value>
+  </data>
+  <data name="PurchaseManager1" xml:space="preserve">
+    <value>Quản lý &lt;/br&gt;mua</value>
+  </data>
+  <data name="PurchaseManager2" xml:space="preserve">
+    <value>QL Mua</value>
+  </data>
+  <data name="RequestQuantity1" xml:space="preserve">
+    <value>Số lượng &lt;/br&gt;yêu cầu</value>
+  </data>
+  <data name="RequestQuantity2" xml:space="preserve">
+    <value>SL yêu cầu</value>
+  </data>
+  <data name="SectionProcessManagement" xml:space="preserve">
+    <value>Quản lý thông tin sản phẩm</value>
+  </data>
+  <data name="SelectDetailIntoNet" xml:space="preserve">
+    <value>Chọn các chi tiết vào lưới</value>
+  </data>
+  <data name="SelectFuelIntoNet" xml:space="preserve">
+    <value>Chọn các nguyên liệu vào lưới</value>
+  </data>
+  <data name="SelectToolIntoNet" xml:space="preserve">
+    <value>Chọn các công cụ vào lưới</value>
+  </data>
+  <data name="TheContent" xml:space="preserve">
+    <value>Nội dung</value>
+  </data>
+  <data name="ToolExportReport" xml:space="preserve">
+    <value>Tổng hợp xuất kho công cụ</value>
+  </data>
+  <data name="ToolInputOrderDetail" xml:space="preserve">
+    <value>Chi tiết nhập lệnh công cụ</value>
+  </data>
+  <data name="ToolNote" xml:space="preserve">
+    <value>Ghi chú công cụ</value>
+  </data>
+  <data name="ToolTransactionManagement" xml:space="preserve">
+    <value>Quản lý thông tin phiếu xuất nhập công cụ</value>
+  </data>
+  <data name="ActualStage" xml:space="preserve">
+    <value>Công đoạn thực tế</value>
+  </data>
+  <data name="Arrange" xml:space="preserve">
+    <value>Sắp xếp</value>
+  </data>
+  <data name="CustomerRequest" xml:space="preserve">
+    <value>Khách hàng yêu cầu</value>
+  </data>
+  <data name="CustomerRequest1" xml:space="preserve">
+    <value>Khách hàng&lt;/br&gt; yêu cầu</value>
+  </data>
+  <data name="CustomerRequest2" xml:space="preserve">
+    <value>KH yêu cầu</value>
+  </data>
+  <data name="Design2" xml:space="preserve">
+    <value>TK</value>
+  </data>
+  <data name="MachineRun" xml:space="preserve">
+    <value>Máy chạy</value>
+  </data>
+  <data name="OnMachineDate" xml:space="preserve">
+    <value>Ngày lên máy</value>
+  </data>
+  <data name="OutputWeight" xml:space="preserve">
+    <value>Trọng lượng đầu ra</value>
+  </data>
+  <data name="OutputWeight1" xml:space="preserve">
+    <value>Trọng lượng&lt;/br&gt; đầu ra</value>
+  </data>
+  <data name="OutputWeight2" xml:space="preserve">
+    <value>TL đầu ra</value>
+  </data>
+  <data name="ProcessingStage" xml:space="preserve">
+    <value>Công đoạn gia công</value>
+  </data>
+  <data name="TrackUpProduction" xml:space="preserve">
+    <value>Báo cáo sản phẩm</value>
   </data>
 </root>

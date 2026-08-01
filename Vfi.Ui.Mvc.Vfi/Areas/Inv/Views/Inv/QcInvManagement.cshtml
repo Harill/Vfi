@@ -54,7 +54,10 @@
     </script>
 }
 
-<div class="title">Báo cáo xuất nhập tồn kho QC</div>
+<div class="title">
+    @*Báo cáo xuất nhập tồn kho QC*@
+    @HttpContext.GetGlobalResourceObject("Resource", "QcInvManagement")
+</div>
 <div class="clear"></div>
 <br />
 
@@ -62,10 +65,14 @@
     <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px; width: 1220px;">
 
         <fieldset>
-            <legend>Tiêu chí trích lọc</legend>
+            <legend>
+                @*Tiêu chí trích lọc*@
+                @HttpContext.GetGlobalResourceObject("Resource", "Filter")
+            </legend>
            
             <div class="grid_2">
-                @Html.Label("Mã KH")
+                @*@Html.Label("Mã KH")*@
+                @HttpContext.GetGlobalResourceObject("Resource", "CustomerCode2")
             </div>
             <div class="grid_4">
                 @{
@@ -76,12 +83,13 @@
                         .DropDownHtmlAttributes(new { style = "width: 275px" })
                         //.ClientEvents(events => events.OnChange("customerForPeriod_onChange"))
                         .AutoFill(true)
-                        .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                        .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                         .Render();
                 }
             </div>
             <div class="grid_2">
-                @Html.LabelFor(f => f.ProductCodeName)
+                @*@Html.LabelFor(f => f.ProductCodeName)*@
+                @HttpContext.GetGlobalResourceObject("Resource", "Product")
             </div>
             <div class="grid_4">
                 @{
@@ -128,7 +136,8 @@
             <div class="grid_3">
                 <button id="btnRefesh" class="t-button" onclick=" return RefreshGrid('gridProductionMonthly'); ">
                     <span class='t-icon t-insert'></span>
-                    Làm mới
+                    @*Làm mới*@
+                    @HttpContext.GetGlobalResourceObject("Resource", "Refresh")
                 </button>
             </div>
         </fieldset>
@@ -154,197 +163,315 @@
                 .Columns(columns =>
                     {
                         columns.Bound(f => f.GlobalIndex).Width(35)
-                                .ClientTemplate("<#= ++index #>")
-                                .HeaderTemplate("<strong>S</br>T</br>T</strong>");
+                            .ClientTemplate("<#= ++index #>")
+                            //.HeaderTemplate("<strong>S</br>T</br>T</strong>")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Index").ToString());
+                     
                         columns.Bound(f => f.CustomerCode).Width(50)
-                               .HeaderTemplate("<strong>Mã</br>KH</strong>")
-                               .HtmlAttributes(new { style = "text-align: center;" });
+                            //.HeaderTemplate("<strong>Mã</br>KH</strong>")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "CustomerCode2").ToString())
+                            .HtmlAttributes(new { style = "text-align: center;" });
+                        
                         columns.Bound(f => f.ProductCode).Width(150)
-                               .HeaderTemplate("<strong>Mã SP</strong>")
-                               .HtmlAttributes(new { style = "text-align: center;" })
-                               .Aggregate(agg => agg.Count())
-                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>")
-                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>");
+                            //.HeaderTemplate("<strong>Mã SP</strong>")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "ProductCode2").ToString())
+                            .HtmlAttributes(new { style = "text-align: center;" })
+                            .Aggregate(agg => agg.Count())
+                            .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>")
+                            .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>");
+                        
                         columns.Bound(f => f.Weight).Width(60)
-                               .HeaderTemplate("Trọng</br>lượng")
-                               .Format("{0:n3}")
-                               .HtmlAttributes(new { style = "text-align: right;" });
+                            //.HeaderTemplate("Trọng</br>lượng")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "UnitWeight1").ToString())
+                            .Format("{0:n3}")
+                            .HtmlAttributes(new { style = "text-align: right;" });
+                        
                         // so lieu
                         columns.Bound(f => f.EarlyInventory).Width(80)
-                               .HeaderTemplate("Tồn</br>đầu</br>(pcs)")
-                               .Format("{0:n0}")
-                               .Aggregate(agg => agg.Sum())
-                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .HtmlAttributes(new { style = "text-align: right;border-left:black 3px double;" })
-                               .FooterHtmlAttributes(new { style = "text-align: right;border-left:black 3px double;" });
+                            //.HeaderTemplate("Tồn</br>đầu</br>(pcs)")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "EarlyQuantity1").ToString()
+                                + "</br>(pcs)"
+                            )
+                            .Format("{0:n0}")
+                            .Aggregate(agg => agg.Sum())
+                            .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .HtmlAttributes(new { style = "text-align: right;border-left:black 3px double;" })
+                            .FooterHtmlAttributes(new { style = "text-align: right;border-left:black 3px double;" });
+                        
                         columns.Bound(f => f.EarlyInventoryKg).Width(80)
-                               .HeaderTemplate("Tồn đầu</br>(g)")
-                               .Format("{0:n2}")
-                               .Aggregate(agg => agg.Sum())
-                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .HtmlAttributes(new { style = "text-align: right;" })
-                               .FooterHtmlAttributes(new { style = "text-align: right;" });
+                            //.HeaderTemplate("Tồn đầu</br>(g)")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "EarlyQuantity1").ToString()
+                                + "</br>(g)"
+                            )
+                            .Format("{0:n2}")
+                            .Aggregate(agg => agg.Sum())
+                            .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .HtmlAttributes(new { style = "text-align: right;" })
+                            .FooterHtmlAttributes(new { style = "text-align: right;" });
+                        
                         //
                         columns.Bound(f => f.ImportSx1).Width(60)
-                              .HeaderTemplate("Nhập</br>SX1</br>(pcs)")
-                               .Format("{0:n0}")
-                               .Aggregate(agg => agg.Sum())
-                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                              .HtmlAttributes(new { style = "text-align: right;border-left:black 3px double;" })
-                              .FooterHtmlAttributes(new { style = "text-align: right;border-left:black 3px double;" });
+                            //.HeaderTemplate("Nhập</br>SX1</br>(pcs)")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Import").ToString()
+                                + "</br>"
+                                + @HttpContext.GetGlobalResourceObject("Resource", "Production12").ToString()
+                                + "</br>(pcs)"
+                            )
+                            .Format("{0:n0}")
+                            .Aggregate(agg => agg.Sum())
+                            .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .HtmlAttributes(new { style = "text-align: right;border-left:black 3px double;" })
+                            .FooterHtmlAttributes(new { style = "text-align: right;border-left:black 3px double;" });
+                        
                         columns.Bound(f => f.ImportCnc).Width(60)
-                               .HeaderTemplate("Nhập</br>CNC</br>(pcs)")
-                               .Format("{0:n0}")
-                               .Aggregate(agg => agg.Sum())
-                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .HtmlAttributes(new { style = "text-align: right;" })
-                               .FooterHtmlAttributes(new { style = "text-align: right;" });
+                            //.HeaderTemplate("Nhập</br>CNC</br>(pcs)")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Import").ToString()
+                                + "</br>CNC</br>(pcs)"
+                            )
+                            .Format("{0:n0}")
+                            .Aggregate(agg => agg.Sum())
+                            .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .HtmlAttributes(new { style = "text-align: right;" })
+                            .FooterHtmlAttributes(new { style = "text-align: right;" });
+                        
                         columns.Bound(f => f.ImportSx2).Width(60)
-                              .HeaderTemplate("Nhập</br>SX2</br>(pcs)")
-                               .Format("{0:n0}")
-                               .Aggregate(agg => agg.Sum())
-                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                              .HtmlAttributes(new { style = "text-align: right;" })
-                               .FooterHtmlAttributes(new { style = "text-align: right;" });
+                            //.HeaderTemplate("Nhập</br>SX2</br>(pcs)")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Import").ToString()
+                                + "</br>"
+                                + @HttpContext.GetGlobalResourceObject("Resource", "Production22").ToString()
+                                + "</br>(pcs)"
+                            )
+                            .Format("{0:n0}")
+                            .Aggregate(agg => agg.Sum())
+                            .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .HtmlAttributes(new { style = "text-align: right;" })
+                            .FooterHtmlAttributes(new { style = "text-align: right;" });
+                        
                         columns.Bound(f => f.ImportRb).Width(60)
-                             .HeaderTemplate("Nhập</br>RB</br>(pcs)")
-                               .Format("{0:n0}")
-                               .Aggregate(agg => agg.Sum())
-                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                             .HtmlAttributes(new { style = "text-align: right;" })
-                               .FooterHtmlAttributes(new { style = "text-align: right;" });
+                            //.HeaderTemplate("Nhập</br>RB</br>(pcs)")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Import").ToString()
+                                + "</br>"
+                                + @HttpContext.GetGlobalResourceObject("Resource", "Polishing2").ToString()
+                                + "</br>(pcs)"
+                            )
+                            .Format("{0:n0}")
+                            .Aggregate(agg => agg.Sum())
+                            .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .HtmlAttributes(new { style = "text-align: right;" })
+                            .FooterHtmlAttributes(new { style = "text-align: right;" });
+                        
                         columns.Bound(f => f.ImportNcu).Width(60)
-                             .HeaderTemplate("Nhập</br>NCU</br>(pcs)")
-                               .Format("{0:n0}")
-                               .Aggregate(agg => agg.Sum())
-                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                             .HtmlAttributes(new { style = "text-align: right;" })
-                               .FooterHtmlAttributes(new { style = "text-align: right;" });
+                            //.HeaderTemplate("Nhập</br>NCU</br>(pcs)")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Import").ToString()
+                                + "</br>"
+                                +@HttpContext.GetGlobalResourceObject("Resource", "Vendor2").ToString()
+                                + "</br>(pcs)"
+                            )
+                            .Format("{0:n0}")
+                            .Aggregate(agg => agg.Sum())
+                            .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .HtmlAttributes(new { style = "text-align: right;" })
+                            .FooterHtmlAttributes(new { style = "text-align: right;" });
+                        
                         columns.Bound(f => f.ImportCxl1).Width(60)
-                             .HeaderTemplate("Nhập</br>CPL</br>(pcs)")
-                               .Format("{0:n0}")
-                               .Aggregate(agg => agg.Sum())
-                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                             .HtmlAttributes(new { style = "text-align: right;" })
-                               .FooterHtmlAttributes(new { style = "text-align: right;" });
+                            //.HeaderTemplate("Nhập</br>CPL</br>(pcs)")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Import").ToString()
+                                + "</br>"
+                                + @HttpContext.GetGlobalResourceObject("Resource", "SortingPending").ToString()
+                                + "</br>(pcs)"
+                            )
+                            .Format("{0:n0}")
+                            .Aggregate(agg => agg.Sum())
+                            .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .HtmlAttributes(new { style = "text-align: right;" })
+                            .FooterHtmlAttributes(new { style = "text-align: right;" });
+                        
                         columns.Bound(f => f.ImportQc).Width(60)
-                             .HeaderTemplate("Nhập</br>QC</br>(pcs)")
-                               .Format("{0:n0}")
-                               .Aggregate(agg => agg.Sum())
-                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                             .HtmlAttributes(new { style = "text-align: right;" })
-                               .FooterHtmlAttributes(new { style = "text-align: right;" });
+                            //.HeaderTemplate("Nhập</br>QC</br>(pcs)")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Import").ToString()
+                                + "</br>QC</br>(pcs)"
+                            )
+                            .Format("{0:n0}")
+                            .Aggregate(agg => agg.Sum())
+                            .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .HtmlAttributes(new { style = "text-align: right;" })
+                            .FooterHtmlAttributes(new { style = "text-align: right;" });
+                        
                         columns.Bound(f => f.ImportElse).Width(60)
-                             .HeaderTemplate("Nhập</br>khác</br>(pcs)")
-                               .Format("{0:n0}")
-                               .Aggregate(agg => agg.Sum())
-                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                             .HtmlAttributes(new { style = "text-align: right;" })
-                               .FooterHtmlAttributes(new { style = "text-align: right;" });
+                            //.HeaderTemplate("Nhập</br>khác</br>(pcs)")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Import").ToString()
+                                + "</br>"
+                                + @HttpContext.GetGlobalResourceObject("Resource", "Difference").ToString()
+                                + "</br>(pcs)"
+                            )
+                            .Format("{0:n0}")
+                            .Aggregate(agg => agg.Sum())
+                            .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .HtmlAttributes(new { style = "text-align: right;" })
+                            .FooterHtmlAttributes(new { style = "text-align: right;" });
+                        
                         //
                         columns.Bound(f => f.TotalImport).Width(80)
-                               .HeaderTemplate("Tổng</br>Nhập</br>(pcs)")
-                               .Format("{0:n0}")
-                               .Aggregate(agg => agg.Sum())
-                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                              .HtmlAttributes(new { style = "text-align: right;border-right:black 3px double;" })
-                              .FooterHtmlAttributes(new { style = "text-align: right;border-right:black 3px double;" });
+                            //.HeaderTemplate("Tổng</br>Nhập</br>(pcs)")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Total").ToString()
+                                + "</br>"
+                                + @HttpContext.GetGlobalResourceObject("Resource", "Import").ToString()
+                                + "</br>(pcs)"
+                            )
+                            .Format("{0:n0}")
+                            .Aggregate(agg => agg.Sum())
+                            .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .HtmlAttributes(new { style = "text-align: right;border-right:black 3px double;" })
+                            .FooterHtmlAttributes(new { style = "text-align: right;border-right:black 3px double;" });
+                        
                         //
                         columns.Bound(f => f.ExportPacking).Width(60)
-                               .HeaderTemplate("Xuất</br>ĐG</br>(pcs)")
-                               .Format("{0:n0}")
-                               .Aggregate(agg => agg.Sum())
-                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .HtmlAttributes(new { style = "text-align: right;" })
-                               .FooterHtmlAttributes(new { style = "text-align: right;" });
+                            //.HeaderTemplate("Xuất</br>ĐG</br>(pcs)")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Export").ToString()
+                                + "</br>"
+                                + @HttpContext.GetGlobalResourceObject("Resource", "Packing2").ToString()
+                                + "</br>(pcs)"
+                            )
+                            .Format("{0:n0}")
+                            .Aggregate(agg => agg.Sum())
+                            .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .HtmlAttributes(new { style = "text-align: right;" })
+                            .FooterHtmlAttributes(new { style = "text-align: right;" });
+                        
                         columns.Bound(f => f.ExportFinish).Width(60)
-                               .HeaderTemplate("Xuất</br>TP</br>(pcs)")
-                               .Format("{0:n0}")
-                               .Aggregate(agg => agg.Sum())
-                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .HtmlAttributes(new { style = "text-align: right;" })
-                               .FooterHtmlAttributes(new { style = "text-align: right;" });
+                            //.HeaderTemplate("Xuất</br>TP</br>(pcs)")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Export").ToString()
+                                + "</br>"
+                                +@HttpContext.GetGlobalResourceObject("Resource", "FinishedProduct2").ToString()
+                                + "</br>(pcs)"
+                            )
+                            .Format("{0:n0}")
+                            .Aggregate(agg => agg.Sum())
+                            .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .HtmlAttributes(new { style = "text-align: right;" })
+                            .FooterHtmlAttributes(new { style = "text-align: right;" });
+                        
                         columns.Bound(f => f.ExportCxl1).Width(60)
-                               .HeaderTemplate("Xuất</br>CPL</br>(pcs)")
-                               .Format("{0:n0}")
-                               .Aggregate(agg => agg.Sum())
-                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .HtmlAttributes(new { style = "text-align: right;" })
-                               .FooterHtmlAttributes(new { style = "text-align: right;" });
+                            //.HeaderTemplate("Xuất</br>CPL</br>(pcs)")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Export").ToString()
+                                + "</br>"
+                                + @HttpContext.GetGlobalResourceObject("Resource", "SortingPending").ToString()
+                                + "</br>(pcs)"
+                            )
+                            .Format("{0:n0}")
+                            .Aggregate(agg => agg.Sum())
+                            .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .HtmlAttributes(new { style = "text-align: right;" })
+                            .FooterHtmlAttributes(new { style = "text-align: right;" });
+                        
                         columns.Bound(f => f.ExportDefect).Width(60)
-                               .HeaderTemplate("Xuất</br>PP</br>(pcs)")
-                               .Format("{0:n0}")
-                               .Aggregate(agg => agg.Sum())
-                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .HtmlAttributes(new { style = "text-align: right;" })
-                               .FooterHtmlAttributes(new { style = "text-align: right;" });
+                            //.HeaderTemplate("Xuất</br>PP</br>(pcs)")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Export").ToString()
+                                + "</br>"
+                                +@HttpContext.GetGlobalResourceObject("Resource", "Scrap2").ToString()
+                                + "</br>(pcs)"
+                            )
+                            .Format("{0:n0}")
+                            .Aggregate(agg => agg.Sum())
+                            .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .HtmlAttributes(new { style = "text-align: right;" })
+                            .FooterHtmlAttributes(new { style = "text-align: right;" });
+                        
                         columns.Bound(f => f.ExportElse).Width(60)
-                               .HeaderTemplate("Xuất</br>khác</br>(pcs)")
-                               .Format("{0:n0}")
-                               .Aggregate(agg => agg.Sum())
-                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .HtmlAttributes(new { style = "text-align: right;" })
-                               .FooterHtmlAttributes(new { style = "text-align: right;" });
+                            //.HeaderTemplate("Xuất</br>khác</br>(pcs)")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Export").ToString()
+                                + "</br>"
+                                +@HttpContext.GetGlobalResourceObject("Resource", "Difference").ToString()
+                                + "</br>(pcs)"
+                            )
+                            .Format("{0:n0}")
+                            .Aggregate(agg => agg.Sum())
+                            .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .HtmlAttributes(new { style = "text-align: right;" })
+                            .FooterHtmlAttributes(new { style = "text-align: right;" });
+                        
                         columns.Bound(f => f.ExportQc).Width(60)
-                               .HeaderTemplate("Xuất</br>QC</br>(pcs)")
-                               .Format("{0:n0}")
-                               .Aggregate(agg => agg.Sum())
-                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .HtmlAttributes(new { style = "text-align: right;" })
-                               .FooterHtmlAttributes(new { style = "text-align: right;" });
+                            //.HeaderTemplate("Xuất</br>QC</br>(pcs)")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Export").ToString()
+                                + "</br>QC</br>(pcs)"
+                            )
+                            .Format("{0:n0}")
+                            .Aggregate(agg => agg.Sum())
+                            .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .HtmlAttributes(new { style = "text-align: right;" })
+                            .FooterHtmlAttributes(new { style = "text-align: right;" });
+                        
                         //
                         columns.Bound(f => f.TotalExport).Width(80)
-                             .HeaderTemplate("Tổng</br>Xuất</br>(pcs)")
-                               .Format("{0:n0}")
-                               .Aggregate(agg => agg.Sum())
-                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                             .HtmlAttributes(new { style = "text-align: right;" })
-                               .FooterHtmlAttributes(new { style = "text-align: right;" });
+                            //.HeaderTemplate("Tổng</br>Xuất</br>(pcs)")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Total").ToString()
+                                + "</br>"
+                                + @HttpContext.GetGlobalResourceObject("Resource", "Export").ToString()
+                                + "</br>(pcs)"
+                            )
+                            .Format("{0:n0}")
+                            .Aggregate(agg => agg.Sum())
+                            .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .HtmlAttributes(new { style = "text-align: right;" })
+                            .FooterHtmlAttributes(new { style = "text-align: right;" });
+                        
                         //
                         columns.Bound(f => f.LastInventory).Width(80)
-                               .HeaderTemplate("Tồn</br>cuối</br>(pcs)")
-                               .Format("{0:n0}")
-                               .Aggregate(agg => agg.Sum())
-                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .HtmlAttributes(new { style = "text-align: right;border-left:black 3px double;" })
-                               .FooterHtmlAttributes(new { style = "text-align: right;border-left:black 3px double;" });
+                            //.HeaderTemplate("Tồn</br>cuối</br>(pcs)")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "LastQuantity1").ToString()
+                                + "</br>(pcs)"
+                            )
+                            .Format("{0:n0}")
+                            .Aggregate(agg => agg.Sum())
+                            .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .HtmlAttributes(new { style = "text-align: right;border-left:black 3px double;" })
+                            .FooterHtmlAttributes(new { style = "text-align: right;border-left:black 3px double;" });
                         
                         columns.Bound(f => f.LastInventoryKg).Width(80)
-                               .HeaderTemplate("Tồn</br>cuối</br>(g)")
-                               .Format("{0:n2}")
-                               .Aggregate(agg => agg.Sum())
-                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .HtmlAttributes(new { style = "text-align: right;" })
-                               .FooterHtmlAttributes(new { style = "text-align: right;" });
+                            //.HeaderTemplate("Tồn</br>cuối</br>(g)")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "LastQuantity1").ToString()
+                                + "</br>(g)"
+                            )
+                            .Format("{0:n2}")
+                            .Aggregate(agg => agg.Sum())
+                            .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .HtmlAttributes(new { style = "text-align: right;" })
+                            .FooterHtmlAttributes(new { style = "text-align: right;" });
+                        
                         //
                         columns.Bound(f => f.DiffQuantity).Width(65)
-                               .HeaderTemplate("Lệch</br>tồn")
-                               .Format("{0:n0}")
-                               .Aggregate(agg => agg.Sum())
-                               .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
-                               .HtmlAttributes(new { style = "text-align: right;border-left:black 3px double;" })
-                               .FooterHtmlAttributes(new { style = "text-align: right;border-left:black 3px double;" });
+                            //.HeaderTemplate("Lệch</br>tồn")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Diff").ToString()
+                                + "</br>"
+                                + @HttpContext.GetGlobalResourceObject("Resource", "Inv").ToString()
+                            )
+                            .Format("{0:n0}")
+                            .Aggregate(agg => agg.Sum())
+                            .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                            .HtmlAttributes(new { style = "text-align: right;border-left:black 3px double;" })
+                            .FooterHtmlAttributes(new { style = "text-align: right;border-left:black 3px double;" });
+                        
                         //columns.Bound(f => f.DiffImport).Width(65)
                         //       .HeaderTemplate("Lệch</br>nhập")
                         //       .Format("{0:n0}")

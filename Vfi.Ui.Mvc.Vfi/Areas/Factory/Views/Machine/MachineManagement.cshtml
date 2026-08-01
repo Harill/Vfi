@@ -5,13 +5,17 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="title">Quản lý thông tin máy</div>
+<div class="title">
+    Quản lý thông tin máy
+
+</div>
 
 
             <div class="grid_3 prefix_1">
                 <button id="btnRefesh" class="t-button" onclick=" return RefreshGrid('gridMachine'); ">
                     <span class='t-icon t-insert'></span>
                     Làm mới
+
                 </button>
             </div>
 <div class="cover-div">
@@ -21,7 +25,9 @@
         .DataKeys(key => key.Add(f => f.MachineId).RouteKey("machineId"))
         .ToolBar(
             toolbar =>
-            toolbar.Insert().ButtonType(GridButtonType.ImageAndText).Text("Thêm máy mới").ImageHtmlAttributes(new { style = "margin-left:0px;" }))
+            toolbar.Insert().ButtonType(GridButtonType.ImageAndText)
+                .Text("Thêm máy mới")
+                .ImageHtmlAttributes(new { style = "margin-left:0px;" }))
         .DataBinding(
             dataBinding => dataBinding.Ajax()
                 .Select("SelectMachine", "Machine")
@@ -33,27 +39,53 @@
                 command.Edit().ButtonType(GridButtonType.ImageAndText)
             ).Width(98).Title("").HtmlAttributes(new { style = "text-align:center" });
 
-            columns.Bound(f => f.MachineCode).Width(175).Title("Mã máy")
+            columns.Bound(f => f.MachineCode).Width(175)
+                .Title("Mã máy")
+                
                 .ClientTemplate("<strong><#= MachineCode #></strong>");
-            columns.Bound(f => f.ProcessingTypeName).Width(175).Title("Loại GC")
+         
+            columns.Bound(f => f.ProcessingTypeName).Width(175)
+                .Title("Loại GC")
+                
                 .ClientTemplate("<#= ProcessingTypeName #>");
-            columns.Bound(f => f.MachineIdName).Width(175).Title("MachineIdName")
+            
+            columns.Bound(f => f.MachineIdName).Width(175)
+                .Title("MachineIdName")
+                
                 .ClientTemplate("<#= MachineIdName #>");
-            columns.Bound(f => f.DiagramTypeName).Width(175).Title("Sơ đồ")
+            
+            columns.Bound(f => f.DiagramTypeName).Width(175)
+                .Title("Sơ đồ")
+                
                 .ClientTemplate("<#= DiagramTypeName #>");
-            columns.Bound(f => f.ColumnIndex).Width(175);
-            columns.Bound(f => f.RowIndex).Width(175);
+            
+            columns.Bound(f => f.ColumnIndex).Width(175)
+                ;
+            
+            columns.Bound(f => f.RowIndex).Width(175)
+                ;
+            
             columns.Bound(f => f.MachineFunction).Width(70)
-                   .HeaderTemplate("Chức năng máy");
+                .HeaderTemplate("Chức năng máy")
+                ;
 
-            columns.Bound(f => f.Active).Width(75).Title("SX1")
+            columns.Bound(f => f.Active).Width(75)
+                .Title("SX1")
+                
                 .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=Active? checked='checked' : '' #> />")
                 .HtmlAttributes(new { style = "text-align:center" });
-            columns.Bound(f => f.Production2).Width(75).Title("Khác")
+            
+            columns.Bound(f => f.Production2).Width(75)
+                .Title("Khác")
+                
                 .ClientTemplate("<input type='checkbox' disabled='disabled' name='Production2' <#=Production2? checked='checked' : '' #> />")
                 .HtmlAttributes(new { style = "text-align:center" });
-            columns.Bound(f => f.ModifiedUser).Width(100).ReadOnly(true);
+            
+            columns.Bound(f => f.ModifiedUser).Width(100).ReadOnly(true)
+                ;
+            
             columns.Bound(f => f.ModifiedDate).Width(100).ReadOnly(true)
+
                 .Format("{0:dd/MM/yyyy HH:mm}");
             
         })

@@ -85,13 +85,22 @@
 </script>
 }
 
-<div class="title">Xuất hủy công cụ</div>
+<div class="title">
+    @*Xuất hủy công cụ*@
+    @HttpContext.GetGlobalResourceObject("Resource", "ExportToolInventory")
+</div>
 
 <div class="t-info-sha" style="padding-left: 15px;padding-right: 15px;">
     <fieldset>
-        <legend>Thông tin xuất</legend>
+        <legend>
+            @*Thông tin xuất*@
+            @HttpContext.GetGlobalResourceObject("Resource", "ExportFormInformation")
+        </legend>
            
-             <div class="grid_3">Nhà cung ứng:</div>
+             <div class="grid_3">
+                 @*Nhà cung ứng:*@
+                 @HttpContext.GetGlobalResourceObject("Resource", "Vendor")
+             </div>
         <div class="grid_7">
             @{
                 Html.Telerik().ComboBox()
@@ -100,12 +109,15 @@
                     .HtmlAttributes(new { style = "width: 250px" })
                     .DropDownHtmlAttributes(new { style = "width: 325px" })
                     .AutoFill(true)
-                    .Filterable(f=>f.FilterMode(AutoCompleteFilterMode.Contains))
+                    .Filterable(f=>f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                     .ClientEvents(e => e.OnChange("ToolVendor_OnChange"))
                     .Render();
             }
         </div>
-                <div class="grid_1">Loại</div>
+                <div class="grid_1">
+                    @*Loại*@
+                    @HttpContext.GetGlobalResourceObject("Resource", "Type")
+                </div>
                 <div class="grid_3_5">
                     @{
                         Html.Telerik().ComboBox()
@@ -114,11 +126,14 @@
                             .HtmlAttributes(new {style = "width: 130px"})
                             .DropDownHtmlAttributes(new {style = "width: 130px"})
                             .AutoFill(true)
-                            .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                            .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                             .Render();
                     }
                 </div>
-        <div class="grid_2">Công cụ:</div>
+        <div class="grid_2">
+            @*Công cụ:*@
+            @HttpContext.GetGlobalResourceObject("Resource", "Tools")
+        </div>
         <div class="grid_4">
             @{
                 Html.Telerik().AutoComplete()
@@ -126,7 +141,7 @@
                     .DataBinding(binding => binding.Ajax().Select("SelectComboBoxTool", "Material", new { area = "" }).Delay(350))
                     .HtmlAttributes(new {style = "width: 150px"})
                     .DropDownHtmlAttributes(new {style = "width: 250px"})
-                    .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                    .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                     .HighlightFirstMatch(true)
                     .AutoFill(true)
                     .Render();
@@ -145,7 +160,8 @@
             <div class="grid_3 prefix_1">
                 <button id="btnRefesh" class="t-button" onclick=" return RefreshGrid('gridToolInventory'); ">
                     <span class='t-icon t-insert'></span>
-                    Làm mới
+                    @*Làm mới*@
+                    @HttpContext.GetGlobalResourceObject("Resource", "Refresh")
                 </button>
             </div>
     </fieldset>
@@ -160,7 +176,8 @@
                      <div class="grid_7">
                          <button class="t-button" id="btnPickupId" name="btnPickupId" onclick=" PickupId() ">
                              <span class='t-icon t-insert'></span>
-                             Chọn các công cụ vào lưới
+                             @*Chọn các công cụ vào lưới*@
+                             @HttpContext.GetGlobalResourceObject("Resource", "SelectToolIntoNet")
                          </button>
                      </div>
                      <div class="clear"></div>
@@ -171,19 +188,41 @@
                                                      .Select("SelectExportToolInv", "Tool", new { toolCode = "", vendorId = 0, typeId = 0, type = 0, productId = 0 }))
             .Columns(columns =>
                 {
-                    columns.Bound(f => f.ToolInvId).Title("Chọn").Width(75)
-                           .ClientTemplate("<input type='checkbox' name='chklIds' value='<#= ToolInvId #>' />")
-                           .HtmlAttributes(new { style = "text-align:center" });
-                    columns.Bound(f => f.ToolFullCodeName).Width(150).Title("Mã công cụ");
-                    columns.Bound(f => f.VendorCodeName).Width(150).Title("NCC");
-                    columns.Bound(f => f.LotNumber).Width(75).Title("Lô");
-                    columns.Bound(f => f.TotalInv).Width(75).Title("Tổng tồn")
+                    columns.Bound(f => f.ToolInvId)
+                        //.Title("Chọn")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Select").ToString())
+                        .Width(75)
+                        .ClientTemplate("<input type='checkbox' name='chklIds' value='<#= ToolInvId #>' />")
+                        .HtmlAttributes(new { style = "text-align:center" });
+                 
+                    columns.Bound(f => f.ToolFullCodeName).Width(150)
+                        //.Title("Mã công cụ")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "ToolCode").ToString());
+                    
+                    columns.Bound(f => f.VendorCodeName).Width(150)
+                        //.Title("NCC")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Vendor2").ToString());
+                    
+                    columns.Bound(f => f.LotNumber).Width(75)
+                        //.Title("Lô")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Lot").ToString());
+                    
+                    columns.Bound(f => f.TotalInv).Width(75)
+                        //.Title("Tổng tồn")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "TotalInv").ToString())
                         .HtmlAttributes(new { style = "text-align:right;" })
-                           .Format("{0:n2}");
-                    columns.Bound(f => f.AvailInv).Width(75).Title("Còn tồn")
+                        .Format("{0:n2}");
+                    
+                    columns.Bound(f => f.AvailInv).Width(75)
+                        //.Title("Còn tồn")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "HaveInventory").ToString())
                         .HtmlAttributes(new { style = "text-align:right;" })
-                           .Format("{0:n2}");
-                    columns.Bound(f => f.UnitMeasure).Title("ĐVT").Width(75);
+                        .Format("{0:n2}");
+                    
+                    columns.Bound(f => f.UnitMeasure)
+                        //.Title("ĐVT")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Unit2").ToString())
+                        .Width(75);
                 })
             .Scrollable(f => f.Height(200))
             .ClientEvents(events => events.OnDataBinding("gridToolInventory_onDataBinding")
@@ -195,49 +234,81 @@
     }
 </div>
 <div class="clear"></div><br/>
-<div class="t-info-sha" style="padding-left: 15px; width:250px; color: Maroon;">Chi tiết lệnh nhập nguyên liệu</div>
+<div class="t-info-sha" style="padding-left: 15px; width:250px; color: Maroon;">
+    @*Chi tiết lệnh nhập nguyên liệu*@
+    @HttpContext.GetGlobalResourceObject("Resource", "ToolInputOrderDetail").ToString()
+</div>
 <div class="cover-div">
 @{
     Html.Telerik().Grid<TransactionFptDetailModel>()
         .Name("gridToolInventoryDetail")
-        .ToolBar(bar=>bar.SubmitChanges().ButtonType(GridButtonType.ImageAndText).SaveText("Lưu tất cả").CancelText("Hủy"))
+        .ToolBar(bar=>bar.SubmitChanges().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText)
+            .SaveText(@HttpContext.GetGlobalResourceObject("Resource", "SaveAll").ToString())
+            .CancelText("Hủy"))
         .DataKeys(keys => keys.Add(f => f.ToolInvId).RouteKey("toolInvId"))
         .DataBinding(dataBindings => dataBindings.Ajax()
             .Select("SelectExportToolInventory", "Tool", new { invIds = "" ,machineId=0,productId= 0})
             .Update("ExportTransactionToolInventory", "Tool"))
         .Columns(columns =>
         {
-            columns.Bound(f => f.VendorCodeName).Width(150).Title("NCC").ReadOnly(true);
-            columns.Bound(f => f.ToolFullCodeName).Width(250).Title("Mã nhiên liệu").ReadOnly(true);
-            columns.Bound(f => f.UnitMeasure).Width(70).Title("ĐVT").ReadOnly(true);
+            columns.Bound(f => f.VendorCodeName).Width(150)
+                //.Title("NCC")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "Vendor2").ToString())
+                .ReadOnly(true);
+            
+            columns.Bound(f => f.ToolFullCodeName).Width(250)
+                //.Title("Mã nhiên liệu")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "ToolCode").ToString())
+                .ReadOnly(true);
+            
+            columns.Bound(f => f.UnitMeasure).Width(70)
+                //.Title("ĐVT")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "Unit2").ToString())
+                .ReadOnly(true);
+            
             columns.Bound(f => f.TotalInv).Width(70).ReadOnly(true)
-                .HeaderTemplate("Tồn kho")
+                //.HeaderTemplate("Tồn kho")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "Inventory").ToString())
                 .Format("{0:n2}")
                 .HtmlAttributes(new { style = "text-align:right" });
+            
             columns.Bound(f => f.AvailInv).Width(70).ReadOnly(true)
-                .HeaderTemplate("Còn tồn")
+                //.HeaderTemplate("Còn tồn")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "HaveInventory").ToString())
                 .Format("{0:n2}")
                 .HtmlAttributes(new { style = "text-align:right" });
-            columns.Bound(f => f.LotNumber).Width(50).ReadOnly(true).Title("Lô");
+            
+            columns.Bound(f => f.LotNumber).Width(50).ReadOnly(true)
+                //.Title("Lô")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "Lot").ToString());
+            
             columns.Bound(f => f.Quantity).Width(70)
-                .HeaderTemplate("SL Hủy")
+                //.HeaderTemplate("SL Hủy")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "CancelQuantity2").ToString()
+                )
                 .HeaderHtmlAttributes(new { @class = "edit-column" })
-                    .HtmlAttributes(new { style = "text-align: right;" })
-                   .ClientTemplate("<span name='Quantity'><#= Quantity == null ? 0 : $.telerik.formatString('{0:n1}', Quantity) #></span>")
-                   .FooterTemplate("<span id='TotalQuantity'></span>");
-            columns.Bound(f => f.IsDestroy).Width(50).Title("Hết tồn")
-                    .HeaderHtmlAttributes(new { @class = "edit-column" })
-                   .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsDestroy' <#=IsDestroy? checked='checked' : '' #> />")
-                   .HtmlAttributes(new { style = "text-align: center;" });
-            columns.Bound(f => f.Note);
-            columns.Command(commands => commands.Delete().ButtonType(GridButtonType.Image)).Width(40).Title("");
+                .HtmlAttributes(new { style = "text-align: right;" })
+                .ClientTemplate("<span name='Quantity'><#= Quantity == null ? 0 : $.telerik.formatString('{0:n1}', Quantity) #></span>")
+                .FooterTemplate("<span id='TotalQuantity'></span>");
+            
+            columns.Bound(f => f.IsDestroy).Width(50)
+                //.Title("Hết tồn")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "StockOut").ToString())
+                .HeaderHtmlAttributes(new { @class = "edit-column" })
+                .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsDestroy' <#=IsDestroy? checked='checked' : '' #> />")
+                .HtmlAttributes(new { style = "text-align: center;" });
+            
+            columns.Bound(f => f.Note)
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "Note").ToString());
+            
+            columns.Command(commands => commands.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(40).Title("");
         })
         .ClientEvents(events => events
             .OnSubmitChanges("gridToolInventoryDetail_onSubmitChanges")
                 .OnRowDataBound("gridToolInventoryDetail_OnRowDataBound")
             .OnError("grid_OnError")
         )
-        .Editable(f=>f.Mode(GridEditMode.InCell))
+        .Editable(f=>f.Mode(Telerik.Web.Mvc.UI.GridEditMode.InCell))
        // .Footer(true)
         .Render();   
 }
