@@ -104,17 +104,17 @@
            )
             .Columns(columns => {
                 columns.Bound(f => f.MachineName)
-                    .Title("Máy")
+                    //.Title("Máy")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Machine").ToString())
                     .Width(100).ReadOnly(true);
                 
                 columns.Bound(f => f.ProductCode)
-                    .Title("Sản phẩm")
+                    //.Title("Sản phẩm")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Product").ToString())
                     .Width(150).ReadOnly(true);
                 
                 columns.Bound(f => f.MaterialDesign)
-                    .Title("Nguyên liệu")
+                    //.Title("Nguyên liệu")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Material").ToString())
                     .Width(270).ReadOnly(true);
                 
@@ -123,10 +123,11 @@
                     .Width(100).ReadOnly(true);
                 
                 columns.Bound(f => f.EarlyQuantity)
-                    .Title("Tồn đầu</br>(cây)")
+                    //.Title("Tồn đầu</br>(cây)")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "EarlyQuantity").ToString() 
-                            + "</br>"
+                            + "</br>("
                             + @HttpContext.GetGlobalResourceObject("Resource", "Bar").ToString()
+                            + ")"
                     )
                     .Width(70).ReadOnly(true)
                     .Aggregate(agg => agg.Sum())
@@ -137,11 +138,13 @@
                     .FooterHtmlAttributes(new { style = "text-align: right;border-right:1px black solid" });
                 
                 columns.Bound(f => f.QuantityUse1)
-                    .Title("Sử dụng</br>ca 1(cây)")
-                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Using").ToString()
+                    //.Title("Sử dụng</br>ca 1(cây)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Using1").ToString()
                             + "</br>"
                             + @HttpContext.GetGlobalResourceObject("Resource", "Shift1").ToString()
+                            + " ("
                             + @HttpContext.GetGlobalResourceObject("Resource", "Bar").ToString()
+                            + ")"
                     )
                     .Width(70).ReadOnly(true)
                     .Aggregate(agg => agg.Sum())
@@ -152,11 +155,13 @@
                     .FooterHtmlAttributes(new { style = "text-align: right;" });
                 
                 columns.Bound(f => f.QuantityUse2)
-                    .Title("Sử dụng</br>ca 2(cây)")
-                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Using").ToString()
+                    //.Title("Sử dụng</br>ca 2(cây)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Using1").ToString()
                             + "</br>"
                             + @HttpContext.GetGlobalResourceObject("Resource", "Shift2").ToString()
+                            + " ("
                             + @HttpContext.GetGlobalResourceObject("Resource", "Bar").ToString()
+                            + ")"
                     )
                     .Width(70).ReadOnly(true)
                     .Aggregate(agg => agg.Sum())
@@ -167,10 +172,11 @@
                     .FooterHtmlAttributes(new { style = "text-align: right;" });
                 
                 columns.Bound(f => f.LastQuantity)
-                    .Title("Tồn cuối</br>(cây)")
+                    //.Title("Tồn cuối</br>(cây)")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "LastQuantity").ToString()
-                            + "</br>"
+                            + "</br>("
                             + @HttpContext.GetGlobalResourceObject("Resource", "Bar").ToString()
+                            + ")"
                     )
                     .Width(70).ReadOnly(true)
                     .Aggregate(agg => agg.Sum())

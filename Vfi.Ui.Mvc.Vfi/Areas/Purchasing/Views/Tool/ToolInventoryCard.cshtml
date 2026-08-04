@@ -117,7 +117,7 @@
                         {
                             columns.Bound(f => f.VendorName).Width(150)
                                 //.Title("NCC")
-                                .Title(@HttpContext.GetGlobalResourceObject("Resource", "Supplier2").ToString());
+                                .Title(@HttpContext.GetGlobalResourceObject("Resource", "Vendor2").ToString());
                             
                             columns.Bound(f => f.LotNumber).Width(40).ReadOnly(true)
                                 //.Title("Lô")

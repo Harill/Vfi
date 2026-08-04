@@ -720,7 +720,7 @@
             <div class="grid_2_5">
                 <div class="grid_1_5">
                     @*Sử dụng*@
-                    @HttpContext.GetGlobalResourceObject("Resource", "Using")
+                    @HttpContext.GetGlobalResourceObject("Resource", "Using1")
                 </div>
                 <div class="grid_0_5">
                     <span id="MaterialUse">0</span>
@@ -793,8 +793,9 @@
                 columns.Bound(f => f.UsingQuantity).Width(90)
                     //.HeaderTemplate("Sử dụng</br>nguyên liệu</br>(cây)")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "MaterialUsing").ToString()
-                        + "</br> "
+                        + "</br>("
                         + @HttpContext.GetGlobalResourceObject("Resource", "Bar").ToString()
+                        + ")"
                     )
                     .HeaderHtmlAttributes(new { @class = "edit-column", style = "text-align: center;" })
                     //.ClientTemplate("<span class='UsingQuantity'>0</span>")
@@ -875,8 +876,9 @@
                 columns.Bound(f => f.DiffQuantityKg).Width(90)
                     //.HeaderTemplate("Chênh lệch</br>TT - ĐM</br>(cây)")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "DiffQuantity").ToString()
-                        + "</br>"
+                        + "</br>("
                         + @HttpContext.GetGlobalResourceObject("Resource", "Bar").ToString()
+                        + ")"
                     )
                     .ReadOnly(true)
                     .HeaderHtmlAttributes(new { @class = "good-column" })

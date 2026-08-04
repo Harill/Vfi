@@ -316,7 +316,7 @@
             
             <div class="grid_2">
                 @*Kế hoạch:*@
-                @HttpContext.GetGlobalResourceObject("Resource", "Planned"):
+                @HttpContext.GetGlobalResourceObject("Resource", "Plan"):
             </div>
             <div class="grid_3">
                 <span id="WorkOrderQuantity">0</span> (pcs)
@@ -393,7 +393,7 @@
         <div class="grid_3">
             <button class="t-button" id="btnDisConnect" name="btnDisConnect" onclick=" DisConnect() ">
                 <span class='t-icon t-delete'></span>
-                Ngắt kết nối
+                @*Ngắt kết nối*@
                 @HttpContext.GetGlobalResourceObject("Resource", "DisConnect1")
             </button>
         </div>
@@ -507,7 +507,7 @@
             <div class="grid_6">
         <div class="grid_2">
 @*            Trọng lượng*@
-            @HttpContext.GetGlobalResourceObject("Resource", "Weight1")
+            @HttpContext.GetGlobalResourceObject("Resource", "UnitWeight")
         </div>
         <div class="grid_3">
             <span id="CrossWeight">0</span> (g/@HttpContext.GetGlobalResourceObject("Resource", "Bag"))
@@ -580,7 +580,7 @@
               
                 columns.Bound(f => f.UsingWeight).Width(90)
                     //.HeaderTemplate("Trọng lượng</br>đóng gói</br>(g)")
-                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Weight1").ToString()
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "UnitWeight").ToString()
                         + "</br>"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Packing").ToString()
                         + "</br>(g)"
@@ -611,7 +611,7 @@
              
                 columns.Bound(f => f.NGQuantity).Width(90)
                     //.HeaderTemplate("Nhập thêm</br>(pcs)")
-                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Addition").ToString()
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "AdditionImport").ToString()
                         + "</br>(pcs)"
                     )
                     .ReadOnly(true)

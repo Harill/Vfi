@@ -227,7 +227,7 @@
                 
                 columns.Bound(f => f.PlannedCost)
                     //.Title("Kế hoạch</br>(pcs)")
-                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Planned").ToString()
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Plan").ToString()
                         + "</br>(pcs)"
                     )
                     .Width(70).ReadOnly(true)
@@ -252,7 +252,9 @@
                 
                 columns.Bound(f => f.NGQuantity)
                     //.Title("CPL</br>(pcs)")
-                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "NGQuantity1").ToString())
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "SortingPending2").ToString()
+                        + "</br>(pcs)"
+                    )
                     .Width(70).ReadOnly(true)
                     .HeaderHtmlAttributes(new { @class = "ng-column" })
                     .Format("{0:n0}")
@@ -260,7 +262,9 @@
                 
                 columns.Bound(f => f.NGWeight)
                     //.Title("CPL</br>(g)")
-                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "NGWeight1").ToString())
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "SortingPending2").ToString()
+                        + "</br>(g)"
+                    )
                     .Width(70).ReadOnly(true)
                     .HeaderHtmlAttributes(new { @class = "ng-column" })
                     .Format("{0:n0}")
@@ -326,7 +330,7 @@
                                                 //columns.Bound(f => f.Shift).Title("Ca").Width(40).ReadOnly(true);
                                                 columns.Bound(f => f.UsingQuantity)
                                                     //.Title("Sử dụng</br>(pcs)")
-                                                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Using").ToString()
+                                                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Using1").ToString()
                                                         + "</br>(pcs)"
                                                     )
                                                     .ReadOnly(true).Width(50)

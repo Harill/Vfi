@@ -534,7 +534,7 @@
                 columns.Bound(f => f.RealNumber).Width(70)
                     //.HeaderTemplate("SL xuất</br>(pcs)")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "ExportQuantity2").ToString()
-                        + "</br>(pcs)"
+                        + " (pcs)"
                     )
                     .HeaderHtmlAttributes(new { @class = "edit-column" })
                     .ClientGroupFooterTemplate("<div style='text-align: right; width: 100%;'><span id='GroupQuantity_<#= groupIndex++ #>'>0</span></div")

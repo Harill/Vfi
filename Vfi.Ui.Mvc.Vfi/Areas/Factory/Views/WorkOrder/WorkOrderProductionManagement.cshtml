@@ -265,7 +265,9 @@
                 
                 columns.Bound(f => f.NGQuantity)
                     //.Title("CPL</br>(pcs)")
-                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "NGQuantity1").ToString())
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "SortingPending2").ToString()
+                        + "</br>(pcs)"
+                    )
                     .Width(70).ReadOnly(true)
                     .HeaderHtmlAttributes(new { @class = "ng-column" })
                     .Format("{0:n0}")
@@ -336,9 +338,10 @@
                                                 //columns.Bound(f => f.Shift).Title("Ca").Width(40).ReadOnly(true);
                                                 columns.Bound(f => f.UsingQuantity)
                                                     //.Title("Sử dụng</br>(cây)")
-                                                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Using").ToString()
-                                                        + "</br>"
+                                                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Using1").ToString()
+                                                        + "</br>("
                                                         + @HttpContext.GetGlobalResourceObject("Resource", "Bar").ToString()
+                                                        + ")"
                                                     )
                                                     .ReadOnly(true).Width(50)
                                                     .Format("{0:n0}")
@@ -349,7 +352,9 @@
                                                 
                                                 columns.Bound(f => f.GoodQuantity)
                                                     //.Title("SL OK</br>(pcs)")
-                                                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "GoodQuantity").ToString())
+                                                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Quantity2").ToString()
+                                                        + " OK</br>(pcs)"
+                                                    )
                                                     .Width(70)
                                                     .HeaderHtmlAttributes(new { @class = "good-column" })
                                                     .Format("{0:n0}")
@@ -360,7 +365,9 @@
                                                 
                                                 columns.Bound(f => f.GoodWeight)
                                                     //.Title("TL OK</br>(g)")
-                                                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "GoodWeight").ToString())
+                                                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Weight2").ToString()
+                                                        + " OK</br>(g)"
+                                                    )
                                                     .ReadOnly(true).Width(70)
                                                     .HeaderHtmlAttributes(new { @class = "good-column" })
                                                     .Format("{0:n0}")
@@ -372,7 +379,11 @@
                                                 columns.Bound(f => f.NGQuantity)
                                                     //.Title("SL CPL</br>(pcs)")
                                                     .Width(70)
-                                                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "NGQuantity").ToString())
+                                                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Quantity2").ToString()
+                                                        + " "
+                                                        + @HttpContext.GetGlobalResourceObject("Resource", "SortingPending2").ToString()
+                                                        + "</br>(pcs)"
+                                                    )
                                                     .HeaderHtmlAttributes(new { @class = "ng-column" })
                                                     .Format("{0:n0}")
                                                     .HtmlAttributes(new { style = "text-align: center;" })
@@ -382,7 +393,11 @@
                                                 
                                                 columns.Bound(f => f.NGWeight)
                                                     //.Title("TL CPL</br>(g)")
-                                                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "NGWeight").ToString())
+                                                   .Title(@HttpContext.GetGlobalResourceObject("Resource", "Weight2").ToString()
+                                                        + " "
+                                                        + @HttpContext.GetGlobalResourceObject("Resource", "SortingPending2").ToString()
+                                                        + "</br>(g)"
+                                                    )
                                                     .ReadOnly(true).Width(70)
                                                     .HeaderHtmlAttributes(new { @class = "ng-column" })
                                                     .Format("{0:n0}")
@@ -393,7 +408,11 @@
                                                 
                                                 columns.Bound(f => f.DefectQuantity)
                                                     //.Title("SL PP</br>(pcs)")
-                                                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "DefectQuantity1").ToString())
+                                                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Quantity2").ToString()
+                                                        + " "
+                                                        + @HttpContext.GetGlobalResourceObject("Resource", "Scrap2").ToString()
+                                                        + "</br>(pcs)"
+                                                    )
                                                     .Width(70)
                                                     .HeaderHtmlAttributes(new { @class = "defect-column" })
                                                     .Format("{0:n0}")
@@ -404,7 +423,11 @@
                                                 
                                                 columns.Bound(f => f.DefectWeight)
                                                     //.Title("TL PP</br>(g)")
-                                                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "DefectWeight1").ToString())
+                                                   .Title(@HttpContext.GetGlobalResourceObject("Resource", "Weight2").ToString()
+                                                        + " "
+                                                        + @HttpContext.GetGlobalResourceObject("Resource", "Scrap2").ToString()
+                                                        + "</br>(g)"
+                                                    )
                                                     .ReadOnly(true).Width(70)
                                                     .HeaderHtmlAttributes(new { @class = "defect-column" })
                                                     .Format("{0:n0}")

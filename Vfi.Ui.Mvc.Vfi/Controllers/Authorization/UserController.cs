@@ -17,6 +17,7 @@ using FunctionModel = Vfi.Server.Core.DataModel.Models.System.FunctionModel;
 //using WorkGroup = Vfi.Server.Core.DataModel.BaseEntities.WorkGroup;
 using Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models;
 using Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers;
+using System.Threading;
 //using Vfi.Server.Core.DataModel.Models.System;
 
 namespace Vfi.Ui.Mvc.Vfi.Controllers.Authorization {
@@ -48,6 +49,12 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers.Authorization {
             foreach (var property in viewModel.GetType().GetProperties()) {
                 ViewData[property.Name] = property.GetValue(viewModel, null);
             }
+            // 04/08/2026
+            Session["CurrentCulture"] = "vi-VN";
+            string culture = (string)Session["CurrentCulture"] ?? "en-US";
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(culture);
+            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+
             return ViewData;
         }
         // View

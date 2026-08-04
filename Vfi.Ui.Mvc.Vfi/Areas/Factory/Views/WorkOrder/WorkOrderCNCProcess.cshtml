@@ -395,7 +395,7 @@
 
             <div class="grid_2">
                 @*Kế hoạch:*@
-                @HttpContext.GetGlobalResourceObject("Resource", "Planned"):
+                @HttpContext.GetGlobalResourceObject("Resource", "Plan"):
             </div>
             <div class="grid_3">
                 <span id="WorkOrderQuantity">0</span> (pcs)
@@ -561,7 +561,7 @@
             .Columns(columns => {
                 columns.Bound(f => f.ProductWeight).Width(90)
                     //.HeaderTemplate("Trọng lượng</br>Sản phẩm</br>(g/pc)")
-                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Weight1").ToString()
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "UnitWeight").ToString()
                         + "</br>"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Product").ToString()
                         + "</br>(g/pc)"

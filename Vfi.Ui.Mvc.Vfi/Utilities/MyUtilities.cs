@@ -62,6 +62,7 @@ namespace Vfi.Ui.Mvc.Vfi.Utilities {
                     if (user != null) {
                         model.Description = user.FullName;
                     }
+
                     var workgroup = vfi.WorkGroups.FirstOrDefault(x => x.Active);
                     if (workgroup != null) {
                         model.WorkGroupName = "- " + workgroup.WorkGroupName;

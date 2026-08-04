@@ -92,7 +92,10 @@
                 
                 columns.Bound(f => f.LastRouteFinishDate).Width(85)
                     //.Title("Ngày HT</br>CĐ trước")
-                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "PreviousStageCompletedDate").ToString())
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "FinishedDate").ToString()
+                        + "</br>"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "LastStage").ToString()
+                    )
                     .ReadOnly(true)
                     .ClientTemplate("<#= LastRouteFinishDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy HH:mm}', LastRouteFinishDate) #>")
                     .HtmlAttributes(new { style = "text-align: center;" });
@@ -120,7 +123,7 @@
                 
                 columns.Bound(f => f.PlannedWeight)
                     //.Title("Trọng lượng</br>(g)")
-                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Weight1").ToString()
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "UnitWeight").ToString()
                         + "</br>(g)"
                     )
                     .Width(70).ReadOnly(true)

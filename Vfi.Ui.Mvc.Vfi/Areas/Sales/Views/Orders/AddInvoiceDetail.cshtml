@@ -178,7 +178,7 @@
                          {
                              columns.Bound(f => f.DetailId)
                                  //.Title("Chọn")
-                                 //.Title(@HttpContext.GetGlobalResourceObject("Resource", "").ToString())
+                                 .Title(@HttpContext.GetGlobalResourceObject("Resource", "Select").ToString())
                                  .Width(75)
                                  .ClientTemplate("<input type='radio' name='chkProductIds' value='<#= DetailId #>' />")
                                  .HtmlAttributes(new { style = "text-align:center" });

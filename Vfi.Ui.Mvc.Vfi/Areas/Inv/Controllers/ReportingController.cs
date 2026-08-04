@@ -17,6 +17,7 @@ using System.Drawing;
 using Vfi.Ui.Mvc.Vfi.Areas.Factory.Models;
 using Microsoft.Practices.Unity;
 using Vfi.Server.Core.CrossCutting.UnitOfWork;
+using System.Threading;
 
 namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
     public class ReportingController : Controller {
@@ -40,8 +41,15 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers {
             foreach (var property in viewModel.GetType().GetProperties()) {
                 ViewData[property.Name] = property.GetValue(viewModel, null);
             }
+            // 04/08/2026
+            Session["CurrentCulture"] = "vi-VN";
+            string culture = (string)Session["CurrentCulture"] ?? "vi-VN";
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(culture);
+            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+
             return ViewData;
         }
+
         public ActionResult ProductMonthlyReport() {
             if (!Request.IsAuthenticated) {
                 return RedirectToAction("Index", "Home", new { area = "" });

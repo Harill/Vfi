@@ -481,13 +481,13 @@
     <value>PP&lt;/br&gt;(pcs)</value>
   </data>
   <data name="DefectQuantity1" xml:space="preserve">
-    <value>SL DEF&lt;/br&gt;(pcs)</value>
+    <value>SL PP&lt;/br&gt;(pcs)</value>
   </data>
   <data name="DefectWeight" xml:space="preserve">
     <value>PP&lt;/br&gt;(g)</value>
   </data>
   <data name="DefectWeight1" xml:space="preserve">
-    <value>TL DEF&lt;/br&gt;(g)</value>
+    <value>TL PP&lt;/br&gt;(g)</value>
   </data>
   <data name="DeliveryDate" xml:space="preserve">
     <value>Ngày giao hàng</value>
@@ -500,9 +500,6 @@
   </data>
   <data name="DueDate1" xml:space="preserve">
     <value>Dự kiến&lt;/br&gt;hoàn&lt;/br&gt;thành</value>
-  </data>
-  <data name="Employe" xml:space="preserve">
-    <value>Nhân viên</value>
   </data>
   <data name="EndDate1" xml:space="preserve">
     <value>Thực tế&lt;/br&gt;hoàn&lt;/br&gt;thành</value>
@@ -590,7 +587,7 @@
     <value>Công đoạn</value>
   </data>
   <data name="StartDate1" xml:space="preserve">
-    <value>Dự kiến&lt;/br&gt;bắt&lt;/br&gt;đầu"</value>
+    <value>Dự kiến&lt;/br&gt;bắt&lt;/br&gt;đầu</value>
   </data>
   <data name="Status" xml:space="preserve">
     <value>Tình trạng</value>
@@ -731,7 +728,7 @@
   <data name="RequestActual" xml:space="preserve">
     <value>YC - TT</value>
   </data>
-  <data name="RoolBackWO" xml:space="preserve">
+  <data name="RollBackWO" xml:space="preserve">
     <value>Trả&lt;/br&gt;WO</value>
   </data>
   <data name="SaveInput" xml:space="preserve">
@@ -1218,14 +1215,14 @@
   <data name="WarehouseReceipt" xml:space="preserve">
     <value>Nhập kho</value>
   </data>
-  <data name="AddressName" xml:space="preserve">
-    <value>Giao &lt;/br&gt;hàng</value>
+  <data name="AddressName1" xml:space="preserve">
+    <value>Giao hàng</value>
   </data>
   <data name="ApprovePlatingForm" xml:space="preserve">
     <value>Duyệt phiếu xuất nhập xi mạ</value>
   </data>
   <data name="ApprovePurchaseOrder" xml:space="preserve">
-    <value>Duyệt phiếu mua nguyên liệu</value>
+    <value>Duyệt phiếu mua</value>
   </data>
   <data name="BillOfLanding" xml:space="preserve">
     <value>Vận đơn</value>
@@ -1274,9 +1271,6 @@
   </data>
   <data name="DetailName" xml:space="preserve">
     <value>Tên chi tiết</value>
-  </data>
-  <data name="Eployee1" xml:space="preserve">
-    <value>Nhân&lt;/br&gt; viên</value>
   </data>
   <data name="ExportForm" xml:space="preserve">
     <value>Phiếu xuất</value>
@@ -1411,7 +1405,7 @@
     <value>Tổng tiền nhập</value>
   </data>
   <data name="TotalQuantity" xml:space="preserve">
-    <value>Tổng SL</value>
+    <value>Tổng số lượng</value>
   </data>
   <data name="TotalWeight" xml:space="preserve">
     <value>Tổng trọng lượng</value>
@@ -2563,7 +2557,7 @@
     <value>Xuất &lt;/br&gt;HĐ</value>
   </data>
   <data name="Length" xml:space="preserve">
-    <value>Chiều dài</value>
+    <value>Dài</value>
   </data>
   <data name="Length2" xml:space="preserve">
     <value>CD</value>
@@ -4392,5 +4386,41 @@ Thông tin phiếu lệnh</value>
   </data>
   <data name="TrackUpProduction" xml:space="preserve">
     <value>Báo cáo sản phẩm</value>
+  </data>
+  <data name="Employee" xml:space="preserve">
+    <value>Nhân viên</value>
+  </data>
+  <data name="Employee1" xml:space="preserve">
+    <value>Nhân&lt;/br&gt;viên</value>
+  </data>
+  <data name="AddressName" xml:space="preserve">
+    <value>Giao&lt;/br&gt; hàng</value>
+  </data>
+  <data name="BillTo1" xml:space="preserve">
+    <value>Giao Bill</value>
+  </data>
+  <data name="Actual1" xml:space="preserve">
+    <value>Thực tế</value>
+  </data>
+  <data name="BarCode" xml:space="preserve">
+    <value>Mã vạch</value>
+  </data>
+  <data name="Finished1" xml:space="preserve">
+    <value>Hoàn thành</value>
+  </data>
+  <data name="FinishedDate2" xml:space="preserve">
+    <value>Ngày HT</value>
+  </data>
+  <data name="LastStage" xml:space="preserve">
+    <value>Công đoạn trước</value>
+  </data>
+  <data name="LastStage1" xml:space="preserve">
+    <value>Công đoạn&lt;/br&gt; trước</value>
+  </data>
+  <data name="LastStage2" xml:space="preserve">
+    <value>CĐ trước</value>
+  </data>
+  <data name="SortingPending2" xml:space="preserve">
+    <value>CPL</value>
   </data>
 </root>

@@ -228,7 +228,7 @@
                 
                 columns.Bound(f => f.PlannedCost)
                     //.Title("Kế hoạch</br>(pcs)")
-                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Planned").ToString()
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Plan").ToString()
                         + "</br>(pcs)"
                     )
                     .Width(70).ReadOnly(true)
@@ -252,7 +252,9 @@
                 
                 columns.Bound(f => f.NGQuantity)
                     //.Title("CPL</br>(pcs)")
-                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "NGQuantity1").ToString())
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "SortingPending2").ToString()
+                        + "</br>(pcs)"
+                    )
                     .Width(70).ReadOnly(true)
                     .HeaderHtmlAttributes(new { @class = "ng-column" })
                     .Format("{0:n0}")
@@ -260,35 +262,41 @@
                 
                 columns.Bound(f => f.NGWeight)
                     //.Title("CPL</br>(g)")
-                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "NGWeight1").ToString())
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "SortingPending2").ToString()
+                        + "</br>(g)"
+                    )
                     .Width(70).ReadOnly(true)
                     .HeaderHtmlAttributes(new { @class = "ng-column" })
                     .Format("{0:n0}")
                     .HtmlAttributes(new { style = "text-align:right" });
                 
                 columns.Bound(f => f.DefectQuantity)
-                    .Title("PP</br>(pcs)")
-                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "DefectQuantity").ToString())
+                    //.Title("PP</br>(pcs)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Scrap2").ToString()
+                        + "</br>(pcs)"
+                    )
                     .Width(70).ReadOnly(true)
                     .HeaderHtmlAttributes(new { @class = "defect-column" })
                     .Format("{0:n0}")
                     .HtmlAttributes(new { style = "text-align:right;" });
                 
                 columns.Bound(f => f.DefectWeight)
-                    .Title("PP</br>(g)")
-                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "DefectWeight").ToString())
+                    //.Title("PP</br>(g)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Scrap2").ToString()
+                        + "</br>(g)"
+                    )
                     .Width(70).ReadOnly(true)
                     .HeaderHtmlAttributes(new { @class = "defect-column" })
                     .Format("{0:n0}")
                     .HtmlAttributes(new { style = "text-align:right;border-right: 1px solid black;" });
                 
                 columns.Bound(f => f.MoreInfo)
-                    .Title("Ghi chú")
+                    //.Title("Ghi chú")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Note").ToString())
                     .ReadOnly(true);
                 
                 columns.Bound(f => f.RoutingId)
-                    .Title("Hoàn thành")
+                    //.Title("Hoàn thành")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Finished").ToString())
                     .Width(55).ReadOnly(true).Filterable(false)
                     .ClientTemplate("<input type='button' value='HT' class='t-button' onclick=ForceFinish(<#= RoutingId #>) />")
@@ -326,7 +334,7 @@
                                                 //columns.Bound(f => f.Shift).Title("Ca").Width(40).ReadOnly(true);
                                                 columns.Bound(f => f.UsingQuantity)
                                                     //.Title("Sử dụng</br>(pcs)")
-                                                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Using").ToString()
+                                                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Using1").ToString()
                                                          + "</br>(pcs)"
                                                     )
                                                     .ReadOnly(true).Width(50)

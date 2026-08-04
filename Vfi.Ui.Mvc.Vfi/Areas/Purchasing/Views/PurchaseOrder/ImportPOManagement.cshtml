@@ -355,7 +355,7 @@
                     columns.Bound(f => f.NGString)
                         //.Title("Chất <br/>lượng")
                         .Title(@HttpContext.GetGlobalResourceObject("Resource", "Quality1").ToString())
-                        .Width(35)
+                        .Width(50)
                         .ClientTemplate(
                             "<# if (NGString == 'NG') { #>" +
                                  "<span style='color:red'>NG</span>" +

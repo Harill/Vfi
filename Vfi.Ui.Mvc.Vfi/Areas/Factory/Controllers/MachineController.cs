@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Web.Mvc;
 using Telerik.Web.Mvc;
 using Vfi.Ui.Mvc.Vfi.Areas.Factory.Models;
@@ -19,6 +20,12 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
             foreach (var property in viewModel.GetType().GetProperties()) {
                 ViewData[property.Name] = property.GetValue(viewModel, null);
             }
+            // 04/08/2026
+            Session["CurrentCulture"] = "vi-VN";
+            string culture = (string)Session["CurrentCulture"] ?? "en-US";
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(culture);
+            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+
             System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("vi-VN");
             return ViewData;
         }

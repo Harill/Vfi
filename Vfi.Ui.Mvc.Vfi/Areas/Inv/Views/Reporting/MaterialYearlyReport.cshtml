@@ -112,7 +112,7 @@
 
     </div>
     <div class="clear"></div>
-    <div class="cover-div">
+    <div class="cover-div" id='"'>
     @{
         Html.Telerik().Grid<MaterialYearlyReportModel>()
             .Name("gridMaterial")
@@ -231,7 +231,7 @@
                 columns.Bound(f => f.Months[1].Import).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T1</br>nhập</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "01</br>"
+                        + "1</br>"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Import").ToString()
                         + "</br(kg)>"
                     )
@@ -245,7 +245,7 @@
                 columns.Bound(f => f.Months[1].ImportMore).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T1</br>+ thêm</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "01</br>+"
+                        + "1</br>+"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Add").ToString()
                         + "</br(kg)>"
                     )
@@ -259,7 +259,7 @@
                 columns.Bound(f => f.Months[1].ExportUse).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T1</br>SD</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "01</br>"
+                        + "1</br>"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Using").ToString()
                         + "</br>(kg)"
                     )
@@ -273,7 +273,7 @@
                 columns.Bound(f => f.Months[1].ExportDestroy).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T1</br>huỷ</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "01</br>"
+                        + "1</br>"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Cancel").ToString()
                         + "</br>(kg)"
                     )
@@ -288,7 +288,7 @@
                 columns.Bound(f => f.Months[2].Import).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T2</br>nhập</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "02</br>"
+                        + "2</br>"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Import").ToString()
                         + "</br(kg)>"
                     )
@@ -302,7 +302,7 @@
                 columns.Bound(f => f.Months[2].ImportMore).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T2</br>+ thêm</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "02</br>+"
+                        + "2</br>+"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Add").ToString()
                         + "</br(kg)>"
                     )
@@ -316,7 +316,7 @@
                 columns.Bound(f => f.Months[2].ExportUse).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T2</br>SD</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "02</br>"
+                        + "2</br>"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Using").ToString()
                         + "</br>(kg)"
                     )
@@ -330,7 +330,7 @@
                 columns.Bound(f => f.Months[2].ExportDestroy).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T2</br>huỷ</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "02</br>"
+                        + "2</br>"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Cancel").ToString()
                         + "</br>(kg)"
                     )
@@ -345,7 +345,7 @@
                 columns.Bound(f => f.Months[3].Import).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T3</br>nhập</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "03</br>"
+                        + "3</br>"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Import").ToString()
                         + "</br(kg)>"
                     )
@@ -359,7 +359,7 @@
                 columns.Bound(f => f.Months[3].ImportMore).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T3</br>+ thêm</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "03</br>+"
+                        + "3</br>+"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Add").ToString()
                         + "</br(kg)>"
                     )
@@ -373,7 +373,7 @@
                 columns.Bound(f => f.Months[3].ExportUse).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T3</br>SD</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "03</br>"
+                        + "3</br>"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Using").ToString()
                         + "</br>(kg)"
                     )
@@ -387,7 +387,7 @@
                 columns.Bound(f => f.Months[3].ExportDestroy).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T3</br>huỷ</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "03</br>"
+                        + "3</br>"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Cancel").ToString()
                         + "</br>(kg)"
                     )
@@ -402,7 +402,7 @@
                 columns.Bound(f => f.Months[4].Import).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T4</br>nhập</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "04</br>"
+                        + "4</br>"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Import").ToString()
                         + "</br(kg)>"
                     )
@@ -416,7 +416,7 @@
                 columns.Bound(f => f.Months[4].ImportMore).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T4</br>+ thêm</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "04</br>+"
+                        + "4</br>+"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Add").ToString()
                         + "</br(kg)>"
                     )
@@ -430,7 +430,7 @@
                 columns.Bound(f => f.Months[4].ExportUse).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T4</br>SD</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "04</br>"
+                        + "4</br>"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Using").ToString()
                         + "</br>(kg)"
                     )
@@ -444,7 +444,7 @@
                 columns.Bound(f => f.Months[4].ExportDestroy).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T4</br>huỷ</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "04</br>"
+                        + "4</br>"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Cancel").ToString()
                         + "</br>(kg)"
                     )
@@ -459,7 +459,7 @@
                 columns.Bound(f => f.Months[5].Import).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T5</br>nhập</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "05</br>"
+                        + "5</br>"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Import").ToString()
                         + "</br(kg)>"
                     )
@@ -473,7 +473,7 @@
                 columns.Bound(f => f.Months[5].ImportMore).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T5</br>+ thêm</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "05</br>+"
+                        + "5</br>+"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Add").ToString()
                         + "</br(kg)>"
                     )
@@ -487,7 +487,7 @@
                 columns.Bound(f => f.Months[5].ExportUse).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T5</br>SD</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "05</br>"
+                        + "5</br>"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Using").ToString()
                         + "</br>(kg)"
                     )
@@ -501,7 +501,7 @@
                 columns.Bound(f => f.Months[5].ExportDestroy).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T5</br>huỷ</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "05</br>"
+                        + "5</br>"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Cancel").ToString()
                         + "</br>(kg)"
                     )
@@ -516,7 +516,7 @@
                 columns.Bound(f => f.Months[6].Import).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T6</br>nhập</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "06</br>"
+                        + "6</br>"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Import").ToString()
                         + "</br(kg)>"
                     )
@@ -530,7 +530,7 @@
                 columns.Bound(f => f.Months[6].ImportMore).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T6</br>+ thêm</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "06</br>+"
+                        + "6</br>+"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Add").ToString()
                         + "</br(kg)>"
                     )
@@ -544,7 +544,7 @@
                 columns.Bound(f => f.Months[6].ExportUse).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T6</br>SD</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "06</br>"
+                        + "6</br>"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Using").ToString()
                         + "</br>(kg)"
                     )
@@ -558,7 +558,7 @@
                 columns.Bound(f => f.Months[6].ExportDestroy).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T6</br>huỷ</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "06</br>"
+                        + "6</br>"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Cancel").ToString()
                         + "</br>(kg)"
                     )
@@ -573,7 +573,7 @@
                 columns.Bound(f => f.Months[7].Import).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T7</br>nhập</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "07</br>"
+                        + "7</br>"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Import").ToString()
                         + "</br(kg)>"
                     )
@@ -587,7 +587,7 @@
                 columns.Bound(f => f.Months[7].ImportMore).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T7</br>+ thêm</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "07</br>+"
+                        + "7</br>+"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Add").ToString()
                         + "</br(kg)>"
                     )
@@ -601,7 +601,7 @@
                 columns.Bound(f => f.Months[7].ExportUse).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T7</br>SD</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "07</br>"
+                        + "7</br>"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Using").ToString()
                         + "</br>(kg)"
                     )
@@ -615,7 +615,7 @@
                 columns.Bound(f => f.Months[7].ExportDestroy).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T7</br>huỷ</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "07</br>"
+                        + "7</br>"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Cancel").ToString()
                         + "</br>(kg)"
                     )
@@ -630,7 +630,7 @@
                 columns.Bound(f => f.Months[8].Import).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T8</br>nhập</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "08</br>"
+                        + "8</br>"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Import").ToString()
                         + "</br(kg)>"
                     )
@@ -644,7 +644,7 @@
                 columns.Bound(f => f.Months[8].ImportMore).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T8</br>+ thêm</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "08</br>+"
+                        + "8</br>+"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Add").ToString()
                         + "</br(kg)>"
                     )
@@ -658,7 +658,7 @@
                 columns.Bound(f => f.Months[8].ExportUse).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T8</br>SD</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "08</br>"
+                        + "8</br>"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Using").ToString()
                         + "</br>(kg)"
                     )
@@ -672,7 +672,7 @@
                 columns.Bound(f => f.Months[8].ExportDestroy).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T8</br>huỷ</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "08</br>"
+                        + "8</br>"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Cancel").ToString()
                         + "</br>(kg)"
                     )
@@ -687,7 +687,7 @@
                 columns.Bound(f => f.Months[9].Import).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T9</br>nhập</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "09</br>"
+                        + "9</br>"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Import").ToString()
                         + "</br(kg)>"
                     )
@@ -701,7 +701,7 @@
                 columns.Bound(f => f.Months[9].ImportMore).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T9</br>+ thêm</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "09</br>+"
+                        + "9</br>+"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Add").ToString()
                         + "</br(kg)>"
                     )
@@ -715,7 +715,7 @@
                 columns.Bound(f => f.Months[9].ExportUse).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T9</br>SD</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "09</br>"
+                        + "9</br>"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Using").ToString()
                         + "</br>(kg)"
                     )
@@ -729,7 +729,7 @@
                 columns.Bound(f => f.Months[9].ExportDestroy).Width(70).ReadOnly(true)
                     //.HeaderTemplate("<strong>T9</br>huỷ</br>(Kg)</strong>")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                        + "09</br>"
+                        + "9</br>"
                         + @HttpContext.GetGlobalResourceObject("Resource", "Cancel").ToString()
                         + "</br>(kg)"
                     )
@@ -994,7 +994,7 @@
                         columns.Bound(f => f.Productions[0].MaterialUse).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T01</br>NLSD</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "01</br>"
+                                + "1</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "MaterialUsing").ToString()
                             )
                             .Format("{0:n2}")
@@ -1007,7 +1007,7 @@
                         columns.Bound(f => f.Productions[0].Production).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T01</br>Sản lượng</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "01</br>"
+                                + "1</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "Product").ToString()
                             )
                             .Format("{0:n0}")
@@ -1020,7 +1020,7 @@
                         columns.Bound(f => f.Productions[0].Processing).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T01</br>Chờ PL</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "01</br>"
+                                + "1</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "SortingPending").ToString()
                             )
                             .Format("{0:n0}")
@@ -1033,7 +1033,7 @@
                         columns.Bound(f => f.Productions[0].Defect).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T01</br>Phế phẩm</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "01</br>"
+                                + "1</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "Scrap").ToString()
                             )
                             .Aggregate(agg => agg.Sum())
@@ -1047,7 +1047,7 @@
                         columns.Bound(f => f.Productions[1].MaterialUse).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T02</br>NLSD</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "02</br>"
+                                + "2</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "MaterialUsing").ToString()
                             )
                             .Format("{0:n2}")
@@ -1060,7 +1060,7 @@
                         columns.Bound(f => f.Productions[1].Production).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T02</br>Sản lượng</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "02</br>"
+                                + "2</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "Product").ToString()
                             )
                             .Format("{0:n0}")
@@ -1073,7 +1073,7 @@
                         columns.Bound(f => f.Productions[1].Processing).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T02</br>Chờ PL</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "02</br>"
+                                + "2</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "SortingPending").ToString()
                             )
                             .Format("{0:n0}")
@@ -1086,7 +1086,7 @@
                         columns.Bound(f => f.Productions[1].Defect).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T02</br>Phế phẩm</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "02</br>"
+                                + "2</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "Scrap").ToString()
                             )
                             .Aggregate(agg => agg.Sum())
@@ -1100,7 +1100,7 @@
                         columns.Bound(f => f.Productions[2].MaterialUse).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T03</br>NLSD</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "03</br>"
+                                + "3</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "MaterialUsing").ToString()
                             )
                             .Format("{0:n2}")
@@ -1113,7 +1113,7 @@
                         columns.Bound(f => f.Productions[2].Production).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T03</br>Sản lượng</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "03</br>"
+                                + "3</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "Product").ToString()
                             )
                             .Format("{0:n0}")
@@ -1126,7 +1126,7 @@
                         columns.Bound(f => f.Productions[2].Processing).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T03</br>Chờ PL</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "03</br>"
+                                + "3</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "SortingPending").ToString()
                             )
                             .Format("{0:n0}")
@@ -1139,7 +1139,7 @@
                         columns.Bound(f => f.Productions[2].Defect).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T03</br>Phế phẩm</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "03</br>"
+                                + "3</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "Scrap").ToString()
                             )
                             .Aggregate(agg => agg.Sum())
@@ -1153,7 +1153,7 @@
                         columns.Bound(f => f.Productions[3].MaterialUse).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T04</br>NLSD</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "04</br>"
+                                + "4</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "MaterialUsing").ToString()
                             )
                             .Format("{0:n2}")
@@ -1166,7 +1166,7 @@
                         columns.Bound(f => f.Productions[3].Production).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T04</br>Sản lượng</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "04</br>"
+                                + "4</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "Product").ToString()
                             )
                             .Format("{0:n0}")
@@ -1179,7 +1179,7 @@
                         columns.Bound(f => f.Productions[3].Processing).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T04</br>Chờ PL</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "04</br>"
+                                + "4</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "SortingPending").ToString()
                             )
                             .Format("{0:n0}")
@@ -1192,7 +1192,7 @@
                         columns.Bound(f => f.Productions[3].Defect).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T04</br>Phế phẩm</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "04</br>"
+                                + "4</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "Scrap").ToString()
                             )
                             .Aggregate(agg => agg.Sum())
@@ -1206,7 +1206,7 @@
                         columns.Bound(f => f.Productions[4].MaterialUse).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T05</br>NLSD</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "05</br>"
+                                + "5</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "MaterialUsing").ToString()
                             )
                             .Format("{0:n2}")
@@ -1219,7 +1219,7 @@
                         columns.Bound(f => f.Productions[4].Production).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T05</br>Sản lượng</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "05</br>"
+                                + "5</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "Product").ToString()
                             )
                             .Format("{0:n0}")
@@ -1232,7 +1232,7 @@
                         columns.Bound(f => f.Productions[4].Processing).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T05</br>Chờ PL</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "05</br>"
+                                + "5</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "SortingPending").ToString()
                             )
                             .Format("{0:n0}")
@@ -1245,7 +1245,7 @@
                         columns.Bound(f => f.Productions[4].Defect).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T05</br>Phế phẩm</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "05</br>"
+                                + "5</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "Scrap").ToString()
                             )
                             .Aggregate(agg => agg.Sum())
@@ -1259,7 +1259,7 @@
                         columns.Bound(f => f.Productions[5].MaterialUse).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T06</br>NLSD</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "06</br>"
+                                + "6</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "MaterialUsing").ToString()
                             )
                             .Format("{0:n2}")
@@ -1272,7 +1272,7 @@
                         columns.Bound(f => f.Productions[5].Production).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T06</br>Sản lượng</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "06</br>"
+                                + "6</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "Product").ToString()
                             )
                             .Format("{0:n0}")
@@ -1285,7 +1285,7 @@
                         columns.Bound(f => f.Productions[5].Processing).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T06</br>Chờ PL</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "06</br>"
+                                + "6</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "SortingPending").ToString()
                             )
                             .Format("{0:n0}")
@@ -1298,7 +1298,7 @@
                         columns.Bound(f => f.Productions[5].Defect).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T06</br>Phế phẩm</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "06</br>"
+                                + "6</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "Scrap").ToString()
                             )
                             .Aggregate(agg => agg.Sum())
@@ -1312,7 +1312,7 @@
                         columns.Bound(f => f.Productions[6].MaterialUse).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T07</br>NLSD</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "07</br>"
+                                + "7</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "MaterialUsing").ToString()
                             )
                             .Format("{0:n2}")
@@ -1325,7 +1325,7 @@
                         columns.Bound(f => f.Productions[6].Production).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T07</br>Sản lượng</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "07</br>"
+                                + "7</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "Product").ToString()
                             )
                             .Format("{0:n0}")
@@ -1338,7 +1338,7 @@
                         columns.Bound(f => f.Productions[6].Processing).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T07</br>Chờ PL</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "07</br>"
+                                + "7</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "SortingPending").ToString()
                             )
                             .Format("{0:n0}")
@@ -1351,7 +1351,7 @@
                         columns.Bound(f => f.Productions[6].Defect).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T07</br>Phế phẩm</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "07</br>"
+                                + "7</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "Scrap").ToString()
                             )
                             .Aggregate(agg => agg.Sum())
@@ -1365,7 +1365,7 @@
                         columns.Bound(f => f.Productions[7].MaterialUse).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T08</br>NLSD</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "08</br>"
+                                + "8</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "MaterialUsing").ToString()
                             )
                             .Format("{0:n2}")
@@ -1378,7 +1378,7 @@
                         columns.Bound(f => f.Productions[7].Production).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T08</br>Sản lượng</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "08</br>"
+                                + "8</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "Product").ToString()
                             )
                             .Format("{0:n0}")
@@ -1391,7 +1391,7 @@
                         columns.Bound(f => f.Productions[7].Processing).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T08</br>Chờ PL</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "08</br>"
+                                + "8</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "SortingPending").ToString()
                             )
                             .Format("{0:n0}")
@@ -1404,7 +1404,7 @@
                         columns.Bound(f => f.Productions[7].Defect).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T08</br>Phế phẩm</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "08</br>"
+                                + "8</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "Scrap").ToString()
                             )
                             .Aggregate(agg => agg.Sum())
@@ -1418,7 +1418,7 @@
                         columns.Bound(f => f.Productions[8].MaterialUse).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T09</br>NLSD</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "09</br>"
+                                + "9</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "MaterialUsing").ToString()
                             )
                             .Format("{0:n2}")
@@ -1431,7 +1431,7 @@
                         columns.Bound(f => f.Productions[8].Production).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T09</br>Sản lượng</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "09</br>"
+                                + "9</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "Product").ToString()
                             )
                             .Format("{0:n0}")
@@ -1444,7 +1444,7 @@
                         columns.Bound(f => f.Productions[8].Processing).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T09</br>Chờ PL</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "09</br>"
+                                + "9</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "SortingPending").ToString()
                             )
                             .Format("{0:n0}")
@@ -1457,7 +1457,7 @@
                         columns.Bound(f => f.Productions[8].Defect).Width(70).ReadOnly(true)
                             //.HeaderTemplate("<strong>T09</br>Phế phẩm</strong>")
                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month2").ToString()
-                                + "09</br>"
+                                + "9</br>"
                                 + @HttpContext.GetGlobalResourceObject("Resource", "Scrap").ToString()
                             )
                             .Aggregate(agg => agg.Sum())

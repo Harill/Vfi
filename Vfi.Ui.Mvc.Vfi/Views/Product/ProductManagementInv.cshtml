@@ -137,7 +137,10 @@
                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "CncWeight").ToString());
                     columns.Bound(f => f.Production2Weight).Width(70)
                            //.HeaderTemplate("Trọng lượng</br>SX2")
-                           .Title(@HttpContext.GetGlobalResourceObject("Resource", "Production2Weight").ToString());
+                           .Title(@HttpContext.GetGlobalResourceObject("Resource", "UnitWeight").ToString()
+                            + "</br>"
+                            + @HttpContext.GetGlobalResourceObject("Resource", "Production22").ToString()
+                           );
                     columns.Bound(f => f.HeatTreatmentWeight).Width(70)
                            //.HeaderTemplate("Trọng lượng</br>nhiệt luyện")
                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "HeatTreatmentWeight").ToString());

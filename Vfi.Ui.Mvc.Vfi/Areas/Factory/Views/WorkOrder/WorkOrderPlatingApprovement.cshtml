@@ -72,7 +72,7 @@
                
                 columns.Bound(f => f.VendorCodeName)
                     //.Title("NCC")
-                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Supplier1").ToString())
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Vendor2").ToString())
                     .Width(150).ReadOnly(true)
                     .HtmlAttributes(new { style = "text-align: center;" });
                
@@ -89,7 +89,7 @@
                 //    .HtmlAttributes(new { style = "text-align: center;" });
 
                 columns.Bound(f => f.Export)
-                    .Title("Số lượng</br>(pcs)")
+                    //.Title("Số lượng</br>(pcs)")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Quantity").ToString()
                         + "</br>(pcs)"
                     )
@@ -99,7 +99,7 @@
               
                 columns.Bound(f => f.ExportKg)
                     //.Title("Trọng lượng</br>(kg)")
-                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Weight1").ToString()
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "UnitWeight").ToString()
                         + "</br>(kg)"
                     )
                     .ReadOnly(true).Width(100)

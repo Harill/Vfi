@@ -90,7 +90,10 @@
                 columns.Bound(f => f.LastRouteFinishDate)
                     .Width(85)
                     //.Title("Ngày HT</br>CĐ trước")
-                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "PreviousStageCompletedDate").ToString())
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "FinishedDate2").ToString()
+                        + "</br>"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "LastStage2").ToString()
+                    )
                     .ReadOnly(true)
                     .ClientTemplate("<#= LastRouteFinishDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy HH:mm}', LastRouteFinishDate) #>")
                     .HtmlAttributes(new { style = "text-align: center;" });

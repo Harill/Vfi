@@ -534,10 +534,10 @@
                                                         columns.Bound(f => f.UsingQuantity)
                                                             //.Title("Sử dụng</br><#= WarehouseId > 1 ? '(pcs)' : '(cây)' #> ")
                                                             .Title(
-                                                                @HttpContext.GetGlobalResourceObject("Resource", "Using").ToString()
-                                                                + "</br><#= WarehouseId > 1 ? '(pcs)' : '"
+                                                                @HttpContext.GetGlobalResourceObject("Resource", "Using1").ToString()
+                                                                + "</br>(<#= WarehouseId > 1 ? '(pcs)' : '"
                                                                 + @HttpContext.GetGlobalResourceObject("Resource", "Bar").ToString()
-                                                                + "' #>"
+                                                                + "' #>)"
                                                             )
                                                             .ReadOnly(true).Width(50)
                                                             //.Format("{0:n0}")

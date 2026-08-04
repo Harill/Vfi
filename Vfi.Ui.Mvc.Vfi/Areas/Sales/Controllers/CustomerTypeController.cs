@@ -8,6 +8,7 @@ using Vfi.Server.Core.CrossCutting.UnitOfWork;
 using Vfi.Ui.Mvc.Vfi.Models;
 using Vfi.Ui.Mvc.Vfi.Areas.Sales.Models;
 using Vfi.Ui.Mvc.Vfi.Utilities;
+using System.Threading;
 
 namespace Vfi.Ui.Mvc.Vfi.Areas.Sales.Controllers {
     public class CustomerTypeController : Controller {
@@ -29,6 +30,12 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Sales.Controllers {
             foreach (var property in viewModel.GetType().GetProperties()) {
                 ViewData[property.Name] = property.GetValue(viewModel, null);
             }
+            // 04/08/2026
+            Session["CurrentCulture"] = "vi-VN";
+            string culture = (string)Session["CurrentCulture"] ?? "en-US";
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(culture);
+            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+
             return ViewData;
         }
         // View

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using Telerik.Web.Mvc;
@@ -23,6 +24,12 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
             foreach (var property in viewModel.GetType().GetProperties()) {
                 ViewData[property.Name] = property.GetValue(viewModel, null);
             }
+            // 04/08/2026
+            Session["CurrentCulture"] = "vi-VN";
+            string culture = (string)Session["CurrentCulture"] ?? "en-US";
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(culture);
+            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+
             return ViewData;
         }
         public ActionResult FuelTransactionManagement() {

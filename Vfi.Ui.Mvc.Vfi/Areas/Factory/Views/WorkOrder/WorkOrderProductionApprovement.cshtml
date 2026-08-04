@@ -198,7 +198,11 @@
                 
                 columns.Bound(f => f.DefectQuantity)
                     //.Title("SL PP</br>(pcs)")
-                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "DefectQuantity1").ToString())
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Quantity2").ToString()
+                        + " "
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Scrap2").ToString()
+                        + "</br>(pcs)"
+                    )
                     .Width(70)
                     .HeaderHtmlAttributes(new { @class = "defect-column" })
                     .Format("{0:n0}")
@@ -206,7 +210,11 @@
 
                 columns.Bound(f => f.DefectQuantity)
                     //.Title("TL PP</br>(g)")
-                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "DefectQuantity1").ToString())
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Weight2").ToString()
+                        + " "
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Scrap2").ToString()
+                        + "</br>(g)"
+                    )
                     .ReadOnly(true).Width(70)
                     .HeaderHtmlAttributes(new { @class = "defect-column" })
                     .Format("{0:n0}")
@@ -224,8 +232,9 @@
                 columns.Bound(f => f.DiffQuantityKg)
                     //.Title("Chênh lệch</br>TT-ĐM</br>(cây)")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "DiffQuantity").ToString()
-                        + "</br>"
+                        + "</br>("
                         + @HttpContext.GetGlobalResourceObject("Resource", "Bar").ToString()
+                        + ")"
                     )
                     .ReadOnly(true).Width(70)
                     .Format("{0:n1}")

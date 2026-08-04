@@ -161,18 +161,18 @@
                
                 columns.Bound(f => f.ScheduledStartDate)
                     //.Title("Dự kiến<br/>hoàn thành")
-                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Planned").ToString()
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Expected").ToString()
                         + "</br>"
-                        + @HttpContext.GetGlobalResourceObject("Resource", "Finished").ToString()
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Finished1").ToString()
                     ).Width(80).ReadOnly(true)
                     //.Format("{0:dd/MM/yyyy HH:mm}");
                     .ClientTemplate("<#= ScheduledStartDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy HH:mm}', ScheduledStartDate) #>");
                
                 columns.Bound(f => f.ActualEndDate)
                     //.Title("Thực tế<br/>hoàn thành")
-                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Actual").ToString()
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Actual1").ToString()
                         + "</br>"
-                        + @HttpContext.GetGlobalResourceObject("Resource", "Finished").ToString()
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Finished1").ToString()
                     )
                     .Width(80).ReadOnly(true)
                     .ClientTemplate("<#= ActualEndDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy HH:mm}', ActualEndDate) #>");
@@ -191,8 +191,8 @@
                 //columns.Bound(f => f.MachineName).Title("Máy<br/>sản xuất").Width(70).ReadOnly(true);
               
                 columns.Bound(f => f.PlannedCost)
-                    .Title("Kế hoạch</br>(pcs)")
-                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Planned").ToString()
+                    //.Title("Kế hoạch</br>(pcs)")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Plan").ToString()
                         + "</br>(pcs)"
                     )
                     .Width(70).ReadOnly(true)
@@ -272,7 +272,7 @@
                                              
                                                 columns.Bound(f => f.UsingQuantity)
                                                     //.Title("Sử dụng</br>(pcs)")
-                                                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Using").ToString()
+                                                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Using1").ToString()
                                                         + "</br>(pcs)"
                                                     )
                                                     .ReadOnly(true).Width(50)

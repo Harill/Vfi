@@ -1464,7 +1464,7 @@
     <value>Warehouse Receipt</value>
     <comment>Evaluation Form Management</comment>
   </data>
-  <data name="AddressName" xml:space="preserve">
+  <data name="AddressName1" xml:space="preserve">
     <value>Address</value>
     <comment>ApprovePurchaseOrder</comment>
   </data>
@@ -4692,5 +4692,29 @@
   </data>
   <data name="TrackUpProduction" xml:space="preserve">
     <value>Product Report</value>
+  </data>
+  <data name="AddressName" xml:space="preserve">
+    <value>Address</value>
+  </data>
+  <data name="BillTo1" xml:space="preserve">
+    <value>Bill To</value>
+  </data>
+  <data name="Actual1" xml:space="preserve">
+    <value>Actual1</value>
+  </data>
+  <data name="FinishedDate2" xml:space="preserve">
+    <value>Finished Date</value>
+  </data>
+  <data name="LastStage" xml:space="preserve">
+    <value>Last Stage</value>
+  </data>
+  <data name="LastStage1" xml:space="preserve">
+    <value>Last&lt;/br&gt;Stage</value>
+  </data>
+  <data name="LastStage2" xml:space="preserve">
+    <value>Last Stage</value>
+  </data>
+  <data name="SortingPending2" xml:space="preserve">
+    <value>Sorting-Pending</value>
   </data>
 </root>

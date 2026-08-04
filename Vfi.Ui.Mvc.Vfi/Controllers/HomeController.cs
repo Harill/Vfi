@@ -40,6 +40,8 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers {
         public ActionResult Index() {
             ViewData["Message"] = "Welcome to ASP.NET MVC!";
             ViewData = GetPageConfigData();
+            Session["CurrentCulture"] = "vi-VN";
+            //Session["CurrentCulture"] = "en-US";
             string culture = (string)Session["CurrentCulture"] ?? "vi-VN";
             Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(culture);
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;

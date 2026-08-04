@@ -416,7 +416,9 @@
             
                 columns.Bound(f => f.NGQuantity).Width(80)
                     //.HeaderTemplate("Hàng</br>CPL</br>(pcs)")
-                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "NGQuantity1").ToString())
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "SortingPending2").ToString()
+                        + "</br>(pcs)"
+                    )
                     .HeaderHtmlAttributes(new { @class = "ng-column", style = "text-align: center;" })
                     .Format("{0:n0}")
                     .ClientTemplate("<span class='NGQuantity'><#=  $.telerik.formatString('{0:n0}', NGQuantity) #></span>")

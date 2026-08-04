@@ -17,6 +17,7 @@ using Vfi.Ui.Mvc.Vfi.Utilities;
 using Vfi.Ui.Mvc.Vfi.Areas.Inv.Controllers;
 using Vfi.Ui.Mvc.Vfi.Areas.Factory.Models;
 using Vfi.Ui.Mvc.Vfi.Controllers.Production;
+using System.Threading;
 
 namespace Vfi.Ui.Mvc.Vfi.Areas.Sales.Controllers {
     public class SalesOrderController : Controller {
@@ -37,6 +38,12 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Sales.Controllers {
             foreach (var property in viewModel.GetType().GetProperties()) {
                 ViewData[property.Name] = property.GetValue(viewModel, null);
             }
+            // 04/08/2026
+            Session["CurrentCulture"] = "vi-VN";
+            string culture = (string)Session["CurrentCulture"] ?? "en-US";
+            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(culture);
+            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+
             return ViewData;
         }
         #region view

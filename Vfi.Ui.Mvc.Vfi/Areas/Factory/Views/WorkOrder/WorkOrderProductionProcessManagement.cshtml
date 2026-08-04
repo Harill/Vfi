@@ -151,9 +151,10 @@
                 //columns.Bound(f => f.Shift).Title("Ca").Width(40).ReadOnly(true);
                 columns.Bound(f => f.UsingQuantity)
                     //.Title("Sử dụng</br>(cây)")
-                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Using").ToString() 
-                            + "</br>"
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Using1").ToString() 
+                            + "</br>("
                             + @HttpContext.GetGlobalResourceObject("Resource", "Bar").ToString() 
+                            + ")"
                     )
                     .ReadOnly(true).Width(50)
                     .Format("{0:n0}")
