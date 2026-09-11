@@ -58,11 +58,11 @@
                 
                 columns.Bound(f => f.MethodName)
                     //.Title("Tên PT")
-                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "MethodVIEName").ToString());
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "MethodVNName").ToString());
                 
                 columns.Bound(f => f.MethodName_EN).Width(110)
                     //.Title("Tên PT(EN)")
-                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "MethodENGName").ToString());
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "MethodENName").ToString());
                 
                 columns.Bound(f => f.SaleMethod).Width(55)
                     //.Title("PT Bán")

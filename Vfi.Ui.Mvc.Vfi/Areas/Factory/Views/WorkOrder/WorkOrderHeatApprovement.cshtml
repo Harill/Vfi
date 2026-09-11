@@ -262,6 +262,8 @@
             //        )
             //        .ToHtmlString()))
             .Selectable()
+            .Sortable()
+            .Scrollable(f => f.Height(720))
             .ClientEvents(events => events
                 .OnRowSelect("grid_OnRowSelect")
                 .OnError("grid_OnError"))

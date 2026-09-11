@@ -4717,4 +4717,127 @@
   <data name="SortingPending2" xml:space="preserve">
     <value>Sorting-Pending</value>
   </data>
+  <data name="MethodENName" xml:space="preserve">
+    <value>EN-Method Name</value>
+  </data>
+  <data name="MethodVNName" xml:space="preserve">
+    <value>VN-Method Name</value>
+  </data>
+  <data name="Active1" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="AdjustQuantity" xml:space="preserve">
+    <value>Adjust Quantity</value>
+  </data>
+  <data name="AdjustQuantity2" xml:space="preserve">
+    <value>Adjust Quantity</value>
+  </data>
+  <data name="BeginRepair" xml:space="preserve">
+    <value>Begin Repair</value>
+  </data>
+  <data name="CauseDate" xml:space="preserve">
+    <value>CauseDate</value>
+  </data>
+  <data name="CheckingEmployee2" xml:space="preserve">
+    <value>Checking Employee</value>
+  </data>
+  <data name="ErrorDescription" xml:space="preserve">
+    <value>Error Description</value>
+  </data>
+  <data name="ErrorQuantity" xml:space="preserve">
+    <value>Error Quantity</value>
+  </data>
+  <data name="ErrorQuantity1" xml:space="preserve">
+    <value>Error&lt;/br&gt;Quantity</value>
+  </data>
+  <data name="ErrorQuantity2" xml:space="preserve">
+    <value>Error Quantity</value>
+  </data>
+  <data name="EstimateTime" xml:space="preserve">
+    <value>Estimate Time</value>
+  </data>
+  <data name="EstimateTime1" xml:space="preserve">
+    <value>Estimate&lt;/br&gt;Time</value>
+  </data>
+  <data name="EstimateTime2" xml:space="preserve">
+    <value>EST Time</value>
+  </data>
+  <data name="EstimateTime3" xml:space="preserve">
+    <value>EST&lt;/br&gt;Time</value>
+  </data>
+  <data name="HowToFix" xml:space="preserve">
+    <value>How To Fix</value>
+  </data>
+  <data name="MachineCode" xml:space="preserve">
+    <value>Machine Code</value>
+  </data>
+  <data name="MachineManagement" xml:space="preserve">
+    <value>Machine Management</value>
+  </data>
+  <data name="MachineRepairManagement" xml:space="preserve">
+    <value>Repair Machine Management</value>
+  </data>
+  <data name="MachineState" xml:space="preserve">
+    <value>Machine State</value>
+  </data>
+  <data name="MachineStateManagement" xml:space="preserve">
+    <value>Machine State Management</value>
+  </data>
+  <data name="ProcessingFactor" xml:space="preserve">
+    <value>Processing Factor</value>
+  </data>
+  <data name="ProcessingName" xml:space="preserve">
+    <value>Processing Name</value>
+  </data>
+  <data name="ProcessingTypeManagement" xml:space="preserve">
+    <value>Processing Type Management</value>
+  </data>
+  <data name="Reason" xml:space="preserve">
+    <value>Reason</value>
+  </data>
+  <data name="RepairEmployee" xml:space="preserve">
+    <value>Repair Employee</value>
+  </data>
+  <data name="RepairEmployee2" xml:space="preserve">
+    <value>Repair Employee</value>
+  </data>
+  <data name="RepairTime" xml:space="preserve">
+    <value>Repair Time</value>
+  </data>
+  <data name="RepairTime2" xml:space="preserve">
+    <value>Repair Time</value>
+  </data>
+  <data name="SectionManagement" xml:space="preserve">
+    <value>Section Management</value>
+  </data>
+  <data name="SettingUpProduct" xml:space="preserve">
+    <value>Setting Up Product</value>
+  </data>
+  <data name="SettingUpProduct1" xml:space="preserve">
+    <value>Setting Up &lt;/br&gt;Product</value>
+  </data>
+  <data name="SettingUpProduct2" xml:space="preserve">
+    <value>Setting Up Product</value>
+  </data>
+  <data name="SettingUpProduct3" xml:space="preserve">
+    <value>Setting Up &lt;/br&gt;Product</value>
+  </data>
+  <data name="Solution" xml:space="preserve">
+    <value>Solution</value>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>State</value>
+  </data>
+  <data name="Time2" xml:space="preserve">
+    <value>Time2</value>
+  </data>
+  <data name="TypeName" xml:space="preserve">
+    <value>Type Name</value>
+  </data>
+  <data name="ProductionLevelManagement" xml:space="preserve">
+    <value>Production-Level Management</value>
+  </data>
+  <data name="TrackUpMachineManagement" xml:space="preserve">
+    <value>Track-Up-Machinen Management</value>
+  </data>
 </root>

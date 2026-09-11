@@ -114,7 +114,7 @@
                 columns.Bound(f => f.PlannedCost)
                     //.Title("Số lượng</br>(pcs)")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Quantity").ToString()
-                        + "</br>(g)"
+                        + "</br>(pcs)"
                     )
                     .Width(70).ReadOnly(true)
                     .HeaderHtmlAttributes(new { @class = "good-column" })

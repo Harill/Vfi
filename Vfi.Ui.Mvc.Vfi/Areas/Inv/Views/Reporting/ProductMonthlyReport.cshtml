@@ -811,10 +811,22 @@
     </text>
 )
         //.ClientEvents(e => e.OnLoad("Window_onLoad"));
+        .ClientEvents(e => e.OnOpen("window_onopen"))
         .Visible(false)
         .Width(1100)
         .Render();
 }
+
+<script>
+    function window_onopen(e) {
+        $("#rptvPageReportProductInvTotal_ReportToolbar_ExportGr_FormatList_DropDownList option[value='CSV']").remove();
+        //$("#rptvPageReportProductInvTotal_ReportToolbar_ExportGr_FormatList_DropDownList option[value='XLS']").remove();
+        $("#rptvPageReportProductInvTotal_ReportToolbar_ExportGr_FormatList_DropDownList option[value='RTF']").remove();
+        $("#rptvPageReportProductInvTotal_ReportToolbar_ExportGr_FormatList_DropDownList option[value='IMAGE']").remove();
+        $("#rptvPageReportProductInvTotal_ReportToolbar_ExportGr_FormatList_DropDownList option[value='MHTML']").remove();
+        $("#rptvPageReportProductInvTotal_ReportToolbar_ExportGr_FormatList_DropDownList option[value='XPS']").remove();
+    }
+</script>
 
 <style type="text/css">
     #windowReport {

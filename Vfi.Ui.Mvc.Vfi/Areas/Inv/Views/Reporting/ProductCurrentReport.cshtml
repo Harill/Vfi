@@ -189,7 +189,7 @@
 
     <div class="cover-div">
         @{
-            Html.Telerik().Grid<SoLieuTongHopSanPham>()
+            Html.Telerik().Grid<SoLieuTongHopSanPham2>()
                 .Name("gridProductInventoryForMonthly")
                 .DataKeys(keys => keys.Add(f => f.ProductId).RouteKey("productId"))
                 .DataBinding(dataBindings => dataBindings.Ajax()
@@ -201,7 +201,8 @@
                         //.ClientTemplate("<#= ++index #>")
                         .HeaderTemplate("<strong>STT</strong>")
                         .Title(@HttpContext.GetGlobalResourceObject("Resource", "Index").ToString())
-                        .Width(50);
+                        .Width(50)
+                        .HtmlAttributes(new { style = "text-align: center;" });
 
                       
                     columns.Bound(f => f.CustomerCode).Width(70)

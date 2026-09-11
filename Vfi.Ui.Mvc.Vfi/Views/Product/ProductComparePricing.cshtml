@@ -165,15 +165,24 @@
                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Currency").ToString())
                        .HeaderHtmlAttributes(new { style = "text-align:center" });
 
-                columns.Bound(f => f.OutDiameterDesign).Width(50)
+                columns.Bound(f => f.Diameter).Width(40)
                        .HeaderTemplate("<strong>OD</strong>")
                        //.Title(@HttpContext.GetGlobalResourceObject("Resource", "").ToString())
                        .Format("{0:n2}")
                        .HtmlAttributes(new { style = "text-align:right" });
               
-                columns.Bound(f => f.Length).Width(50)
+                columns.Bound(f => f.LengthOrigin).Width(40)
                        //.HeaderTemplate("<strong>CD</strong>")
                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Length2").ToString())
+                       .Format("{0:n2}")
+                       .HtmlAttributes(new { style = "text-align:right" });
+
+                columns.Bound(f => f.Length).Width(40)
+                       //.HeaderTemplate("<strong>CD</strong>")
+                       .Title(@HttpContext.GetGlobalResourceObject("Resource", "Length2").ToString()
+                            + " +</br>"
+                            + @HttpContext.GetGlobalResourceObject("Resource", "KnifeCut").ToString()
+                       )
                        .Format("{0:n2}")
                        .HtmlAttributes(new { style = "text-align:right" });
                
@@ -252,7 +261,7 @@
                                           //.OnSave("grid_OnSave")
                                           .OnError("grid_OnError"))
             .Selectable()
-            .Scrollable(f => f.Height(510))
+            .Scrollable(f => f.Height(710))
             .Resizable(f => f.Columns(true))
             .Reorderable(f => f.Columns(true))
             .Filterable()

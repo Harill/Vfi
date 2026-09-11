@@ -533,7 +533,7 @@
             </div>
             <div class="grid_2">
                 @*Đã SX:*@
-                @HttpContext.GetGlobalResourceObject("Resource", "AlreadyProduced"):
+                @HttpContext.GetGlobalResourceObject("Resource", "AlreadyProduced")
             </div>
             <div class="grid_3">
                 <span id="ProductionQuantity">0</span>
@@ -782,7 +782,7 @@
             .Columns(columns => {
                 columns.Bound(f => f.ProductWeight).Width(90)
                     //.HeaderTemplate("Trọng lượng</br>Sản phẩm</br>(g/pc)")
-                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "ProductWeight").ToString()
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "ProductWeight1").ToString()
                         + "</br>(g/pc)"
                     )
                     .ReadOnly(true)

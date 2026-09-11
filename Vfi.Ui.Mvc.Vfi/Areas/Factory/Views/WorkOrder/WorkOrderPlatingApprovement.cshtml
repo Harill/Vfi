@@ -299,9 +299,11 @@
                             .HeaderHtmlAttributes(new { style = "text-align: center;" });
                     })
                     .Groupable()
+                    .Scrollable(f => f.Height(720))
                     .ClientEvents(events => events.OnError("grid_OnError"))
                     .ToHtmlString()))
             .Selectable()
+            .Sortable()
             .ClientEvents(events => events
                 .OnRowSelect("grid_OnRowSelect")
                 .OnError("grid_OnError"))

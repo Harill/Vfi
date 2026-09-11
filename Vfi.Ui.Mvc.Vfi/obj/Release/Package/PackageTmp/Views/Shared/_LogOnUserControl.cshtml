@@ -2,8 +2,11 @@
 @if (Request.IsAuthenticated) {
     
     <text>
-        Xin chào: <span id="displayname" style="font-weight:bold"> @ViewBag.UserLoginFullName</span>!
-        @*<span id ="HelloString"></span>*@
+        @*06/07/2026*@
+        @HttpContext.GetGlobalResourceObject("Resource", "WELCOME"):
+
+        <span id="displayname" style="font-weight:bold"> @ViewBag.UserLoginFullName</span>!
+        <span id ="HelloString"></span>
         [ @Html.ActionLink("Log Off", "WindowLogOff", "Home", new { area = ""  }, new { @style = "color:"+ViewBag.PageTitleColor+";"  }) ]
     </text>
 }

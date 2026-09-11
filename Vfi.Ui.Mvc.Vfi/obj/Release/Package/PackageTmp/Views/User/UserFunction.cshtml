@@ -27,8 +27,9 @@
         $("#functionDiv").show();
     }
 </script>
+
 <!-- checked user -->
-<script type="text/javascript">
+@*<script type="text/javascript">
 
     var gridUser = $('#GridUser').data('tGrid');
 
@@ -94,8 +95,80 @@
         }catch(err){alert("Co Loi !");}
         return false;
     }
+
     
+</script>*@
+
+
+    @* 13/08/2026 *@
+     
+
+<script type="text/javascript">
+    var gridUser = $('#GridUser').data('tGrid');
+    var displayedUserId = null; // biến toàn cục để lưu userId đang hiển thị
+
+    // Hiển thị quyền của user
+    function displayCheckedUsers() {
+        var gridUser = $('#GridUser').data('tGrid');
+        var $userId = $("input[name='rdioUser']:checked").val();
+
+        if (!$userId || $userId.length < 1) {
+            alert('Check a few grid rows first.');
+            resetForm();
+            return;
+        } else {
+            startForm();
+            displayedUserId = $userId; // lưu userId hiển thị để so sánh sau
+
+            $('#result').load('@Url.Action("DisplayCheckedUserForFunction", "User")',
+            {
+                userId: $userId
+            });
+        }
+    }
+
+    // Gán quyền cho user
+    function createFunctionForUser() {
+        var $checkedRecords = $("input[name='IsUserFunction']:checked");
+        var $userId = $("input[name='rdioUser']:checked").val();
+
+        // So sánh userId hiển thị và userId gửi đi
+        if (displayedUserId !== $userId) {
+            alert("Lỗi: User đang hiển thị không phải User được phân quyền!");
+            return false;
+        }
+
+        var a = {};
+        var ids = "";
+        alert($checkedRecords.length);
+
+        for (var i = 0; i < $checkedRecords.length; i++) {
+            a[i] = $checkedRecords[i].value;
+            ids += $checkedRecords[i].value;
+            if (i < ($checkedRecords.length - 1))
+                ids += ":";
+        }
+
+        try {
+            $.post("@strAssignPermissionForUser",
+                {
+                    checkedRecords: a,
+                    userId: $userId
+                },
+                function (data) {
+                    alert("Create Function Successful !");
+                    resetForm();
+                });
+        } catch (err) {
+            alert("Có Lỗi !");
+        }
+        return false;
+    }
 </script>
+
+
+
+
 
 <div class="title">User Function</div>
 

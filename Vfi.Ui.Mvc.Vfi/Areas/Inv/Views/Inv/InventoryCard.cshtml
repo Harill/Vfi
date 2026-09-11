@@ -152,9 +152,9 @@
         /* NOTE! For IE6, you also need to update the highslide-ie6.css file. */
     }
 
-    .highslide-controls {
+    /*.highslide-controls {
         display: none;
-    }
+    }*/
 </style>
 @section Scripts{
     
@@ -477,7 +477,9 @@
                                             .Title(@HttpContext.GetGlobalResourceObject("Resource", "Blueprint").ToString())
                                             .ClientTemplate("<a id='<#=ProductId#>' href='" + Url.Content("~/Content/FileUpload/ProductImg/") + "<#=ImgUrl#>?<#=UploadDate#>' class='highslide' onclick='return hs.expand(this)'>" +
                                                                "<img src='" + Url.Content("~/Content/FileUpload/ProductImg/") + "<#=ImgUrl#>?<#=UploadDate#>' height='40' width='40' title='Mở lớn'/>" +
-                                                               "</a><div class='highslide-caption'><#= ProductCode #>-<#= Description #></div>");
+                                                               "</a><div class='highslide-caption'><#= ProductCode #>-<#= Description #></div>")
+                                            .HtmlAttributes(new { style = "text-align:center" });
+                                        
                                      
                                         columns.Bound(f => f.Description)
                                             //.Title("Mô tả")
@@ -828,7 +830,7 @@
                                         );
                                     items.Add().Text(
                                             //"Công đoạn 2"
-                                            @HttpContext.GetGlobalResourceObject("Resource", "Stage2").ToString()
+                                            @HttpContext.GetGlobalResourceObject("Resource", "Stage").ToString() + " 2"
                                         ).Content(
                                         Html.Telerik().Grid<ProductionSectionModel>()
                                             .Name("gridProductionSection_<#= ProductId #>")
@@ -1713,8 +1715,8 @@
                                    //.Title("Tháng")
                                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Month").ToString());
                     
-                            columns.Bound(f => f.InventoryStart)
-                                   //.Width(75).Title("Tồn đầu</br>tháng")
+                            columns.Bound(f => f.InventoryStart).Width(75)
+                                   //.Title("Tồn đầu</br>tháng")
                                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "MonthStartInv1").ToString())
                                    .Format("{0:n0}")
                                    .HtmlAttributes(new { style = "text-align: right;" });
@@ -1807,7 +1809,7 @@
                             
                             columns.Bound(f => f.ImportInternal).Width(65)
                                    //.Title("Nhập</br>nội bộ")
-                                   .Title(@HttpContext.GetGlobalResourceObject("Resource", "InternalImport").ToString())
+                                   .Title(@HttpContext.GetGlobalResourceObject("Resource", "InternalImport1").ToString())
                                    .HtmlAttributes(new { style = "text-align: right;" })
                                    .Format("{0:n0}")
                                    .Aggregate(agg => agg.Sum())
@@ -1852,8 +1854,8 @@
                             //       .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                             //       .FooterHtmlAttributes(new { style = "text-align: right;" });
                             
-                            columns.Bound(f => f.ExportDestroy)
-                                   //.Width(65).Title("Xuất</br>hủy")
+                            columns.Bound(f => f.ExportDestroy).Width(65)
+                                   //.Title("Xuất</br>hủy")
                                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "CancelExport1").ToString())
                                    .HtmlAttributes(new { style = "text-align: right;" })
                                    .Format("{0:n0}")
@@ -1861,8 +1863,8 @@
                                    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                                    .FooterHtmlAttributes(new { style = "text-align: right;" });
                             
-                            columns.Bound(f => f.ExportInternal)
-                                   //.Width(65).Title("Xuất</br>nội bộ")
+                            columns.Bound(f => f.ExportInternal).Width(65)
+                                   //.Title("Xuất</br>nội bộ")
                                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "InternalExport").ToString())
                                    .HtmlAttributes(new { style = "text-align: right;" })
                                    .Format("{0:n0}")
@@ -1870,8 +1872,8 @@
                                    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                                    .FooterHtmlAttributes(new { style = "text-align: right;" });
                             
-                            columns.Bound(f => f.TotalExport)
-                                   //.Width(75).Title("Tổng</br>xuất")
+                            columns.Bound(f => f.TotalExport).Width(75)
+                                   //.Title("Tổng</br>xuất")
                                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Total").ToString()
                                         + "</br>"
                                         + @HttpContext.GetGlobalResourceObject("Resource", "Export").ToString()
@@ -1882,8 +1884,8 @@
                                    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                                    .FooterHtmlAttributes(new { style = "text-align: right;font-weight:bold; " });
                             
-                            columns.Bound(f => f.Forecast)
-                                   //.Width(65).Title("DB tháng")
+                            columns.Bound(f => f.Forecast).Width(65)
+                                   //.Title("DB tháng")
                                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "MonthlyForecast2").ToString())
                                    .HtmlAttributes(new { style = "text-align: right;border-left:solid black 1px;" })
                                    .Format("{0:n0}")
@@ -1891,8 +1893,8 @@
                                    .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                                    .FooterHtmlAttributes(new { style = "text-align: right;" });
                             
-                            columns.Bound(f => f.Order)
-                                   //.Width(65).Title("ĐH tháng")
+                            columns.Bound(f => f.Order).Width(65)
+                                //.Title("ĐH tháng")
                                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "MonthlyOrder2").ToString())
                                    .HtmlAttributes(new { style = "text-align: right;" })
                                    .Format("{0:n0}")
@@ -1928,8 +1930,8 @@
                                            .Format("{0:n0}")
                                            .HtmlAttributes(new { style = "text-align: right;" });
                                     
-                                    columns.Bound(f => f.ProcessProduction)
-                                           //.Width(65).Title("SX1")
+                                    columns.Bound(f => f.ProcessProduction).Width(65)
+                                        //.Title("SX1")
                                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Production12").ToString())
                                            .HtmlAttributes(new { style = "text-align: right;" })
                                            .Format("{0:n0}")

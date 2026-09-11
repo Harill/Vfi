@@ -641,4 +641,107 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Inv.Models
         [DisplayName("Lũy kế xuất")]
         public double? AccumulatedQty11 { get; set; }
     }
+
+
+    public class SoLieuTongHopSanPham2 {
+        public SoLieuTongHopSanPham2() {
+            TonKhoSX2CNC = 0;
+            TonKhoSX2SX2 = 0;
+            TonKhoSX2SX2B = 0;
+            TonKhoSX2SX2C = 0;
+            TonKhoSX2SX2D = 0;
+            TonKhoNhietLuyen = 0;
+            TonKhoRungBong = 0;
+            TonKhoGCN = 0;
+            TonKhoNCU = 0;
+            TonKhoNCUKiemTra = 0;
+            TonKhoQCA = 0;
+            TonKhoQCB = 0;
+            TonKhoQCC = 0;
+            TonKhoCXL = 0;
+            TonKhoCXL2 = 0;
+            Packing = 0;
+            TonKhoTPA = 0;
+
+        }
+        public double TonKhoSX2CNC { get; set; }
+        [DisplayName("Kho SX 2/SX 2")]
+        public double TonKhoSX2SX2 { get; set; }
+        [DisplayName("Kho SX 2/Văn")]
+        public double TonKhoSX2SX2B { get; set; }
+        [DisplayName("Kho SX 2/Mẫn")]
+        public double TonKhoSX2SX2C { get; set; }
+        [DisplayName("Kho SX 2/Cơ khí")]
+        public double TonKhoSX2SX2D { get; set; }
+        [DisplayName("Kho Nhiệt Luyện")]
+        public double TonKhoNhietLuyen { get; set; }
+        [DisplayName("Kho Rung Bóng")]
+        public double TonKhoRungBong { get; set; }
+        [DisplayName("Kho Chờ GCN")]
+        public double TonKhoGCN { get; set; }
+        [DisplayName("Kho NCU")]
+        public double TonKhoNCU { get; set; }
+        [DisplayName("Kho NCU Kiem tra")]
+        public double TonKhoNCUKiemTra { get; set; }
+        [DisplayName("Kho QC A")]
+        public double TonKhoQCA { get; set; }
+        [DisplayName("Kho QC B")]
+        public double TonKhoQCB { get; set; }
+        [DisplayName("Kho QC C")]
+        public double TonKhoQCC { get; set; }
+        [DisplayName("Kho Chờ XL")]
+        public double TonKhoCXL { get; set; }
+        [DisplayName("Kho Chờ XL 2")]
+        public double TonKhoCXL2 { get; set; }
+        [DisplayName("Kho Phế Phẩm")]
+        public double TonKhoPP { get; set; }
+        [DisplayName("Kho Đóng gói")]
+        public double Packing { get; set; }
+        [DisplayName("Kho TP A")]
+        public double TonKhoTPA { get; set; }
+
+        public string Title { get; set; }
+        public int Index { get; set; }
+        public string CustomerCode { get; set; }
+        public int ProductId { get; set; }
+        public string ProductCode { get; set; }
+
+        public double XuatThanhPham { get; set; }
+        public double LuyKeXuat { get; set; }
+
+        public double TonTong {
+            get {
+                return TonKhoSX2CNC +
+                       Production2Inv +
+                       TonKhoNhietLuyen + TonKhoRungBong +
+                       TonKhoGCN + TonKhoNCU + TonKhoNCUKiemTra +
+                       TonKhoQCA + TonKhoQCB + TonKhoQCC +
+                       ProcessingInv +
+                       Packing + TonKhoTPA;
+            }
+        }
+        public double ProcessingInv { get { return TonKhoCXL + TonKhoCXL2 + ReProcessing; } }
+        public double ReProcessing { get; set; }
+        public double Production2Inv { get { return TonKhoSX2SX2 + TonKhoSX2SX2B + TonKhoSX2SX2C + TonKhoSX2SX2D; } }
+        public bool HienThi { get; set; }
+        public bool UseForecast { get; set; }
+
+        public double DonHangThangTruoc { get; set; }
+        public double DonHangTrongThang { get; set; }
+        public double DonHangThangKe { get; set; }
+        public double DonHangSauThangKe { get; set; }
+        public double DonHangConLai { get; set; }
+        public double DuBaoSX { get; set; }
+    }
+
+    public class TestingTransactionDetail {
+        public int TransactionId { get; set; }
+        public long TransactionDetailId { get; set; }
+        public string LotNumber { get; set; }
+        public double Quantity {set; get;}
+        public int ProductId { get; set; }
+        public string Note { get; set; }
+    }
+
+
 }

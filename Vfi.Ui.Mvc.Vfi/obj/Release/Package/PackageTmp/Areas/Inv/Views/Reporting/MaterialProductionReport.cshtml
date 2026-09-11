@@ -48,14 +48,20 @@
     </script>
 }
 
-    <div class="title">Báo cáo theo dõi nguyên liệu sản xuất</div>
-
+    <div class="title">
+       @* Báo cáo theo dõi nguyên liệu sản xuất*@
+        @HttpContext.GetGlobalResourceObject("Resource", "MaterialProductionReport")
+    </div>
     <div id="pnlInv">
     <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px;">
         <fieldset>
-            <legend>Tiêu chí trích lọc</legend>
+            <legend>
+                @*Tiêu chí trích lọc*@
+                @HttpContext.GetGlobalResourceObject("Resource", "Filter")
+            </legend>
             <div class="grid_2">
-                Loại Nguyên Liệu
+                @*Loại Nguyên Liệu*@
+                @HttpContext.GetGlobalResourceObject("Resource", "TypeMaterial")
             </div>
             <div class="grid_4">
                 @{
@@ -69,9 +75,10 @@
                 }
             </div>
             <div class="grid_2">
-                Nguyên Liệu
+                @*Nguyên Liệu*@
+                @HttpContext.GetGlobalResourceObject("Resource", "Material")
             </div>
-            <div class="grid_4">
+            <div class="grid_5">
                 @{
                     Html.Telerik().AutoComplete()
                         .Name("MaterialCodeName")
@@ -84,8 +91,9 @@
                         .Render();
                 }
             </div>
-            <div class="grid_2">
-                Ngày
+            <div class="grid_1">
+                @*Ngày*@
+                @HttpContext.GetGlobalResourceObject("Resource", "Date")
             </div>
             <div class="grid_3">
                 @{
@@ -108,7 +116,8 @@
             <div class="grid_3">
                 <button id="btnRefesh" class="t-button" onclick="return RefreshGrid2(); ">
                     <span class='t-icon t-insert'></span>
-                    Làm mới
+                    @*Làm mới*@
+                    @HttpContext.GetGlobalResourceObject("Resource", "Refresh")
                 </button>
             </div>
         </fieldset>
@@ -132,133 +141,288 @@
             )
             .Columns(columns =>
             {
-                columns.Bound(f => f.MaterialId).Width(40).ReadOnly(true).Title("STT")
+                columns.Bound(f => f.MaterialId).Width(40).ReadOnly(true)
+                    //.Title("STT")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Index").ToString())
                     .ClientTemplate("<#= ++index #>");
+            
                 columns.Bound(f => f.MaterialTypeCode).Width(40).ReadOnly(true)
-                    .HeaderTemplate("Loại");
+                    //.HeaderTemplate("Loại")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Type").ToString());
+             
                 columns.Bound(f => f.MaterialName).Width(70).ReadOnly(true)
-                    .HeaderTemplate("<strong>Tên</br>nguyên</br>liệu</strong>")
+                    //.HeaderTemplate("<strong>Tên</br>nguyên</br>liệu</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "MaterialName3").ToString())
                     .Aggregate(agg => agg.Count())
                     .ClientGroupFooterTemplate("<#= Count #>")
                     .ClientFooterTemplate("<#= Count #>")
                     .HtmlAttributes(new {style = "text-align: left;"});
+                
                 columns.Bound(f => f.Shape).Width(40).ReadOnly(true)
-                    .HeaderTemplate("<strong>Hình</br>dạng</strong>")
+                    //.HeaderTemplate("<strong>Hình</br>dạng</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Shape").ToString())
                     .HtmlAttributes(new {style = "text-align: center;"});
+                
                 columns.Bound(f => f.OutDiameter).Width(50).ReadOnly(true)
                     .HeaderTemplate("<strong>OD</strong>")
+                    //.Title(@HttpContext.GetGlobalResourceObject("Resource", "").ToString())
                     .HtmlAttributes(new {style = "text-align: center;"});
+                
                 columns.Bound(f => f.InDiameter).Width(50).ReadOnly(true)
                     .HeaderTemplate("<strong>ID</strong>")
+                    //.Title(@HttpContext.GetGlobalResourceObject("Resource", "").ToString())
                     .HtmlAttributes(new {style = "text-align: center;"});
+                
                 columns.Bound(f => f.DiameterType).Width(50).ReadOnly(true)
-                    .HeaderTemplate("<strong>Dung</br>sai</strong>")
+                    //.HeaderTemplate("<strong>Dung</br>sai</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Tolerances1").ToString())
                     .HtmlAttributes(new {style = "text-align: center;border-right: 1px solid black;"});
+                
                 //
                 columns.Bound(f => f.EarlyQuantity).Width(80).ReadOnly(true)
-                    .HeaderTemplate("<strong>Tồn</br>đầu</br>(kg)</strong>")
+                    //.HeaderTemplate("<strong>Tồn</br>đầu</br>(kg)</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "EarlyQuantity1").ToString()
+                        + "</br>(kg)"
+                    )
                     .Format("{0:n2}")
                     .HtmlAttributes(new {style = "text-align: right;"});
+                
                 columns.Bound(f => f.Import).Width(70).ReadOnly(true)
-                    .HeaderTemplate("<strong>Nhập</br>mua</br>(kg)</strong>")
+                    //.HeaderTemplate("<strong>Nhập</br>mua</br>(kg)</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "PurchaseImport1").ToString()
+                        + "</br>(kg)"
+                    )
                     .Format("{0:n2}")
                     .HtmlAttributes(new {style = "text-align: right;"});
+                
                 columns.Bound(f => f.Export).Width(70).ReadOnly(true)
-                    .HeaderTemplate("<strong>Sử</br>dụng</br>(kg)</strong>")
+                    //.HeaderTemplate("<strong>Sử</br>dụng</br>(kg)</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Using").ToString()
+                        + "</br>(kg)"
+                    )
                     .Format("{0:n2}")
                     .HtmlAttributes(new { style = "text-align: right;" })
                     .HtmlAttributes(new { style = "text-align: right;" });
+                
                 columns.Bound(f => f.LastQuantity).Width(80).ReadOnly(true)
-                    .HeaderTemplate("<strong>Tồn</br>cuối</br>(kg)</strong>")
+                    //.HeaderTemplate("<strong>Tồn</br>cuối</br>(kg)</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "LastQuantity1").ToString()
+                        + "</br>(kg)"
+                    )
                     .Format("{0:n2}")
                     .HtmlAttributes(new { style = "text-align: right;border-right: 1px solid black;" });
+                
                 //
                 columns.Bound(f => f.ProductCode).Width(120).ReadOnly(true)
-                    .HeaderTemplate("<strong>Sản phẩm</strong>");
+                    //.HeaderTemplate("<strong>Sản phẩm</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Product").ToString());
+                
                 columns.Bound(f => f.MachineName).Width(80).ReadOnly(true)
-                    .HeaderTemplate("<strong>Máy</br>SX</strong>")
+                    //.HeaderTemplate("<strong>Máy</br>SX</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "ProductionMachine3").ToString())
                     .Format("{0:n0}")
                     .HtmlAttributes(new { style = "text-align: right;" });
+                
                 columns.Bound(f => f.ProductionWeight).Width(80).ReadOnly(true)
-                    .Format("{0:n3}")
-                    .HeaderTemplate("<strong>TL phoi</strong>");
+                    //.HeaderTemplate("<strong>TL phoi</strong>")                    
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "RawMaterialWeight2").ToString())
+                    .Format("{0:n3}");
+                
                 columns.Bound(f => f.ProductInv).Width(80).ReadOnly(true)
-                    .HeaderTemplate("<strong>Tồn kho</br>SP (pcs)</strong>")
+                    //.HeaderTemplate("<strong>Tồn kho</br>SP (pcs)</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Inventory").ToString()
+                        + "</br>"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Product2").ToString()
+                        + " (pcs)"
+                    )
                     .Format("{0:n0}")
                     .HtmlAttributes(new { style = "text-align: right;" });
+                
                 columns.Bound(f => f.ProductForecast).Width(80).ReadOnly(true)
-                    .HeaderTemplate("<strong>Dự báo</br>sản xuất</br>theo PLM</strong>")
+                    //.HeaderTemplate("<strong>Dự báo</br>sản xuất</br>theo PLM</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Forecast").ToString()
+                        + "</br>"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Production").ToString()
+                        + "</br>"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Follow").ToString()
+                        + " "
+                        + @HttpContext.GetGlobalResourceObject("Resource", "TrackUpMachine2").ToString()
+                    )
                     .Format("{0:n0}")
                     .HtmlAttributes(new { style = "text-align: right;" });
+                
                 columns.Bound(f => f.OrderForecast).Width(80).ReadOnly(true)
-                    .HeaderTemplate("<strong>Dự báo</br>đơn hàng</br>tồn (pcs)</strong>")
+                    //.HeaderTemplate("<strong>Dự báo</br>đơn hàng</br>tồn (pcs)</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Forecast").ToString()
+                        + "</br>"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Order").ToString()
+                        + "</br>"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Inv").ToString()
+                        + " (pcs)"
+                    )
                     .Format("{0:n0}")
                     .HtmlAttributes(new { style = "text-align: right;" });
+                
                 columns.Bound(f => f.AvgOrder).Width(80).ReadOnly(true)
-                    .HeaderTemplate("<strong>TB ĐH</br>từ</br>đầu năm</strong>")
+                    //.HeaderTemplate("<strong>TB ĐH</br>từ</br>đầu năm</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Average2").ToString()
+                        + " "
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Order2").ToString()
+                        + "</br>"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "From").ToString()
+                        + "</br>"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "BeginOfTheYear").ToString()
+                    )
                     .Format("{0:n0}")
                     .HtmlAttributes(new { style = "text-align: right;" });
+                
                 columns.Bound(f => f.OrderQuantity).Width(80).ReadOnly(true)
-                    .HeaderTemplate("<strong>Đơn hàng</br>còn lại</br>(pcs)</strong>")
+                    //.HeaderTemplate("<strong>Đơn hàng</br>còn lại</br>(pcs)</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Order").ToString()
+                        + "</br>"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "LeftOver").ToString()
+                        + "</br>(pcs)"
+                    )
                     .Format("{0:n0}")
                     .HtmlAttributes(new { style = "text-align: right;" });
+                
                 columns.Bound(f => f.RequireInv).Width(80).ReadOnly(true)
-                    .HeaderTemplate("<strong>Yêu cầu</br>tồn (pcs)</strong>")
+                    //.HeaderTemplate("<strong>Yêu cầu</br>tồn (pcs)</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Request").ToString()
+                        + "</br>"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Inv").ToString()
+                        + " (pcs)"
+                    )
                     .Format("{0:n0}")
                     .HtmlAttributes(new { style = "text-align: right;" });
+                
                 columns.Bound(f => f.ProductionPlan).Width(80).ReadOnly(true)
-                    .HeaderTemplate("<strong>Năng suất</br>(pcs/day)</strong>")
+                    //.HeaderTemplate("<strong>Năng suất</br>(pcs/day)</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Productivity").ToString()
+                        + "</br>(pcs/"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Day").ToString()
+                        + ")"
+                    )
                     .Format("{0:n0}")
                     .HtmlAttributes(new { style = "text-align: right;" });
+                
                 columns.Bound(f => f.ProductionQuantity).Width(80).ReadOnly(true)
-                    .HeaderTemplate("<strong>Sản lượng</br>(pcs)</strong>")
+                    //.HeaderTemplate("<strong>Sản lượng</br>(pcs)</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Quantity").ToString()
+                        + "</br>(pcs)"
+                    )
                     .Format("{0:n0}")
                     .HtmlAttributes(new { style = "text-align: right;border-right: 1px solid black;" });
+                
                 //
                 columns.Bound(f => f.ProductionPlanDateString).Width(90).ReadOnly(true)
-                    .HeaderTemplate("<strong>Ngày</br>ngưng SX</br>(KH)</strong>")
+                    //.HeaderTemplate("<strong>Ngày</br>ngưng SX</br>(KH)</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "StopProductionDate3").ToString()
+                        + "</br>("
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Plan2").ToString()
+                        + ")"
+                    )
                     .HtmlAttributes(new { style = "text-align: right;" });
+                
                 columns.Bound(f => f.ProductionDateString).Width(90).ReadOnly(true)
-                    .HeaderTemplate("<strong>Ngày</br>ngưng SX</br>(TT)</strong>")
+                    //.HeaderTemplate("<strong>Ngày</br>ngưng SX</br>(TT)</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "StopProductionDate3").ToString()
+                        + "</br>("
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Actual2").ToString()
+                        + ")"
+                    )
                     .HtmlAttributes(new { style = "text-align: right;border-right: 1px solid black;" });
+                
                 //
                 columns.Bound(f => f.AvgExport).Width(80).ReadOnly(true)
-                    .HeaderTemplate("<strong>TB</br>xuất NL</br>(kg/ngày)</strong>")
+                    //.HeaderTemplate("<strong>TB</br>xuất NL</br>(kg/ngày)</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Average2").ToString()
+                        + "</br>"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "MaterialExport2").ToString()
+                        + "</br>(kg/"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Day").ToString()
+                        + ")" 
+                    )
                     .HtmlAttributes(new { style = "text-align: right;" });
+                
                 columns.Bound(f => f.ExportDateString).Width(90).ReadOnly(true)
-                    .HeaderTemplate("<strong>Ngày</br>hết NL</strong>")
+                    //.HeaderTemplate("<strong>Ngày</br>hết NL</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "OutOfMaterialDate").ToString())
                     .HtmlAttributes(new { style = "text-align: right;border-right: 1px solid black;" });
+                
                 //
                 columns.Bound(f => f.RequireInvKg).Width(80).ReadOnly(true)
-                    .HeaderTemplate("<strong>Kế hoạch</br>tồn kho</br>SP (kg)</strong>")
+                    //.HeaderTemplate("<strong>Kế hoạch</br>tồn kho</br>SP (kg)</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Plan").ToString()
+                        + "</br>"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Inventory").ToString() 
+                        + "</br>"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Product2").ToString()
+                        + " (kg)"
+                    )
                     .Format("{0:n2}")
                     .HtmlAttributes(new { style = "text-align: right;" });
+
                 columns.Bound(f => f.AvgExport).Width(80).ReadOnly(true)
-                    .HeaderTemplate("<strong>Dự phòng</br>nguyên liệu</br>(kg)</strong>")
+                    //.HeaderTemplate("<strong>Dự phòng</br>nguyên liệu</br>(kg)</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "BackUpMaterial1").ToString()
+                        + "</br>(kg)"
+                    )
                     .Format("{0:n2}")
                     .HtmlAttributes(new { style = "text-align: right;border-right: 1px solid black;" });
+                
                 //
                 columns.Bound(f => f.PoQuantity).Width(80).ReadOnly(true)
-                    .HeaderTemplate("<strong>PO</br>nguyên liệu</br>(kg)</strong>")
+                    //.HeaderTemplate("<strong>PO</br>nguyên liệu</br>(kg)</strong>")
+                    .Title("PO </br>"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Material").ToString()
+                        + "</br>(kg)"
+                        )
                     .Format("{0:n0}")
                     .HtmlAttributes(new { style = "text-align: right;" });
+                
                 columns.Bound(f => f.PoDate).Width(80).ReadOnly(true)
-                    .HeaderTemplate("<strong>Ngày PO</br>(gần nhất)</strong>")
+                    //.HeaderTemplate("<strong>Ngày PO</br>(gần nhất)</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "PODate").ToString()
+                        + "</br>("
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Nearest").ToString()
+                        + ")" 
+                    )
                     .HtmlAttributes(new { style = "text-align: right;" });
+                
                 columns.Bound(f => f.MaterialUse).Width(80).ReadOnly(true)
-                    .HeaderTemplate("<strong>NLSX</br>(theo máy)</strong>")
+                    //.HeaderTemplate("<strong>NLSX</br>(theo máy)</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "ProductionMaterial2").ToString()
+                        + "</br>("
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Follow").ToString()
+                        + " "
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Machine").ToString()
+                        + ")"
+                    )
                     .Format("{0:n2}")
                     .HtmlAttributes(new { style = "text-align: right;" });
+                
                 columns.Bound(f => f.ProductionQuantityByTrack).Width(80).ReadOnly(true)
-                    .HeaderTemplate("<strong>Luỹ kế</br>sản xuất</strong>")
+                    //.HeaderTemplate("<strong>Luỹ kế</br>sản xuất</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Cumulative").ToString()
+                        + "</br>"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Production").ToString()
+                    )
                     .Format("{0:n0}")
                     .HtmlAttributes(new { style = "text-align: right;" });
+                
                 columns.Bound(f => f.MaterialUseKgByTrack).Width(80).ReadOnly(true)
-                    .HeaderTemplate("<strong>Luỹ kế</br>NLSD</strong>")
+                    //.HeaderTemplate("<strong>Luỹ kế</br>NLSD</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Cumulative").ToString()
+                        + "</br>"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "MaterialUsing").ToString()
+                    )
                     .Format("{0:n0}")
                     .HtmlAttributes(new { style = "text-align: right;" });
+                
                 columns.Bound(f => f.ProductExport).Width(80).ReadOnly(true)
-                    .HeaderTemplate("<strong>Luỹ kế</br>xuất</strong>")
+                    //.HeaderTemplate("<strong>Luỹ kế</br>xuất</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "CumulativeExport1").ToString())
                     .Format("{0:n0}")
                     .HtmlAttributes(new { style = "text-align: right;" });
                 //

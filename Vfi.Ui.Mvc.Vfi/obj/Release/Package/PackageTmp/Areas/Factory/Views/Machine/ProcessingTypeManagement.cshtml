@@ -5,7 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="title">Quản lý thông tin loại gia công trên máy</div>
+<div class="title">
+    @*Quản lý thông tin loại gia công trên máy*@
+    @HttpContext.GetGlobalResourceObject("Resource", "ProcessingTypeManagement")
+</div>
 
 <div class="cover-div">
 @{
@@ -14,7 +17,9 @@
         .DataKeys(key => key.Add(f => f.TypeId).RouteKey("typeId"))
         .ToolBar(
             toolbar =>
-            toolbar.Insert().ButtonType(GridButtonType.ImageAndText).Text("Thêm mới").ImageHtmlAttributes(new { style = "margin-left:0px;" }))
+            toolbar.Insert().ButtonType(GridButtonType.ImageAndText)
+            .Text(@HttpContext.GetGlobalResourceObject("Resource", "NewText").ToString())
+            .ImageHtmlAttributes(new { style = "margin-left:0px;" }))
         .DataBinding(
             dataBinding => dataBinding.Ajax()
                 .Select("SelectProcessingType", "Machine")
@@ -26,22 +31,49 @@
                 command.Edit().ButtonType(GridButtonType.Image)
             ).Width(98).Title("").HtmlAttributes(new { style = "text-align:center" });
 
-            columns.Bound(f => f.TypeName).Width(175).Title("Tên loại")
+            columns.Bound(f => f.TypeName).Width(175)
+                //.Title("Tên loại")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "TypeName").ToString())
                 .ClientTemplate("<strong><#= TypeName #></strong>");
-            columns.Bound(f => f.WarehouseName).Width(175).Title("Công đoạn</br>gia công")
+     
+            columns.Bound(f => f.WarehouseName).Width(175)
+                //.Title("Công đoạn</br>gia công")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "Stage").ToString()
+                    + "</br>"
+                    + @HttpContext.GetGlobalResourceObject("Resource", "Processing").ToString()
+                )
                 .ClientTemplate("<strong><#= WarehouseName #></strong>");
-            columns.Bound(f => f.Description).Title("Mô tả")
+            
+            columns.Bound(f => f.Description)
+                //.Title("Mô tả")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "Description").ToString())
                 .ClientTemplate("<strong><#= Description #></strong>");
+            
             //columns.Bound(f => f.ProcessingFactor).Width(75)
             //       .HeaderTemplate("Hệ số</br>gia công");
+            
             columns.Bound(f => f.ProcessingSaleFactor).Width(75)
-                   .HeaderTemplate("Hệ số gia công</br>(báo giá)");
+                //.HeaderTemplate("Hệ số gia công</br>(báo giá)")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "ProcessingFactor").ToString()
+                    + "</br>("
+                    + @HttpContext.GetGlobalResourceObject("Resource", "Quotations").ToString()
+                    + ")"
+                );
+            
             columns.Bound(f => f.Active).Width(75)
                    .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=Active? checked='checked' : '' #> />")
                    .HtmlAttributes(new {style = "text-align:center"});
-            columns.Bound(f => f.ModifiedDate).Title("Ngày tạo").Width(100).ReadOnly(true)
-                   .Format("{0:dd/MM/yyyy hh:mm}");
-            columns.Bound(f => f.ModifiedUser).Title("Người tạo").Width(100).ReadOnly(true);
+            
+            columns.Bound(f => f.ModifiedDate)
+                //.Title("Ngày tạo")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "ModifiedDate").ToString())
+                .Width(100).ReadOnly(true)
+                .Format("{0:dd/MM/yyyy hh:mm}");
+            
+            columns.Bound(f => f.ModifiedUser)
+                //.Title("Người tạo")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "ModifiedUser").ToString())
+                .Width(100).ReadOnly(true);
         })
         .Editable(editing => editing.Mode(GridEditMode.InLine))
         .Scrollable(f => f.Height(510))

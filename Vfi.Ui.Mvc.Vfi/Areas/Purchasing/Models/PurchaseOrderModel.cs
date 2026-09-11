@@ -25,28 +25,28 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
         public virtual string MaterialClasstifiedName { get; set; }
         // vendor
 
-        public virtual int ShipMethodId { get; set; }
+        public virtual int? ShipMethodId { get; set; }
         [DisplayName("Phương thức vận chuyển")]
         [UIHint("_DeliveryByTemplate")]
         public virtual string ShipMethodName { get; set; }
         /// <summary>
         /// ShipMethodId
         /// </summary>
-        public virtual int Method3Id { get { return ShipMethodId; } set { ShipMethodId = value; } }
+        public virtual int? Method3Id { get { return ShipMethodId; } set { ShipMethodId = value; } }
         /// <summary>
         /// ShipMethodName
         /// </summary>
         [DisplayName("Phương thức vận chuyển")]
         public virtual string Method3Name { get { return ShipMethodName; } set { ShipMethodName = value; } }
 
-        public virtual int DeliveryMethodId { get; set; }
+        public virtual int? DeliveryMethodId { get; set; }
         [DisplayName("Địa điểm giao hàng")]
         [UIHint("_ConditionDeliveryTemplate")]
         public virtual string DeliveryMethodName { get; set; }
         /// <summary>
         /// DeliveryMethodId
         /// </summary>
-        public virtual int MethodId { get { return DeliveryMethodId; } set { DeliveryMethodId = value; } }
+        public virtual int? MethodId { get { return DeliveryMethodId; } set { DeliveryMethodId = value; } }
         /// <summary>
         /// DeliveryMethodName
         /// </summary>
@@ -66,14 +66,14 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Models
         [DisplayName("Phương thức đóng gói")]
         public virtual string Method1Name { get { return PackagedMethodName; } set { PackagedMethodName = value; } }
 
-        public virtual int PaymentMethodId { get; set; }
+        public virtual int? PaymentMethodId { get; set; }
         [DisplayName("Phương thức thanh toán")]
         [UIHint("_PaymentTemplate")]
         public virtual string PaymentMethodName { get; set; }
         /// <summary>
         /// PaymentMethodId
         /// </summary>
-        public virtual int Method2Id { get { return PaymentMethodId; } set { PaymentMethodId = value; } }
+        public virtual int? Method2Id { get { return PaymentMethodId; } set { PaymentMethodId = value; } }
         /// <summary>
         /// PaymentMethodName
         /// </summary>

@@ -216,7 +216,7 @@
                     Html.Telerik().DatePicker()
                         .Name("FromDate")
                         .Format("dd/MM/yyyy")
-                        .Value(DateTime.Today.Month + "/01/" + DateTime.Today.Year)
+                        .Value(new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1))
                         .Render();
                 }
             <div class="clear"></div>

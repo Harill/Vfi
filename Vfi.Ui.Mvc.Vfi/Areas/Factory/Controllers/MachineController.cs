@@ -9,6 +9,8 @@ using Vfi.Ui.Mvc.Vfi.Areas.Factory.Models;
 using Vfi.Ui.Mvc.Vfi.Areas.Inv.Models;
 using Vfi.Ui.Mvc.Vfi.Models;
 using Vfi.Ui.Mvc.Vfi.Utilities;
+using System.Text.RegularExpressions;
+
 
 namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
     public class MachineController : Controller {
@@ -20,13 +22,6 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
             foreach (var property in viewModel.GetType().GetProperties()) {
                 ViewData[property.Name] = property.GetValue(viewModel, null);
             }
-            // 04/08/2026
-            Session["CurrentCulture"] = "vi-VN";
-            string culture = (string)Session["CurrentCulture"] ?? "en-US";
-            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(culture);
-            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
-
-            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("vi-VN");
             return ViewData;
         }
         public ActionResult MachineManagement() {
@@ -812,6 +807,96 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
 
         #endregion
 
+        // 12/08/2026
+        [HttpGet]
+        [OutputCache(Duration = 300, VaryByCustom = "User")]
+        public ActionResult GetMachineDashboard() {
+            if (!Request.IsAuthenticated) {
+                throw new AggregateException("Bạn đã bị mất quyền đăng nhập. \r\n 1 trong các nguyên nhân như mất thời gian chờ. \r\n Xin vui lòng đăng nhập lại hệ thống.");
+            }
+            var model = new MachineDashboard();
+            using (var vfi = new vfiContext()) {
+                var machineStats = vfi.Machines
+                    .Where(x => x.Active)
+                    .GroupBy(x => 1)
+                    .Select(g => new {
+                        Running = g.Count(x => x.StateId == MyUtilities.Machine.State.Normal),
+                        Total = g.Count()
+                    })
+                    .FirstOrDefault();
+                if (machineStats != null) {
+                    model.RunningMachine = machineStats.Running;
+                    model.NotRunningMachine = machineStats.Total - model.RunningMachine;
+                }
+
+                var startOfMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                var startOfNextMonth = startOfMonth.AddMonths(1);
+
+                var woStats = vfi.WorkOrders
+                                .GroupBy(x => 1)
+                                .Select(g => new {
+                                    PendingCount = g.Count(x => x.Status != (byte)MyUtilities.WorkOrder.Status.Cancel
+                                                             && x.Status != (byte)MyUtilities.WorkOrder.Status.Finish
+                                                             && x.Status == (byte)MyUtilities.WorkOrder.Status.Pending),
+                                    ActiveCount = g.Count(x => x.Status != (byte)MyUtilities.WorkOrder.Status.Cancel
+                                                            && x.Status != (byte)MyUtilities.WorkOrder.Status.Finish
+                                                            && (x.Status == (byte)MyUtilities.WorkOrder.Status.Actived
+                                                                || x.Status == (byte)MyUtilities.WorkOrder.Status.InProcess)),
+                                    FinishedInMonth = g.Count(x => x.Status == (byte)MyUtilities.WorkOrder.Status.Finish
+                                                                && x.EndDate >= startOfMonth
+                                                                && x.EndDate < startOfNextMonth)
+                                })
+                                .FirstOrDefault();
+                if (woStats != null) {
+                    model.PendingWorkOrder = woStats.PendingCount;
+                    model.ActiveWorkOrder = woStats.ActiveCount;
+                    model.FinishedWorkOrder_InMonth = woStats.FinishedInMonth;
+                }
+
+                //var workorder_state = vfi.WorkOrders.Where(x => x.Status != (byte)MyUtilities.WorkOrder.Status.Cancel
+                //                                                                         && x.Status != (byte)MyUtilities.WorkOrder.Status.Finish)
+                //                                .GroupBy(x => 1)
+                //                                .Select(g => new {
+                //                                    PendingCount = g.Count(x => x.Status == (byte)MyUtilities.WorkOrder.Status.Pending),
+                //                                    ActiveCount = g.Count(x => x.Status == (byte)MyUtilities.WorkOrder.Status.Actived || x.Status == (byte)MyUtilities.WorkOrder.Status.InProcess)
+                //                                })
+                //                            .FirstOrDefault();
+                //                            if (workorder_state != null) {
+                //                                model.PendingWorkOrder = workorder_state.PendingCount;
+                //                                model.ActiveWorkOrder = workorder_state.ActiveCount;
+                //                            }
+                //model.FinishedWorkOrder_InMonth = vfi.WorkOrders.Count(x => x.Status == (byte)MyUtilities.WorkOrder.Status.Finish
+                //                                             && x.EndDate != null
+                //                                             && x.EndDate >= startOfMonth
+                //                                             && x.EndDate < startOfNextMonth);
+
+                var workorder_processed = vfi.WorkOrderProcesses.Where(x => x.Status == (byte)MyUtilities.WorkOrder.Status.Finish
+                                                                           && x.WorkOrderRouting.WarehouseId != MyUtilities.Warehouse.Packing
+                                                                           && x.WorkOrderRouting.WarehouseId != MyUtilities.Warehouse.Finish
+                                                                           && x.WorkOrderRouting.WarehouseId != null
+                                                                           && x.Date >= startOfMonth
+                                                                           && x.Date < startOfNextMonth)
+                    .GroupBy(x => 1)
+                    .Select(x => new {
+                        GoodQuantity = x.Sum(y => y.GoodQuantity),
+                        NotGoodQuantity = x.Sum(y => y.NGQuantity + y.DefectQuantity),
+                    }).FirstOrDefault();
+                if (workorder_processed != null) {
+                    model.ProductionGood_InMonth = workorder_processed.GoodQuantity;
+                    model.ProductionNotGood_InMonth = workorder_processed.NotGoodQuantity;
+                    model.QCRate_InMonth = workorder_processed.NotGoodQuantity > 0
+                        ? Math.Round(workorder_processed.GoodQuantity / (workorder_processed.GoodQuantity + workorder_processed.NotGoodQuantity) * 100, 2)
+                        : 0.0;
+                }
+            }
+            return new JsonResult {
+                Data = model,
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
+
+
         [GridAction]
         public ActionResult SelectMachineStateById(int machineId) {
             var model = GetMachineStateById(machineId);
@@ -1029,7 +1114,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
 
         // 30/03/2026
         [GridAction]
-        public ActionResult GetProductDetail(int machineId, string fromDate, string toDate) {
+        public ActionResult ProductDetail(int machineId, string fromDate, string toDate) {
             var data = GetTrackUpMachine(machineId, fromDate, toDate)
                         .Where(x => x.MachineId == machineId)
                         .SelectMany(x => x.ProductDetails)
@@ -1037,6 +1122,12 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
 
             return View(new GridModel(data));
         }
+
+        //public ActionResult ProductDetail(int machineId, string fromDate, string toDate) {
+        //    var model = GetProductDetail2(machineId, fromDate, toDate);
+        //    return View(new GridModel(model));
+        //}
+
 
         // 30/03/2026
         [GridAction]
@@ -1072,6 +1163,436 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
             return View(new GridModel(data));
         }
 
+        // 14/08/2026
+        public List<MachineHistoryModel> GetTrackUpMachine2(int machineId, string fromDate, string toDate) {
+            var model = new List<MachineHistoryModel>();
+            try {
+                using (var vfi = new tammaContext()) {
+                    vfi.Configuration.LazyLoadingEnabled = false;
+                    var fDate = MyUtilities.Function.ParseDate(fromDate);
+                    var tDate = MyUtilities.Function.ParseLastDateTime(toDate);
+
+                    var machines = vfi.ImportFormSX1Detail
+                            .Where(t => (machineId == 0 || t.MachineId == machineId)
+                                   && t.Machine1.Active == true
+                                   && t.MachineId != null
+                                   && t.ImportFormSX1.MaterialUseDate >= fDate
+                                   && t.ImportFormSX1.MaterialUseDate <= tDate
+                                   && t.ImportFormSX1.Status == 2
+                                   )
+                            .Select(t => new {
+                                t.MachineId,
+                                MachineName = t.Machine,
+                                //t.Machine1.MachineState.Description,
+                                //ProductionDate = t.ImportFormSX1.MaterialUseDate,
+
+                            }).Distinct()
+                            .OrderBy(t => t.MachineName)
+                            .ToList();
+
+                    //var machines2 = vfi.TrackUpMachines.Where(t =>
+                    //                (machineId == 0 || machineId == t.MachineId)
+                    //                && t.StartDate >= fDate
+                    //                && t.DeliveryDate <= tDate
+                    //                && t.Status == 2
+                    //    ).Select(t => new {
+                    //        MachineId = t.MachineId,
+                    //        MachineName = t.Machine.MachineIdName,
+                    //    }).Distinct()
+                    //    .OrderBy(t => t.MachineName)
+                    //    .ToList();
+
+                    var exchangeRate2 = MyUtilities.Monitor.GetParameterValue(MyUtilities.Monitor.ExchangeToVndRate2);
+                    var EUR = MyUtilities.Monitor.GetParameterValue(MyUtilities.Monitor.ExchangeToVndRate3);
+
+
+                    var dayCount = ((MyUtilities.Function.DaysNoSunDay(fDate, tDate)) -1);
+                    var fullDayTiming = 20;
+                    var maxRunTime = MyUtilities.Function.RoundDown( dayCount * fullDayTiming);
+
+
+                    foreach (var machine in machines) {
+                        var entity = new MachineHistoryModel {
+                            // machine
+                            MachineName = machine.MachineName,
+                            MachineId = machine.MachineId ?? 0,
+                            MachineState = vfi.Machines.Where(t => t.MachineId == machine.MachineId).Select(t => t.MachineState.Description).FirstOrDefault(),
+
+
+                        };
+                        var results = vfi.ImportFormSX1Detail.Where(t => t.MachineId == entity.MachineId
+                                        && t.ImportFormSX1.MaterialUseDate >= fDate
+                                        && t.ImportFormSX1.MaterialUseDate <= tDate
+                                        ).Select(t => new {
+                                            // product
+                                            ProductId = t.ProductId,
+                                            ProductCode = t.Product.ProductCode,
+                                            ProductUnitPrice = (double)t.Product.UnitPrice ,
+                                            OKQuantity = t.Number1 + t.Number2,
+                                            CSLQuantity = t.Processing1 + t.Processing2,
+                                            NGQuantity = t.DefectProduct1 + t.DefectProduct2,
+                                            Currency = t.Product.Currency,
+                                            //DesignProductivity = t.Product.Productivity,      // NS: (s/pcs)
+                                            DesignProductionRate = t.ProductionRate,        // DM   (pcs/cay)
+
+                                            // Material
+                                            MaterialId = t.MaterialInventory.MaterialId,
+                                            MaterialCode = t.MaterialInventory.Material.MaterialCode,
+                                            MaterialUsed = t.MaterialUse1 + t.MaterialUse2,
+                                            MaterialUnitPrice = t.MaterialInventory.UnitPrice,
+                                            MaterialUnitWeight = t.MaterialInventory.UnitWeight,
+                                            MaterialLotNumber = t.MaterialInventory.LotNumber,
+                                            MaterialLength = t.MaterialInventory.Length,
+                                            MaterialInvId = t.MaterialInventory.MaterialInventoryId,
+
+                                            // Other
+                                            WONumber = t.LotNumber,
+
+                                        }).OrderBy(t => t.ProductCode)
+                                        .ToList();
+
+                        // product
+                        var totalProductQuantity = 0.00;
+                        var totalProductPrice = 0.00;
+                        var totalOKQuantity = 0.00;
+                        var totalProductivity = 0.00;
+                        var totalNoNGPrice = 0.00;
+                        
+                        // material
+                        var totalMaterialUsingQuantity = 0.00;
+                        var totalMaterialUsingPrice = 0.00;
+                        var totalProductionRate = 0.00;
+
+
+                        foreach (var result in results) {
+                            // get Productivity
+                            string[] part = result.WONumber.Split('-');
+                            var WONumber = part[0];
+                            var getProductivity = vfi.WorkOrderRoutings.Where(t => t.WorkOrder.SerialNumber == WONumber
+                                                                                && t.MachineId == entity.MachineId
+                                                                                && t.WarehouseId == 1
+                                                                                && t.RoutingIndex == 1)
+                                                                    .Select(t => t.MoreInfo)
+                                                                    .FirstOrDefault();
+                            var productivity = Regex.Match(getProductivity, "\"NS\":([0-9]+\\.?[0-9]*)");
+                            double productivityValue = 0.00;
+                            if (productivity.Success) {
+                                productivityValue = double.Parse(productivity.Groups[1].Value);
+                            }
+
+                            // product
+                            var totalQuanity = (result.OKQuantity + result.NGQuantity + result.CSLQuantity);
+                            totalProductQuantity += totalQuanity;
+
+                            totalProductivity += productivityValue * (result.OKQuantity + result.NGQuantity + result.CSLQuantity);
+
+                            totalProductPrice += result.Currency == "VND"
+                                ? totalQuanity * result.ProductUnitPrice
+                                : result.Currency == "USD"
+                                    ? totalQuanity * result.ProductUnitPrice * exchangeRate2
+                                    : result.Currency == "EUR"
+                                        ? totalQuanity * result.ProductUnitPrice * EUR
+                                        : totalQuanity * result.ProductUnitPrice * 0;
+
+                            totalOKQuantity += result.OKQuantity;
+
+                            var totalNoNGQuantity = result.OKQuantity + result.CSLQuantity;
+                            totalNoNGPrice += result.Currency == "VND"
+                                ? totalNoNGQuantity * result.ProductUnitPrice
+                                : result.Currency == "USD"
+                                    ? totalNoNGQuantity * result.ProductUnitPrice * exchangeRate2
+                                    : result.Currency == "EUR"
+                                        ? totalNoNGQuantity * result.ProductUnitPrice * EUR
+                                        : totalNoNGQuantity * result.ProductUnitPrice * 0;
+                            
+                            // material
+
+                            totalMaterialUsingQuantity += result.MaterialUsed;
+
+                            totalMaterialUsingPrice += (result.MaterialUnitWeight
+                                            * result.MaterialUnitPrice
+                                            * result.MaterialUsed);
+
+                            if (result.MaterialUsed > 0) {
+                                totalProductionRate += result.MaterialUsed * result.DesignProductionRate;
+                            }
+
+                            else if (result.MaterialUsed == 0) {
+                                var materialUsed = 1;
+                                totalProductionRate += materialUsed * result.DesignProductionRate;
+                            }
+                        }
+
+                        entity.Productivity = totalProductivity / 3600;
+
+                        entity.NoNGPrice = totalNoNGPrice;
+
+                        // product
+                        var allProductCodes = string.Join(",   ", results.Select(r => r.ProductCode).Distinct());
+
+                        entity.ProductName = allProductCodes;
+
+                        entity.TotalAll = totalProductQuantity;
+
+                        entity.TotalProductPrice = totalProductPrice;
+
+                        entity.NGPersent = 100 - (( totalOKQuantity/ totalProductQuantity) * 100);
+
+                        entity.PercentProductionRate = ((entity.TotalAll / totalProductionRate) - 1) * 100;
+
+
+                        // Material
+                        var allMaterialCode = string.Join(",  ", results.Select(t => t.MaterialCode).Distinct());
+
+                        entity.MaterialName = allMaterialCode;
+
+                        entity.TotalMaterialCost = totalMaterialUsingPrice;
+
+                        entity.TotalMaterialUsed = totalMaterialUsingQuantity;
+                                                entity.PercentProductionRate = ((entity.TotalAll / totalProductionRate) - 1) * 100;
+
+
+                        // Tools
+                        var toolUsedList = vfi.TransactionFptDetails.Where(t => t.MachineId == entity.MachineId
+                                                && t.TransactionFpt.TransactionDate >= fDate
+                                                && t.TransactionFpt.TransactionDate <= tDate
+                                                && t.TransactionFpt.Status == 2
+                                                && t.TransactionFpt.Fpt == (byte)MyUtilities.PurchaseOrder.FptLot.Tool
+                                                && t.TransactionFpt.EoI == (byte)MyUtilities.PurchaseOrder.EoILot.Export
+                                                ).Select(t => new {
+                                                    ToolUsed = t.Quantity,
+                                                    ToolId = t.FptId,
+                                                    ToolUnitPrice = t.UnitPrice,
+                                                    ToolLotNumber = t.LotNumber,
+
+                                                }).ToList();
+
+                        entity.CountToolId = toolUsedList.Select(t => t.ToolId).Count();
+
+                        var tools = toolUsedList.GroupBy(t => new {t.ToolId, t.ToolLotNumber})
+                            .Select(t => new {
+                                ToolId = t.Key,
+                                ToolUsedQuantity = t.Sum(x => x.ToolUsed),
+                                ToolUnitPrice = t.Select(x => x.ToolUnitPrice).FirstOrDefault(),
+
+                            }).ToList();
+
+                        var totalToolUsedQuantity = 0.00;
+                        var totalToolUsedPrice = 0.00;
+                        if (tools.Count > 0) {
+                            foreach (var tool in tools) {
+                                totalToolUsedQuantity += tool.ToolUsedQuantity;
+                                totalToolUsedPrice += tool.ToolUnitPrice * tool.ToolUsedQuantity;
+
+                            }
+                        };
+
+                        entity.TotalToolUsed = totalToolUsedQuantity;
+                        entity.TotalToolPrice = totalToolUsedPrice;
+
+
+                        // repair time
+                        var repairList = vfi.RepairFormDetails.Where(t =>
+                                    t.MachineRepairForm.MachineId == entity.MachineId
+                                    && t.MachineRepairForm.CauseDate <= tDate
+                                    && (t.MachineRepairForm.FinishDate == null || t.MachineRepairForm.FinishDate >= fDate)
+                                    && t.Status != (byte)MyUtilities.Machine.State.RepairStatus.Delete
+                                    && t.Status != 6
+                                    ).Select(t => new {
+                                        t.MachineRepairForm.MachineId,
+                                        t.MachineRepairForm.ErrorCauseForm.Name,
+                                        t.Status,
+                                        t.MachineRepairForm.CauseDate,
+                                        t.MachineRepairForm.FinishDate,
+                                    }).ToList();
+                        var repairTime = 0.00;
+                        foreach (var repair in repairList) {
+                            var causedDate = repair.CauseDate < fDate 
+                                    ? fDate
+                                    : repair.CauseDate;
+                            var finishedDate = (repair.FinishDate == null || repair.FinishDate > tDate)
+                                    ? tDate
+                                    : repair.FinishDate.Value;
+
+                            bool causeOnSunday = (repair.CauseDate.DayOfWeek == DayOfWeek.Sunday);
+                            bool finishOnSunday = (repair.FinishDate.Value.DayOfWeek == DayOfWeek.Sunday);
+
+                            if (causeOnSunday && finishOnSunday) {
+                                repairTime += ((finishedDate - causedDate).TotalHours);
+                            }
+                            else if (causeOnSunday) {
+                                var housesOverMonday = 23 - repair.CauseDate.Hour;
+                                var minutesOverMonday = 60 - repair.CauseDate.Minute;
+
+                                causedDate = repair.CauseDate.AddHours(housesOverMonday).AddMinutes(minutesOverMonday);
+                                repairTime += (finishedDate - causedDate).TotalHours;
+                            }
+                            else if (finishOnSunday) {
+                                var hoursBeforeSunday = finishedDate.Hour;
+                                var minutesBeforeSunday = finishedDate.Minute;
+
+                                finishedDate = finishedDate.AddHours(-hoursBeforeSunday).AddMinutes(-minutesBeforeSunday).AddSeconds(-1);
+                                repairTime += (finishedDate - causedDate).TotalHours;
+                            }
+
+                            else {
+                                repairTime += (((finishedDate - causedDate).TotalHours)
+                                                        - (((int)Math.Round((finishedDate - causedDate).TotalDays)
+                                                        - (MyUtilities.Function.DaysNoSunDay(causedDate, finishedDate) - 1)) * 24));
+                            }
+
+                        };
+                        entity.MachineStopTime = repairTime;
+
+                        entity.CountRepairTimes = repairList.Count();
+                        
+
+                        entity.MaxProductionTime2 = maxRunTime - entity.MachineStopTime;
+
+                        entity.ProductionTimeDiffNumber = entity.Productivity - entity.MaxProductionTime2;
+
+                        entity.Efficiency = entity.Productivity / maxRunTime * 100;
+
+                        model.Add(entity);
+
+                    }
+                }
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("GetTrackUpMachine2", ex.Message);
+            }
+            return model;
+        }
+
+
+        // 21/08/2026
+        public List<ProductDetailModel> GetProductDetail2(int machineId, string fromDate, string toDate) {
+            var model = new List<ProductDetailModel>();
+            try {
+                using (var vfi = new tammaContext()) {
+                    var fDate = MyUtilities.Function.ParseDate(fromDate);
+                    var tDate = MyUtilities.Function.ParseLastDateTime(toDate);
+                    var resuls = vfi.ImportFormSX1Detail.Where(t => t.MachineId == machineId
+                                    && t.ImportFormSX1.MaterialUseDate >= fDate
+                                    && t.ImportFormSX1.MaterialUseDate <= tDate
+                                    ).GroupBy(t => t.ProductId)
+                                    .Select(x => new {
+                                        ProductId = x.Key,
+                                        ProductCode = x.Select(t => t.Product.ProductCode).FirstOrDefault(),
+                                        DesignProductivity = (double)x.Select(t => t.Product.Productivity).FirstOrDefault(),
+                                        Currency = x.Select(t => t.Product.Currency).FirstOrDefault(),
+                                        UnitPrice = (double)x.Select(t => t.Product.UnitPrice).FirstOrDefault(),
+                                        OkQuantity = x.Sum(t => t.Number1 + t.Number2),
+                                        CSLQuanitty = x.Sum(t => t.Processing1 + t.Processing2),
+                                        NGQuantity = x.Sum(t => t.DefectProduct1 + t.DefectProduct2),
+
+                                    }).Distinct()
+                                    .ToList();
+                    var exchangeRate2 = MyUtilities.Monitor.GetParameterValue(MyUtilities.Monitor.ExchangeToVndRate2);
+                    var EUR = MyUtilities.Monitor.GetParameterValue(MyUtilities.Monitor.ExchangeToVndRate3);
+                    var index = 1;
+                    foreach (var result in resuls) {
+                        var totalProductionRate = 0.00;
+                        var totalProductionTime = 0.00;
+
+                        var entity = new ProductDetailModel() {
+                            ProductCode = result.ProductCode,
+                            ProductId = result.ProductId,
+                            Currency = result.Currency,
+                            ProductUnitPrice = result.UnitPrice,
+                            ProductProductivitySetting = result.DesignProductivity,
+                            TotalProduct = result.OkQuantity,
+                            TotalProcessing = result.CSLQuanitty,
+                            TotalDefect = result.NGQuantity,
+                            Index = index,
+                        };
+                        var newUnitPrice = 0.00;
+                        if (entity.Currency == "VND") {
+                            newUnitPrice = entity.ProductUnitPrice;
+                        }
+                        else if (entity.Currency == "USD") {
+                            newUnitPrice = entity.ProductUnitPrice * exchangeRate2;
+                        }
+                        else if (entity.Currency == "EUR") {
+                            newUnitPrice = entity.ProductUnitPrice * EUR;
+                        }
+                        else {
+                            newUnitPrice = entity.ProductUnitPrice * 0;
+                        }
+
+                        entity.ProductPrice = entity.TotalProduct * newUnitPrice;
+                        entity.ProcessingPrice = entity.TotalProcessing * newUnitPrice;
+                        entity.DefectPrice = entity.TotalDefect * newUnitPrice;
+
+                        entity.TotalAllProduction = entity.TotalProduct + entity.TotalProcessing + entity.TotalDefect;
+                        entity.TotalPrice = entity.TotalAllProduction * newUnitPrice;
+
+
+                        var productionList = vfi.ImportFormSX1Detail.Where(t => t.ProductId == entity.ProductId
+                                                    && t.MachineId == machineId
+                                                    && t.ImportFormSX1.MaterialUseDate >= fDate
+                                                    && t.ImportFormSX1.MaterialUseDate <= tDate
+                                                ).Select(x => x.LotNumber)
+                                                .Distinct()
+                                                .ToList() // chuyển sang List => LINQ to Objects
+                                                .Select(lot => lot.Split('-')[0]) // xử lý Split ở đây
+                                                .ToList();
+                        
+
+                        var getProductivity = vfi.WorkOrderRoutings.Where(t => productionList.Contains(t.WorkOrder.SerialNumber)
+                                                                            && t.ProductId == entity.ProductId
+                                                                            && t.MachineId == machineId
+                                                                            && t.WarehouseId == 1
+                                                                            && t.RoutingIndex == 1)
+                                                                .Select(t => t.MoreInfo)
+                                                                .ToList();
+
+                        var check = getProductivity.Distinct().ToList();
+
+                        if (check.Count == 1) {
+                            var onlyProductivity = getProductivity.FirstOrDefault();
+                            var productivity = Regex.Match(onlyProductivity, "\"NS\":([0-9]+\\.?[0-9]*)");
+                            double productivityValue = 0.00;
+                            if (productivity.Success) {
+                                productivityValue = double.Parse(productivity.Groups[1].Value);
+                            }
+                            entity.ProductProductivity = productivityValue;
+                            entity.ProductProductionTime = entity.TotalAllProduction * productivityValue / 3600;
+                        }
+                        else if (check.Count > 1) {
+                            entity.ProductProductivity = 0;
+                            entity.ProductProductionTime = 0;
+                        }
+
+
+                        //foreach (var production in productionList) {
+                        //    totalProductionRate += production.ActualProductionRate;
+                        //    totalProductionTime += production.ActualProductionRate * production.TotalQuantity;
+
+                        //}
+                        //entity.ProductProductivityActual = (totalProductionRate / productionList.Count());
+                        //entity.ProductProductionTime = totalProductionTime / 3600;
+
+                        model.Add(entity);
+                        index++;
+                    }
+
+                }
+            }
+            catch (Exception ex){
+                ModelState.AddModelError("GetProductDetail2", ex.Message);
+            };
+
+
+            return model;
+        }
+
+
+
+
+
+
+
 
 
         //16/03/2026
@@ -1083,15 +1604,22 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
                     var fDate = MyUtilities.Function.ParseDate(fromDate);
                     var tDate = MyUtilities.Function.ParseLastDateTime(toDate);
 
+                    //var CNCIds = new List<int> { 547, 537, 554, 531, 555, 524, 556, 88, 105, 92, 453, 533, 516, 517, 557, 536, 525, 534 };
+
+
                     var results = (from d in vfi.ImportFormSX1Detail
                                    join h in vfi.ImportFormSX1
                                        on d.ImportId equals h.ImportId
-                                   where ((machineId == 0 || d.MachineId == machineId) &&
-                                         h.MaterialUseDate >= fDate &&
-                                         h.MaterialUseDate <= tDate
+                                   where (
+                                   (machineId == 0 || d.MachineId == machineId) 
+                                   //CNCIds.Contains(d.MachineId ?? 0)
+                                         && h.MaterialUseDate >= fDate 
+                                         && h.MaterialUseDate <= tDate
                                          )
                                    select new {
                                        d.ImportId,
+
+                                       //Machine
                                        d.Machine,
                                        h.MaterialUseDate,
                                        d.MachineId,
@@ -1185,15 +1713,15 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
                     var repairList = (from re in vfi.RepairFormDetails
                                       where re.Status != (byte)MyUtilities.Machine.State.RepairStatus.Delete
                                             && re.MachineRepairForm.CauseDate <= tDate
-                                            && (re.FinishDate == null || re.FinishDate >= fDate)
+                                            && (re.MachineRepairForm.FinishDate == null || re.MachineRepairForm.FinishDate >= fDate)
                                             && machineIds.Contains(re.MachineRepairForm.MachineId)
-                                            && re.Status == 2
+                                            && (re.Status == 2 || re.Status == 1)
                                       select new {
                                           MachineId = re.MachineRepairForm.MachineId,
                                           MachineName = re.MachineRepairForm.Machine.MachineName,
                                           re.DetailId,
                                           re.StartDate,
-                                          re.FinishDate,
+                                          re.MachineRepairForm.FinishDate,
                                           HowToFix = re.MachineStateDetail.Description,
                                           ProductCode = re.MachineRepairForm.Product.ProductCode,
                                           CauseDate = re.MachineRepairForm.CauseDate,
@@ -1219,10 +1747,10 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
                                                 bool causeIsSunday = causeDate1.DayOfWeek == DayOfWeek.Sunday;
                                                 bool finishIsSunday = finishDate1.DayOfWeek == DayOfWeek.Sunday;
 
-                                                double checkErrorTime = 0;
+                                                double checkErrorTime = 0.00;
 
                                                 if (causeIsSunday && finishIsSunday) {
-                                                    checkErrorTime = 0;
+                                                    checkErrorTime = (finishDate - causeDate).TotalHours;
                                                 }
 
                                                 else if (causeIsSunday) {
@@ -1422,8 +1950,8 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
 
 
 
-                                      TotalCost = (x.Sum(t => t.MaterialUnitPrice * t.MaterialUsed * t.MaterialUnitWeight)) 
-                                                  + (exp.Where(e => e.MachineId == x.FirstOrDefault().MachineId).Sum(t => t.Quantity * t.UnitPrice)),
+                                      //TotalCost = (x.Sum(t => t.MaterialUnitPrice * t.MaterialUsed * t.MaterialUnitWeight)) 
+                                      //            + (exp.Where(e => e.MachineId == x.FirstOrDefault().MachineId).Sum(t => t.Quantity * t.UnitPrice)),
 
                                        
                                       // materials
@@ -1710,159 +2238,6 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
             }
             return model;
         }
-
-
-
-        public List<MachineHistoryModel> GetTrackUpMachine2(int machineId, string fromDate, string toDate) {
-            var model = new List<MachineHistoryModel>();
-            try {
-                using (var vfi = new tammaContext()) {
-                    vfi.Configuration.LazyLoadingEnabled = false;
-                    var fDate = MyUtilities.Function.ParseDate(fromDate);
-                    var tDate = MyUtilities.Function.ParseLastDateTime(toDate);
-                    var results = (from d in vfi.ImportFormSX1Detail
-                                   join h in vfi.ImportFormSX1
-                                         on d.ImportId equals h.ImportId
-                                   where ((machineId == 0 || d.MachineId == machineId) &&
-                                            h.ImportDate >= fDate &&
-                                            h.ImportDate <= tDate)
-                                   group new { d, h } by new { d.MachineId, d.ProductId, d.MaterialInventory.MaterialId } into sx_group
-                                   select new {
-                                       //sx_group.Key
-                                       Machine = sx_group.First().d.Machine,
-                                       MachineId = sx_group.Key.MachineId.Value,
-                                       ProductId = sx_group.Key.ProductId,
-
-                                       //d.ProductId,
-                                       //ProductCode = d.Product.ProductCode,
-
-                                       ProductionNumber = sx_group.Sum(x => x.d.Number1 + x.d.Number2),
-                                       //ProductionNumber = d.Number1 + d.Number2,
-                                       ProductUnitPrice = sx_group.First().d.Product.UnitPrice ?? 0,
-                                       //ProductUnitPrice = d.Product.UnitPrice,
-                                       //Currency = d.Product.Currency,
-
-                                       //d.MaterialInvId,
-                                       //MaterialUsed = d.MaterialUse1 + d.MaterialUse2,
-                                       //MaterialId = d.MaterialInventory.MaterialId,
-                                       //MaterialUnitPrice = d.MaterialInventory.UnitPrice,
-                                       //MaterialUnitWeight = d.MaterialInventory.UnitWeight,
-                                       //LotMaterial = d.LotNumber,
-                                   })
-                        //.OrderBy(m => m.Machine)
-                        //.GroupBy(p => new { p.MachineId })
-                                     .ToList();
-                    var exchangeRate = 26000;
-                    //Tools
-                    var machine_ids = results.Select(x => x.MachineId).Distinct().ToList();
-                    var exp = (from ed in vfi.ExportToolDetails
-                               where ed.ExportTool.TransactionFpt.Status == 2
-                                  && ed.ExportTool.TransactionFpt.TransactionDate >= fDate
-                                  && ed.ExportTool.TransactionFpt.TransactionDate <= tDate
-                                  && ed.MachineId != null
-                                  && machine_ids.Contains(ed.MachineId.Value)
-                               select new {
-                                   ed.MachineId,
-                                   ed.ToolInventory.ToolId,
-                                   ed.ToolInventory.UnitPrice,
-                                   ed.Quantity,
-                                   ed.ToolInventory.Tool.ToolName,
-                               }).ToList();
-                    var toolIdList = exp.Select(t => t.ToolId).Distinct().ToList();
-
-
-                    // tu lam dua vao recomment
-                    foreach (var result in results) {
-                        var entity = model.FirstOrDefault(x => x.MachineId == result.MachineId);
-                        if (entity == null) {
-                            entity = new MachineHistoryModel {
-                                CountMaterialId = 0,
-                                CountProductId = 0,
-                                CountToolId = 0,
-
-                                TotalMaterialUsed = 0,
-                                TotalProduction = 0,
-                                TotalToolUsed = 0,
-
-                                ProductProduction = 0,
-
-                                MaterialUnitPrice = 0,
-                                ProductUnitPrice = 0,
-                                ToolUnitPrice = 0,
-
-                                ProductCurrency = "",
-
-                                MaterialUnitWeight = 0,
-
-                                TotalProductPrice = 0,
-                                TotalToolPrice = 0,
-                                TotalMaterialCost = 0,
-                                MachineName = result.Machine,
-
-
-                            };
-                            model.Add(entity);
-                        }
-                        //entity.MachineName = result.FirstOrDefault().Machine;
-                        //entity.ProductProduction = result.FirstOrDefault().ProductionNumber;
-                        //entity.TotalProduction += entity.ProductProduction;
-                        //entity.ProductCurrency = result.FirstOrDefault().Currency;
-                        //entity.ProductUnitPrice = (double)result.FirstOrDefault().ProductUnitPrice;
-                        var productprice = 0.00;
-                        if (entity.ProductCurrency == "USD") {
-                            productprice = entity.ProductProduction * entity.ProductUnitPrice * exchangeRate;
-                        }
-                        else {
-                            productprice = entity.ProductProduction * entity.ProductUnitPrice;
-                        }
-                        entity.TotalProductPrice += productprice;
-
-                        entity.CountProductId += 1;
-
-                    }
-
-
-
-
-
-
-                    // recommend
-                    //foreach (var result in results) {
-                    //    var entity = model.FirstOrDefault(x => x.MachineId == result.Key.MachineId);
-                    //    if (entity == null) {
-                    //        entity = new MachineHistoryModel {
-                    //            TotalMaterialUsed = 0,
-                    //        };
-                    //        model.Add(entity);
-                    //    }
-
-                    //    var productDetail = entity.ProductDetails.FirstOrDefault(x => x.ProductId == result.Key.MachineId);
-
-                    //    if (productDetail == null) {
-                    //        productDetail = new ProductDetailModel {
-                    //        };
-                    //        entity.ProductDetails.Add(productDetail);
-                    //    }
-
-                    //    var toolDetail = entity.ToolDetails.FirstOrDefault(x => x.ProductId == result.Key.ProductId);
-
-                    //    if (toolDetail == null) {
-                    //        toolDetail = new ToolDetailModel {
-                    //        };
-                    //        entity.ToolDetails.Add(toolDetail);
-                    //    }
-                    //    entity.TotalMaterialUsed = result.Sum(x => x.MaterialUsed);
-
-                    //}
-                }
-            }
-            catch (Exception) {
-                throw;
-            }
-            return model;
-        }
-
-
 
 
         [GridAction]
@@ -2257,6 +2632,25 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
             }
             return new JsonResult { Data = new SelectList(model, "MachineId", "MachineName") };
         }
+
+        public ActionResult SelectComboBoxMachineAllProduction2() {
+            var model = new List<MachineModel>();
+            using (var vfi = new tammaContext()) {
+                model = (from x in vfi.Machines
+                         where x.Active
+                             && x.ProcessingTypeId != null
+                             && (x.ProcessingType.Warehouse.IsProduction)
+                         orderby x.MachineName
+                         select new MachineModel {
+                             MachineId = x.MachineId,
+                             MachineName = x.MachineName,
+                             ProcessingTypeName = x.ProcessingType.TypeName
+                         }).ToList();
+            }
+            return new JsonResult { Data = new SelectList(model, "MachineId", "MachineName") };
+        }
+
+
         public ActionResult SelectComboBoxMachineProduction() {
             return new JsonResult {
                 Data = new SelectList(GetActiveMachines(new MachineConfiguration { IsProduction = true }), "MachineId", "MachineName")

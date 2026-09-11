@@ -38,7 +38,7 @@
 </script>
 }
 
-<div class="title">Quản lý loại nguyên liệu</div>
+<div class="title">@HttpContext.GetGlobalResourceObject("Resource", "MaterialTypeManagement")</div>
 
 Chọn màu: @Html.TextBox("ColorPick", null, new { @class = "ColorTool" })
 <div class="cover-div">
@@ -48,7 +48,7 @@ Chọn màu: @Html.TextBox("ColorPick", null, new { @class = "ColorTool" })
         .DataKeys(key => key.Add(f => f.MaterialTypeId).RouteKey("materialTypeId"))
         .ToolBar(
             toolbar =>
-            toolbar.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
+            toolbar.Insert().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
         .DataBinding(
             dataBinding => dataBinding.Ajax()
                 .Select("SelectMaterialType", "Material")
@@ -56,23 +56,44 @@ Chọn màu: @Html.TextBox("ColorPick", null, new { @class = "ColorTool" })
                 .Update("UpdateMaterialType", "Material"))
         .Columns(columns => {
             columns.Command(command =>
-                command.Edit().ButtonType(GridButtonType.Image)).Width(98).Title("Commands").HtmlAttributes(new { style = "text-align:center" });
-            columns.Bound(f => f.MaterialClassifiedName).Title("Phân loại").Width(200)
+                command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(98).Title("Commands").HtmlAttributes(new { style = "text-align:center" });
+            columns.Bound(f => f.MaterialClassifiedName)
+                //.Title("Phân loại").Width(200)
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "MaterialClassifiedName").ToString())
                 .ClientTemplate("<strong><#= MaterialClassifiedName #></strong>");
-            columns.Bound(f => f.IdentityCode).Title("Mã loại").Width(45);
+            columns.Bound(f => f.IdentityCode)
+                //.Title("Mã loại")
+                .Width(45)
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "IdentityCode").ToString());
             //columns.Bound(f => f.DiagramColor).Title("Màu sơ đồ").Width(100);
-            columns.Bound(f => f.MaterialTypeName).Title("Tên loại");
-            columns.Bound(f => f.Factor).Title("Hệ số nguyên liệu").Format("{0:n2}");
-            columns.Bound(f => f.ProductionFactor).Title("Hệ số gia công").Format("{0:n2}");
-            columns.Bound(f => f.TaxFactor).Title("Hệ số thuế").Format("{0:n4}");
-            columns.Bound(f => f.Active).Width(45)
+            columns.Bound(f => f.MaterialTypeName)
+                //.Title("Tên loại")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "MaterialTypeName").ToString());
+            columns.Bound(f => f.Factor)
+                //.Title("Hệ số nguyên liệu")
+                .Format("{0:n2}")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "Factor").ToString());
+            columns.Bound(f => f.ProductionFactor)
+                //.Title("Hệ số gia công")
+                .Format("{0:n2}")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "ProductionFactor").ToString());
+            columns.Bound(f => f.TaxFactor)
+                //.Title("Hệ số thuế")
+                .Format("{0:n4}")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "TaxFactor").ToString());
+            columns.Bound(f => f.Active)
+                .Width(45).Title(@HttpContext.GetGlobalResourceObject("Resource", "Active").ToString())
                 .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=Active? checked='checked' : '' #> />")
                 .HtmlAttributes(new { style = "text-align:center" });
-            columns.Bound(f => f.ModifiedDate).Width(85).Title("Ngày tạo").ReadOnly(true)
-                   .Format("{0:dd/MM/yyyy HH:mm:ss}");
-            columns.Bound(f => f.ModifiedUser).Width(85).Title("Người tạo").ReadOnly(true);
+            columns.Bound(f => f.ModifiedDate).Width(85)
+                //.Title("Ngày tạo")
+                .ReadOnly(true).Title(@HttpContext.GetGlobalResourceObject("Resource", "ModifiedDate").ToString())
+                .Format("{0:dd/MM/yyyy HH:mm:ss}");
+            columns.Bound(f => f.ModifiedUser).Width(85)
+                //.Title("Người tạo")
+                .ReadOnly(true).Title(@HttpContext.GetGlobalResourceObject("Resource", "ModifiedUser").ToString());
         })
-        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
         .ClientEvents(events => events
             .OnEdit("grid_OnEdit")
             .OnSave("grid_OnSave")

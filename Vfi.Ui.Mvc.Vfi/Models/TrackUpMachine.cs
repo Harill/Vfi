@@ -33,6 +33,7 @@ namespace Vfi.Ui.Mvc.Vfi.Models
         public System.DateTime EndDate { get; set; }
         public int ForecastDay { get; set; }
         public System.DateTime ForecastDate { get; set; }
+
         public virtual Machine Machine { get; set; }
         public virtual ICollection<ProductionToolReplacement> ProductionToolReplacements { get; set; }
         public virtual ICollection<RealProduction> RealProductions { get; set; }

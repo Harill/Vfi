@@ -24,7 +24,7 @@
             .Columns(columns =>
             {
                 columns.Command(command =>
-                    command.Edit().ButtonType(GridButtonType.Image).UpdateText("Duyệt").CancelText("Trở lại")
+                    command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image).UpdateText("Duyệt").CancelText("Trở lại")
                     ).Width(50).Title("Duyệt").HtmlAttributes(new {style = "text-align:center"});
 
                 columns.Bound(f => f.DueDate).Title("Ngày giao").Width(100)

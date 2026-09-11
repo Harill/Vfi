@@ -42,12 +42,6 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers.Production {
             foreach (var property in viewModel.GetType().GetProperties()) {
                 ViewData[property.Name] = property.GetValue(viewModel, null);
             }
-            // 04/08/2026
-            Session["CurrentCulture"] = "vi-VN";
-            string culture = (string)Session["CurrentCulture"] ?? "en-US";
-            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(culture);
-            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
-
             return ViewData;
         }
         public ActionResult ProductManagement() {
@@ -495,6 +489,224 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers.Production {
             return model.OrderByDescending(m => m.Active).ThenBy(m => m.CustomerCodeName).ThenBy(m => m.ProductCode).ToList();
         }
 
+        //// 28/08/2026 
+        public List<ProductManagementProduction> SelectAllProducts1(bool active, int status, int customerId,
+                string productCode, int productId,
+                string fromDate, string productName) {
+                    var model = new List<ProductManagementProduction>();
+            if (customerId == 0 && string.IsNullOrWhiteSpace(productCode) && string.IsNullOrWhiteSpace(productName) &&
+                status == 0 && productId == 0)
+                return model;
+            try {
+                using (var vfi = new tammaContext()) {
+                    vfi.Configuration.LazyLoadingEnabled = false;
+
+                    var products = (from p in vfi.Products
+                                    where (!active || p.Active == active)
+                                          && (customerId <= 0 || p.CustomerId == customerId)
+                                          && (productId <= 0 || p.ProductId == productId)
+                                    select new {
+                                        p.ProductId,
+                                        ProductCode = (p.ProductCode + "").Trim(),
+                                        ProductName = (p.ProductName + "").Trim(),
+                                        p.CustomerId,
+                                        p.Customer.CustomerCode,
+                                        p.DesignNo,
+                                        p.MaterialId,
+                                        ForecastsQuality = p.ForecastsQuality,
+                                        p.Material,
+                                        Status = p.Status.Value,
+                                        MachineFunction = p.MachineFunction,
+                                        p.Active,
+                                        p.Drawing2D,
+                                        UploadDate = p.UploadDate ?? DateTime.Now,
+                                        p.DrawingFinish,
+                                        p.Note,
+                                        IsCalculateLock = p.IsCalculateLock ?? false,
+                                    }).ToList();
+
+                    if (!string.IsNullOrWhiteSpace(productCode))
+                        products = products.Where(p => p.ProductCode.ToLower().Contains(productCode.ToLower())).ToList();
+                    if (!string.IsNullOrWhiteSpace(productName))
+                        products = products.Where(p => p.ProductName.ToLower().Contains(productName.ToLower())).ToList();
+                    var productIds = products.Select(p => p.ProductId).ToList();
+                    var productionSections = (from ps in vfi.ProductionSections
+                                              where productIds.Contains(ps.ProductId)
+                                                    && ps.Active
+                                              select new {
+                                                  ps.ProductId,
+                                                  ps.Section.SectionName,
+                                                  SectionCost = ps.Productivity * ps.Section.SaleFactor
+                                              }).ToList();
+
+                    var user = vfi.Users.FirstOrDefault(u => u.Username.Equals(HttpContext.User.Identity.Name));
+                    if (user == null)
+                        throw new AggregateException("Vui lòng đăng nhập lại");
+                    var processingType = vfi.ProcessingTypes.FirstOrDefault(m => m.TypeId == 6);
+                    foreach (var entity in products) {
+                        var product = new ProductManagementProduction {
+                            ProductId = entity.ProductId,
+                            ProductCode = entity.ProductCode,
+                            ProductName = entity.ProductName,
+                            CustomerId = entity.CustomerId,
+                            ForecastsQuality = entity.ForecastsQuality ?? 0,
+                            MachineFunction = entity.MachineFunction,
+                            CustomerCode = entity.CustomerCode,
+                            Active = entity.Active,
+                            Upload2D = entity.Drawing2D,
+                            UploadReal = entity.DrawingFinish,
+                            UploadDate = entity.UploadDate.ToString("yyyyMMddhhmmss"),
+                            
+                            Status = entity.Status,
+                            IsCalculateLock = entity.IsCalculateLock,
+
+                        };
+                        if (entity.MaterialId != null) {
+                            product.MaterialCodeDesign = entity.Material.MaterialName +
+                                                         MyUtilities.Material.GetMaterialDesignNo(entity.Material);
+                        }
+
+                        var productionSectionById = productionSections.Where(ps => ps.ProductId == product.ProductId);
+                        if (productionSectionById.Any()) {
+                            foreach (var section in productionSectionById) {
+                                product.SectionCount++;
+                            }
+                        }
+
+                        if (string.IsNullOrWhiteSpace(entity.Drawing2D))
+                            product.Upload2D = "askquestion.jpg";
+                        if (string.IsNullOrWhiteSpace(entity.DrawingFinish))
+                            product.UploadReal = "askquestion.jpg";
+
+                        model.Add(product);
+                    }
+                }
+            }
+            catch (Exception ex) {
+                throw ex;
+            }
+
+            return model.OrderByDescending(m => m.Active).ThenBy(m => m.ProductCode).ToList();
+        }
+
+
+
+
+
+        //// 28/08/2026 
+        public List<ProductManagementSales> SelectAllProducts2(bool active, int status, int customerId,
+                string productCode, int productId,
+                string fromDate, string productName) {
+            var model = new List<ProductManagementSales>();
+            if (customerId == 0 && string.IsNullOrWhiteSpace(productCode) && string.IsNullOrWhiteSpace(productName) &&
+                status == 0 && productId == 0)
+                return model;
+            try {
+                using (var vfi = new tammaContext()) {
+                    vfi.Configuration.LazyLoadingEnabled = false;
+
+                    var products = (from p in vfi.Products
+                                    where (!active || p.Active == active)
+                                          && (customerId <= 0 || p.CustomerId == customerId)
+                                          && (productId <= 0 || p.ProductId == productId)
+                                    select new {
+                                        p.ProductId,
+                                        ProductCode = (p.ProductCode + "").Trim(),
+                                        ProductName = (p.ProductName + "").Trim(),
+                                        p.CustomerId,
+                                        p.Customer.CustomerCode,
+                                        p.Customer.CustomerName,
+                                        p.MaterialId,
+                                        p.Material,
+                                        p.DesignNo,
+                                        p.ModifiedUser,
+                                        p.ModifiedDate,
+                                        Status = p.Status.Value,
+                                        UnitPrice = p.UnitPrice ?? 0,
+                                        p.Active,
+                                        p.Drawing2D,
+                                        UploadDate = p.UploadDate ?? DateTime.Now,
+                                        p.ProcessingType,
+                                        p.DrawingFinish,
+                                        MillProductivity = p.MillProductivity ?? 0,
+                                        p.Note,
+                                        p.Currency,
+                                        p.PackingFee,
+                                        IsCalculateLock = p.IsCalculateLock ?? false,
+                                    }).ToList();
+
+                    if (!string.IsNullOrWhiteSpace(productCode))
+                        products = products.Where(p => p.ProductCode.ToLower().Contains(productCode.ToLower())).ToList();
+                    if (!string.IsNullOrWhiteSpace(productName))
+                        products = products.Where(p => p.ProductName.ToLower().Contains(productName.ToLower())).ToList();
+                    var productIds = products.Select(p => p.ProductId).ToList();
+                    var productionSections = (from ps in vfi.ProductionSections
+                                              where productIds.Contains(ps.ProductId)
+                                                    && ps.Active
+                                              select new {
+                                                  ps.ProductId,
+                                                  ps.Section.SectionName,
+                                                  SectionCost = ps.Productivity * ps.Section.SaleFactor
+                                              }).ToList();
+
+                    var user = vfi.Users.FirstOrDefault(u => u.Username.Equals(HttpContext.User.Identity.Name));
+                    if (user == null)
+                        throw new AggregateException("Vui lòng đăng nhập lại");
+                    var processingType = vfi.ProcessingTypes.FirstOrDefault(m => m.TypeId == 6);
+                    foreach (var entity in products) {
+                        var product = new ProductManagementSales {
+                            ProductId = entity.ProductId,
+                            ProductCode = entity.ProductCode,
+                            ProductName = entity.ProductName,
+                            CustomerId = entity.CustomerId,
+                            CustomerCode = entity.CustomerCode,
+                            CustomerName = entity.CustomerName,
+                            DesignNo = entity.DesignNo,
+                            Active = entity.Active,
+                            ModifiedUser = entity.ModifiedUser,
+                            ModifiedDate = entity.ModifiedDate,
+                            UnitPrice = entity.UnitPrice,
+                            Upload2D = entity.Drawing2D,
+                            UploadReal = entity.DrawingFinish,
+                            UploadDate = entity.UploadDate.ToString("yyyyMMddhhmmss"),
+                            MillCost = entity.MillProductivity * processingType.ProcessingSaleFactor.Value,
+                            ProcessingSalesCost = 0,
+                            ProcessingCost = 0,
+                            Note = entity.Note,
+                            Currency = entity.Currency,
+                            MaterialCost = 0,
+                            Status = entity.Status,
+                            PackingFee = entity.PackingFee ?? 0,
+                            IsCalculateLock = entity.IsCalculateLock,
+
+                        };
+                        if (entity.MaterialId != null) {
+                            product.MaterialCost = entity.Material.UnitPrice;
+                        }
+                        var productionSectionById = productionSections.Where(ps => ps.ProductId == product.ProductId);
+                        if (productionSectionById.Any()) {
+                            foreach (var section in productionSectionById) {
+                                product.SectionCost += section.SectionCost;
+                            }
+                        }
+
+                        if (string.IsNullOrWhiteSpace(entity.Drawing2D))
+                            product.Upload2D = "askquestion.jpg";
+                        if (string.IsNullOrWhiteSpace(entity.DrawingFinish))
+                            product.UploadReal = "askquestion.jpg";
+
+                        model.Add(product);
+                    }
+                }
+            }
+            catch (Exception ex) {
+                throw ex;
+            }
+
+            return model.OrderByDescending(m => m.Active).ThenBy(m => m.CustomerCodeName).ThenBy(m => m.ProductCode).ToList();
+        }
+
+
         [GridAction]
         public ActionResult SelectProductManagementCnc(int customerId, string productCode) {
             var model = new List<ProductModel>();
@@ -634,6 +846,7 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers.Production {
                                         p.CustomerId,
                                         CustomerCode = p.Customer.CustomerCode,
 
+                                        p.Diameter,
                                         p.OutDiameterDesign,
                                         p.Length,
                                         p.KnifeCut,
@@ -666,9 +879,13 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers.Production {
                             CustomerCode = product.CustomerCode,
 
                             OutDiameterDesign = product.OutDiameterDesign ?? 0,
+                            Diameter = product.Diameter ?? 0,
                             Length = (product.Length + product.KnifeCut) ?? 0,
                             MaterialWeight = product.Weight ?? 0,
                             ProductWeight = product.QcWeight ?? 0,
+                            LengthOrigin = product.Length ?? 0,
+
+                            //Length = (product.Length ?? 0)+ (product.KnifeCut?? 0),
 
                             MaterialId = product.MaterialId ?? 0,
                             MaterialCode = product.MaterialCode,
@@ -813,6 +1030,32 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers.Production {
             }
             return View(new GridModel(model));
         }
+
+        [GridAction]
+        public ActionResult SelectProduct1(bool active, int status, int customerId, string productCode, int productId, string productName) {
+            var model = new List<ProductManagementProduction>();
+            try {
+                model = SelectAllProducts1(active, status, customerId, productCode, productId, "", productName);
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("SelectProduct1", ex.Message);
+            }
+            return View(new GridModel(model));
+        }
+
+        [GridAction]
+        public ActionResult SelectProduct2(bool active, int status, int customerId, string productCode, int productId, string productName) {
+            var model = new List<ProductManagementSales>();
+            try {
+                model = SelectAllProducts2(active, status, customerId, productCode, productId, "", productName);
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("SelectProduct1", ex.Message);
+            }
+            return View(new GridModel(model));
+        }
+
+
 
         [HttpPost]
         [GridAction]
@@ -1487,6 +1730,11 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers.Production {
                         else {
                             product.Currency = updateProduct.Currency;
                         }
+
+                        if (product.UnitPrice < 50 && product.Currency == "VND") {
+                            throw new AggregateException("Cái gì! Làm con hàng này với giá "+ product.UnitPrice + " VND/pcs thì biết khi nào lời!!!");
+                        }
+
                         if (!updateProduct.Active) {
                             var warehouses = MyUtilities.Warehouse.GetWarehouseId_SumTotalQuantity();
                             var productInv =
@@ -3123,6 +3371,7 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers.Production {
             }
             return product;
         }
+
 
         [HttpPost]
         [GridAction]

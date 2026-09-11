@@ -396,7 +396,7 @@
 
 <div class="title">Báo cáo sản xuất tổng hợp</div>
 <div class="clear"></div>
-<br/>
+@*<br/>*@
 <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px; width: auto;">
     <fieldset>
         <legend>Tiêu chí trích lọc</legend>
@@ -408,7 +408,7 @@
              @{
                  Html.Telerik().ComboBox()
                      .Name("MachineCbo")
-                     .DataBinding(binding => binding.Ajax().Select("SelectComboBoxMachineAllProduction", "Machine", new { area = "Factory" }))
+                     .DataBinding(binding => binding.Ajax().Select("SelectComboBoxMachineAllProduction2", "Machine", new { area = "Factory" }))
                      .HtmlAttributes(new { style = "width: 140px" })
                      .DropDownHtmlAttributes(new { style = "width: 138px" })
                      .AutoFill(true)
@@ -676,7 +676,7 @@
                           .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                           .Aggregate(agg => agg.Sum())
                           .Format("{0:n0}");
-                      columns.Bound(f => f.MachineStopTime).Width(35).Title("TG máy </br>ngưng  (h)")
+                      columns.Bound(f => f.MachineStopTime).Width(35).Title("TG máy </br>ngưng (h)")
                           .HtmlAttributes(new { style = "text-align:right; border-bottom:1px black solid;" })
                           .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
                           .FooterHtmlAttributes(new { style = "text-align: right; font-weight:bold;" })
@@ -691,7 +691,7 @@
                       //    .Aggregate(agg => agg.Sum())
                       //    .Format("{0:n2}");
 
-                      columns.Bound(f => f.MaxProductionTime2).Width(30).Title("TG </br>SX (h)")
+                      columns.Bound(f => f.MaxProductionTime2).Width(30).Title("TG SX</br>LT(h)")
                           .HtmlAttributes(new { style = "text-align:right; border-bottom:1px black solid;" })
                           .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n1}', Sum) #>")
                           .FooterHtmlAttributes(new { style = "text-align: right; font-weight:bold;" })
@@ -728,7 +728,7 @@
                                   Html.Telerik().Grid<ProductDetailModel>()
                                       .Name("gridProduct_<#= MachineId #>")
                                       .DataBinding(dataBinding => dataBinding.Ajax()
-                                          .Select("GetProductDetail", "Machine", new { area = "Factory" }))
+                                          .Select("ProductDetail", "Machine", new { area = "Factory", machineId = "<#= MachineId #>" ,fromDate = "", toDate = "" }))
                                       .Columns(columns => {
                                           columns.Bound(f => f.Index).Width(40).Title("STT").ReadOnly(true)
                                               .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center; " })
@@ -819,7 +819,7 @@
                                               .FooterHtmlAttributes(new { style = "text-align: center; font-weight:bold; ; border-right:2px black solid;" })
                                               .Aggregate(agg => agg.Sum());
 
-                                          columns.Bound(f => f.NGPersent).Title("TL NG </br>(h)")
+                                          columns.Bound(f => f.NGPersent).Title("TL NG </br>(%)")
                                               .HeaderHtmlAttributes(new { style = "font-weight:bold; text-align:center;" })
                                               .ClientTemplate("<div style='background-color:<#= (NGPersent > 5) ? \"#f29327\" : (NGPersent >= 3 && NGPersent <= 5) ? \"yellow\" : \"transparent\" #>; text-align:center;'>" +
                                                               "<#= $.telerik.formatString('{0:n1}', NGPersent) #>%</div>")

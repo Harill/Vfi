@@ -24,11 +24,14 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
             foreach (var property in viewModel.GetType().GetProperties()) {
                 ViewData[property.Name] = property.GetValue(viewModel, null);
             }
-            // 04/08/2026
-            Session["CurrentCulture"] = "vi-VN";
-            string culture = (string)Session["CurrentCulture"] ?? "en-US";
-            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(culture);
-            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+
+            // 08/08/2026
+            //var ci = new CultureInfo("vi-VN");
+            //var ci2 = new CultureInfo("en-US");
+            //ci.NumberFormat.NumberDecimalSeparator = ".";
+            //ci.NumberFormat.NumberGroupSeparator = ",";
+            //Thread.CurrentThread.CurrentCulture = ci2;
+            //Thread.CurrentThread.CurrentUICulture = ci;
 
             return ViewData;
         }
@@ -2106,53 +2109,60 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
             var model = new List<TransactionFptDetailModel>();
             lstIds = lstIds.Distinct().ToList();
             using (var vfi = new tammaContext()) {
-                var machine = vfi.Machines.FirstOrDefault(m => m.MachineId == machineId);
-                var product = vfi.Products.FirstOrDefault(m => m.ProductId == productId);
-                foreach (var id in lstIds) {
-                    var toolInv = vfi.ToolInventories.FirstOrDefault(mi => mi.ToolInvId == id);
+                try {
+                    var machine = vfi.Machines.FirstOrDefault(m => m.MachineId == machineId);
+                    var product = vfi.Products.FirstOrDefault(m => m.ProductId == productId);
+                    foreach (var id in lstIds) {
+                        var toolInv = vfi.ToolInventories.FirstOrDefault(mi => mi.ToolInvId == id);
 
-                    if ((toolInv.TotalQuantity) == 0) continue;
-                    var entity = new TransactionFptDetailModel {
-                        ToolId = toolInv.ToolId,
-                        TotalInv = toolInv.TotalQuantity,
-                        ToolCode = toolInv.Tool.ToolCode,
-                        ToolName = toolInv.Tool.ToolName,
-                        ToolDesignNo = toolInv.Tool.ToolDesignNo,
-                        ToolFullCodeName = toolInv.Tool.ToolFullCode,
-                        LotNumber = toolInv.LotNumber,
-                        ToolInvId = toolInv.ToolInvId,
-                        VendorId = toolInv.VendorId,
-                        VendorCode = toolInv.Vendor.VendorCode,
-                        VendorName = toolInv.Vendor.VendorName,
-                        UnitMeasure = toolInv.UnitMeasure,
-                        AvailInv = toolInv.TotalQuantity,
-                        NG = toolInv.NG,
-                        Lock = toolInv.Lock,
-                    };
-                    if (toolInv.ImportDate != null)
-                        entity.TaxInvoiceDate = toolInv.ImportDate.Value;
-                    if (machine != null) {
-                        entity.MachineId = machine.MachineId;
-                        entity.MachineName = machine.MachineName;
-                    }
-                    if (product != null) {
-                        entity.ProductId = product.ProductId;
-                        entity.ProductCode = product.ProductCode;
-                    }
+                        if ((toolInv.TotalQuantity) == 0) continue;
+                        var entity = new TransactionFptDetailModel {
+                            ToolId = toolInv.ToolId,
+                            TotalInv = toolInv.TotalQuantity,
+                            ToolCode = toolInv.Tool.ToolCode,
+                            ToolName = toolInv.Tool.ToolName,
+                            ToolDesignNo = toolInv.Tool.ToolDesignNo,
+                            ToolFullCodeName = toolInv.Tool.ToolFullCode,
+                            LotNumber = toolInv.LotNumber,
+                            ToolInvId = toolInv.ToolInvId,
+                            VendorId = toolInv.VendorId,
+                            VendorCode = toolInv.Vendor.VendorCode,
+                            VendorName = toolInv.Vendor.VendorName,
+                            UnitMeasure = toolInv.UnitMeasure,
+                            AvailInv = toolInv.TotalQuantity,
+                            NG = toolInv.NG,
+                            Lock = toolInv.Lock,
+                        };
+                        if (toolInv.ImportDate != null)
+                            entity.TaxInvoiceDate = toolInv.ImportDate.Value;
+                        if (machine != null) {
+                            entity.MachineId = machine.MachineId;
+                            entity.MachineName = machine.MachineName;
+                        }
+                        if (product != null) {
+                            entity.ProductId = product.ProductId;
+                            entity.ProductCode = product.ProductCode;
+                        }
 
-                    var openTransactions = from td in vfi.TransactionFptDetails
-                                           where td.TransactionFpt.Status == (byte)MyUtilities.Transaction.Status.Open &&
-                                           td.TransactionFpt.Fpt == (byte)MyUtilities.PurchaseOrder.FptLot.Tool &&
-                                         td.FptId == entity.ToolId && td.LotNumber.Equals(entity.LotNumber)
-                                           select td;
-                    if (openTransactions.Any()) {
-                        entity.AvailInv = entity.TotalInv - openTransactions.Sum(ot => ot.Quantity);
+                        var openTransactions = from td in vfi.TransactionFptDetails
+                                               where td.TransactionFpt.Status == (byte)MyUtilities.Transaction.Status.Open &&
+                                               td.TransactionFpt.Fpt == (byte)MyUtilities.PurchaseOrder.FptLot.Tool &&
+                                             td.FptId == entity.ToolId && td.LotNumber.Equals(entity.LotNumber)
+                                               select td;
+                        if (openTransactions.Any()) {
+                            entity.AvailInv = entity.TotalInv - openTransactions.Sum(ot => ot.Quantity);
+                        }
+                        model.Add(entity);
+
                     }
-                    model.Add(entity);
+                    Session["ListExportToolInvIds"] = lstIds;
+                    return View(new GridModel(model));
                 }
-                Session["ListExportToolInvIds"] = lstIds;
-                return View(new GridModel(model));
-            }
+                catch (Exception ex) {
+                    throw ex;
+                }
+            }                   
+
         }
 
         [GridAction]
@@ -2837,7 +2847,15 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                     }
                 }
                 catch (Exception exception) {
-                    ModelState.AddModelError("UpdateAssignTool2", "" + exception.Message);
+                    var errorMessage = exception.Message;
+                    var innerException = exception.InnerException;
+
+                    while (innerException != null) {
+                        errorMessage += " | InnerException: " + innerException.Message;
+                        innerException = innerException.InnerException;
+                    }
+
+                    ModelState.AddModelError("UpdateAssignTool2", errorMessage);
                 }
             }
 

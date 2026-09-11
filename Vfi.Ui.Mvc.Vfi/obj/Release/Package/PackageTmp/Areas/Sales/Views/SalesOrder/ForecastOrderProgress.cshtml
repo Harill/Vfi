@@ -68,8 +68,14 @@
 <div id="pnlInvPeriod">
     <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px; width: 920px;">
         <fieldset>
-            <legend>Tiêu chí trích lọc</legend>
-            <div class="grid_1">KH</div>
+            <legend>
+                @*Tiêu chí trích lọc*@
+                @HttpContext.GetGlobalResourceObject("Resource", "Filter")
+            </legend>
+            <div class="grid_2">
+                @*KH*@
+                @HttpContext.GetGlobalResourceObject("Resource", "Customer")
+            </div>
             <div class="grid_5">
                 @{
                     Html.Telerik().ComboBox()
@@ -78,11 +84,14 @@
                         .HtmlAttributes(new {style = "width: 190px"})
                         .DropDownHtmlAttributes(new {style = "width: 275px;"})
                         .AutoFill(true)
-                        .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                        .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                         .Render();
                 }
             </div>
-            <div class="grid_2">Tình trạng</div>
+            <div class="grid_2">
+                @*Tình trạng*@
+                @HttpContext.GetGlobalResourceObject("Resource", "Status")
+            </div>
             <div class="grid_3">
                 @{
                     Html.Telerik().ComboBox()
@@ -91,13 +100,14 @@
                         .HtmlAttributes(new {style = "width: 100px"})
                         .DropDownHtmlAttributes(new {style = "width: 100px;"})
                         .AutoFill(true)
-                        .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                        .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                         .ClientEvents(e => e.OnLoad("cboStatus_OnLoad"))
                         .Render();
                 }
             </div>
             <div class="grid_1">
-                @Html.Label("Tháng")
+                @*@Html.Label("Tháng")*@
+                @HttpContext.GetGlobalResourceObject("Resource", "Month")
             </div>
             <div class="grid_2">
                 @{
@@ -114,7 +124,8 @@
             </div>
 
             <div class="grid_1">
-                @Html.Label("Năm")
+                @*@Html.Label("Năm")*@
+                @HttpContext.GetGlobalResourceObject("Resource", "Year")
             </div>
             <div class="grid_2">
 
@@ -128,7 +139,8 @@
             </div>
             <button id="btnRefesh2" class="t-button" onclick=" DisplayForecastOrderProgress()">
                 <span class='t-icon t-refresh'></span>
-                Làm mới
+                @*Làm mới*@
+                @HttpContext.GetGlobalResourceObject("Resource", "Refresh")
             </button>
         </fieldset>
     </div>

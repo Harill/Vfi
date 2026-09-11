@@ -33,6 +33,9 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers {
         [HttpPost]
         public ActionResult SetLanguage(string lang) {
             Session["CurrentCulture"] = lang;
+
+            //return Redirect(Request.UrlReferrer.ToString());
+
             return RedirectToAction("Index");
         }
 
@@ -40,11 +43,14 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers {
         public ActionResult Index() {
             ViewData["Message"] = "Welcome to ASP.NET MVC!";
             ViewData = GetPageConfigData();
-            Session["CurrentCulture"] = "vi-VN";
-            //Session["CurrentCulture"] = "en-US";
-            string culture = (string)Session["CurrentCulture"] ?? "vi-VN";
-            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(culture);
-            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+
+            //Session["CurrentCulture"] = "vi-VN";
+            ////Session["CurrentCulture"] = "en-US";
+            //string culture = (string)Session["CurrentCulture"] ?? "vi-VN";
+            //Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(culture);
+            //Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+
+
             //ViewData["BackgroundImage"] = Path.Combine(Server.MapPath("~/Content/Images"), "bg_body-2.jpg");
             return View();
         }

@@ -255,6 +255,7 @@
             //        )
             //        .ToHtmlString()))
             .Selectable()
+            .Sortable()
             .ClientEvents(events => events
                 .OnRowSelect("grid_OnRowSelect")
                 .OnError("grid_OnError"))

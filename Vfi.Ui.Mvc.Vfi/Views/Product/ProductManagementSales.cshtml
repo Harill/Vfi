@@ -551,7 +551,7 @@
                    .ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
             .DataBinding(
                 dataBinding => dataBinding.Ajax()
-                                          .Select("SelectProduct", "Product", new { area = "", active = false, productId = 0, productName = "" })
+                                          .Select("SelectProduct2", "Product", new { area = "", active = false, productId = 0, productName = "" })
                                           .Insert("InsertProduct", "Product", new { area = "", customerId = 0, status = 0, productCodeFilter = "" })
                                           .Update("UpdateProductManagementSales", "Product", new { area = "", customerId = 0, status = 0, productCodeFilter = "" }))
             .Columns(columns =>
@@ -595,9 +595,9 @@
                         .ClientGroupFooterTemplate("<div style='text-align: right; width: 100%;'><#= $.telerik.formatString('{0:n0}', Count) #></div>")
                         .ClientFooterTemplate("<div style='text-align: right; width: 100%;'><#= $.telerik.formatString('{0:n0}', Count) #></div>");
                   
-                    columns.Bound(f => f.IdentityCode).Width(120)
-                        //.HeaderTemplate("<strong>Mã</br>định danh</strong>")
-                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "IdentificationCode1").ToString());
+                    //columns.Bound(f => f.IdentityCode).Width(120)
+                    //    //.HeaderTemplate("<strong>Mã</br>định danh</strong>")
+                    //    .Title(@HttpContext.GetGlobalResourceObject("Resource", "IdentificationCode1").ToString());
                     
                     columns.Bound(f => f.Note).Width(200)
                         //.HeaderTemplate("<strong>Ghi chú</strong>")
@@ -624,7 +624,7 @@
                   
                     columns.Bound(f => f.Active).Width(50)
                         //.HeaderTemplate("Kích</br>hoạt")
-                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Active").ToString())   
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Active1").ToString())   
                         .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=Active? checked='checked' : '' #> />")
                         .HtmlAttributes(new { style = "text-align:center" });
                     

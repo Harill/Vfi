@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Web;
@@ -30,12 +31,6 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
             foreach (var property in viewModel.GetType().GetProperties()) {
                 ViewData[property.Name] = property.GetValue(viewModel, null);
             }
-            // 04/08/2026
-            Session["CurrentCulture"] = "vi-VN";
-            string culture = (string)Session["CurrentCulture"] ?? "en-US";
-            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(culture);
-            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
-
             return ViewData;
         }
 
@@ -851,9 +846,11 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
             var statuses = MyUtilities.WorkOrder.ActivatedStatus;
             if (status > 0) { statuses = statuses.Where(x => x == status).ToList(); }
             using (var vfi = new tammaContext()) {
+                //var monthAgo = DateTime.Today.AddMonths(-9);
                 model = (from x in vfi.OrderDetails
                          where x.WorkOrders.Any(y => statuses.Contains(y.Status))
                             && (customerId == 0 || x.Order.CustomerId == customerId)
+                            //&& x.Order.DueDate.Value >= monthAgo    //06/08/2026
                          //&& (productId == 0 || x.ProductId == productId)
                          select new ActivateWorkOrderModel {
                              OrderDetailId = x.OrderDetailId,
@@ -996,15 +993,14 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
                                     entity.RoutingName += "-" + lastProcesRoute.Machine.MachineName;
                                 }
                             }
-
                         }
                     }
                     model.Add(entity);
                 }
             }
-
             return model;
         }
+
 
         [GridAction]
         public ActionResult DeleteWorkOrder(int workOrderId) {
@@ -1080,7 +1076,6 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
                 var checkedRecords = MyUtilities.Function.StringToIds(ids, ':');
                 var productionManager = MyUtilities.UserRole.CheckRole(HttpContext.User.Identity.Name ,MyUtilities.UserRole.ProductionManagement);
                 using (var vfi = new tammaContext()) {
-
                     var workOrder = vfi.WorkOrders.FirstOrDefault(x => checkedRecords.Contains(x.WorkOrderId));
                     var routings = workOrder.WorkOrderRoutings.Where(x => !isActive
                         || x.Status != (byte)MyUtilities.WorkOrder.Status.Cancel);
@@ -1166,10 +1161,11 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
                 model = model.OrderBy(x => x.RoutingIndex).ToList();
             }
             catch (Exception ex) {
-                throw ex;
+                ModelState.AddModelError("GetWorkOrderRoutings", ex.Message);
             }
             return model;
         }
+
 
         [GridAction]
         public ActionResult InsertWorkOrderRouting(WorkOrderRoutingModel newRouting, int workOrderId, bool isActive) {
@@ -1942,7 +1938,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
         //}
         
         [GridAction]
-        public ActionResult SelectWorkOrderProcess(int routingId, double productWeight, double weight) {
+        public ActionResult SelectWorkOrderProcess(int routingId, double productWeight, double weight) {        // productWeight bi sai o day
             if (routingId == 0) {
                 return View(new GridModel(new List<WorkOrderRoutingModel>()));
             }
@@ -1950,7 +1946,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
             try {
                 model = GetWorkOrderRoutingModel(null, 0, 0, routingId, "", "", "");
                 model.ForEach(x => {
-                    x.ProductWeight = productWeight;
+                    x.ProductWeight = productWeight;        
                     x.UsingQuantity = 0;
                     x.GoodQuantity = productWeight > 0 ? MyUtilities.Function.RoundDown(weight / productWeight) : 0;
                     x.GoodWeight = weight;
@@ -2451,152 +2447,159 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
         WorkOrderModel GetWorkOrderPrintModel(int workOrderId) {
             var entity = new WorkOrderModel();
             using (var vfi = new tammaContext()) {
-
-                var workOrder = vfi.WorkOrders.FirstOrDefault(x => x.WorkOrderId == workOrderId);
-                if (workOrder == null) { throw new AggregateException("Lỗi! Không tìm thấy data"); }
-                entity = new WorkOrderModel {
-                    SerialNumber = workOrder.SerialNumber,
-                    ProductCode = workOrder.Product.ProductCode,
-                    ProductName = workOrder.Product.ProductName,
-                    ProductDesign = workOrder.Product.DesignNo,
-                    CustomerCode = workOrder.OrderDetail.Order.Customer.CustomerCode,
-                    OrderQty = workOrder.OrderQty,
-                    OrderQtyKg = workOrder.OrderQty * (workOrder.Product.QcWeight ?? 0),
-                    RunTime = workOrder.RunTime > 0 ? workOrder.RunTime : workOrder.PlannedTime,
-                    StartDate = workOrder.StartDate,
-                    EndDate = workOrder.EndDate ?? workOrder.DueDate,
-                    Routings = new List<WorkOrderRoutingModel>(),
-                    MaterialName = "",
-                    MaterialLot = "",
-                    OrderNote = workOrder.OrderDetail.OrderNote,
-                    PONumber = workOrder.OrderDetail.PONumber,
-                    OrderDate = workOrder.OrderDetail.Order.DueDate.Value
-                };
-
-                foreach (var routing in workOrder.WorkOrderRoutings.OrderBy(x => x.RoutingIndex)) {
-                    if (routing.WarehouseId == null) {
-                        if (routing.MaterialInvId != null) {
-                            entity.MaterialName = routing.MaterialInventory.Material.MaterialCode + "x" + (routing.MaterialInventory.Length / 1000);
-                            entity.MaterialLot = routing.MaterialInventory.LotNumber;
-                            entity.MaterialShape = routing.MaterialInventory.Material.Shape;
-                            entity.MaterialTypeName = routing.MaterialInventory.Material.MaterialType.MaterialTypeName;
-                            //entity.GoodQuantity = routing.PlannedCost;
-                        }
-                        else if (routing.Product.MaterialId != null) {
-                            entity.MaterialName = routing.Product.Material.MaterialCode;
-                            entity.MaterialShape = routing.Product.Material.Shape;
-                            entity.MaterialTypeName = routing.Product.Material.MaterialType.MaterialTypeName;
-                        }
-                    }
-                    var info = JsonConvert.DeserializeObject<WorkOrderProductionInfo>(routing.MoreInfo);
-                    if (info == null) { info = new WorkOrderProductionInfo(); }
-                    var detail = new WorkOrderRoutingModel {
-                        RoutingIndex = routing.RoutingIndex * 10,
-                        RoutingName = routing.RoutingName,
-                        SerialNumber = entity.SerialNumber,
-                        PlannedCost = routing.PlannedCost,
-                        ActualCost = routing.ActualCost,
-                        MoreInfoObject = info,
-                        MachineName = routing.MachineId != null ? routing.Machine.MachineName : "",
-                        Status = routing.Status,
+                try {
+                    var workOrder = vfi.WorkOrders.FirstOrDefault(x => x.WorkOrderId == workOrderId);
+                    if (workOrder == null) { throw new AggregateException("Lỗi! Không tìm thấy data"); }
+                    entity = new WorkOrderModel {
+                        SerialNumber = workOrder.SerialNumber,
+                        ProductCode = workOrder.Product.ProductCode,
+                        ProductName = workOrder.Product.ProductName,
+                        ProductDesign = workOrder.Product.DesignNo,
+                        CustomerCode = workOrder.OrderDetail.Order.Customer.CustomerCode,
+                        OrderQty = workOrder.OrderQty,
+                        OrderQtyKg = workOrder.OrderQty * (workOrder.Product.QcWeight ?? 0),
+                        RunTime = workOrder.RunTime > 0 ? workOrder.RunTime : workOrder.PlannedTime,
+                        StartDate = workOrder.StartDate,
+                        EndDate = workOrder.EndDate ?? workOrder.DueDate,
+                        Routings = new List<WorkOrderRoutingModel>(),
+                        MaterialName = "",
+                        MaterialLot = "",
+                        OrderNote = workOrder.OrderDetail.OrderNote,
+                        PONumber = workOrder.OrderDetail.PONumber,
+                        OrderDate = workOrder.OrderDetail.Order.DueDate.Value
                     };
-                    //if (routing.MaterialInvId != null) {
-                    //    detail.MaterialShape = routing.MaterialInventory.Material.Shape.Trim();
-                    //}
-                    //else if (routing.Product.MaterialId != null) {
-                    //    detail.MaterialShape = routing.Product.Material.Shape.Trim();
-                    //}
-                    if (routing.WarehouseId == null) {
-                        detail.GoodQuantity = routing.PlannedCost;
-                        detail.RoutingIndex = 1;
-                        detail.MoreInfoObject.NS = 0;
-                    }
-                    else if (routing.Warehouse.IsProduction) {
-                        if (routing.MachineId != null) {
-                            detail.MachineTypeName = routing.Machine.ProcessingType.TypeName;
-                            entity.ProductionRate = detail.MoreInfoObject.DM;
-                        }
-                        else {
-                            detail.MachineTypeName = routing.Product.ProcessingDesign != null
-                                ? routing.Product.ProcessingType.TypeName
-                                : "";
-                            entity.ProductionRate = routing.Product.ProductionRate ?? 0;
-                        }
-                        detail.ProductWeight = routing.Product.ProductionWeight ?? 0;
-                    }
-                    else if (routing.Warehouse.IsProduction2) {
-                        var processNames = routing.RoutingName.Split(':');
-                        if (processNames.Length > 1) {
-                            var processName = processNames[1].Trim();
-                            var productionSection = routing.Product.ProductionSections.FirstOrDefault(x => x.Section.SectionName.Equals(processName));
-                            if (productionSection != null) {
-                                detail.ProductWeight = productionSection.Weight;
+                    var routings = workOrder.WorkOrderRoutings.Where(x=> x.Status != (byte) MyUtilities.WorkOrder.Status.Cancel)
+                                                                .OrderBy(x => x.RoutingIndex);
+                    foreach (var routing in routings) {
+                        if (routing.WarehouseId == null) {
+                            var a = routing.RoutingId;
+                            if (routing.MaterialInvId != null) {
+                                entity.MaterialName = routing.MaterialInventory.Material.MaterialCode + "x" + (routing.MaterialInventory.Length / 1000);
+                                entity.MaterialLot = routing.MaterialInventory.LotNumber;
+                                entity.MaterialShape = routing.MaterialInventory.Material.Shape;
+                                entity.MaterialTypeName = routing.MaterialInventory.Material.MaterialType.MaterialTypeName;
+                                //entity.GoodQuantity = routing.PlannedCost;
+                            }
+                            else if (routing.Product.MaterialId != null) {
+                                entity.MaterialName = routing.Product.Material.MaterialCode;
+                                entity.MaterialShape = routing.Product.Material.Shape;
+                                entity.MaterialTypeName = routing.Product.Material.MaterialType.MaterialTypeName;
                             }
                         }
+                        var info = JsonConvert.DeserializeObject<WorkOrderProductionInfo>(routing.MoreInfo ?? "");      // loi o day: Value cannot be null.Parameter name: value
+
+                        if (info == null) { info = new WorkOrderProductionInfo(); }
+                        var detail = new WorkOrderRoutingModel {
+                            RoutingIndex = routing.RoutingIndex * 10,
+                            RoutingName = routing.RoutingName,
+                            SerialNumber = entity.SerialNumber,
+                            PlannedCost = routing.PlannedCost,
+                            ActualCost = routing.ActualCost,
+                            MoreInfoObject = info,
+                            MachineName = routing.MachineId != null ? routing.Machine.MachineName : "",
+                            Status = routing.Status,
+                        };
+                        //if (routing.MaterialInvId != null) {
+                        //    detail.MaterialShape = routing.MaterialInventory.Material.Shape.Trim();
+                        //}
+                        //else if (routing.Product.MaterialId != null) {
+                        //    detail.MaterialShape = routing.Product.Material.Shape.Trim();
+                        //}
+                        if (routing.WarehouseId == null) {
+                            detail.GoodQuantity = routing.PlannedCost;
+                            detail.RoutingIndex = 1;
+                            detail.MoreInfoObject.NS = 0;
+                        }
+                        else if (routing.Warehouse.IsProduction) {
+                            if (routing.MachineId != null) {
+                                detail.MachineTypeName = routing.Machine.ProcessingType.TypeName;
+                                entity.ProductionRate = detail.MoreInfoObject.DM;
+                            }
+                            else {
+                                detail.MachineTypeName = routing.Product.ProcessingDesign != null
+                                    ? routing.Product.ProcessingType.TypeName
+                                    : "";
+                                entity.ProductionRate = routing.Product.ProductionRate ?? 0;
+                            }
+                            detail.ProductWeight = routing.Product.ProductionWeight ?? 0;
+                        }
+                        else if (routing.Warehouse.IsProduction2) {
+                            var processNames = routing.RoutingName.Split(':');
+                            if (processNames.Length > 1) {
+                                var processName = processNames[1].Trim();
+                                var productionSection = routing.Product.ProductionSections.FirstOrDefault(x => x.Section.SectionName.Equals(processName));
+                                if (productionSection != null) {
+                                    detail.ProductWeight = productionSection.Weight;
+                                }
+                            }
+                            if (detail.ProductWeight == 0) {
+                                detail.ProductWeight = routing.Product.Production2Weight ?? 0;
+                            }
+                        }
+                        else if (routing.Warehouse.IsHeatTreatment) {
+                            var production = vfi.ProductionHeatTreatments.FirstOrDefault(x => x.ProductId == workOrder.ProductId && x.Active);
+                            if (production != null) {
+                                detail.Note = production.Name
+                                    //+ production.MachineId != null ? "-" + production.Machine.MachineName : ""
+                                    + " - " + string.Format("{0:n0}", production.Rate) + " (pcs)"
+                                    + " - " + string.Format("{0:n0}", production.Timing) + " (s)"
+                                    + " - " + string.Format("{0:n1}", production.Temperature) + " °C"
+                                    + " - Stiffness: " + string.Format("{0:n1}", production.Stiffness) + "";
+                                detail.MoreInfoObject.NS = production.Rate > 0 ? production.Timing / production.Rate : 0;
+                            }
+                            detail.ProductWeight = routing.Product.HeatTreatmentWeight ?? 0;
+                        }
+                        else if (routing.Warehouse.IsPolish) {
+                            var production = vfi.ProductionPolishes.FirstOrDefault(x => x.ProductId == workOrder.ProductId && x.Active);
+                            if (production != null) {
+                                detail.Note = production.Name
+                                    //+ production.MachineId != null ? "-" + production.Machine.MachineName : ""
+                                    + " - " + string.Format("{0:n0}", production.Rate) + " (pcs)"
+                                    + " - " + string.Format("{0:n0}", production.Timing) + " (s)"
+                                    + " - Rock: " + (production.Rock ?? "") + ""
+                                    + " - " + (production.Using ?? "");
+                                detail.MoreInfoObject.NS = production.Rate > 0 ? production.Timing / production.Rate : 0;
+                            }
+                            detail.ProductWeight = routing.Product.SurfaceTreatmentWeight ?? 0;
+                        }
+                        else if (routing.Warehouse.IsPlating) {
+                            var production = vfi.ProductionPlatings.FirstOrDefault(x => x.ProductId == workOrder.ProductId && x.Active);
+                            if (production != null) {
+                                detail.Note = production.PlatingName + ""
+                                    + " - Salt Spray Time: " + (production.SaltSprayTime ?? "")
+                                    + " - Thickness: " + (production.Thickness ?? "")
+                                    + " - " + (production.Description ?? "");
+                            }
+                            detail.ProductWeight = routing.Product.PlatingWeight ?? 0;
+                        }
+                        else if (routing.Warehouse.IsPacking) {
+                            var production = vfi.ProductionFuels.FirstOrDefault(x => x.ProductId == workOrder.ProductId && x.Active);
+                            if (production != null && production.Fuel2Id != null) {
+                                detail.Note = production.Fuel1.FuelFullCode + ""
+                                    + " - " + production.Quota2 + "(pcs)"
+                                    + " - " + production.CrossWeight2 + "(g)";
+                            }
+                            detail.MoreInfoObject.NS = MyUtilities.Monitor.GetParameterValue(MyUtilities.Monitor.PackingProductivity);
+                        }
                         if (detail.ProductWeight == 0) {
-                            detail.ProductWeight = routing.Product.Production2Weight ?? 0;
+                            detail.ProductWeight = routing.Product.QcWeight ?? 0;
                         }
-                    }
-                    else if (routing.Warehouse.IsHeatTreatment) {
-                        var production = vfi.ProductionHeatTreatments.FirstOrDefault(x => x.ProductId == workOrder.ProductId && x.Active);
-                        if (production != null) {
-                            detail.Note = production.Name
-                                //+ production.MachineId != null ? "-" + production.Machine.MachineName : ""
-                                + " - " + string.Format("{0:n0}", production.Rate) + " (pcs)"
-                                + " - " + string.Format("{0:n0}", production.Timing) + " (s)"
-                                + " - " + string.Format("{0:n1}", production.Temperature) + " °C"
-                                + " - Stiffness: " + string.Format("{0:n1}", production.Stiffness) + "";
-                            detail.MoreInfoObject.NS = production.Rate > 0 ? production.Timing / production.Rate : 0;
+                        if (detail.MoreInfoObject != null && detail.MoreInfoObject.NS > 0) {
+                            detail.ProductivityHr = MyUtilities.Function.RoundDown((60 * 60) / detail.MoreInfoObject.NS);
                         }
-                        detail.ProductWeight = routing.Product.HeatTreatmentWeight ?? 0;
-                    }
-                    else if (routing.Warehouse.IsPolish) {
-                        var production = vfi.ProductionPolishes.FirstOrDefault(x => x.ProductId == workOrder.ProductId && x.Active);
-                        if (production != null) {
-                            detail.Note = production.Name
-                                //+ production.MachineId != null ? "-" + production.Machine.MachineName : ""
-                                + " - " + string.Format("{0:n0}", production.Rate) + " (pcs)"
-                                + " - " + string.Format("{0:n0}", production.Timing) + " (s)"
-                                + " - Rock: " + (production.Rock ?? "") + ""
-                                + " - " + (production.Using ?? "");
-                            detail.MoreInfoObject.NS = production.Rate > 0 ? production.Timing / production.Rate : 0;
+                        var processes = routing.WorkOrderProcesses.Where(x => x.Status == (byte)MyUtilities.WorkOrder.Status.Finish);
+                        if (processes.Any()) {
+                            detail.UsingQuantity = processes.Sum(x => x.UsingQuantity);
+                            detail.GoodQuantity = processes.Sum(x => x.GoodQuantity);
+                            detail.NGQuantity = processes.Sum(x => x.NGQuantity);
+                            detail.DefectQuantity = processes.Sum(x => x.DefectQuantity);
                         }
-                        detail.ProductWeight = routing.Product.SurfaceTreatmentWeight ?? 0;
+                        detail.Note = "TL: " + string.Format("{0:n3}", detail.ProductWeight) + " - " + detail.Note;
+                        entity.Routings.Add(detail);
                     }
-                    else if (routing.Warehouse.IsPlating) {
-                        var production = vfi.ProductionPlatings.FirstOrDefault(x => x.ProductId == workOrder.ProductId && x.Active);
-                        if (production != null) {
-                            detail.Note = production.PlatingName + ""
-                                + " - Salt Spray Time: " + (production.SaltSprayTime ?? "")
-                                + " - Thickness: " + (production.Thickness ?? "")
-                                + " - " + (production.Description ?? "");
-                        }
-                        detail.ProductWeight = routing.Product.PlatingWeight ?? 0;
-                    }
-                    else if (routing.Warehouse.IsPacking) {
-                        var production = vfi.ProductionFuels.FirstOrDefault(x => x.ProductId == workOrder.ProductId && x.Active);
-                        if (production != null && production.Fuel2Id != null) {
-                            detail.Note = production.Fuel1.FuelFullCode + ""
-                                + " - " + production.Quota2 + "(pcs)"
-                                + " - " + production.CrossWeight2 + "(g)";
-                        }
-                        detail.MoreInfoObject.NS = MyUtilities.Monitor.GetParameterValue(MyUtilities.Monitor.PackingProductivity);
-                    }
-                    if (detail.ProductWeight == 0) {
-                        detail.ProductWeight = routing.Product.QcWeight ?? 0;
-                    }
-                    if (detail.MoreInfoObject != null && detail.MoreInfoObject.NS > 0) {
-                        detail.ProductivityHr = MyUtilities.Function.RoundDown((60 * 60) / detail.MoreInfoObject.NS);
-                    }
-                    var processes = routing.WorkOrderProcesses.Where(x => x.Status == (byte)MyUtilities.WorkOrder.Status.Finish);
-                    if (processes.Any()) {
-                        detail.UsingQuantity = processes.Sum(x => x.UsingQuantity);
-                        detail.GoodQuantity = processes.Sum(x => x.GoodQuantity);
-                        detail.NGQuantity = processes.Sum(x => x.NGQuantity);
-                        detail.DefectQuantity = processes.Sum(x => x.DefectQuantity);
-                    }
-                    detail.Note = "TL: " + string.Format("{0:n3}", detail.ProductWeight) + " - " + detail.Note;
-                    entity.Routings.Add(detail);
+                }
+                catch (Exception ex){
+                    ModelState.AddModelError("GetWorkOrderPrintModel", ex.Message);
                 }
             }
             return entity;
@@ -6708,12 +6711,12 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
                     }
                     var previousRouting = routing.WorkOrderRouting1
                         .FirstOrDefault(x => x.Status == (byte)MyUtilities.WorkOrder.Status.Finish);
-                    var warehouseIdsCanNotReject = vfi.Warehouses.Where(x => x.IsProduction
-                        || x.IsPlating)
+                    var warehouseIdsCanNotReject = vfi.Warehouses.Where(x => x.IsProduction || x.IsPlating)
                         .Select(x => x.WarehouseId).ToList();
                     if (previousRouting != null && previousRouting.WarehouseId != null) {
                         if (warehouseIdsCanNotReject.Contains(previousRouting.WarehouseId.Value)) {
-                            throw new AggregateException("Lỗi! Công đoạn này không thể trả");
+                            var warehouseName = previousRouting.Warehouse.WarehouseName;
+                            throw new AggregateException("Lỗi! Công đoạn này không thể trả về công đoạn " + warehouseName);
                         }
                         var processes = previousRouting.WorkOrderProcesses
                             .Where(x => x.Status == (byte)MyUtilities.WorkOrder.Status.Finish);

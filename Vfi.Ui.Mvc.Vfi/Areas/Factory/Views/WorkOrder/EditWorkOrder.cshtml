@@ -173,7 +173,10 @@
                 if (temp > 0) info.MaterialRequirement = info.MaterialRequirement - temp + Math.pow(10, 0);
             }
             $("#MaterialRequirement")[0].innerText = info.MaterialRequirement.format(info.IsWorkOrderNotFullMaterial == 0 ? 0 : 2);
-            info.MaterialAssign = info.MaterialRequirement > info.MaterialAvailable ? info.MaterialAvailable : info.MaterialRequirement;
+            info.MaterialAssign = info.MaterialRequirement > info.MaterialAvailable
+                    ? info.MaterialAvailable
+                    : info.MaterialRequirement;
+
             $("#MaterialAssign").val(info.MaterialAssign);
             $("#MaterialAssign").data("tTextBox").$text[0].innerHTML = info.MaterialAssign.format(info.IsWorkOrderNotFullMaterial == 0 ? 0 : 2);
             $("#MaterialAssign").data("tTextBox").value(info.MaterialAssign);
@@ -442,7 +445,7 @@
             </div>
             <div class="grid_1">(mm)</div>
             <div class="grid_2" style="text-align:right;">
-                Phoi dư :
+                Phôi dư :
             </div>
             <div class="grid_1_5">
                 @{
@@ -487,7 +490,8 @@
             .DataKeys(key => key.Add(f => f.RoutingId).RouteKey("routingId"))
             //.ToolBar(
             //                            toolbar =>
-            //                            toolbar.Insert().Text("Thêm công đoạn mới").ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
+            //                            toolbar.Insert().Text("Thêm công đoạn mới")
+                                               //.ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
 
             .DataBinding(
                 dataBinding => dataBinding.Ajax()
@@ -495,13 +499,17 @@
             )
             .Columns(columns => {
                 columns.Bound(f => f.RoutingIndex).Width(70).Title("STT");
+                
                 columns.Bound(f => f.RoutingName).Width(200).Title("Công đoạn");
+                
                 columns.Bound(f => f.PlannedCost).Width(100).Title("Số lượng")
-                    .Format("{0:n0}")
+                    .Format("{0:n2}")
                     .HtmlAttributes(new { style = "text-align:right;" });
+                
                 columns.Bound(f => f.ActualResourceHrs).Width(200).Title("Thời gian TH(h)")
                     .Format("{0:n2}")
                     .HtmlAttributes(new { style = "text-align:center;" });
+                
                 columns.Bound(f => f.MoreInfo).Title("Mô tả");
             })
             .ClientEvents(events => events.OnError("grid_OnError"))

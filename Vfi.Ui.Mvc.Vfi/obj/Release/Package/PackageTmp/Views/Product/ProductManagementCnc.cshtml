@@ -27,15 +27,22 @@
     </script>
 }
 
-<div class="title">Quản lý thông tin sản phẩm</div>
+<div class="title">
+    @*Quản lý thông tin sản phẩm*@
+    @HttpContext.GetGlobalResourceObject("Resource", "ProductManagementCnc")
+    </div>
 <div id="pnlInvPeriod">
     <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px;">
 
         <fieldset>
-            <legend>Tiêu chí trích lọc</legend>
+            <legend>
+                @*Tiêu chí trích lọc*@
+                @HttpContext.GetGlobalResourceObject("Resource", "Filter")
+            </legend>
 
             <div class="grid_1">
-                Mã KH
+                @*Mã KH*@
+                @HttpContext.GetGlobalResourceObject("Resource", "CustomerCode2")
             </div>
             <div class="grid_4">
                 @{
@@ -46,12 +53,15 @@
                         .DropDownHtmlAttributes(new { style = "width: 250px" })
                         .ClientEvents(events => events.OnChange("customer_onChange"))
                         .AutoFill(true)
-                        .Filterable(f => f.FilterMode(AutoCompleteFilterMode.Contains))
+                        .Filterable(f => f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
                         .Render();
                 }
             </div>
 
-            <div class="grid_1">Sản phẩm</div>
+            <div class="grid_1">
+                @*Sản phẩm*@
+                @HttpContext.GetGlobalResourceObject("Resource", "Product")
+            </div>
             <div class="grid_5">
                 @{
                     Html.Telerik().AutoComplete()
@@ -69,7 +79,8 @@
             </div>
             <button id="btnRefresh" class='t-button' onclick=" return RefreshGrid('gridProduct'); ">
                 <span class='t-icon t-insert'></span>
-                Làm mới
+                @*Làm mới*@
+                @HttpContext.GetGlobalResourceObject("Resource", "Refresh")
             </button>
         </fieldset>
     </div>
@@ -94,25 +105,33 @@
                 //                command.Edit().ButtonType(GridButtonType.Image).UpdateText("Cập nhật").CancelText("Hủy").Text("Sửa")
                 //    ).Width(50).Title("").HtmlAttributes(new {style = "text-align:center"});
 
-                columns.Bound(f => f.ProductId).Title("STT").Width(35).ReadOnly(true)
-                       .HeaderHtmlAttributes(new { style = "font-weight: bold" })
+                columns.Bound(f => f.ProductId)
+                    //.Title("STT")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Index").ToString())
+                    .Width(35).ReadOnly(true)
+                    .HeaderHtmlAttributes(new { style = "font-weight: bold" })
                     .ClientTemplate("<#= ++index #>")
-                       .HtmlAttributes(new { style = "font-weight: center;" });
-                columns.Bound(f => f.CustomerCode).Width(70).ReadOnly(true)
-                       .HeaderTemplate("<strong>Mã</br>KH</strong>")
-                       .HeaderHtmlAttributes(new { style = "text-align:center;" })
-                       .HtmlAttributes(new { style = "text-align:center;" })
-                       .ClientTemplate("<strong><#= CustomerCode #></strong>");
+                    .HtmlAttributes(new { style = "font-weight: center;" });
+               
+                columns.Bound(f => f.CustomerCode).Width(70)
+                    .ReadOnly(true)
+                    //.HeaderTemplate("<strong>Mã</br>KH</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "CustomerCode3").ToString())
+                    .HeaderHtmlAttributes(new { style = "text-align:center;" })
+                    .HtmlAttributes(new { style = "text-align:center;" })
+                    .ClientTemplate("<strong><#= CustomerCode #></strong>");
 
-                columns.Bound(f => f.ProductCode).Width(100).ReadOnly(true)
-                       .HeaderTemplate("<strong>Mã</br>SP</strong>")
-                       .HeaderHtmlAttributes(new { style = "text-align:center" })
-                       .ClientTemplate("<strong><#= ProductCode #></strong>");
+                columns.Bound(f => f.ProductCode).Width(100).ReadOnly(true)   
+                    //.HeaderTemplate("<strong>Mã</br>SP</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "ProductCode3").ToString())
+                    .HeaderHtmlAttributes(new { style = "text-align:center" })
+                    .ClientTemplate("<strong><#= ProductCode #></strong>");
 
-                columns.Bound(f => f.MillProductivity).Width(100).ReadOnly(true)
-                        .HeaderTemplate("<strong>NS TK</strong>")
-                        .Format("{0:n0}")
-                       .HtmlAttributes(new { style = "text-align:right" });
+                columns.Bound(f => f.MillProductivity).Width(100).ReadOnly(true)    
+                    //.HeaderTemplate("<strong>NS TK</strong>")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "DesignProductivity2").ToString())
+                    .Format("{0:n0}")
+                    .HtmlAttributes(new { style = "text-align:right" });
             })
             .ClientEvents(events => events.OnDataBinding("gridProduct_OnDataBinding")
                                           .OnError("grid_OnError"))

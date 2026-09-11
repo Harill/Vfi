@@ -170,6 +170,7 @@
                     .Width(35);
             })
             .Selectable()
+            .Scrollable(f => f.Height(720))
             .ClientEvents(events => events
                 .OnRowSelect("grid_OnRowSelect")
                 .OnSave("grid_OnSave")

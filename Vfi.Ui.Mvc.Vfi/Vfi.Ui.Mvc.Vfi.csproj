@@ -431,6 +431,7 @@
     <Compile Include="Areas\Factory\Controllers\WorkOrderController.cs" />
     <Compile Include="Areas\Factory\FactoryAreaRegistration.cs" />
     <Compile Include="Areas\Factory\Models\ActivateWorkOrderModel.cs" />
+    <Compile Include="Areas\Factory\Models\MachineDashboard.cs" />
     <Compile Include="Areas\Factory\Models\MachineHistoryModel.cs" />
     <Compile Include="Areas\Factory\Models\DefectReportModel.cs" />
     <Compile Include="Areas\Factory\Models\EditWorkOrderModel.cs" />
@@ -519,6 +520,7 @@
     <Compile Include="Areas\Inv\Models\CncFormModel.cs" />
     <Compile Include="Areas\Inv\Models\CncFormDetailModel.cs" />
     <Compile Include="Areas\Inv\Models\CncInvModel.cs" />
+    <Compile Include="Areas\Inv\Models\ProductDailyReport.cs" />
     <Compile Include="Areas\Inv\Models\TransactionImgModel.cs" />
     <Compile Include="Areas\Inv\Models\DeliverySalesReportModel.cs" />
     <Compile Include="Areas\Inv\Models\FactoryProductionProcessModel.cs" />
@@ -3162,6 +3164,7 @@
     <Content Include="Areas\Purchasing\Views\PurchaseOrder\ApprovedEvaluationForm.cshtml" />
     <Content Include="Areas\Purchasing\Views\PurchaseOrder\EvaluationFormManager.cshtml" />
     <Content Include="Areas\Purchasing\Views\Vendor\EditorTemplates\_UpLoadVendorImgTemplate.cshtml" />
+    <Content Include="Areas\Inv\Views\Reporting\ProductTotalReport.cshtml" />
     <None Include="Utilities\weighingvalue.json" />
     <Content Include="Logs\read.txt" />
     <Content Include="Resources\lock.png" />
@@ -3971,6 +3974,7 @@
     <Content Include="App_GlobalResources\Resource.en-US.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>Resource.en-US.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
     <EmbeddedResource Include="Areas\Inv\Reports\RptPrintEvaluationForm.resx">
       <DependentUpon>RptPrintEvaluationForm.cs</DependentUpon>

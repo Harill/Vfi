@@ -11,7 +11,9 @@
                   .DataKeys(key => key.Add(f => f.DetailId).RouteKey("detailId"))
                 .ToolBar(
                     toolbar =>
-                    toolbar.Insert().ButtonType(GridButtonType.ImageAndText).Text("Thêm mới").ImageHtmlAttributes(new {style = "margin-left:0px;"}))
+                    toolbar.Insert().ButtonType(GridButtonType.ImageAndText)
+                    .Text(@HttpContext.GetGlobalResourceObject("Resource", "NewText").ToString())
+                    .ImageHtmlAttributes(new {style = "margin-left:0px;"}))
                 .DataBinding(
                     dataBinding => dataBinding.Ajax()
                                                 .Select("SelectMachineFixManagement", "Machine", new { stateId = "<#= StateId #>" })
@@ -23,14 +25,33 @@
                                         command.Edit().ButtonType(GridButtonType.Image)
                             ).Width(50).Title("").HtmlAttributes(new { style = "text-align:center" }); 
                         columns.Bound(f => f.StateCode).Width(100).Title("Code");
-                        columns.Bound(f => f.Description).Title("Biện pháp chỉnh");
-                        columns.Bound(f => f.Timing).Title("Định mức TG").Width(100);
+                    
+                        columns.Bound(f => f.Description)
+                            //.Title("Biện pháp chỉnh")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Solution").ToString());
+                       
+                        columns.Bound(f => f.Timing)
+                            //.Title("Định mức TG")
+                            .Width(100)
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "ProductionRate1").ToString() 
+                                + " "
+                                + @HttpContext.GetGlobalResourceObject("Resource", "Time2").ToString()
+                            );
+                      
                         columns.Bound(f => f.Active).Width(75)
                                .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=Active? checked='checked' : '' #> />")
                                .HtmlAttributes(new { style = "text-align:center" });
-                        columns.Bound(f => f.ModifiedDate).Width(85).Title("Ngày tạo").ReadOnly(true)
-                               .Format("{0:dd/MM/yyyy HH:mm:ss}");
-                        columns.Bound(f => f.ModifiedUser).Width(85).Title("Người tạo").ReadOnly(true);
+                      
+                        columns.Bound(f => f.ModifiedDate).Width(85)
+                            //.Title("Ngày tạo")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "ModifiedDate").ToString())
+                            .ReadOnly(true)
+                            .Format("{0:dd/MM/yyyy HH:mm:ss}");
+                        
+                        columns.Bound(f => f.ModifiedUser).Width(85)
+                            //.Title("Người tạo")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "ModifiedUser").ToString())
+                            .ReadOnly(true);
 
                     })
                     

@@ -1,10 +1,11 @@
 ﻿@{
     Html.Telerik().ComboBox()
         .Name(ViewData.TemplateInfo.GetFullHtmlFieldName(string.Empty))
+        //.Name("vendorId")
         .DataBinding(binding => binding.Ajax().Select("SelectComboBoxMaterialVendor", "Vendor", new { area = "Purchasing" }).Delay(350))
         .HtmlAttributes(new { style = "width: 100px" })
         .DropDownHtmlAttributes(new { style = "width: 150px" })
-        .Filterable(f=>f.FilterMode(AutoCompleteFilterMode.Contains))
+        .Filterable(f=>f.FilterMode(Telerik.Web.Mvc.UI.AutoCompleteFilterMode.Contains))
         .HighlightFirstMatch(true)
         .AutoFill(true)
         .Render();

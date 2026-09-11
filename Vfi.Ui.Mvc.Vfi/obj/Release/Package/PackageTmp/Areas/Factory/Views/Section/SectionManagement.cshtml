@@ -5,7 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="title">Quản lý thông tin loại gia công trên máy</div>
+<div class="title">
+@*    Quản lý thông tin loại gia công trên máy*@
+    @HttpContext.GetGlobalResourceObject("Resource", "SectionManagement")
+</div>
 
 <div class="cover-div">
 @{
@@ -14,7 +17,9 @@
         .DataKeys(key => key.Add(f => f.SectionId).RouteKey("sectionId"))
         .ToolBar(
             toolbar =>
-            toolbar.Insert().Text("Thêm mới").ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
+            toolbar.Insert()
+            .Text(@HttpContext.GetGlobalResourceObject("Resource", "NewText").ToString())
+            .ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0px;" }))
         .DataBinding(
             dataBinding => dataBinding.Ajax()
                 .Select("SelectSectionManagement", "Machine")
@@ -26,14 +31,28 @@
                 command.Edit().ButtonType(GridButtonType.Image)
             ).Width(98).Title("Commands").HtmlAttributes(new { style = "text-align:center" });
 
-            columns.Bound(f => f.SectionName).Width(175).Title("Tên gia công")
+            columns.Bound(f => f.SectionName).Width(175)
+                //.Title("Tên gia công")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "ProcessingName").ToString())
                 .ClientTemplate("<strong><#= SectionName #></strong>");
-            columns.Bound(f => f.SaleFactor).Width(175).Title("Hệ số gia công");
+          
+            columns.Bound(f => f.SaleFactor).Width(175)
+                //.Title("Hệ số gia công")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "ProcessingFactor").ToString());
+        
             columns.Bound(f => f.Active).Width(75)
                 .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=Active? checked='checked' : '' #> />")
                 .HtmlAttributes(new { style = "text-align:center" });
-            columns.Bound(f => f.ModifiedDate).Title("Ngày tạo").Width(175).ReadOnly(true);
-            columns.Bound(f => f.ModifiedUser).Title("Người tạo").Width(100).ReadOnly(true);
+          
+            columns.Bound(f => f.ModifiedDate)
+                //.Title("Ngày tạo")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "ModifiedDate").ToString())
+                .Width(175).ReadOnly(true);
+           
+            columns.Bound(f => f.ModifiedUser)
+                //.Title("Người tạo")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "ModifiedUser").ToString())
+                .Width(100).ReadOnly(true);
         })
         .Editable(editing => editing.Mode(GridEditMode.InLine))
         .Scrollable(f => f.Height(510))

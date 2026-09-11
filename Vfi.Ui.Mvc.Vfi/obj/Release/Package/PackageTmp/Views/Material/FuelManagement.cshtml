@@ -5,7 +5,7 @@
 }
 
 
-<div class="title">Quản lý thông tin nhiên liệu</div>
+<div class="title">@HttpContext.GetGlobalResourceObject("Resource", "FuelManagement")</div>
 
 <div class="cover-div">
 @{
@@ -14,7 +14,7 @@
         .DataKeys(key => key.Add(f => f.FuelId).RouteKey("FuelId"))
         .ToolBar(
             toolbar =>
-            toolbar.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new {style = "margin-left:0px;"}))
+            toolbar.Insert().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new {style = "margin-left:0px;"}))
         .DataBinding(
             dataBinding => dataBinding.Ajax()
                                       .Select("SelectAllFuel", "Material")
@@ -23,25 +23,50 @@
         .Columns(columns =>
             {
                 columns.Command(command =>
-                                command.Edit().ButtonType(GridButtonType.Image).UpdateText("Cập nhập").InsertText("Thêm").CancelText("Hủy").Text("Sửa")
+                                command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
+                                //.UpdateText("Cập nhập").InsertText("Thêm").CancelText("Hủy").Text("Sửa")
+                                       .UpdateText(@HttpContext.GetGlobalResourceObject("Resource", "UpdateText").ToString())
+                                       .InsertText(@HttpContext.GetGlobalResourceObject("Resource", "InsertText").ToString())
+                                       .CancelText(@HttpContext.GetGlobalResourceObject("Resource", "CancelText").ToString())
+                                       .Text(@HttpContext.GetGlobalResourceObject("Resource", "EditText").ToString())
+                                       
                     ).Width(90).Title("").HtmlAttributes(new { style = "text-align:center" });
-                columns.Bound(f => f.FuelFullCode).Width(150).Title("Mã").ReadOnly(true)
-                       .ClientTemplate("<strong><#= FuelFullCode #></strong>");
-                columns.Bound(f => f.FuelName).Width(75).Title("Tên nhiên liệu");
-                columns.Bound(f => f.FuelCode).Width(75).Title("Mã tên")
-                       .ClientTemplate("<strong><#= FuelCode #></strong>");
-                columns.Bound(f => f.FuelDesignNo).Width(150).Title("Quy cách")
-                       .ClientTemplate("<strong><#= FuelDesignNo #></strong>");
-                columns.Bound(f => f.FuelDesctiption).Width(150).Title("Mô tả");
-                columns.Bound(f => f.UnitWeight).Width(75).Title("Trọng lượng");
-                columns.Bound(f => f.ModifiedDate).Width(100).Title("Ngày chỉnh").ReadOnly(true)
-                       .Format("{0:dd/MM/yyyy HH:mm}");
-                columns.Bound(f => f.ModifiedUser).Width(100).Title("Người chỉnh").ReadOnly(true);
-                columns.Bound(f => f.Active).Width(50)
-                       .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=Active? checked='checked' : '' #> />")
-                       .HtmlAttributes(new { style = "text-align:center" });
+                columns.Bound(f => f.FuelFullCode).Width(150)
+                    //.Title("Mã")
+                    .ReadOnly(true)
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "FuelFullCode").ToString())
+                    .ClientTemplate("<strong><#= FuelFullCode #></strong>");
+                columns.Bound(f => f.FuelName).Width(75)
+                    //.Title("Tên nhiên liệu")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "FuelName").ToString());
+                columns.Bound(f => f.FuelCode).Width(75)
+                    //.Title("Mã tên")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "FuelCode").ToString())
+                    .ClientTemplate("<strong><#= FuelCode #></strong>");
+                columns.Bound(f => f.FuelDesignNo).Width(150)
+                    //.Title("Quy cách")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "FuelDesignNo").ToString())
+                    .ClientTemplate("<strong><#= FuelDesignNo #></strong>");
+                columns.Bound(f => f.FuelDesctiption).Width(150)
+                    //.Title("Mô tả")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "FuelDesctiption").ToString());
+                columns.Bound(f => f.UnitWeight).Width(75)
+                    //.Title("Trọng lượng")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "UnitWeight").ToString());
+                columns.Bound(f => f.ModifiedDate).Width(100)
+                    //.Title("Ngày chỉnh")
+                    .ReadOnly(true)
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "ModifiedDate").ToString())
+                    .Format("{0:dd/MM/yyyy HH:mm}");
+                columns.Bound(f => f.ModifiedUser).Width(100)
+                    //.Title("Người chỉnh")
+                    .ReadOnly(true)
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "ModifiedUser").ToString());
+                columns.Bound(f => f.Active).Width(50).Title(@HttpContext.GetGlobalResourceObject("Resource", "Active").ToString())
+                    .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=Active? checked='checked' : '' #> />")
+                    .HtmlAttributes(new { style = "text-align:center" });
             })
-        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
         .Scrollable(f => f.Height(500))
         .Sortable()
         .Filterable()

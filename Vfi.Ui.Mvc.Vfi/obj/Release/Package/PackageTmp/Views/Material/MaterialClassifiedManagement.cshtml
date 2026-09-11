@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="title">Quản lý phân loại nguyên liệu</div>
+<div class="title">@HttpContext.GetGlobalResourceObject("Resource", "MaterialClassifiedManagement")</div>
 
 <div class="cover-div">
 @{
@@ -13,23 +13,23 @@
         .DataKeys(key => key.Add(f => f.MaterialClassifiedId).RouteKey("materialClassifiedId"))
         .ToolBar(
             toolbar =>
-            toolbar.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
+            toolbar.Insert().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
         .DataBinding(
             dataBinding => dataBinding.Ajax()
                 .Select("SelectMaterialClassified", "Material")
                 .Insert("InsertMaterialClassified", "Material")
                 .Update("UpdateMaterialClassified", "Material"))
         .Columns(columns => {
-            columns.Bound(f => f.MaterialClassifiedName);
-            columns.Bound(f => f.Active).Width(45)
+            columns.Bound(f => f.MaterialClassifiedName).Title(@HttpContext.GetGlobalResourceObject("Resource", "MaterialClassifiedName").ToString());
+            columns.Bound(f => f.Active).Width(45).Title(@HttpContext.GetGlobalResourceObject("Resource", "Active").ToString())
                 .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=Active? checked='checked' : '' #> />")
                 .HtmlAttributes(new { style = "text-align:center" });
             columns.Command(command =>
-                command.Edit().ButtonType(GridButtonType.ImageAndText)
+                command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText)
             ).Width(98).Title("Commands").HtmlAttributes(new { style = "text-align:center" });
         })
         .ClientEvents(events => events.OnError("grid_OnError"))
-        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
         //.Pageable(page => page.PageSize(10))
         .Sortable()
         .Render();

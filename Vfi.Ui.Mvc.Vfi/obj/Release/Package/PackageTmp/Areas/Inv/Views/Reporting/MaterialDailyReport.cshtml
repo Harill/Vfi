@@ -101,7 +101,10 @@
 
 }
 
-    <div class="title">Báo cáo nguyên liệu sử dụng</div>
+    <div class="title">
+        @*Báo cáo nguyên liệu sử dụng*@
+        @HttpContext.GetGlobalResourceObject("Resource", "MaterialDailyReport")
+    </div>
 
     <div id="pnlInv"> 
         <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px; width: 920px;">
@@ -112,7 +115,10 @@
             <div class="clear"></div>
             <br />
             <fieldset>
-                <legend>Tiêu chí trích lọc</legend>
+                <legend>
+@*                    Tiêu chí trích lọc*@
+                    @HttpContext.GetGlobalResourceObject("Resource", "Filter")
+                </legend>
                 <div class="grid_4">
                     @{
                         Html.Telerik().DropDownList()
@@ -127,7 +133,8 @@
                     }
                 </div>
                 <div class="grid_2">
-                    @Html.LabelFor(f => f.MaterialCodeName)
+                    @*@Html.LabelFor(f => f.MaterialCodeName)*@
+                    @HttpContext.GetGlobalResourceObject("Resource", "Material")
                 </div>
                 <div class="grid_4">
                     @{
@@ -157,14 +164,16 @@
                 <div class="grid_3 prefix_1">
                     <button id="btnRefesh" class="t-button" onclick=" return RefreshGrid('gridMaterialDaily'); ">
                         <span class='t-icon t-insert'></span>
-                        Làm mới
+                        @*Làm mới*@
+                        @HttpContext.GetGlobalResourceObject("Resource", "Refresh")
                     </button>
                 </div>
                 
                 <div class="grid_6">
                     <button id="btnMaterialInv" class="t-button" onclick=" return print(); ">
                         <span class='t-icon t-insert'></span>
-                        Xuất báo cáo tồn kho nguyên liệu
+                        @*Xuất báo cáo tồn kho nguyên liệu*@
+                        @HttpContext.GetGlobalResourceObject("Resource", "PrintMaterialInvReport")
                     </button>
                 </div>
             </fieldset>
@@ -187,18 +196,34 @@
                     .Columns(columns =>
                         {
                             columns.Bound(f => f.VendorCode).Width(50)
-                                   .HeaderTemplate("Nhà Cung Cấp");
-                            columns.Bound(f => f.MaterialName).Width(100)
-                                   .HeaderTemplate("<strong>Mã NL</strong>")
-                                   .HtmlAttributes(new { style = "text-align: center;" })
-                                   .Aggregate(agg => agg.Count())
-                                   .ClientGroupFooterTemplate("<div style='text-align: left; width: 100%;'><#= $.telerik.formatString('{0:n0}', Count) #></div>")
-                                   .ClientFooterTemplate("<div style='text-align: left; width: 100%;'><#= $.telerik.formatString('{0:n0}', Count) #></div>")
-                                   .FooterTemplate("<span id='tongcot1'></span>")
-                                   .HtmlAttributes(new { style = "text-align: left;" });
-                            columns.Bound(f => f.DesignNo).Title("Quy cách").Width(100);
-                            columns.Bound(f => f.MaterialLot).Title("Lô").Width(50);
-                            columns.Bound(f => f.MaterialWeight).Title("Trọng lượng NL").Width(70);
+                                //.HeaderTemplate("Nhà Cung Cấp")
+                                .Title(@HttpContext.GetGlobalResourceObject("Resource", "Vendor").ToString());
+                            
+                            columns.Bound(f => f.MaterialName).Width(100)   
+                                //.HeaderTemplate("<strong>Mã NL</strong>")
+                                .Title(@HttpContext.GetGlobalResourceObject("Resource", "MaterialCode2").ToString())
+                                .HtmlAttributes(new { style = "text-align: center;" })
+                                .Aggregate(agg => agg.Count())
+                                .ClientGroupFooterTemplate("<div style='text-align: left; width: 100%;'><#= $.telerik.formatString('{0:n0}', Count) #></div>")
+                                .ClientFooterTemplate("<div style='text-align: left; width: 100%;'><#= $.telerik.formatString('{0:n0}', Count) #></div>")
+                                .FooterTemplate("<span id='tongcot1'></span>")
+                                .HtmlAttributes(new { style = "text-align: left;" });
+                            
+                            columns.Bound(f => f.DesignNo)
+                                //.Title("Quy cách")
+                                .Title(@HttpContext.GetGlobalResourceObject("Resource", "Specifications").ToString())
+                                .Width(100);
+                            
+                            columns.Bound(f => f.MaterialLot)
+                                //.Title("Lô")
+                                .Title(@HttpContext.GetGlobalResourceObject("Resource", "Lot").ToString())
+                                .Width(50);
+                            
+                            columns.Bound(f => f.MaterialWeight)
+                                //.Title("Trọng lượng NL")
+                                .Title(@HttpContext.GetGlobalResourceObject("Resource", "MaterialWeight2").ToString())
+                                .Width(70);
+                            
                             //columns.Bound(f => f.MaterialUse).Width(100)
                             //       .HeaderTemplate("<strong>NL sử dụng</br>(cây)</strong>")
                             //       .Aggregate(agg => agg.Sum())

@@ -44,6 +44,7 @@
 
     </script>
     <!-- report -->
+
     <script type="text/javascript">
         function printProductionSx1() {
 
@@ -769,10 +770,22 @@
     </text>
 )
         //.ClientEvents(e => e.OnLoad("Window_onLoad"));
+        .ClientEvents(e => e.OnOpen("window_onopen"))
         .Visible(false)
         .Width(1100)
         .Render();
 }
+
+<script>
+    function window_onopen(e) {
+        $("#rptvPageProductionDailySX1_ReportToolbar_ExportGr_FormatList_DropDownList option[value='CSV']").remove();
+        //$("#rptvPageProductionDailySX1_ReportToolbar_ExportGr_FormatList_DropDownList option[value='XLS']").remove();
+        $("#rptvPageProductionDailySX1_ReportToolbar_ExportGr_FormatList_DropDownList option[value='RTF']").remove();
+        $("#rptvPageProductionDailySX1_ReportToolbar_ExportGr_FormatList_DropDownList option[value='IMAGE']").remove();
+        $("#rptvPageProductionDailySX1_ReportToolbar_ExportGr_FormatList_DropDownList option[value='MHTML']").remove();
+        $("#rptvPagePrintPurchaseOrderDetailEN_ReportToolbar_ExportGr_FormatList_DropDownList option[value='XPS']").remove();
+    }
+</script>
 
 <style type="text/css">
     #windowReport {

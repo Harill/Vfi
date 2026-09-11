@@ -49,12 +49,6 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers.Authorization {
             foreach (var property in viewModel.GetType().GetProperties()) {
                 ViewData[property.Name] = property.GetValue(viewModel, null);
             }
-            // 04/08/2026
-            Session["CurrentCulture"] = "vi-VN";
-            string culture = (string)Session["CurrentCulture"] ?? "en-US";
-            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(culture);
-            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
-
             return ViewData;
         }
         // View
@@ -4144,12 +4138,16 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers.Authorization {
         }
 
         [GridAction]
-        public ActionResult SelectTestingProductInvDetail(int? productId, int? warehouseId) {
+        public ActionResult SelectTestingProductInvDetail(int? productId, int? warehouseId, string lotNumber) {
             var model = new List<ProductInventoryPeriodModel>();
             if (productId == null || productId == -1 || warehouseId == null || warehouseId == -1)
                 return View(new GridModel(model));
             try {
-                model = GetTestingProductInvDetail(productId.Value, warehouseId.Value);
+                model = GetTestingProductInvDetail(productId.Value, 
+                                                   warehouseId.Value, 
+                                                   lotNumber == null 
+                                                      ? string.Empty 
+                                                      : lotNumber.ToString());
             }
             catch (Exception ex) {
                 ModelState.AddModelError("SelectTestingProductInvDetail", ex.Message);
@@ -4158,49 +4156,78 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers.Authorization {
             return View(new GridModel(model));
         }
 
-        List<ProductInventoryPeriodModel> GetTestingProductInvDetail(int productId, int warehouseId) {
+        List<ProductInventoryPeriodModel> GetTestingProductInvDetail(int productId, int warehouseId, string lotNumber) {
             var model = new List<ProductInventoryPeriodModel>();
             if (productId == null || productId == -1 || warehouseId == null || warehouseId == -1)
                 return model;
             try {
                 using (var vfi = new tammaContext()) {
                     var periods = vfi.ProductInventoryPeriods
-                        .Where(p => p.ProductId == productId && p.WarehouseId == warehouseId)
-                        .OrderBy(p => p.PeriodDate);
+                        .Where(p => p.ProductId == productId && 
+                                    //p.WarehouseId == warehouseId && 
+                                    p.LotNumber == lotNumber)
+                        .OrderBy(p => p.PeriodDate)
+                        //.Select(t => new {
+                        //    t.ProductId,
+                        //    t.ProductInventoryPeriodId,
+                        //    t.WarehouseId,
+                        //    t.TransactionId,
+                        //    t.EarlyPeriodQuantity,
+                        //    t.Quantity,
+                        //    t.LastPeriodQuantity,
+                        //    t.PeriodDate,
+                        //    t.ModifiedDate,
+                        //    t.ModifiedUser,
+                        //    t.Transaction,
+                        //})
+                        .ToList();
+
                     var dupPeriods = periods
                         .GroupBy(p => new {
                             p.ProductId,
                             p.WarehouseId,
-                            p.TransactionId,
                             p.EarlyPeriodQuantity,
                             p.LastPeriodQuantity,
                             p.Quantity,
-                            p.PeriodDate
+                            p.PeriodDate,
+                            p.ModifiedDate,
                         })
                         .Where(group => group.Count() > 1)
-                        .Select(grp => grp.Key);
+                        .Select(grp => grp.Key)
+                        .ToList();
                     foreach (var dup in dupPeriods) {
-                        var periodsById = periods.Where(p => p.TransactionId == dup.TransactionId &&
+                        var periodsById = periods.Where(p => 
+                            //p.TransactionId == dup.TransactionId &&
                             p.EarlyPeriodQuantity == dup.EarlyPeriodQuantity &&
                             p.LastPeriodQuantity == dup.LastPeriodQuantity &&
                             p.Quantity == dup.Quantity &&
-                            p.PeriodDate == dup.PeriodDate);
+                            p.PeriodDate == dup.PeriodDate &&
+                            p.ModifiedDate == dup.ModifiedDate);
                         foreach (var period in periodsById) {
                             var entity = new ProductInventoryPeriodModel {
                                 ProductInventoryPeriodId = period.ProductInventoryPeriodId,
-                                Date = period.PeriodDate,
-                                TransactionNumber = period.Transaction.TransactionCode,
+                                Date = period.ModifiedDate,
                                 Period = period.Quantity,
                                 Last = period.LastPeriodQuantity,
                                 Early = period.EarlyPeriodQuantity,
+                                TransactionId = period.TransactionId,
+                                WarehouseName = period.Warehouse.WarehouseName,
                             };
+
                             model.Add(entity);
                         }
                     }
+                    model = model.OrderBy(t => t.TransactionId).ToList();
                 }
             }
             catch (Exception ex) {
-                ModelState.AddModelError("SelectTestingProductInvDetail", ex.Message);
+                var errorMessage = ex.Message;
+
+                if (ex.InnerException != null) {
+                    errorMessage += " | Inner Exception: " + ex.InnerException.Message;
+                }
+
+                ModelState.AddModelError("SelectTestingProductInvDetail", errorMessage);
             }
             return model;
         }
@@ -4211,19 +4238,90 @@ namespace Vfi.Ui.Mvc.Vfi.Controllers.Authorization {
                 using (var vfi = new tammaContext()) {
                     var period = vfi.ProductInventoryPeriods.FirstOrDefault(p => p.ProductInventoryPeriodId == periodId);
                     if (period != null) {
+
+                        // 03/09/2026
+                        var transaction = vfi.Transactions.Where(t => t.TransactionId == period.TransactionId)
+                                                          .Select(t => new {
+                                                              t.Status,
+                                                              t.WarehouseReceiptId,
+                                                              t.TransactionId,
+                                                          }).FirstOrDefault();
+                        var periodB = vfi.ProductInventoryPeriods.FirstOrDefault(t => t.TransactionId == transaction.TransactionId
+                                                                                 && t.WarehouseId == transaction.WarehouseReceiptId
+                                                                                 && t.ProductId == period.ProductId
+                                                                                 && t.LotNumber == period.LotNumber
+                                                                                 && t.Quantity == period.Quantity
+                                                                                 && t.ProductInventoryPeriodId != periodId
+                                                                                 );
+                        if (periodB != null) {
+                            vfi.ProductInventoryPeriods.Remove(periodB);
+                        }
+
                         vfi.ProductInventoryPeriods.Remove(period);
                         vfi.SaveChanges();
-                        return View(new GridModel(GetTestingProductInvDetail(period.ProductId, period.WarehouseId)));
+                        return View(new GridModel(GetTestingProductInvDetail(period.ProductId, period.WarehouseId, period.LotNumber)));
                     }
                 }
             }
             catch (Exception ex) {
-                ModelState.AddModelError("DeleteDuplicatePeriod", ex.Message);
+                var errorMessage = ex.Message;
+                if (ex.InnerException != null) {
+                    errorMessage += " | Inner Exception: " + ex.InnerException.Message;
+                }
+                ModelState.AddModelError("DeleteDuplicatePeriod", errorMessage);
             }
 
             var model = new List<ProductInventoryPeriodModel>();
             return View(new GridModel(model));
         }
+
+        // 03/09/2026
+        [GridAction]
+        public ActionResult SelectTestingTransactionDetail(int? transactionId) {
+            var model = new List<TestingTransactionDetail>();
+            if (transactionId == null)
+                return View(new GridModel(model));
+            try {
+                model = GetTestingTransactionDetail(transactionId.Value);
+            }
+            catch (Exception ex) {
+                ModelState.AddModelError("SelectTestingTransactionDetail", ex.Message);
+            }
+
+            return View(new GridModel(model));
+        }
+
+        List<TestingTransactionDetail> GetTestingTransactionDetail(int transactionId) {
+            var model = new List<TestingTransactionDetail>();
+            if (transactionId == null)
+                return model;
+            try {
+                using (var vfi = new tammaContext()) {
+                    var transactionDetailList = vfi.TransactionDetails.Where(t => t.TransactionId == transactionId).ToList();
+                    foreach (var transaction in transactionDetailList) {
+                        var entity = new TestingTransactionDetail {
+                            TransactionDetailId = transaction.TransactionDetailId,
+                            LotNumber = transaction.LotNumber,
+                            Note = transaction.Note,
+                            ProductId = transaction.ReferenceId ?? 0,
+                            Quantity = transaction.Quantity,
+                        };
+                        model.Add(entity);
+                    }
+                }
+            }
+            catch (Exception ex) {
+                var errorMessage = ex.Message;
+
+                if (ex.InnerException != null) {
+                    errorMessage += " | Inner Exception: " + ex.InnerException.Message;
+                }
+
+                ModelState.AddModelError("SelectTestingTransactionDetail", errorMessage);
+            }
+            return model;
+        }
+
 
         public ActionResult MakeProductChangeInventory(int productId, int warehouseId) {
             var a = 0;

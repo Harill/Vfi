@@ -224,7 +224,10 @@
                 columns.Bound(f => f.OrderNumber).Width(80).ReadOnly(true)
                        //.Title("Số đơn hàng")
                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "OrderNumber").ToString())
-                       .HtmlAttributes(new { style = "text-align:center;" });
+                       .HtmlAttributes(new { style = "text-align:center;" })
+                       .Aggregate(agg => agg.Count())
+                       .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>")
+                       .FooterHtmlAttributes(new { style = "text-align: center;  " });
                 
                 columns.Bound(f => f.DueDate).Width(70).ReadOnly(true)
                        //.Title("Ngày giao hàng")
@@ -314,7 +317,7 @@
                                 //.Title("SL</br>chạy")
                                 .Title(@HttpContext.GetGlobalResourceObject("Resource", "RunningQuantity").ToString())
                                 .Width(70)
-                                .Format("{0:n0}")
+                                .Format("{0:n2}")
                                 .HtmlAttributes(new { style = "text-align:right;" });
                             
                             columns.Bound(f => f.PlannedTime)
@@ -428,21 +431,21 @@
                                                     //.Title("Kế</br>hoạch")
                                                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Planned").ToString())
                                                     .ReadOnly(true)
-                                                    .Format("{0:n0}")
+                                                    .Format("{0:n2}")
                                                     .HtmlAttributes(new { style = "text-align:right;" });
                                                 
                                                 columns.Bound(f => f.ActualCost).Width(65)
                                                     //.Title("Thực</br>tế")
                                                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Actual").ToString())
                                                     .ReadOnly(true)
-                                                    .Format("{0:n0}")
+                                                    .Format("{0:n2}")
                                                     .HtmlAttributes(new { style = "text-align:right;" });
                                                 
                                                 columns.Bound(f => f.UsingQuantity).Width(65)
                                                     //.Title("Sử</br>dụng")
                                                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Using").ToString())
                                                     .ReadOnly(true)
-                                                    .Format("{0:n0}")
+                                                    .Format("{0:n2}")
                                                     .HtmlAttributes(new { style = "text-align:right;border-right:1px solid black;" });
                                                 
                                                 columns.Bound(f => f.GoodQuantity).Width(65)
@@ -535,7 +538,7 @@
                                                             //.Title("Sử dụng</br><#= WarehouseId > 1 ? '(pcs)' : '(cây)' #> ")
                                                             .Title(
                                                                 @HttpContext.GetGlobalResourceObject("Resource", "Using1").ToString()
-                                                                + "</br>(<#= WarehouseId > 1 ? '(pcs)' : '"
+                                                                + "</br>(<#= WarehouseId > 1 ? 'pcs' : '"
                                                                 + @HttpContext.GetGlobalResourceObject("Resource", "Bar").ToString()
                                                                 + "' #>)"
                                                             )
@@ -544,7 +547,7 @@
                                                             .ClientTemplate("<#= UsingQuantityStr #>")
                                                             .HtmlAttributes(new { style = "text-align: center;border-right:1px solid black;" })
                                                             .Aggregate(agg => agg.Sum())
-                                                            .ClientFooterTemplate("<#= $.telerik.formatString('{0:n0}', Sum) #>")
+                                                            .ClientFooterTemplate("<#= $.telerik.formatString('{0:n2}', Sum) #>")
                                                             .FooterHtmlAttributes(new { style = "text-align: center;" });
                                                         
                                                         columns.Bound(f => f.GoodQuantity)
@@ -649,7 +652,7 @@
                                           )
             .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
             .Selectable()
-            .Scrollable(f => f.Height(510))
+            .Scrollable(f => f.Height(750))
             .Resizable(f => f.Columns(true))
             .Reorderable(f => f.Columns(true))
             .Filterable()

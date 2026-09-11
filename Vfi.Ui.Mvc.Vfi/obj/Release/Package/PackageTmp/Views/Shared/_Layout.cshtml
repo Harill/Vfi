@@ -30,8 +30,10 @@
         .DefaultGroup(
                         group => group
                             .Add("telerik.common.min.css")
-                                    //.Add("telerik.sunset.css")
-                                            .Add(ViewBag.PageTheme)
+                            
+                            //.Add("telerik.sunset.css")
+                            
+                            .Add(ViewBag.PageTheme)
                             
                             .Add("~/Content/960/960_24_col.css")
                                     
@@ -60,13 +62,25 @@
          </div>
         <div id="header" style="width:93%;float:left">
             <div id="title">
-                <h1 style="color: @ViewBag.PageTitleColor;">Hệ thống quản lý @ViewBag.PageName</h1>
+                <h1 style="color: @ViewBag.PageTitleColor;">@HttpContext.GetGlobalResourceObject("Resource", "SystemManagement") @ViewBag.PageName</h1>
             </div>
 
             <div id="logindisplay" style="color: @ViewBag.PageTitleColor;">
                 @Html.Partial("_LogOnUserControl")
             </div>
-            
+
+
+            @* 06/07/2026 *@
+@*            @using (Html.BeginForm("SetLanguage", "Home", System.Web.Mvc.FormMethod.Post, new { area = "" }))
+            {
+                <select name="lang">
+                    <option value="en-US">English</option>
+                    <option value="vi-VN">Tiếng Việt</option>
+                </select>
+                <input type="submit" value="Change" />
+            }*@
+
+
             <div class="clear"></div>
         </div>
         <br />

@@ -68,7 +68,10 @@
     </script>
 }
 
-<div class="title">Quản lý thông tin máy</div>
+<div class="title">
+    Quản lý thông tin máy
+
+</div>
 <div class="clear"></div>
 <br />
 
@@ -76,7 +79,10 @@
     <div class="clear"></div>
 
     <fieldset>
-        <legend>Tiêu chí trích lọc</legend>
+        <legend>
+            Tiêu chí trích lọc
+
+        </legend>
         
         <div class="grid_3">
             @{
@@ -113,12 +119,14 @@
             <button id="btnRefesh" class="t-button" onclick=" return RefreshGrid('gridMachine'); ">
                 <span class='t-icon t-insert'></span>
                 Làm mới
+
             </button>
         </div>
          <div class="grid_4">
               <button id="btnProduction2Period" class="t-button" onclick=" return print(); ">
                 <span class='t-icon t-insert'></span>
                In báo cáo
+
             </button>
             </div>
     </fieldset>
@@ -142,20 +150,29 @@
                                .Aggregate(agg => agg.Count())
                            .ClientGroupFooterTemplate("<#= $.telerik.formatString('{0:n0}', Count) #>")
                            .ClientFooterTemplate("<#= $.telerik.formatString('{0:0}', Count) #>");
+             
                     columns.Bound(f => f.ProductCode2).Width(90).Title("SP")
                            .ClientTemplate("<strong><#= ProductCode2 #></strong>");
+              
                     columns.Bound(f => f.SectionName).Width(90).Title("Công đoạn")
                            .ClientTemplate("<strong><#= SectionName #></strong>");
+               
                     columns.Bound(f => f.StateName).Width(130).Title("Lỗi")
                            .ClientTemplate("<strong><#= StateName #></strong>");
+            
                     columns.Bound(f => f.ErrorCause).Width(125).Title("Nguyên nhân");
+                    
                     columns.Bound(f => f.CreateDate).Width(85).Title("Ngày tạo")
                            .Format("{0:dd/MM/yyyy HH:mm}");
+                    
                     columns.Bound(f => f.CreateUser).Width(85).Title("Người tạo")
                            .HtmlAttributes(new {style = "border-right:1px solid black;"});
 
+                    
                     columns.Bound(f => f.EmployeeName2).Width(85).Title("CN sửa");
+                    
                     columns.Bound(f => f.HowToFix).Title("Khắc phục").Width(125);
+                    
                     columns.Bound(f => f.StartDateString).Width(85).Title("Bắt đầu sửa")
                            //.Format("{0:dd/MM/yyyy HH:mm}")
                            .HtmlAttributes(new {style = "border-right:1px solid black;"});

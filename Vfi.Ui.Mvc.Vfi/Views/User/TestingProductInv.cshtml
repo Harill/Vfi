@@ -103,6 +103,7 @@
                 {
                     columns.Bound(f => f.CustomerCode).Width(100).ReadOnly(true).Title("Khách hàng");
                     columns.Bound(f => f.ProductCode).Width(150).ReadOnly(true).Title("Sản phẩm");
+                    columns.Bound(f => f.ProductId).Width(50).ReadOnly(true).Title("Id Sản phẩm");
                     columns.Bound(f => f.WarehouseName).Width(150).ReadOnly(true).Title("Kho");
                     columns.Bound(f => f.LotNumber).Width(100).ReadOnly(true).Title("Lô");
                     columns.Bound(f => f.TotalQty).Width(70)
@@ -127,19 +128,38 @@
                         .DataKeys(key => key.Add(f => f.ProductInventoryPeriodId).RouteKey("periodId"))
                         .DataBinding(dataDindings => dataDindings.Ajax()
                                     .Select("SelectTestingProductInvDetail", "User",
-                                            new { area = "", productId = "<#= ProductId #>", warehouseId = "<#= WarehouseId #>" })
-                                          .Delete("DeleteDuplicatePeriod", "User", new { area = "" }))
+                                        new { area = "", productId = "<#= ProductId #>", warehouseId = "<#= WarehouseId #>", lotNumber = "<#= LotNumber #>" })
+                                    .Delete("DeleteDuplicatePeriod", "User", new { area = ""})
+                                    )
                         .Columns(columns => {
                             columns.Bound(f => f.ProductInventoryPeriodId).Title("Id").Width(50);
+                            columns.Bound(f => f.WarehouseName).Title("Kho").Width(50);
                             columns.Bound(f => f.Date).Title("Ngày").Width(80)
                                     .Format("{0:dd/MM/yyyy}");
-                            columns.Bound(f => f.TransactionNumber).Title("Mã giao dịch").Width(100);
+                            columns.Bound(f => f.TransactionId).Title("Mã giao dịch").Width(100);
                             columns.Bound(f => f.Early).Width(75).Title("Số đầu");
                             columns.Bound(f => f.Period).Width(75).Title("Số lượng chuyển");
                             columns.Bound(f => f.Last).Width(75).Title("Số cuối");
                             columns.Command(command => command.Delete().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image))
                                    .Width(50).Title("Xoá").HtmlAttributes(new { style = "text-align:center;color:red" });
                         })
+                            .DetailView(detail => detail.ClientTemplate(
+                                Html.Telerik().Grid<Vfi.Ui.Mvc.Vfi.Areas.Inv.Models.TestingTransactionDetail>()
+                                .Name("gridTransactionDetail_<#= TransactionId #>")
+                                .DataKeys(key => key.Add(f => f.TransactionId).RouteKey("transactionId"))
+                                .DataBinding(dataDindings => dataDindings.Ajax()
+                                    .Select("SelectTestingTransactionDetail", "User",
+                                        new { area = "", transactionId = "<#= TransactionId #>"})
+                                    )
+                                    .Columns(columns => {
+                                        columns.Bound(f => f.TransactionDetailId).Title("Detail Id").Width(50);
+                                        columns.Bound(f => f.Note).Title("Note").Width(100);
+                                        columns.Bound(f => f.Quantity).Width(75).Title("SL");
+                                        columns.Bound(f => f.LotNumber).Width(75).Title("Lo");
+                                    })
+                                    .ClientEvents(events => events.OnError("grid_OnError"))
+                                    .ToHtmlString() 
+                            ))
                         .ClientEvents(events => events.OnError("grid_OnError"))
                         .ToHtmlString()
                     )

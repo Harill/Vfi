@@ -10,6 +10,8 @@ using Vfi.Ui.Mvc.Vfi.Areas.Factory.Models;
 using Vfi.Ui.Mvc.Vfi.Models;
 using Vfi.Ui.Mvc.Vfi.Models.Production;
 using Vfi.Ui.Mvc.Vfi.Utilities;
+using System.Globalization;
+using System.Threading;
 
 namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Controllers {
     public class ProductionController : Controller {

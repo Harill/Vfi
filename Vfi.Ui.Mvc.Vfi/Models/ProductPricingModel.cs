@@ -17,8 +17,10 @@ namespace Vfi.Ui.Mvc.Vfi.Models {
 
         public double OutDiameterDesign { get; set; }
         public double Length { get; set; }
+        public double LengthOrigin { get; set; }
         public double MaterialWeight { get; set; }
         public double ProductWeight { get; set; }
+        public double Diameter { get; set; }
 
         public int MaterialId { get; set; }
         public string MaterialCode { get; set; }

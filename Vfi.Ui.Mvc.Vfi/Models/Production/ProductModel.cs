@@ -246,4 +246,76 @@ namespace Vfi.Ui.Mvc.Vfi.Models.Production
         public bool IsCalculateLock { get; set; }
         public int ProductionLossRate { get; set; }
     }
+
+    public class ProductManagementSales {
+        public int ProductId { get; set; }
+        public string ProductCode { get; set; }
+        public string ProductName { get; set; }
+
+        public int CustomerId { get; set; }
+        public string CustomerCode { get; set; }
+        public string CustomerName { get; set; }
+
+        [UIHint("_CustomerEditTemplate")]
+        public string CustomerCodeName { get { return CustomerCode + " -- " + CustomerName; } set { CustomerCode = value; } }
+        public string DesignNo { get; set; }
+        public bool Active { get; set; }
+        public string ModifiedUser { get; set; }
+        public System.DateTime? ModifiedDate { get; set; }
+        public double? UnitPrice { get; set; }
+
+        [UIHint("_UploadTemplate")]
+        public string Upload2D { get; set; }
+        public string Attachment2D { get; set; }
+
+        [UIHint("_Upload2Template")]
+        public string UploadReal { get; set; }
+        public string AttachmentReal { get; set; }
+
+        public string UploadDate { get; set; }
+        [DataType("NumberAsInt")]
+        public double MillCost { get; set; }
+        public double ProcessingSalesCost { get; set; }
+        public double ProcessingCost { get; set; }
+        public string Note { get; set; }
+        public bool IsCalculateLock { get; set; }
+
+        [UIHint("_CurrencyTemplate")]
+        public string Currency { get; set; }
+        public double MaterialCost { get; set; }
+
+        [DataType("Number2Digit")]
+        public double PackingFee { get; set; }
+        public double SectionCost { get; set; }
+        public byte Status { get; set; }
+
+    }
+
+
+    public class ProductManagementProduction {
+        public int ProductId { get; set; }
+        public string ProductCode { get; set; }
+        public string ProductName { get; set; }
+
+        public int CustomerId { get; set; }
+        public string CustomerCode { get; set; }
+
+        [UIHint("_UploadTemplate")]
+        public string Upload2D { get; set; }
+        public string Attachment2D { get; set; }
+
+        [UIHint("_Upload2Template")]
+        public string UploadReal { get; set; }
+        public string AttachmentReal { get; set; }
+        public bool Active { get; set; }
+        public byte Status { get; set; }
+        public double ForecastsQuality { get; set; }
+        public string UploadDate { get; set; }
+        public bool IsCalculateLock { get; set; }
+        public int MachineFunction { get; set; }
+        public int SectionCount { get; set; }
+        public string MaterialCodeDesign { get; set; }
+
+    }
+
 }

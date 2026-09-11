@@ -151,7 +151,7 @@
                                             .Insert("InsertMenu", "Menu", new { area = "", parentId = "<#= MenuId #>" })
                                             .Update("UpdateMenu", "Menu", new { area = "" }))
                      .Columns(columns => {
-                         columns.Command(c => c.Edit().ButtonType(GridButtonType.Image))
+                         columns.Command(c => c.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image))
                                 .Width(30).Title("")
                                 .HtmlAttributes(new { style = "text-align:center" });
                          columns.Bound(f => f.MenuName).Width(100);

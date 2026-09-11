@@ -29,7 +29,10 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Models
         public string ProductCurrency { get; set; }
         public double Productivity { get; set; }
         //public double RealProductionTime { get; set; }
-        public double TotalCost { get; set; }
+        public double TotalCost { get{
+            return TotalMaterialCost + TotalToolPrice; 
+            }
+        }
         public int TotalProductNoRepeat { get; set; }
 
 
@@ -60,7 +63,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Models
         public double MaxProductionTime2 { get; set; }
         public int CountRepairTimes { get; set; }
         public double TotalRepairTime { get; set; }
-        public double Efficiency { get; set; }
+        public double Efficiency { get;set;}
         public double NoNGPrice { get; set; }
         public double MachineStopTime { get; set; }
         public double NGPersent { get; set; }
@@ -97,7 +100,7 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Factory.Models
         public double ProcessingPrice { get; set; }
         public double DefectPrice { get; set; }
         public double TotalPrice { get; set; }
-        public double ProductProductivitySetting { get; set; }                //Productivity = Nang suat (s/pcs);   ProductionRate = pcs/cay
+        public double ProductProductivitySetting { get; set; }                //Productivity = Nang suat (s/pcs);   ProductionRate = DM (pcs/cay)
         public double ProductProductivityActual { get; set; }
         public double ProductProductionTime { get; set; }
         public double ProductProductivity { get; set; }

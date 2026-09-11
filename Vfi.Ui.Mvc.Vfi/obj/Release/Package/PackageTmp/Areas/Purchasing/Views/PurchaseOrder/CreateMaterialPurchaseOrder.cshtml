@@ -251,23 +251,49 @@
 }
 
 
-<div class="title">Tạo phiếu mua hàng</div>
+<div class="title">
+    @*Tạo phiếu mua hàng*@
+    @HttpContext.GetGlobalResourceObject("Resource", "CreateMaterialPurchaseOrder")
+</div>
 <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px;">
 
     <fieldset>
-        <legend>Thông tin phiếu mua hàng</legend>
+        <legend>
+            @*Thông tin phiếu mua hàng*@
+            @HttpContext.GetGlobalResourceObject("Resource", "Information")
+        </legend>
         
-        <div class="grid_5">@Html.LabelFor(f => f.MaterialClasstifiedName)</div>
-        <div class="grid_6">@Html.LabelFor(f => f.VendorCodeName)
+        <div class="grid_5">
+            @*@Html.LabelFor(f => f.MaterialClasstifiedName)*@
+            @HttpContext.GetGlobalResourceObject("Resource", "MaterialClassified")
+        </div>
+        <div class="grid_6">
+            @*@Html.LabelFor(f => f.VendorCodeName)*@
+            @HttpContext.GetGlobalResourceObject("Resource", "Vendor")
             <button class="t-button" id="btnRefresh" name="btnPickupMaterialId" onclick=" TypeRefresh() ">
                 <span class='t-icon t-refresh'></span>
             </button></div>
         
-          <div class="grid_5">@Html.LabelFor(f => f.CurrencyCode)</div>
-          <div class="grid_5">@Html.Label("Số báo giá")</div>
-          <div class="grid_5">@Html.LabelFor(f => f.OrderDate)</div>
-          <div class="grid_5">@Html.Label("Nơi giao hàng")</div>
-          <div class="grid_5">@Html.Label("Nơi giao Bill")</div>
+          <div class="grid_5">
+              @*@Html.LabelFor(f => f.CurrencyCode)*@
+              @HttpContext.GetGlobalResourceObject("Resource", "Currency")
+          </div>
+          <div class="grid_5">
+              @*@Html.Label("Số báo giá")*@
+              @HttpContext.GetGlobalResourceObject("Resource", "ContractNumber")
+          </div>
+          <div class="grid_5">
+              @*@Html.LabelFor(f => f.OrderDate)*@
+              @HttpContext.GetGlobalResourceObject("Resource", "OrderedDate")
+          </div>
+          <div class="grid_5">
+              @*@Html.Label("Nơi giao hàng")*@
+              @HttpContext.GetGlobalResourceObject("Resource", "AddressName1")
+          </div>
+          <div class="grid_5">
+              @*@Html.Label("Nơi giao Bill")*@
+              @HttpContext.GetGlobalResourceObject("Resource", "BillTo1")
+          </div>
 
 
         <div class="clear"></div>
@@ -304,7 +330,9 @@
                     .Render();
             }
         </div>
-        <div class="grid_5">@Html.TextBoxFor(f => f.ContractNumber)</div>
+        <div class="grid_5">
+            @Html.TextBoxFor(f => f.ContractNumber)
+        </div>
         
         <div class="grid_5">
             @{
@@ -336,16 +364,25 @@
         <div class="clear"></div>
         <br/>
         <div class="grid_5">
-        <div class="grid_4">Nhân viên</div>
+        <div class="grid_4">
+            @*Nhân viên*@
+            @HttpContext.GetGlobalResourceObject("Resource", "Employee")
+        </div>
         <div class="grid_4">
             @Html.TextBoxFor(f => f.EmployeeName, new { @class = "t-textbox", width = "color: maroon;" })
         </div>
         </div>
         <div class="grid_6">
-        <div class="grid_4">@Html.LabelFor(f => f.Tolerance)</div>
+        <div class="grid_4">
+            @*@Html.LabelFor(f => f.Tolerance)*@
+            @HttpContext.GetGlobalResourceObject("Resource", "Tolerances")
+        </div>
         <div class="grid_4">@Html.TextBoxFor(f => f.Tolerance, new {style = "width: 15px" })%</div>
         </div>
-        <div class="grid_2">Ghi Chú</div>
+        <div class="grid_2">
+            @*Ghi Chú*@
+            @HttpContext.GetGlobalResourceObject("Resource", "Note")
+        </div>
         <div class="grid_5">@Html.TextAreaFor(f => f.Note, new {@class = "multi-line"})</div>
     </fieldset>
 </div>
@@ -359,8 +396,13 @@
             .DataKeys(keys => keys.Add(f => f.PurchaseOrderDetailId).RouteKey("purchaseOrderDetailId"))
             .ToolBar(bar =>
                          {
-                             bar.Insert().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).Text("Thêm mới");
-                             bar.SubmitChanges().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).SaveText("Lưu lại").CancelText("Hủy");
+                             bar.Insert().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText)
+                                 .Text(@HttpContext.GetGlobalResourceObject("Resource", "NewText").ToString())
+                                 ;
+                             bar.SubmitChanges().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText)
+                                 .SaveText(@HttpContext.GetGlobalResourceObject("Resource", "SaveText").ToString())
+                                 .CancelText(@HttpContext.GetGlobalResourceObject("Resource", "CancelText").ToString())
+                                 ;
                          })
             .DataBinding(dataBindings => dataBindings.Ajax()
                 .Select("SelectPurchaseOrderDetail", "PurchaseOrder")
@@ -368,21 +410,42 @@
             )
             .Columns(columns =>
             {
-                columns.Bound(f => f.MaterialCodeName).Width(275).Title("Mã");
-                columns.Bound(f => f.Unit).Width(90).Title("ĐVT");
+                columns.Bound(f => f.MaterialCodeName).Width(275)
+                    //.Title("Mã")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Code").ToString())
+                    ;
+                
+                columns.Bound(f => f.Unit).Width(90)
+                    //.Title("ĐVT")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Unit2").ToString())
+                    ;
+             
                 columns.Bound(f => f.OrderQty).Width(115)
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "OrderedQuantity").ToString())
                     .ClientTemplate("<span name='OrderQty'><#= OrderQty == null ? 0 : $.telerik.formatString('{0:n}', OrderQty) #></span>")
-                           .FooterTemplate("<span id='TotalOrderQty'></span>");
-                columns.Bound(f => f.UnitPrice).Width(115)
+                    .FooterTemplate("<span id='TotalOrderQty'></span>");
+               
+                columns.Bound(f => f.UnitPrice)
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "UnitPrice").ToString())
+                    .Width(115)
                     .ClientTemplate("<#= UnitPrice == null ? 0 : $.telerik.formatString('{0:n}', UnitPrice) #>");
+              
                 columns.Bound(f => f.LineTotal).Width(115)
-                       .ClientTemplate("<span name='LineTotal'><#= LineTotal == null ? 0 : $.telerik.formatString('{0:n}', LineTotal) #></span>")
-                           .FooterTemplate("<span id='TotalLineTotal'></span>");
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "TotalAmount").ToString())
+                    .ClientTemplate("<span name='LineTotal'><#= LineTotal == null ? 0 : $.telerik.formatString('{0:n}', LineTotal) #></span>")
+                    .FooterTemplate("<span id='TotalLineTotal'></span>");
 
-                columns.Bound(f => f.Standard).Width(60).Title("Tiêu chuẩn");
+                columns.Bound(f => f.Standard).Width(60)
+                    //.Title("Tiêu chuẩn")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Standard").ToString())
+                    ;
+               
                 columns.Bound(f => f.DueDate).Width(98)
-                       .ClientTemplate("<#= DueDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', DueDate) #>");
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "ReceiptedDate").ToString())
+                    .ClientTemplate("<#= DueDate == null ? '' : $.telerik.formatString('{0:dd/MM/yyyy}', DueDate) #>");
+               
                 //columns.Bound(f => f.InquiryNote).Title("Ghi chú");
+                
                 columns.Command(commands => commands.Delete()).Width(98).Title("");
             })
             .ClientEvents(events => events

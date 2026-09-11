@@ -1189,6 +1189,7 @@
     @{
         Html.Telerik().Window()
             .Name("windowReportMaterialInvManagementForPeriod")
+            
             .Modal(true)
             .Draggable(true)
             .Content
@@ -1198,6 +1199,7 @@
                  </text>
             )
             //.ClientEvents(e => e.OnLoad("Window_onLoad"));
+            .ClientEvents(e => e.OnOpen("window_onopen"))
             .Visible(false)
             .Width(940)
             .Render();
@@ -1214,10 +1216,23 @@
                  </text>
             )
             //.ClientEvents(e => e.OnLoad("Window_onLoad"));
+            .ClientEvents(e => e.OnOpen("window_onopen"))
             .Visible(false)
             .Width(940)
             .Render();
     }
+
+<script>
+    function window_onopen(e) {
+        $("#rptvPageMaterialDailyPeriod_ReportToolbar_ExportGr_FormatList_DropDownList option[value='CSV']").remove();
+        //$("#rptvPageMaterialDailyPeriod_ReportToolbar_ExportGr_FormatList_DropDownList option[value='XLS']").remove();
+        $("#rptvPageMaterialDailyPeriod_ReportToolbar_ExportGr_FormatList_DropDownList option[value='RTF']").remove();
+        $("#rptvPageMaterialDailyPeriod_ReportToolbar_ExportGr_FormatList_DropDownList option[value='IMAGE']").remove();
+        $("#rptvPageMaterialDailyPeriod_ReportToolbar_ExportGr_FormatList_DropDownList option[value='MHTML']").remove();
+        $("#rptvPageMaterialDailyPeriod_ReportToolbar_ExportGr_FormatList_DropDownList option[value='XPS']").remove();
+    }
+</script>
+
     <style type="text/css">
         #windowReportMaterialInvManagementForPeriod {
             /*

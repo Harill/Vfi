@@ -7,6 +7,7 @@ using System.Web.Routing;
 using Vfi.Ui.Mvc.Vfi.IoC;
 using Microsoft.Practices.Unity;
 using Unity.Mvc3;
+using System.Web;
 
 
 namespace Vfi.Ui.Mvc.Vfi
@@ -66,14 +67,36 @@ namespace Vfi.Ui.Mvc.Vfi
             //Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture("vi-VN");
         }
 
-        protected void Application_BeginRequest(object sender, EventArgs e)
-        {
+        protected void Application_BeginRequest(object sender, EventArgs e) {
             //const string culture = "vi-VN";
             //CultureInfo ci = CultureInfo.GetCultureInfo(culture);
 
             //Thread.CurrentThread.CurrentCulture = ci;
             //Thread.CurrentThread.CurrentUICulture = ci;
+
+            // 08/08/20026
+            var ci = new CultureInfo("vi-VN");
+
+            //HttpCookie langCookie = HttpContext.Current.Request.Cookies["CurrentCulture"];
+            //string cultureName = langCookie != null ? langCookie.Value : "en-US";
+            //var ci = new CultureInfo(cultureName);
+
+
+            Thread.CurrentThread.CurrentUICulture = ci;
+
+            var ci2 = new CultureInfo("en-US");
+            Thread.CurrentThread.CurrentCulture = ci2;
         }
+
+        // 10/08/2026
+        //protected void Application_AcquireRequestState(object sender, EventArgs e) {
+        //    string cultureName = (string)Session["CurrentCulture"] ?? "en-US";
+        //    var ci = new CultureInfo(cultureName);
+        //    Thread.CurrentThread.CurrentUICulture = ci;
+
+        //    var ci2 = new CultureInfo("en-US");
+        //    Thread.CurrentThread.CurrentCulture = ci2;
+        //}
 
 
     }

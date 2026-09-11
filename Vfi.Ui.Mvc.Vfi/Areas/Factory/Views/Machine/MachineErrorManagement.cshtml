@@ -11,25 +11,46 @@
               .DataKeys(key => key.Add(f => f.ErrorCauseId).RouteKey("errorCauseId"))
             .ToolBar(
                 toolbar =>
-                toolbar.Insert().ButtonType(GridButtonType.ImageAndText).Text("Thêm mới").ImageHtmlAttributes(new { style = "margin-left:0px;" }))
+                toolbar.Insert().ButtonType(GridButtonType.ImageAndText)
+                .Text("Thêm mới")
+                .ImageHtmlAttributes(new { style = "margin-left:0px;" }))
             .DataBinding(
                 dataBinding => dataBinding.Ajax()
                                             .Select("SelectMachineErrorManagement", "Machine")
                                             .Insert("InsertMachineError", "Machine")
                                             .Update("UpdateMachineError", "Machine"))
             .Columns(columns => {
-                    columns.Command(command =>
-                                    command.Edit().ButtonType(GridButtonType.Image)
-                        ).Width(50).Title("").HtmlAttributes(new { style = "text-align:center" });
-                    columns.Bound(f => f.StateCode).Title("Code").Width(100);
-                    columns.Bound(f => f.Name).Title("Nguyên Nhân").Width(200);
-                    columns.Bound(f => f.Description).Title("Mô tả");
-                    columns.Bound(f => f.Active).Width(75)
-                           .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=Active? checked='checked' : '' #> />")
-                           .HtmlAttributes(new { style = "text-align:center" });
-                    columns.Bound(f => f.ModifiedDate).Width(85).Title("Ngày tạo").ReadOnly(true)
-                           .Format("{0:dd/MM/yyyy HH:mm:ss}");
-                    columns.Bound(f => f.ModifiedUser).Width(85).Title("Người tạo").ReadOnly(true);
+                columns.Command(command =>
+                    command.Edit().ButtonType(GridButtonType.Image)
+                    ).Width(50).Title("").HtmlAttributes(new { style = "text-align:center" });
+                
+                columns.Bound(f => f.StateCode)
+                    .Title("Code")
+                    .Width(100);
+                    
+                columns.Bound(f => f.Name)
+                    //.Title("Nguyên Nhân")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Reason").ToString())
+                    .Width(200);
+                
+                columns.Bound(f => f.Description)
+                    //.Title("Mô tả")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Description").ToString());
+                    
+                columns.Bound(f => f.Active).Width(75)
+                    .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=Active? checked='checked' : '' #> />")
+                    .HtmlAttributes(new { style = "text-align:center" });
+                
+                columns.Bound(f => f.ModifiedDate).Width(85)
+                    //.Title("Ngày tạo")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "ModifiedDate").ToString())
+                    .ReadOnly(true)
+                    .Format("{0:dd/MM/yyyy HH:mm:ss}");
+                
+                columns.Bound(f => f.ModifiedUser).Width(85)
+                    //.Title("Người tạo")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "ModifiedUser").ToString())
+                    .ReadOnly(true);
 
                 })
 

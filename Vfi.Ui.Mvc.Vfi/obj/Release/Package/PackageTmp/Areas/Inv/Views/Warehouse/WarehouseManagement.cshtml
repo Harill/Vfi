@@ -4,7 +4,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="title">Quản lý thông tin các kho</div>
+<div class="title">
+    @*Quản lý thông tin các kho*@
+    @HttpContext.GetGlobalResourceObject("Resource", "WarehouseManagement")
+</div>
 
 <div class="t-info-sha" style="padding-left: 15px; padding-right: 15px; width: 920px;">
 
@@ -22,32 +25,70 @@
             .DataKeys(key => key.Add(f => f.WarehouseId).RouteKey("warehouseId"))
             .ToolBar(
                 toolbar =>
-                toolbar.Insert().ButtonType(GridButtonType.ImageAndText).Text("Thêm kho mới").ImageHtmlAttributes(new { style = "margin-left:0" }))
+                toolbar.Insert().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText)
+                    .Text(
+                        //"Thêm kho mới"
+                        @HttpContext.GetGlobalResourceObject("Resource", "NewText").ToString()
+                    )
+                    .ImageHtmlAttributes(new { style = "margin-left:0" }))
             .DataBinding(
                 dataBinding => dataBinding.Ajax()
                                           .Select("SelectWarehouse", "Warehouse")
                                           .Insert("InsertWarehouse", "Warehouse")
                                           .Update("UpdateWarehouse", "Warehouse"))
             .Columns(columns => {
-                columns.Command(command => command.Edit().ButtonType(GridButtonType.Image)).Width(98).Title("").HtmlAttributes(new { style = "text-align:center" });
-                columns.Bound(f => f.WarehouseName);
-                columns.Bound(f => f.ShortName).Title("Tên ngắn");
-                columns.Bound(f => f.Idx);
+                columns.Command(command => command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(98).Title("").HtmlAttributes(new { style = "text-align:center" });
+             
+                columns.Bound(f => f.WarehouseName)
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "WarehouseName").ToString());
+                
+                columns.Bound(f => f.ShortName)
+                    //.Title("Tên ngắn")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "ShortName").ToString());
+                
+                columns.Bound(f => f.Idx)
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Step").ToString());
+                
                 columns.Bound(f => f.Active).Width(45)
-                       .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=Active? checked='checked' : '' #> />")
-                       .HtmlAttributes(new { style = "text-align:center" });
-                columns.Bound(f => f.IsMainProcess).Width(45).Title("Quy trình</br>chính")
-                       .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsMainProcess' <#=IsMainProcess? checked='checked' : '' #> />")
-                       .HtmlAttributes(new { style = "text-align:center" });
-                columns.Bound(f => f.IsOutOfProcess).Width(45).Title("Quy trình</br>ngoài")
-                       .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsOutOfProcess' <#=IsOutOfProcess? checked='checked' : '' #> />")
-                       .HtmlAttributes(new { style = "text-align:center" });
-                columns.Bound(f => f.AutoGenerateProcess).Width(45).Title("Quy trình</br>sản phẩm")
-                       .ClientTemplate("<input type='checkbox' disabled='disabled' name='AutoGenerateProcess' <#=AutoGenerateProcess? checked='checked' : '' #> />")
-                       .HtmlAttributes(new { style = "text-align:center" });
-                columns.Bound(f => f.ModifiedDate).Width(45).ReadOnly(true)
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Active").ToString())
+                    .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=Active? checked='checked' : '' #> />")
+                    .HtmlAttributes(new { style = "text-align:center" });
+                
+                columns.Bound(f => f.IsMainProcess).Width(45)
+                    //.Title("Quy trình</br>chính")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Procedure").ToString()
+                        + "</br>"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Main").ToString()
+                    )
+                    .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsMainProcess' <#=IsMainProcess? checked='checked' : '' #> />")
+                    .HtmlAttributes(new { style = "text-align:center" });
+                
+                columns.Bound(f => f.IsOutOfProcess).Width(45)
+                    //.Title("Quy trình</br>ngoài")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Procedure").ToString()
+                        + "</br>"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Outsite").ToString()
+                    )
+                    .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsOutOfProcess' <#=IsOutOfProcess? checked='checked' : '' #> />")
+                    .HtmlAttributes(new { style = "text-align:center" });
+                
+                columns.Bound(f => f.AutoGenerateProcess).Width(45)
+                    //.Title("Quy trình</br>sản phẩm")
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "Procedure").ToString()
+                        + "</br>"
+                        + @HttpContext.GetGlobalResourceObject("Resource", "Product").ToString()
+                    )
+                    .ClientTemplate("<input type='checkbox' disabled='disabled' name='AutoGenerateProcess' <#=AutoGenerateProcess? checked='checked' : '' #> />")
+                    .HtmlAttributes(new { style = "text-align:center" });
+                
+                columns.Bound(f => f.ModifiedDate).Width(45)
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "ModifiedDate").ToString())
+                    .ReadOnly(true)
                     .Format("{0:dd/MM/yyyy HH:mm}");
-                columns.Bound(f => f.ModifiedUser).Width(45).ReadOnly(true);
+                
+                columns.Bound(f => f.ModifiedUser).Width(45)
+                    .Title(@HttpContext.GetGlobalResourceObject("Resource", "ModifiedUser").ToString())
+                    .ReadOnly(true);
             })
             .DetailView(details => details.ClientTemplate(
                 Html.Telerik().TabStrip()
@@ -55,7 +96,12 @@
                     .SelectedIndex(0)
                     .Items(items =>
                         {
-                           items.Add().Text("Cấu hình công đoạn").Content(
+                items.Add()
+                    .Text(
+                        //"Cấu hình công đoạn"
+                        @HttpContext.GetGlobalResourceObject("Resource", "ProcessConfiguration").ToString()
+                    )
+                    .Content(
                 Html.Telerik().Grid<WarehouseModel>()
                     .Name("gridProcess_<#= WarehouseId #>")
                     .DataKeys(key => key.Add(f => f.WarehouseId).RouteKey("warehouseId"))
@@ -63,48 +109,118 @@
                         .Select("SelectWarehouseProcessConfiguration", "Warehouse", new { warehouseId = "<#= WarehouseId #>", })
                         .Update("UpdateWarehouseProcessConfiguration", "Warehouse"))
                     .Columns(columns => {
-                        columns.Command(command => command.Edit().ButtonType(GridButtonType.Image)).Width(98).Title("").HtmlAttributes(new { style = "text-align:center" });
-                        columns.Bound(f => f.IsProduction).Width(45).Title("Công đoạn</br>SX1")
-                               .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsProduction' <#=IsProduction? checked='checked' : '' #> />")
-                               .HtmlAttributes(new { style = "text-align:center" });
-                        columns.Bound(f => f.IsCncMilling).Width(45).Title("Công đoạn</br>Phay CNC")
-                               .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsCncMilling' <#=IsCncMilling? checked='checked' : '' #> />")
-                               .HtmlAttributes(new { style = "text-align:center" });
-                        columns.Bound(f => f.IsProduction2).Width(45).Title("Công đoạn</br>SX2")
-                               .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsProduction2' <#=IsProduction2? checked='checked' : '' #> />")
-                               .HtmlAttributes(new { style = "text-align:center" });
-                        columns.Bound(f => f.IsProduction2Process).Width(45).Title("Gia công</br>SX2")
-                               .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsProduction2Process' <#=IsProduction2Process? checked='checked' : '' #> />")
-                               .HtmlAttributes(new { style = "text-align:center" });
-                        columns.Bound(f => f.IsHeatTreatment).Width(45).Title("Công đoạn</br>nhiệt luyện")
-                               .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsHeatTreatment' <#=IsHeatTreatment? checked='checked' : '' #> />")
-                               .HtmlAttributes(new { style = "text-align:center" });
-                        columns.Bound(f => f.IsPolish).Width(45).Title("Công đoạn</br>rung bóng")
-                               .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsPolish' <#=IsPolish? checked='checked' : '' #> />")
-                               .HtmlAttributes(new { style = "text-align:center" });
-                        columns.Bound(f => f.IsPlating).Width(45).Title("Công đoạn</br>xi mạ")
-                               .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsPlating' <#=IsPlating? checked='checked' : '' #> />")
-                               .HtmlAttributes(new { style = "text-align:center" });
-                        columns.Bound(f => f.IsQC).Width(45).Title("Công đoạn</br>QC")
-                               .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsQC' <#=IsQC? checked='checked' : '' #> />")
-                               .HtmlAttributes(new { style = "text-align:center" });
-                        columns.Bound(f => f.IsPacking).Width(45).Title("Công đoạn</br>đóng gói")
-                               .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsPacking' <#=IsPacking? checked='checked' : '' #> />")
-                               .HtmlAttributes(new { style = "text-align:center" });
-                        columns.Bound(f => f.IsFinish).Width(45).Title("Công đoạn</br>thành phẩm")
-                               .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsFinish' <#=IsFinish? checked='checked' : '' #> />")
-                               .HtmlAttributes(new { style = "text-align:center" });
-                        columns.Bound(f => f.IsReprocessing).Width(45).Title("Công đoạn</br>xử lý lại")
-                               .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsReprocessing' <#=IsReprocessing? checked='checked' : '' #> />")
-                               .HtmlAttributes(new { style = "text-align:center;" });
-                        columns.Bound(f => f.IsDefect).Width(45).Title("Phế phẩm")
-                               .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsDefect' <#=IsDefect? checked='checked' : '' #> />")
-                               .HtmlAttributes(new { style = "text-align:center;" });
+                        columns.Command(command => command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(98).Title("").HtmlAttributes(new { style = "text-align:center" });
+                       
+                        columns.Bound(f => f.IsProduction).Width(45)
+                            //.Title("Công đoạn</br>SX1")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Stage").ToString()
+                                + "</br>"
+                                + @HttpContext.GetGlobalResourceObject("Resource", "Production12").ToString()
+                            )
+                            .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsProduction' <#=IsProduction? checked='checked' : '' #> />")
+                            .HtmlAttributes(new { style = "text-align:center" });
+                      
+                        columns.Bound(f => f.IsCncMilling).Width(45)
+                            //.Title("Công đoạn</br>Phay CNC")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Stage").ToString()
+                                + "</br>Mil CNC"
+                            )
+                            .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsCncMilling' <#=IsCncMilling? checked='checked' : '' #> />")
+                            .HtmlAttributes(new { style = "text-align:center" });
+                     
+                        columns.Bound(f => f.IsProduction2).Width(45)
+                            //.Title("Công đoạn</br>SX2")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Stage").ToString()
+                                + "</br>"
+                                + @HttpContext.GetGlobalResourceObject("Resource", "Production22").ToString()
+                            )
+                            .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsProduction2' <#=IsProduction2? checked='checked' : '' #> />")
+                            .HtmlAttributes(new { style = "text-align:center" });
+                    
+                        columns.Bound(f => f.IsProduction2Process).Width(45)
+                            //.Title("Gia công</br>SX2")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Processing").ToString()
+                                + "</br>"
+                                + @HttpContext.GetGlobalResourceObject("Resource", "Production22").ToString()
+                            )
+                            .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsProduction2Process' <#=IsProduction2Process? checked='checked' : '' #> />")
+                            .HtmlAttributes(new { style = "text-align:center" });
+                        
+                        columns.Bound(f => f.IsHeatTreatment).Width(45)
+                            //.Title("Công đoạn</br>nhiệt luyện")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Stage").ToString()
+                                + "</br>"
+                                + @HttpContext.GetGlobalResourceObject("Resource", "HeatTreatment").ToString()
+                            )
+                            .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsHeatTreatment' <#=IsHeatTreatment? checked='checked' : '' #> />")
+                            .HtmlAttributes(new { style = "text-align:center" });
+                        
+                        columns.Bound(f => f.IsPolish).Width(45)
+                            //.Title("Công đoạn</br>rung bóng")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Stage").ToString()
+                                + "</br>"
+                                + @HttpContext.GetGlobalResourceObject("Resource", "Polishing").ToString()
+                            )
+                            .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsPolish' <#=IsPolish? checked='checked' : '' #> />")
+                            .HtmlAttributes(new { style = "text-align:center" });
+                        
+                        columns.Bound(f => f.IsPlating).Width(45)
+                            //.Title("Công đoạn</br>xi mạ")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Stage").ToString()
+                                + "</br>"
+                                + @HttpContext.GetGlobalResourceObject("Resource", "PlatingB").ToString()
+                            )
+                            .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsPlating' <#=IsPlating? checked='checked' : '' #> />")
+                            .HtmlAttributes(new { style = "text-align:center" });
+                        
+                        columns.Bound(f => f.IsQC).Width(45)
+                            //.Title("Công đoạn</br>QC")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Stage").ToString()
+                                + "</br>QC"
+                            )
+                            .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsQC' <#=IsQC? checked='checked' : '' #> />")
+                            .HtmlAttributes(new { style = "text-align:center" });
+                        
+                        columns.Bound(f => f.IsPacking).Width(45)
+                            //.Title("Công đoạn</br>đóng gói")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Stage").ToString()
+                                + "</br>"
+                                + @HttpContext.GetGlobalResourceObject("Resource", "Packing").ToString()
+                            )
+                            .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsPacking' <#=IsPacking? checked='checked' : '' #> />")
+                            .HtmlAttributes(new { style = "text-align:center" });
+                        
+                        columns.Bound(f => f.IsFinish).Width(45)
+                            //.Title("Công đoạn</br>thành phẩm")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Stage").ToString()
+                                + "</br>"
+                                + @HttpContext.GetGlobalResourceObject("Resource", "FinishedProduct").ToString()
+                            )
+                            .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsFinish' <#=IsFinish? checked='checked' : '' #> />")
+                            .HtmlAttributes(new { style = "text-align:center" });
+                        
+                        columns.Bound(f => f.IsReprocessing).Width(45)
+                            //.Title("Công đoạn</br>xử lý lại")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Stage").ToString()
+                                + "</br>"
+                                + @HttpContext.GetGlobalResourceObject("Resource", "Reprocess").ToString()
+                            )
+                            .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsReprocessing' <#=IsReprocessing? checked='checked' : '' #> />")
+                            .HtmlAttributes(new { style = "text-align:center;" });
+                     
+                        columns.Bound(f => f.IsDefect).Width(45)
+                            //.Title("Phế phẩm")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Scrap").ToString())
+                            .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsDefect' <#=IsDefect? checked='checked' : '' #> />")
+                            .HtmlAttributes(new { style = "text-align:center;" });
                     })
                     .ClientEvents(events => events.OnError("grid_OnError"))
                     .ToHtmlString());
-
-                           items.Add().Text("Cấu hình chức năng").Content(
+                            
+             items.Add().Text(
+                    //"Cấu hình chức năng"
+                    @HttpContext.GetGlobalResourceObject("Resource", "FunctionalConfiguration").ToString()
+                 ).Content(
                 Html.Telerik().Grid<WarehouseModel>()
                     .Name("gridFunction_<#= WarehouseId #>")
                     .DataKeys(key => key.Add(f => f.WarehouseId).RouteKey("warehouseId"))
@@ -112,25 +228,57 @@
                         .Select("SelectWarehouseFunctionConfiguration", "Warehouse", new { warehouseId = "<#= WarehouseId #>", })
                         .Update("UpdateWarehouseFunctionConfiguration", "Warehouse"))
                     .Columns(columns => {
-                        columns.Command(command => command.Edit().ButtonType(GridButtonType.Image)).Width(98).Title("").HtmlAttributes(new { style = "text-align:center" });
-                        columns.Bound(f => f.CanInternal).Width(45).Title("Xuất/nhập</br>nội bộ")
-                               .ClientTemplate("<input type='checkbox' disabled='disabled' name='CanInternal' <#=CanInternal? checked='checked' : '' #> />")
-                               .HtmlAttributes(new { style = "text-align:center" });
-                        columns.Bound(f => f.CanStock).Width(45).Title("Tính</br>tồn kho")
-                               .ClientTemplate("<input type='checkbox' disabled='disabled' name='CanStock' <#=CanStock? checked='checked' : '' #> />")
-                               .HtmlAttributes(new { style = "text-align:center" });
-                        columns.Bound(f => f.CanPurchase).Width(45).Title("Nhập</br>mua hàng")
-                               .ClientTemplate("<input type='checkbox' disabled='disabled' name='CanPurchase' <#=CanPurchase? checked='checked' : '' #> />")
-                               .HtmlAttributes(new { style = "text-align:center" });
-                        columns.Bound(f => f.CanWeighing).Width(45).Title("Cân</br>hàng")
-                               .ClientTemplate("<input type='checkbox' disabled='disabled' name='CanWeighing' <#=CanWeighing? checked='checked' : '' #> />")
-                               .HtmlAttributes(new { style = "text-align:center" });
-                        columns.Bound(f => f.IsDestroy).Width(45).Title("Kho</br>hủy")
-                               .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsDestroy' <#=IsDestroy? checked='checked' : '' #> />")
-                               .HtmlAttributes(new { style = "text-align:center" });
-                        columns.Bound(f => f.IsTransfer).Width(45).Title("Kho</br>trung chuyển")
-                               .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsTransfer' <#=IsTransfer? checked='checked' : '' #> />")
-                               .HtmlAttributes(new { style = "text-align:center" });
+                        columns.Command(command => command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)).Width(98).Title("").HtmlAttributes(new { style = "text-align:center" });
+                     
+                        columns.Bound(f => f.CanInternal).Width(45)
+                            //.Title("Xuất/nhập</br>nội bộ")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Export").ToString()
+                                + "/"
+                                + @HttpContext.GetGlobalResourceObject("Resource", "Import").ToString()
+                                + "</br>"
+                                + @HttpContext.GetGlobalResourceObject("Resource", "Internal").ToString()
+                            )
+                            .ClientTemplate("<input type='checkbox' disabled='disabled' name='CanInternal' <#=CanInternal? checked='checked' : '' #> />")
+                            .HtmlAttributes(new { style = "text-align:center" });
+                      
+                        columns.Bound(f => f.CanStock).Width(45)
+                            //.Title("Tính</br>tồn kho")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Calculate").ToString()
+                                + "</br>"
+                                + @HttpContext.GetGlobalResourceObject("Resource", "Inventory").ToString()
+                            )
+                            .ClientTemplate("<input type='checkbox' disabled='disabled' name='CanStock' <#=CanStock? checked='checked' : '' #> />")
+                            .HtmlAttributes(new { style = "text-align:center" });
+                       
+                        columns.Bound(f => f.CanPurchase).Width(45)
+                            //.Title("Nhập</br>mua hàng")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "PurchaseImport1").ToString())
+                            .ClientTemplate("<input type='checkbox' disabled='disabled' name='CanPurchase' <#=CanPurchase? checked='checked' : '' #> />")
+                            .HtmlAttributes(new { style = "text-align:center" });
+                    
+                        columns.Bound(f => f.CanWeighing).Width(45)
+                            //.Title("Cân</br>hàng")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Weighing1").ToString())
+                            .ClientTemplate("<input type='checkbox' disabled='disabled' name='CanWeighing' <#=CanWeighing? checked='checked' : '' #> />")
+                            .HtmlAttributes(new { style = "text-align:center" });
+                     
+                        columns.Bound(f => f.IsDestroy).Width(45)
+                            //.Title("Kho</br>hủy")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Warehouse").ToString()
+                                + "</br>"
+                                + @HttpContext.GetGlobalResourceObject("Resource", "Cancel").ToString()
+                            )
+                            .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsDestroy' <#=IsDestroy? checked='checked' : '' #> />")
+                            .HtmlAttributes(new { style = "text-align:center" });
+                    
+                        columns.Bound(f => f.IsTransfer).Width(45)
+                            //.Title("Kho</br>trung chuyển")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "Warehouse").ToString()
+                                + "</br>"
+                                + @HttpContext.GetGlobalResourceObject("Resource", "Transfer").ToString()
+                            )
+                            .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsTransfer' <#=IsTransfer? checked='checked' : '' #> />")
+                            .HtmlAttributes(new { style = "text-align:center" });
                     })
                     .ClientEvents(events => events.OnError("grid_OnError"))
                     .ToHtmlString());
@@ -139,7 +287,7 @@
                                ))
             .ClientEvents(e => e.OnError("grid_OnError")
                                 .OnRowSelect("grid_OnRowSelect"))
-            .Editable(editing => editing.Mode(GridEditMode.InLine))
+            .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
             //.Pageable(page => page.PageSize(10))
             .Sortable()
             .Render();

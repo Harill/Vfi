@@ -40,7 +40,10 @@
 }
     <style></style>
 
-    <div class="title">Quản lý thông tin tình trạng máy</div>
+    <div class="title">
+        @*Quản lý thông tin tình trạng máy*@
+        @HttpContext.GetGlobalResourceObject("Resource", "MachineStateManagement")
+    </div>
             @Html.TextBox("ColorPick",null,new { @class = "ColorTool"})
     @*Click here: <input id='ColorPick' class="ColorTool" value="66ff00"/>*@
 
@@ -51,7 +54,9 @@
                 .DataKeys(key => key.Add(f => f.StateId).RouteKey("stateId"))
                 .ToolBar(
                     toolbar =>
-                    toolbar.Insert().ButtonType(GridButtonType.ImageAndText).Text("Thêm mới").ImageHtmlAttributes(new {style = "margin-left:0px;"}))
+                    toolbar.Insert().ButtonType(GridButtonType.ImageAndText)
+                    .Text(@HttpContext.GetGlobalResourceObject("Resource", "NewText").ToString())
+                    .ImageHtmlAttributes(new {style = "margin-left:0px;"}))
                 .DataBinding(
                     dataBinding => dataBinding.Ajax()
                                               .Select("SelectMachineState", "Machine")
@@ -63,22 +68,45 @@
                                         command.Edit().ButtonType(GridButtonType.Image)
                             ).Width(50).Title("").HtmlAttributes(new { style = "text-align:center" });
                         columns.Bound(f => f.StateCode).Width(150).Title("Code");
-                        columns.Bound(f => f.Description).Title("Mô tả lỗi")
-                               .ClientTemplate("<strong><#= Description #></strong>");
-                        columns.Bound(f => f.NameEN).Title("Mô tả lỗi (EN)")
-                               .ClientTemplate("<strong><#= NameEN #></strong>");
-                        columns.Bound(f => f.EstimateTime).Title("Ước lượng<br/>TG").Width(100)
-                                .Format("{0:n0}")
-                                .HtmlAttributes(new { style = "text-align: right;" });
-                        columns.Bound(f => f.IsSetProduct).Title("Thiết lập<br/>SP").Width(75)
-                               .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsSetProduct' <#=IsSetProduct? checked='checked' : '' #> />")
-                               .HtmlAttributes(new { style = "text-align:center" });
+                  
+                        columns.Bound(f => f.Description)
+                            //.Title("Mô tả lỗi")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "ErrorDescription").ToString())
+                            .ClientTemplate("<strong><#= Description #></strong>");
+                   
+                        columns.Bound(f => f.NameEN)
+                            //.Title("Mô tả lỗi (EN)")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "ErrorDescription").ToString() + " (EN)")
+                            .ClientTemplate("<strong><#= NameEN #></strong>");
+                      
+                        columns.Bound(f => f.EstimateTime)
+                            //.Title("Ước lượng<br/>TG")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "EstimateTime3").ToString())
+                            .Width(100)
+                            .Format("{0:n0}")
+                            .HtmlAttributes(new { style = "text-align: right;" });
+                      
+                        columns.Bound(f => f.IsSetProduct)
+                            //.Title("Thiết lập<br/>SP")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "SettingUpProduct3").ToString())
+                            .Width(75)
+                            .ClientTemplate("<input type='checkbox' disabled='disabled' name='IsSetProduct' <#=IsSetProduct? checked='checked' : '' #> />")
+                            .HtmlAttributes(new { style = "text-align:center" });
+                     
                         columns.Bound(f => f.Active).Width(75)
                                .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=Active? checked='checked' : '' #> />")
                                .HtmlAttributes(new { style = "text-align:center" });
-                        columns.Bound(f => f.ModifiedDate).Width(85).Title("Ngày tạo").ReadOnly(true)
-                               .Format("{0:dd/MM/yyyy HH:mm:ss}");
-                        columns.Bound(f => f.ModifiedUser).Width(85).Title("Người tạo").ReadOnly(true);
+                        
+                        columns.Bound(f => f.ModifiedDate).Width(85)
+                            //.Title("Ngày tạo")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "ModifiedDate").ToString())
+                            .ReadOnly(true)
+                            .Format("{0:dd/MM/yyyy HH:mm:ss}");
+                      
+                        columns.Bound(f => f.ModifiedUser).Width(85)
+                            //.Title("Người tạo")
+                            .Title(@HttpContext.GetGlobalResourceObject("Resource", "ModifiedUser").ToString())
+                            .ReadOnly(true);
 
                     }) 
                 .Editable(editing => editing.Mode(GridEditMode.InLine))

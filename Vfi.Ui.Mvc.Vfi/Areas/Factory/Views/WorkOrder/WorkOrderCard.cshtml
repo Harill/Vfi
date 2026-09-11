@@ -229,21 +229,21 @@
                     //.Title("Kế</br>hoạch")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Planned").ToString())
                     .ReadOnly(true)
-                    .Format("{0:n0}")
+                    .Format("{0:n2}")
                     .HtmlAttributes(new { style = "text-align:right;" });
                 
                 columns.Bound(f => f.ActualCost).Width(65)
                     //.Title("Thực</br>tế")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Actual").ToString())
                     .ReadOnly(true)
-                    .Format("{0:n0}")
+                    .Format("{0:n2}")
                     .HtmlAttributes(new { style = "text-align:right;" });
                 
                 columns.Bound(f => f.UsingQuantity).Width(65)
                     //.Title("Sử</br>dụng")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Using").ToString())
                     .ReadOnly(true)
-                    .Format("{0:n0}")
+                    .Format("{0:n2}")
                     .HtmlAttributes(new { style = "text-align:right;border-right:1px solid black;" });
                 
                 columns.Bound(f => f.GoodQuantity).Width(65)
@@ -329,7 +329,7 @@
                                 //.Title("Sử dụng</br>")
                                 .Title(@HttpContext.GetGlobalResourceObject("Resource", "Using").ToString())
                                 .ReadOnly(true).Width(50)
-                                //.Format("{0:n0}")
+                                .Format("{0:n2}")
                                 .ClientTemplate("<#= UsingQuantityStr #>")
                                 .HtmlAttributes(new { style = "text-align: center;border-right:1px solid black;" })
                                 .Aggregate(agg => agg.Sum())

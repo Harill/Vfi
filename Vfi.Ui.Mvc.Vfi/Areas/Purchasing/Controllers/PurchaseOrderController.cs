@@ -31,11 +31,6 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
             foreach (var property in viewModel.GetType().GetProperties()) {
                 ViewData[property.Name] = property.GetValue(viewModel, null);
             }
-            // 04/08/2026
-            Session["CurrentCulture"] = "vi-VN";
-            string culture = (string)Session["CurrentCulture"] ?? "en-US";
-            Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(culture);
-            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
 
             return ViewData;
         }
@@ -2661,7 +2656,22 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                                                                               t.ModifiedUser,
                                                                             })
                                                                           .FirstOrDefault();
-                                entity.Creater = vfi.Users.Where(t => t.Username == inquiryPo.ModifiedUser).Select(t => t.FullName).FirstOrDefault().ToUpper();
+
+                                //entity.Creater = vfi.Users.Where(t => t.Username == inquiryPo.ModifiedUser).Select(t => t.FullName).FirstOrDefault().ToUpper();
+
+                                if (inquiryPo.ModifiedUser != null) {
+                                    var createrName = vfi.Employees.Where(t => t.User.Username == inquiryPo.ModifiedUser).Select(t => t.EmployeeName).FirstOrDefault();
+                                    if (createrName != null) {
+                                        entity.Creater = createrName;
+                                    }
+                                    else if (createrName == null) {
+                                        entity.Creater = "Tài khoản: '" + inquiryPo.ModifiedUser + "' chưa được liên kết trong 'quản lý nhân viên'";
+                                    }
+                                }
+                                else if (inquiryPo.ModifiedUser == null) {
+                                    entity.Creater = "";
+                                }
+
                                 if (poDetail.Standard == "") {
 
                                     entity.Standard = inquiryPo.Standard;
@@ -2673,7 +2683,15 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
 
                             else {
                                 entity.Standard = poDetail.Standard;
-                                entity.Creater = vfi.Users.Where(t => t.Username == poDetail.ModifiedUser).Select(t => t.FullName).FirstOrDefault().ToUpper() ;
+
+                                //entity.Creater = vfi.Users.Where(t => t.Username == poDetail.ModifiedUser).Select(t => t.FullName).FirstOrDefault().ToUpper() ;
+                                var createrName = vfi.Employees.Where(t => t.User.Username == poDetail.ModifiedUser).Select(t => t.EmployeeName).FirstOrDefault();
+                                if (createrName == null) {
+                                    entity.Creater = "Tài khoản: '" + poDetail.ModifiedUser + "' chưa được liên kết trong 'quản lý nhân viên'";
+                                }
+                                else if (createrName != null) {
+                                    entity.Creater = createrName;
+                                }
                             }
 
                             
@@ -3734,23 +3752,23 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
 
 
                         // 3 PT
-                        if (update.PaymentMethodId != 0) {
+                        if (update.PaymentMethodId != 0 && update.PaymentMethodId != null) {
                             po.PaymentId = update.PaymentMethodId;
                         }
-                        else if (update.PaymentMethodId == 0 && (po.PaymentId == 0 || po.PaymentId == null)) {
+                        else if ((update.PaymentMethodId == 0 || update.PaymentMethodId == null) && (po.PaymentId == 0 || po.PaymentId == null)) {
                             throw new AggregateException("Vui lòng cập nhật Phương thức thanh toán.");
                         }
-                        if (update.ShipMethodId != 0) {
+                        if (update.ShipMethodId != 0 && update.ShipMethodId != null) {
                             po.DeliveryById = update.ShipMethodId;
                         }
-                        else if (update.ShipMethodId == 0 && (po.DeliveryById == 0 || po.DeliveryById == null)) {
+                        else if ((update.ShipMethodId == 0 || update.ShipMethodId == null)   && (po.DeliveryById == 0 || po.DeliveryById == null)) {
                             throw new AggregateException("Vui lòng cập nhật Hình thức vận chuyển.");
                         }
 
-                        if (update.DeliveryMethodId != 0) {
+                        if (update.DeliveryMethodId != 0 && update.DeliveryMethodId != null) {
                             po.ConditionDeliveryId = update.DeliveryMethodId;
                         }
-                        else if (update.DeliveryMethodId == 0 && (po.ConditionDeliveryId == 0 || po.ConditionDeliveryId == null)) {
+                        else if ((update.DeliveryMethodId == 0 || update.DeliveryMethodId == null) && (po.ConditionDeliveryId == 0 || po.ConditionDeliveryId == null)) {
                             throw new AggregateException("Vui lòng cập nhật Phương thức vận chuyển.");
                         }
 
@@ -3768,7 +3786,8 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                              && update.BillOfLanding == po.BillOfLanding
                              && update.DeliveryMethodId == 0 
                              && update.PaymentMethodId == 0 
-                             && update.ShipMethodId == 0) {
+                             && update.ShipMethodId == 0
+                             && string.IsNullOrWhiteSpace(update.BillOfLanding)) {
                         throw new AggregateException("Không có gì cập nhật");
                     }
 
@@ -3878,24 +3897,24 @@ namespace Vfi.Ui.Mvc.Vfi.Areas.Purchasing.Controllers {
                         }
 
 
-                        if (update.PaymentMethodId != 0) {
+                        if (update.PaymentMethodId != 0 && update.PaymentMethodId != null) {
                             po.PaymentId = update.PaymentMethodId;
                         }
-                        else if ( update.PaymentMethodId == 0 && (po.PaymentId == 0|| po.PaymentId == null)){
+                        else if ( (update.PaymentMethodId == 0 || update.PaymentMethodId == null) && (po.PaymentId == 0|| po.PaymentId == null)){
                             throw new AggregateException("Vui lòng cập nhật Phương thức thanh toán.");
                         }
 
-                        if (update.ShipMethodId != 0) {
+                        if (update.ShipMethodId != 0 && update.ShipMethodId != null) {
                             po.DeliveryById = update.ShipMethodId;
                         }
-                        else if (update.ShipMethodId == 0 && (po.DeliveryById == 0 || po.DeliveryById == null)) {
+                        else if ((update.ShipMethodId == 0 || update.ShipMethodId == null) && (po.DeliveryById == 0 || po.DeliveryById == null)) {
                             throw new AggregateException("Vui lòng cập nhật Hình thức vận chuyển.");
                         }
 
-                        if (update.DeliveryMethodId != 0) {
+                        if (update.DeliveryMethodId != 0 && update.DeliveryMethodId != null) {
                             po.ConditionDeliveryId = update.DeliveryMethodId;
                         }
-                        else if (update.DeliveryMethodId == 0 && (po.ConditionDeliveryId == 0 || po.ConditionDeliveryId == null)) {
+                        else if ((update.DeliveryMethodId == 0 || update.DeliveryMethodId == null) && (po.ConditionDeliveryId == 0 || po.ConditionDeliveryId == null)) {
                             throw new AggregateException("Vui lòng cập nhật Phương thức vận chuyển.");
                         }
 

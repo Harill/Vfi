@@ -6,7 +6,8 @@
 }
 
 <div class="title">
-    Quản lý thông tin máy
+    @*Quản lý thông tin máy*@
+    @HttpContext.GetGlobalResourceObject("Resource", "MachineManagement")
 
 </div>
 
@@ -14,8 +15,8 @@
             <div class="grid_3 prefix_1">
                 <button id="btnRefesh" class="t-button" onclick=" return RefreshGrid('gridMachine'); ">
                     <span class='t-icon t-insert'></span>
-                    Làm mới
-
+                    @*Làm mới*@
+                    @HttpContext.GetGlobalResourceObject("Resource", "Refesh")
                 </button>
             </div>
 <div class="cover-div">
@@ -26,7 +27,7 @@
         .ToolBar(
             toolbar =>
             toolbar.Insert().ButtonType(GridButtonType.ImageAndText)
-                .Text("Thêm máy mới")
+                .Text(@HttpContext.GetGlobalResourceObject("Resource", "NewText").ToString())
                 .ImageHtmlAttributes(new { style = "margin-left:0px;" }))
         .DataBinding(
             dataBinding => dataBinding.Ajax()
@@ -40,23 +41,26 @@
             ).Width(98).Title("").HtmlAttributes(new { style = "text-align:center" });
 
             columns.Bound(f => f.MachineCode).Width(175)
-                .Title("Mã máy")
-                
+                //.Title("Mã máy")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "MachineCode").ToString())
                 .ClientTemplate("<strong><#= MachineCode #></strong>");
-         
+            
+            columns.Bound(f => f.MachineId).Width(175)
+               .Title("Machine ID")
+               .ClientTemplate("<#= MachineId #>");
+            
             columns.Bound(f => f.ProcessingTypeName).Width(175)
-                .Title("Loại GC")
-                
+                //.Title("Loại GC")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "Type").ToString() + " GC")
                 .ClientTemplate("<#= ProcessingTypeName #>");
             
             columns.Bound(f => f.MachineIdName).Width(175)
-                .Title("MachineIdName")
-                
+                .Title("Machine Name")
                 .ClientTemplate("<#= MachineIdName #>");
             
             columns.Bound(f => f.DiagramTypeName).Width(175)
-                .Title("Sơ đồ")
-                
+                //.Title("Sơ đồ")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "Diagram").ToString())
                 .ClientTemplate("<#= DiagramTypeName #>");
             
             columns.Bound(f => f.ColumnIndex).Width(175)
@@ -66,18 +70,18 @@
                 ;
             
             columns.Bound(f => f.MachineFunction).Width(70)
-                .HeaderTemplate("Chức năng máy")
-                ;
+                //.HeaderTemplate("Chức năng máy")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "TypeMachine").ToString());
 
             columns.Bound(f => f.Active).Width(75)
-                .Title("SX1")
-                
+                //.Title("SX1")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "Production12").ToString())
                 .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=Active? checked='checked' : '' #> />")
                 .HtmlAttributes(new { style = "text-align:center" });
             
             columns.Bound(f => f.Production2).Width(75)
-                .Title("Khác")
-                
+                //.Title("Khác")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "Difference").ToString())
                 .ClientTemplate("<input type='checkbox' disabled='disabled' name='Production2' <#=Production2? checked='checked' : '' #> />")
                 .HtmlAttributes(new { style = "text-align:center" });
             

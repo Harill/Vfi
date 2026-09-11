@@ -208,7 +208,7 @@
                     .Format("{0:n0}")
                     .HtmlAttributes(new { style = "text-align: right;" });
 
-                columns.Bound(f => f.DefectQuantity)
+                columns.Bound(f => f.DefectWeight)
                     //.Title("TL PP</br>(g)")
                     .Title(@HttpContext.GetGlobalResourceObject("Resource", "Weight2").ToString()
                         + " "
@@ -312,8 +312,9 @@
             //        .ToHtmlString()))
             .Selectable()
             .Reorderable(f => f.Columns(true))
-            .Sortable()
+            .Scrollable(f => f.Height(720))
             .Groupable()
+            .Sortable()
             .Filterable()
             .ClientEvents(events => events
                 .OnRowSelect("grid_OnRowSelect")

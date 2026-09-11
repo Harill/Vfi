@@ -6,7 +6,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="title">Phương thức vận chuyển</div>
+<div class="title">
+    @*Phương thức vận chuyển*@
+    @HttpContext.GetGlobalResourceObject("Resource", "ShippingMethodManagement")
+</div>
 <div class="cover-div">
 @{
     Html.Telerik().Grid<ShipMethodModel>()
@@ -24,17 +27,34 @@
             columns.Command(command =>
                 command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
             ).Width(98).Title("").HtmlAttributes(new { style = "text-align:center" });
-            columns.Bound(f => f.Name).Title("Tên loại vận chuyển");
-            columns.Bound(f => f.ShipBase).Width(150).Title("Giá (USD/kg)")
+            columns.Bound(f => f.Name)
+                .Title("Tên loại vận chuyển")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "ShippingTypeName").ToString())
+                ;
+            
+            columns.Bound(f => f.ShipBase).Width(150)
+                .Title("Giá (USD/kg)")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "Price").ToString()
+                   + " (USD/kg)"
+                )
                 .HtmlAttributes(new { style = "text-align:right" });
             //columns.Bound(f => f.ShipRate).Width(110);
             columns.Bound(f => f.Active).Width(45)
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "Active").ToString())
                 .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=Active? checked='checked' : '' #> />")
                 .HtmlAttributes(new { style = "text-align:center" });
-            columns.Bound(f => f.ModifiedDate).Width(150).Title("Ngày cập nhật").ReadOnly(true)
+            
+            columns.Bound(f => f.ModifiedDate).Width(150)
+                //.Title("Ngày cập nhật")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "ModifiedDate").ToString())
+                .ReadOnly(true)
                 .Format("{0:HH:mm dd/MM/yyyy }")
                 .HtmlAttributes(new { style = "text-align:center" });
-            columns.Bound(f => f.ModifiedUser).Width(100).Title("Người cập nhật").ReadOnly(true)
+            
+            columns.Bound(f => f.ModifiedUser).Width(100)
+                //.Title("Người cập nhật")
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "ModifiedUser").ToString())
+                .ReadOnly(true)
                 .HtmlAttributes(new { style = "text-align:center" });
         })
         .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
@@ -47,7 +67,10 @@
 
 <div class ="clear"></div>
 
-<div class ="title">Quản lý địa điểm nhận</div>
+<div class ="title">
+    @*Quản lý địa điểm nhận*@
+    @HttpContext.GetGlobalResourceObject("Resource", "DeliveryAddressManagement")
+</div>
 <div class="cover-div">
     @{
         Html.Telerik().Grid<DeliveryAddressModel>()
@@ -65,24 +88,55 @@
                     columns.Command(command =>
                         command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.Image)
                     ).Width(80).Title("").HtmlAttributes(new { style = "text-align:center" });
-                    columns.Bound(f => f.AddressId).Width(50).Title("Id").ReadOnly(true)
-                           .HtmlAttributes(new { style = "text-align:center" });
+            
+                    columns.Bound(f => f.AddressId).Width(50)
+                        .Title("Id")
+                        .ReadOnly(true)
+                        .HtmlAttributes(new { style = "text-align:center" });
 
-                    columns.Bound(f => f.AddressShortName).Width(50).Title("Tên viết tắt");
-                    columns.Bound(f => f.AddressName).Title("Tên đầy đủ").Width(150)
+                    columns.Bound(f => f.AddressShortName).Width(50)
+                        //.Title("Tên viết tắt")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "ShortName").ToString())
+                        ;
+            
+                    columns.Bound(f => f.AddressName)
+                        //.Title("Tên đầy đủ")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "FullName").ToString())
+                        .Width(150)
                         .HtmlAttributes(new { style = "text-align:left" });
 
-                    columns.Bound(f => f.Address).Title("Địa chỉ");
-                    columns.Bound(f => f.Recipient).Title("Người nhận").Width(150);
-                    columns.Bound(f => f.Telephone).Width(200).Title("SĐT");
+                    columns.Bound(f => f.Address)
+                        //.Title("Địa chỉ")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Address").ToString())
+                        ;
+            
+                    columns.Bound(f => f.Recipient)
+                        //.Title("Người nhận")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Recipient").ToString())
+                        .Width(150);
+            
+                    columns.Bound(f => f.Telephone).Width(200)
+                        //.Title("SĐT")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "PhoneNumber").ToString())
+                        ;
 
-                    columns.Bound(f => f.Active).Width(45).Title("Kích hoạt")
+                    columns.Bound(f => f.Active).Width(45)
+                        //.Title("Kích hoạt")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "Active").ToString())
                         .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=Active? checked='checked' : '' #> />")
                         .HtmlAttributes(new { style = "text-align:center" });
-                    columns.Bound(f => f.ModifiedDate).Width(150).Title("Ngày cập nhật").ReadOnly(true)
+            
+                    columns.Bound(f => f.ModifiedDate).Width(150)
+                        //.Title("Ngày cập nhật")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "ModifiedDate").ToString())
+                        .ReadOnly(true)
                         .Format("{0:HH:mm dd/MM/yyyy }")
                         .HtmlAttributes(new { style = "text-align:center" });
-                    columns.Bound(f => f.ModifiedUser).Width(100).Title("Người cập nhật").ReadOnly(true)
+            
+                    columns.Bound(f => f.ModifiedUser).Width(100)
+                        //.Title("Người cập nhật")
+                        .Title(@HttpContext.GetGlobalResourceObject("Resource", "ModifiedUser").ToString())
+                        .ReadOnly(true)
                         .HtmlAttributes(new { style = "text-align:center" });
                 })
         .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))

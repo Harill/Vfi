@@ -4,7 +4,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="title">Quản lý thông tin loại khách hàng</div>
+<div class="title">
+    @*Quản lý thông tin loại khách hàng*@
+    @HttpContext.GetGlobalResourceObject("Resource", "CustomerTypeManagement")
+</div>
 
 <div class="cover-div">
 @{
@@ -13,23 +16,32 @@
         .DataKeys(keys => keys.Add(f => f.CustomerTypeId).RouteKey("customerTypeId"))
         .ToolBar(
             toolbar =>
-            toolbar.Insert().ButtonType(GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
+            toolbar.Insert().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).ImageHtmlAttributes(new { style = "margin-left:0" }))
         .DataBinding(dataBindings=>dataBindings.Ajax()
             .Select("SelectCustomerType","CustomerType").Insert("InsertCustomerType","CustomerType").Update("UpdateCustomerType","CustomerType")
         )
         .Columns(columns=>
         {
-            columns.Bound(f => f.CustomerTypeName).Width(175);
-            columns.Bound(f => f.Note);
+            columns.Bound(f => f.CustomerTypeName)
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "CustomerType").ToString())
+                .Width(175);
+
+            columns.Bound(f => f.Note).Title(@HttpContext.GetGlobalResourceObject("Resource", "Note").ToString());
+            
             columns.Bound(f => f.Active).Width(75)
+                .Title(@HttpContext.GetGlobalResourceObject("Resource", "Active").ToString())
                 .ClientTemplate("<input type='checkbox' disabled='disabled' name='Active' <#=Active? checked='checked' : '' #> />")
                 .HtmlAttributes(new { style = "text-align:center" });
+            
             columns.Command(command =>
-                command.Edit().ButtonType(GridButtonType.ImageAndText).HtmlAttributes(new { text = "Sửa"})
-            ).Width(98).Title("Lệnh").HtmlAttributes(new { style = "text-align:center" });
+                command.Edit().ButtonType(Telerik.Web.Mvc.UI.GridButtonType.ImageAndText).HtmlAttributes(new { text = "Sửa"})
+            ).Width(98)
+            //.Title("Lệnh")
+            .Title(@HttpContext.GetGlobalResourceObject("Resource", "EditText").ToString())
+            .HtmlAttributes(new { style = "text-align:center" });
         })
         .ClientEvents(e=> e.OnError("grid_OnError"))
-        .Editable(editing => editing.Mode(GridEditMode.InLine))
+        .Editable(editing => editing.Mode(Telerik.Web.Mvc.UI.GridEditMode.InLine))
         .Pageable(page => page.PageSize(10))
         .Sortable()
         .Render();  
